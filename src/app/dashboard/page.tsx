@@ -1,19 +1,28 @@
-
 'use client';
 
+import React, { useState } from 'react'; // Import useState
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend } from "recharts";
-import { HandCoins, PiggyBank, Target, Lightbulb, ListChecks, TrendingDown, Landmark, ShieldAlert, Activity, PlusCircle, TrendingUp, LineChart } from "lucide-react";
+import { HandCoins, PiggyBank, Target, Lightbulb, ListChecks, TrendingDown, Landmark, ShieldAlert, Activity, PlusCircle, TrendingUp, Banknote, X } from "lucide-react"; // Added Banknote, X
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog"; // Import Dialog components
 
 
 const savingsGoals = [
   { name: "Dream Vacation", current: 750, target: 2000, icon: <PiggyBank className="h-5 w-5 text-primary" /> },
-  // { name: "Safety Net Fund", current: 3000, target: 5000, icon: <ShieldAlert className="h-5 w-5 text-destructive" /> }, // Moved to separate card
   { name: "Next Gen Console", current: 200, target: 800, icon: <Target className="h-5 w-5 text-secondary" /> },
 ];
 
@@ -49,11 +58,14 @@ const emergencyFund = { current: 4500, target: 15000 }; // Mock emergency fund d
 
 
 export default function DashboardPage() {
+  const [bankLinkModalOpen, setBankLinkModalOpen] = useState(false); // State for bank linking modal
+
   const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   return (
+     <> {/* Wrap with fragment to allow modal */}
      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"> {/* Adjusted grid columns */}
 
         {/* Quick Actions */}
@@ -82,7 +94,7 @@ export default function DashboardPage() {
                 </Link>
                  <Link href="/savings-goals" passHref>
                    <Button variant="accent" className="w-full retro-button">
-                      <PiggyBank className="mr-2 h-4 w-4"/> Add Savings
+                      <PiggyBank className="mr-2 h-4 w-4"/> Add Savings Goal
                    </Button>
                 </Link>
                  <Link href="/investments" passHref>
@@ -90,6 +102,10 @@ export default function DashboardPage() {
                        <TrendingUp className="mr-2 h-4 w-4"/> Log Investment
                     </Button>
                 </Link>
+                 {/* Add Bank Link Button */}
+                 <Button variant="accent" className="w-full retro-button" onClick={() => setBankLinkModalOpen(true)}>
+                     <Banknote className="mr-2 h-4 w-4"/> Link Bank Account
+                 </Button>
            </CardContent>
         </Card>
 
@@ -331,7 +347,47 @@ export default function DashboardPage() {
          </CardFooter>
       </Card>
     </div>
+
+     {/* Placeholder Bank Linking Modal */}
+      <Dialog open={bankLinkModalOpen} onOpenChange={setBankLinkModalOpen}>
+         <DialogContent className="retro-window sm:max-w-md">
+             <DialogHeader className="retro-window-header !bg-primary !text-primary-foreground">
+              <DialogTitle className="flex items-center gap-2"> <Banknote className="h-5 w-5"/> Link Your Bank Account</DialogTitle>
+               <div className="retro-window-controls">
+                    <span className="!bg-primary !border-primary-foreground"></span>
+                    <span className="!bg-primary !border-primary-foreground"></span>
+                    <DialogClose asChild>
+                       <Button variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
+                           <X className="h-3 w-3"/>
+                           <span className="sr-only">Close</span>
+                       </Button>
+                    </DialogClose>
+               </div>
+            </DialogHeader>
+            <DialogContent className="retro-window-content !border-t-0 pt-6 pb-4 space-y-4">
+              <DialogDescription className="text-muted-foreground text-sm">
+                FinTrack Pro uses Plaid to securely connect to your bank accounts. This allows for automatic importing of transactions.
+              </DialogDescription>
+              <p className="text-xs text-muted-foreground/80">
+                (This is a placeholder. In a real application, the Plaid Link flow would be initiated here.)
+              </p>
+              <Button
+                  className="w-full retro-button"
+                  variant="primary"
+                  onClick={() => alert('Initiate Plaid Link flow... (placeholder)')}
+              >
+                <PlusCircle className="mr-2 h-4 w-4"/> Connect with Plaid
+              </Button>
+            </DialogContent>
+             <DialogFooter className="retro-window-content !border-t-2 !pt-3 !pb-3 !flex !justify-end">
+                 <DialogClose asChild>
+                    <Button variant="secondary" className="retro-button">
+                       Close
+                    </Button>
+                  </DialogClose>
+             </DialogFooter>
+          </DialogContent>
+       </Dialog>
+    </>
   );
 }
-
-    
