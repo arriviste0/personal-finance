@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts'; // Changed import
 import { HandCoins, TrendingUp, PlusCircle, Edit, Save, X, DollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from '@/components/ui/input';
@@ -243,7 +243,7 @@ export default function BudgetPage() {
                       <Cell key={`cell-${index}`} fill={entry.fill} stroke={"hsl(var(--background))"} strokeWidth={1.5} className="focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1" /> // Thicker stroke
                     ))}
                   </Pie>
-                   <Tooltip
+                   <RechartsTooltip
                      contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--foreground))', fontFamily: 'var(--font-sans)', fontSize: '12px', boxShadow: 'none' }} // Sans-serif font, standard size
                      itemStyle={{ color: 'hsl(var(--foreground))' }}
                      formatter={(value: number, name: string) => [`$${value.toLocaleString()}`, name]}
@@ -314,3 +314,5 @@ export default function BudgetPage() {
     </div>
   );
 }
+
+    

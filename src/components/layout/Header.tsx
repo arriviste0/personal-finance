@@ -21,23 +21,35 @@ export default function Header() {
           >
             Dashboard
           </Link>
-          <Link
-            href="/savings-goals"
-             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
-          >
-            Savings Goals
-          </Link>
-          <Link
+           <Link
             href="/budget"
              className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
           >
             Budget
           </Link>
            <Link
-            href="/expenses" // Added Expenses link
+            href="/expenses"
              className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
           >
             Expenses
+          </Link>
+           <Link
+            href="/savings-goals"
+             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
+          >
+            Savings Goals
+          </Link>
+           <Link
+            href="/investments" // Added Investments link
+             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
+          >
+            Investments
+          </Link>
+          <Link
+            href="/emergency-fund" // Added Emergency Fund link
+            className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
+          >
+            Emergency Fund
           </Link>
           <Link
             href="/tax-planner"
@@ -47,7 +59,7 @@ export default function Header() {
           </Link>
            <Link
             href="/ai-assistant"
-             className="font-medium text-accent/90 transition-colors hover:text-accent hover:underline underline-offset-2" // Use accent for AI
+             className="font-medium text-accent transition-colors hover:text-accent/80 hover:underline underline-offset-2" // Use accent for AI
           >
             AI Assistant
           </Link>
@@ -77,7 +89,10 @@ export default function Header() {
                        <span className="!border-secondary-foreground !bg-secondary"></span>
                        <span className="!border-secondary-foreground !bg-secondary"></span>
                        <SheetClose asChild>
-                         <span className="!bg-destructive !border-destructive-foreground cursor-pointer"><X className="h-2 w-2 text-destructive-foreground relative -top-px -left-px"/></span>
+                         <Button variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
+                            <X className="h-3 w-3"/>
+                            <span className="sr-only">Close</span>
+                         </Button>
                        </SheetClose>
                    </div>
                 </div>
@@ -92,23 +107,35 @@ export default function Header() {
                 <Link href="/" className="text-foreground hover:underline hover:text-primary underline-offset-2">
                   Dashboard
                 </Link>
-                <Link
-                  href="/savings-goals"
-                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
-                >
-                  Savings Goals
-                </Link>
-                <Link
+                 <Link
                   href="/budget"
                   className="text-foreground hover:underline hover:text-primary underline-offset-2"
                 >
                   Budget
                 </Link>
                  <Link
-                  href="/expenses" // Added Expenses link
+                  href="/expenses"
                   className="text-foreground hover:underline hover:text-primary underline-offset-2"
                  >
                   Expenses
+                </Link>
+                 <Link
+                  href="/savings-goals"
+                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
+                >
+                  Savings Goals
+                </Link>
+                 <Link
+                  href="/investments" // Added Investments link
+                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
+                 >
+                  Investments
+                </Link>
+                <Link
+                  href="/emergency-fund" // Added Emergency Fund link
+                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
+                 >
+                  Emergency Fund
                 </Link>
                 <Link
                   href="/tax-planner"
