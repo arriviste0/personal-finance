@@ -9,9 +9,9 @@ import { HandCoins, PiggyBank, Target, Lightbulb } from "lucide-react";
 import Link from "next/link";
 
 const savingsGoals = [
-  { name: "Vacation Fund", current: 750, target: 2000, icon: <PiggyBank className="h-5 w-5 text-secondary" /> },
+  { name: "Vacation Fund", current: 750, target: 2000, icon: <PiggyBank className="h-5 w-5 text-primary" /> },
   { name: "Emergency Fund", current: 3000, target: 5000, icon: <HandCoins className="h-5 w-5 text-destructive" /> },
-  { name: "New Gadget", current: 200, target: 800, icon: <Target className="h-5 w-5 text-primary" /> },
+  { name: "New Gadget", current: 200, target: 800, icon: <Target className="h-5 w-5 text-secondary" /> },
 ];
 
 const budgetData = [
@@ -32,9 +32,9 @@ export default function Home() {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {/* Savings Goals Overview */}
-      <Card className="col-span-1 lg:col-span-2 glass">
+      <Card className="col-span-1 lg:col-span-2"> {/* Removed glass class */}
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-2xl font-bold"> {/* Adjusted font */}
              <PiggyBank className="h-6 w-6 text-primary" />
              Savings Goals Overview
           </CardTitle>
@@ -49,22 +49,22 @@ export default function Home() {
                     <span className="font-medium">{goal.name}</span>
                  </div>
                  <span className="text-sm text-muted-foreground">
-                   ${goal.current} / ${goal.target}
+                   ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
                  </span>
               </div>
-              <Progress value={(goal.current / goal.target) * 100} className="h-2" />
+              <Progress value={(goal.current / goal.target) * 100} className="h-2 [&>div]:bg-primary" /> {/* Ensured progress bar color */}
             </div>
           ))}
-           <Button asChild variant="outline" className="w-full mt-4 border-accent text-accent hover:bg-accent/10 hover:text-accent">
+           <Button asChild variant="outline" className="w-full mt-4 border-accent text-accent hover:bg-accent/10"> {/* Use outline variant */}
               <Link href="/savings-goals">View All Goals</Link>
            </Button>
         </CardContent>
       </Card>
 
       {/* Budget Summary */}
-      <Card className="col-span-1 glass">
+      <Card className="col-span-1"> {/* Removed glass class */}
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-2xl font-bold"> {/* Adjusted font */}
              <HandCoins className="h-6 w-6 text-secondary" />
              Budget Summary
           </CardTitle>
@@ -84,22 +84,22 @@ export default function Home() {
                   tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
                   width={80}
                  />
-                 <ChartTooltip cursor={{ fill: 'hsl(var(--background))' }} content={<ChartTooltipContent hideLabel />} />
+                 <ChartTooltip cursor={{ fill: 'hsl(var(--card))' }} content={<ChartTooltipContent hideLabel />} /> {/* Adjusted cursor fill */}
                  <Bar dataKey="budget" stackId="a" fill="hsl(var(--muted))" radius={[0, 4, 4, 0]} barSize={15}/>
                 <Bar dataKey="spent" stackId="a" fill="hsl(var(--secondary))" radius={[4, 0, 0, 4]} barSize={15}/>
               </BarChart>
              </ResponsiveContainer>
           </ChartContainer>
-          <Button asChild variant="outline" className="w-full mt-4 border-secondary text-secondary hover:bg-secondary/10 hover:text-secondary">
+          <Button asChild variant="outline" className="w-full mt-4 border-secondary text-secondary hover:bg-secondary/10"> {/* Use outline variant */}
               <Link href="/budget">Manage Budget</Link>
            </Button>
         </CardContent>
       </Card>
 
        {/* AI Assistant Quick Access */}
-      <Card className="col-span-1 md:col-span-2 lg:col-span-1 glass">
+      <Card className="col-span-1 md:col-span-2 lg:col-span-1"> {/* Removed glass class */}
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-2xl font-bold"> {/* Adjusted font */}
             <Lightbulb className="h-6 w-6 text-accent" />
              AI Savings Assistant
           </CardTitle>
@@ -109,7 +109,7 @@ export default function Home() {
           <p className="text-center text-sm text-muted-foreground">
             Analyze your spending patterns and get tailored advice to reach your goals faster.
           </p>
-           <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 w-full">
+           <Button asChild variant="solidAccent" className="w-full"> {/* Use solid accent variant */}
             <Link href="/ai-assistant">Get AI Tips</Link>
           </Button>
            <Button asChild variant="link" className="text-accent">

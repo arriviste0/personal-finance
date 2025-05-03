@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
   	extend: {
+       fontFamily: { // Add font family
+         sans: ["var(--font-quicksand)", "sans-serif"], // Use Quicksand as default sans
+       },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

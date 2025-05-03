@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form"; // Removed Controller as it wasn't explicitly used
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { analyzeSpendingPatterns, type AnalyzeSpendingPatternsInput, type AnalyzeSpendingPatternsOutput } from "@/ai/flows/analyze-spending-patterns";
@@ -24,17 +23,17 @@ import { Separator } from '@/components/ui/separator';
 
 const expenseSchema = z.object({
   category: z.string().min(1, "Category is required"),
-  amount: z.coerce.number().min(0, "Amount must be positive"),
+  amount: z.coerce.number().min(0, "Amount must be non-negative"), // Allow 0
 });
 
 const goalSchema = z.object({
   goalName: z.string().min(1, "Goal name is required"),
   targetAmount: z.coerce.number().min(1, "Target amount must be positive"),
-  currentAmount: z.coerce.number().min(0, "Current amount must be positive").default(0),
+  currentAmount: z.coerce.number().min(0, "Current amount must be non-negative").default(0), // Allow 0
 });
 
 const aiFormSchema = z.object({
-  monthlyIncome: z.coerce.number().min(0, "Monthly income must be positive."),
+  monthlyIncome: z.coerce.number().min(0, "Monthly income must be non-negative."), // Allow 0
   monthlyExpenses: z.array(expenseSchema).min(1, "Add at least one expense category."),
   savingsGoals: z.array(goalSchema).min(1, "Add at least one savings goal."),
 });
@@ -53,14 +52,15 @@ export default function AiAssistantPage() {
       monthlyExpenses: [{ category: "Rent", amount: 1200 }, { category: "Food", amount: 500 }],
       savingsGoals: [{ goalName: "Vacation", targetAmount: 2000, currentAmount: 500 }],
     },
+    mode: "onChange", // Add mode for better UX with isValid check
   });
 
-  const { fields: expenseFields, append: appendExpense, remove: removeExpense } = useForm({
+  const { fields: expenseFields, append: appendExpense, remove: removeExpense } = useFieldArray({
      control: form.control,
      name: "monthlyExpenses",
   });
 
-   const { fields: goalFields, append: appendGoal, remove: removeGoal } = useForm({
+   const { fields: goalFields, append: appendGoal, remove: removeGoal } = useFieldArray({
      control: form.control,
      name: "savingsGoals",
   });
@@ -77,7 +77,9 @@ export default function AiAssistantPage() {
       setAnalysisResult(result);
     } catch (err) {
       console.error("Error analyzing spending:", err);
-      setError("Failed to analyze spending patterns. Please try again.");
+      // Provide more specific error if possible, otherwise generic message
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
+      setError(`Failed to analyze spending patterns: ${errorMessage}. Please check your input and try again.`);
     } finally {
       setIsLoading(false);
     }
@@ -93,7 +95,7 @@ export default function AiAssistantPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Input Form */}
-         <Card className="glass">
+         <Card>
           <CardHeader>
             <CardTitle>Analyze Your Spending</CardTitle>
             <CardDescription>Provide your financial details for personalized AI insights.</CardDescription>
@@ -150,7 +152,7 @@ export default function AiAssistantPage() {
                          type="button"
                          variant="ghost"
                          size="icon"
-                         className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive"
+                         className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive border-transparent"
                          onClick={() => removeExpense(index)}
                          disabled={expenseFields.length <= 1}
                        >
@@ -163,11 +165,14 @@ export default function AiAssistantPage() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="mt-2 border-dashed"
+                    className="mt-2 border-dashed border-primary text-primary hover:bg-primary/10"
                     onClick={() => appendExpense({ category: "", amount: 0 })}
                   >
                     <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
                   </Button>
+                   {form.formState.errors.monthlyExpenses && !form.formState.errors.monthlyExpenses.root && form.formState.errors.monthlyExpenses.message && (
+                    <p className="text-sm font-medium text-destructive">{form.formState.errors.monthlyExpenses.message}</p>
+                   )}
                 </div>
 
                 <Separator />
@@ -221,7 +226,7 @@ export default function AiAssistantPage() {
                             type="button"
                             variant="ghost"
                             size="icon"
-                             className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive"
+                             className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive border-transparent"
                             onClick={() => removeGoal(index)}
                             disabled={goalFields.length <= 1}
                           >
@@ -235,15 +240,18 @@ export default function AiAssistantPage() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="mt-2 border-dashed"
-                    onClick={() => appendGoal({ goalName: "", targetAmount: 0, currentAmount: 0 })}
+                    className="mt-2 border-dashed border-primary text-primary hover:bg-primary/10"
+                    onClick={() => appendGoal({ goalName: "", targetAmount: 1000, currentAmount: 0 })}
                   >
                     <PlusCircle className="mr-2 h-4 w-4" /> Add Goal
                   </Button>
+                  {form.formState.errors.savingsGoals && !form.formState.errors.savingsGoals.root && form.formState.errors.savingsGoals.message && (
+                    <p className="text-sm font-medium text-destructive">{form.formState.errors.savingsGoals.message}</p>
+                   )}
                 </div>
               </CardContent>
                <CardFooter>
-                 <Button type="submit" disabled={isLoading} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                 <Button type="submit" disabled={isLoading || !form.formState.isValid} variant="solidAccent" className="w-full">
                    {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...
@@ -258,7 +266,7 @@ export default function AiAssistantPage() {
         </Card>
 
         {/* AI Analysis Results */}
-        <Card className="glass">
+        <Card>
           <CardHeader>
             <CardTitle>AI Analysis & Tips</CardTitle>
             <CardDescription>Personalized insights based on your data.</CardDescription>
@@ -277,27 +285,29 @@ export default function AiAssistantPage() {
                 </Alert>
              )}
              {!isLoading && !error && !analysisResult && (
-                <p className="flex-1 text-center text-muted-foreground flex items-center justify-center">
-                 Enter your financial details and click "Get AI Insights" to see the analysis.
-                </p>
+                 <div className="flex flex-1 flex-col items-center justify-center text-center text-muted-foreground">
+                    <Lightbulb className="h-12 w-12 mb-4" />
+                    <p>Enter your financial details and click "Get AI Insights" to see the analysis.</p>
+                 </div>
              )}
              {analysisResult && !isLoading && !error && (
                <div className="space-y-6 flex-1 overflow-auto pr-2">
                  <div>
                    <h4 className="font-semibold mb-2 text-lg text-primary">Spending Analysis:</h4>
-                   <p className="text-sm whitespace-pre-wrap">{analysisResult.spendingAnalysis}</p>
+                   {/* Added whitespace-pre-wrap for better formatting of AI response */}
+                   <p className="text-sm whitespace-pre-wrap bg-muted/50 p-3 rounded-md">{analysisResult.spendingAnalysis}</p>
                  </div>
                  <Separator />
                  <div>
                     <h4 className="font-semibold mb-2 text-lg text-secondary">Savings Tips:</h4>
                     {analysisResult.savingsTips.length > 0 ? (
-                       <ul className="space-y-2 list-disc list-inside text-sm">
+                       <ul className="space-y-2 list-disc list-inside text-sm bg-muted/50 p-3 rounded-md">
                          {analysisResult.savingsTips.map((tip, index) => (
                           <li key={index}>{tip}</li>
                         ))}
                       </ul>
                      ) : (
-                       <p className="text-sm text-muted-foreground">No specific savings tips generated.</p>
+                       <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md">No specific savings tips generated.</p>
                      )}
                  </div>
                </div>
@@ -308,4 +318,3 @@ export default function AiAssistantPage() {
     </div>
   );
 }
-
