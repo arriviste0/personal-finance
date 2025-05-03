@@ -4,36 +4,32 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+// Define variants using the retro base class and variant-specific classes from globals.css
 const buttonVariants = cva(
-  // Base style: inline-flex, centered, rounded, transition, focus visible
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95", // Added active state, changed rounding, font-medium, duration
+  "retro-button", // Base retro button style
   {
     variants: {
       variant: {
-        default: // Now Outline is default
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        destructive:
-           "border border-destructive/50 bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-           "border border-input bg-background hover:bg-accent hover:text-accent-foreground", // Standard outline
-        secondary:
-           "border border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "border border-transparent hover:bg-accent hover:text-accent-foreground",
-        link: "border border-transparent text-primary underline-offset-4 hover:underline",
-        solid: // Explicit solid primary
-           "border border-transparent bg-primary text-primary-foreground hover:bg-primary/90",
-        solidAccent: // Explicit solid accent
-           "border border-transparent bg-accent text-accent-foreground hover:bg-accent/90",
+        default: "retro-button-outline", // Retro outline is default
+        primary: "retro-button-primary",
+        secondary: "retro-button-secondary",
+        accent: "retro-button-accent",
+        destructive: "retro-button-destructive",
+        ghost: "retro-button-ghost",
+        link: "retro-button-link",
+        // Deprecated modern variants (can be removed if not used)
+        // solid: "retro-button-primary",
+        // solidAccent: "retro-button-accent",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3", // Consistent rounding
-        lg: "h-11 rounded-md px-8", // Consistent rounding
-        icon: "h-10 w-10",
+        default: "", // Base style handles default size
+        sm: "retro-button-sm",
+        lg: "retro-button-lg",
+        icon: "retro-button-icon",
       },
     },
     defaultVariants: {
-      variant: "default", // Outline is now the default style
+      variant: "default",
       size: "default",
     },
   }
@@ -50,10 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(
-           buttonVariants({ variant, size, className }),
-           "hover:scale-[1.02]" // Add subtle scale hover effect globally
-        )}
+        className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />
@@ -63,4 +56,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
-

@@ -1,102 +1,254 @@
+/* Import Press Start 2P font */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
-    /* Retro-Modern Pastel Palette (Inspired by reference image) */
-    --background: 40 50% 96%; /* Light Beige */
-    --foreground: 240 10% 10%; /* Near Black */
+    /* Retro Neon Dark Theme */
+    --background: 240 10% 8%; /* Very Dark Blue/Black */
+    --foreground: 180 100% 85%; /* Bright Cyan/Light Grey */
 
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 240 10% 15%; /* Dark Gray/Near Black */
+    --card: 240 10% 12%; /* Darker Blue/Grey */
+    --card-foreground: 180 100% 85%; /* Bright Cyan/Light Grey */
 
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 240 10% 15%; /* Dark Gray/Near Black */
+    --popover: 240 10% 10%; /* Near Black */
+    --popover-foreground: 180 100% 85%; /* Bright Cyan/Light Grey */
 
-    --primary: 340 82% 60%; /* Pastel Pink/Rose */
-    --primary-foreground: 0 0% 100%; /* White */
+    --primary: 180 100% 50%; /* Neon Cyan */
+    --primary-foreground: 240 10% 8%; /* Very Dark Blue/Black */
 
-    --secondary: 210 80% 65%; /* Pastel Blue */
-    --secondary-foreground: 240 10% 15%; /* Dark Gray/Near Black */
+    --secondary: 300 100% 60%; /* Neon Magenta */
+    --secondary-foreground: 240 10% 8%; /* Very Dark Blue/Black */
 
-    --muted: 220 20% 94%; /* Light Gray */
-    --muted-foreground: 240 10% 45%; /* Medium Gray */
+    --muted: 240 10% 20%; /* Dark Grey */
+    --muted-foreground: 240 5% 65%; /* Medium Grey */
 
-    --accent: 45 90% 60%; /* Pastel Yellow/Gold */
-    --accent-foreground: 240 10% 15%; /* Dark Gray/Near Black */
+    --accent: 60 100% 55%; /* Neon Yellow */
+    --accent-foreground: 240 10% 8%; /* Very Dark Blue/Black */
 
-    --destructive: 0 70% 60%; /* Soft Red */
+    --destructive: 0 100% 60%; /* Neon Red */
     --destructive-foreground: 0 0% 100%; /* White */
 
-    --border: 240 10% 85%; /* Light Gray Border */
-    --input: 240 5% 96%;   /* Slightly off-white Input Background */
-    --ring: 210 80% 70%; /* Lighter Blue for focus */
+    --border: 180 100% 30%; /* Darker Cyan for borders */
+    --input: 240 10% 15%;   /* Dark Input Background */
+    --ring: 180 100% 60%; /* Lighter Cyan for focus rings */
 
-    /* Chart Colors - Pastel theme */
-    --chart-1: 340 70% 75%; /* Lighter Pink */
-    --chart-2: 210 70% 75%; /* Lighter Blue */
-    --chart-3: 45 80% 70%;  /* Lighter Yellow */
-    --chart-4: 130 50% 70%; /* Soft Mint Green */
-    --chart-5: 270 60% 75%; /* Soft Lavender */
+    /* Chart Colors - Neon theme */
+    --chart-1: 180 100% 50%; /* Neon Cyan */
+    --chart-2: 300 100% 60%; /* Neon Magenta */
+    --chart-3: 60 100% 55%;  /* Neon Yellow */
+    --chart-4: 120 100% 50%; /* Neon Green */
+    --chart-5: 270 100% 65%; /* Neon Purple */
 
-    --radius: 0.5rem; /* Slightly larger radius for modern feel */
+    --radius: 0rem; /* No border radius for retro */
   }
 
-  .dark {
-     /* Optional Dark Mode - Adjust colors as needed */
-    --background: 240 10% 10%;
-    --foreground: 210 15% 85%;
-
-    --card: 240 10% 15%;
-    --card-foreground: 210 15% 85%;
-
-    --popover: 240 10% 15%;
-    --popover-foreground: 210 15% 85%;
-
-    --primary: 340 70% 65%;
-    --primary-foreground: 240 10% 10%;
-
-    --secondary: 210 70% 70%;
-    --secondary-foreground: 240 10% 10%;
-
-    --muted: 240 10% 25%;
-    --muted-foreground: 210 15% 65%;
-
-    --accent: 45 80% 65%;
-    --accent-foreground: 240 10% 10%;
-
-    --destructive: 0 60% 65%;
-    --destructive-foreground: 240 10% 10%;
-
-    --border: 240 10% 30%;
-    --input: 240 10% 20%;
-    --ring: 210 70% 75%;
-
-     --chart-1: 340 70% 70%;
-     --chart-2: 210 70% 70%;
-     --chart-3: 45 80% 70%;
-     --chart-4: 130 50% 70%;
-     --chart-5: 270 60% 70%;
-  }
+  /* No separate dark mode needed as default is dark */
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border; /* Use darker cyan border */
   }
   body {
     @apply bg-background text-foreground;
-     font-family: var(--font-inter), sans-serif; /* Apply new font */
+    font-family: var(--font-press-start), monospace; /* Apply Press Start 2P font */
+    /* Optional: Add subtle scanlines or grid */
+    /* background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 3px 3px; */
+     /* letter-spacing: 1px; */ /* Slightly increase letter spacing for pixel fonts */
   }
-  /* Apply font to inputs/buttons too */
-  input, button, select, textarea {
-     font-family: var(--font-inter), sans-serif;
+  /* Apply font to specific elements */
+  input, button, select, textarea, label, legend, h1, h2, h3, h4, h5, h6, p, span, div, a, li, th, td, caption {
+    font-family: var(--font-press-start), monospace !important;
+    /* Base font size for pixel font readability - adjust as needed */
+    @apply text-xs sm:text-sm; /* Slightly smaller base size for pixel font */
+    line-height: 1.5; /* Adjust line height for pixel fonts */
   }
 
-  /* Remove old retro styles */
-  .retro-window, .retro-window-header, .retro-window-content, .retro-window-controls span {
-    /* Reset styles if needed, or just rely on component styling */
+    /* Responsive heading sizes */
+  h1 { @apply text-xl sm:text-2xl md:text-3xl; }
+  h2 { @apply text-lg sm:text-xl md:text-2xl; }
+  h3 { @apply text-base sm:text-lg md:text-xl; }
+  h4 { @apply text-sm sm:text-base md:text-lg; }
+  p, li, td, label, span { @apply text-xs sm:text-sm; } /* Consistent paragraph/list/etc size */
+
+
+  /* General Link Styling */
+  a {
+    @apply text-accent hover:text-accent/80 underline underline-offset-4;
   }
 
+  /* Remove default focus outline, rely on ring */
+  *:focus {
+    outline: none;
+  }
+  *:focus-visible {
+     @apply ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+   /* Retro Button Base Style */
+   .retro-button {
+      @apply inline-flex items-center justify-center px-3 py-1.5 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-sm; /* Base size small */
+
+        /* Hover Effects */
+        @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/10 active:translate-y-px active:translate-x-px active:shadow-none;
+   }
+   .retro-button-primary {
+      @apply bg-primary text-primary-foreground border-primary-foreground shadow-[2px_2px_0px_0px_hsl(var(--primary-foreground))] hover:bg-primary/80;
+   }
+   .retro-button-secondary {
+      @apply bg-secondary text-secondary-foreground border-secondary-foreground shadow-[2px_2px_0px_0px_hsl(var(--secondary-foreground))] hover:bg-secondary/80;
+   }
+   .retro-button-accent {
+      @apply bg-accent text-accent-foreground border-accent-foreground shadow-[2px_2px_0px_0px_hsl(var(--accent-foreground))] hover:bg-accent/80;
+   }
+    .retro-button-destructive {
+       @apply bg-destructive text-destructive-foreground border-destructive-foreground shadow-[2px_2px_0px_0px_hsl(var(--destructive-foreground))] hover:bg-destructive/90;
+    }
+    .retro-button-outline {
+        /* Default already uses bg-transparent */
+         @apply hover:bg-foreground/10;
+    }
+   .retro-button-ghost {
+      @apply border-transparent bg-transparent shadow-none hover:bg-foreground/10 hover:text-foreground hover:translate-x-0 hover:translate-y-0; /* No move on ghost */
+   }
+    .retro-button-link {
+        @apply border-transparent bg-transparent shadow-none underline underline-offset-2 text-accent hover:text-accent/80 h-auto p-0 text-sm hover:translate-x-0 hover:translate-y-0; /* No move on link */
+    }
+    .retro-button-sm {
+        @apply px-2 py-1 text-xs shadow-retro-sm;
+    }
+     .retro-button-lg {
+        @apply px-5 py-2 text-base shadow-retro;
+     }
+     .retro-button-icon {
+        @apply h-8 w-8 p-0; /* Smaller icon button */
+     }
+
+   /* Retro Window Style */
+   .retro-window {
+      @apply border-2 border-foreground bg-background shadow-retro overflow-hidden transition-shadow duration-200;
+      /* Hover effect for card/window */
+      @apply hover:shadow-[6px_6px_0px_0px_hsl(var(--primary)/0.8)];
+   }
+   .retro-window-header {
+      @apply flex items-center justify-between p-1.5 px-2 border-b-2 border-foreground bg-primary text-primary-foreground;
+   }
+   .retro-window-content {
+       @apply p-3 border-t-2 border-foreground; /* Adjust padding */
+   }
+   .retro-window-controls {
+      @apply flex space-x-1 items-center;
+   }
+   .retro-window-controls span {
+       @apply block h-2.5 w-2.5 border border-foreground bg-background transition-transform duration-100 hover:scale-110; /* Smaller controls, hover effect */
+   }
+   .retro-window-controls span:first-child { /* Minimize */
+       @apply bg-accent border-accent-foreground;
+   }
+    .retro-window-controls span:nth-child(2) { /* Maximize */
+        @apply bg-secondary border-secondary-foreground;
+    }
+   .retro-window-controls span:last-child { /* Close */
+       @apply bg-destructive border-destructive-foreground;
+   }
+
+    /* Retro Input */
+    .retro-input {
+        @apply flex h-9 w-full border-2 border-foreground bg-input px-2 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150; /* Dark inset shadow */
+        @apply focus:border-accent focus:bg-background; /* Focus state */
+    }
+     /* Retro Textarea */
+    .retro-textarea {
+      @apply flex min-h-[60px] w-full border-2 border-foreground bg-input p-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150; /* Dark inset shadow */
+      @apply focus:border-accent focus:bg-background; /* Focus state */
+    }
+
+     /* Retro Select */
+    .retro-select-trigger {
+        @apply flex h-9 w-full items-center justify-between border-2 border-foreground bg-input px-2 py-1 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark [&>span]:truncate transition-colors duration-150;
+         @apply data-[state=open]:border-accent data-[state=open]:bg-background; /* Open state */
+    }
+    .retro-select-content {
+        @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80; /* Use background for popover, add animation */
+    }
+     .retro-select-item {
+         @apply relative flex w-full cursor-pointer select-none items-center py-1 pl-6 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100; /* Adjusted padding */
+     }
+     /* Retro Checkbox */
+    .retro-checkbox {
+        @apply peer h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150; /* Use input background */
+        @apply hover:border-accent;
+    }
+    .retro-checkbox[data-state="checked"] {
+        @apply animate-retro-check-pop; /* Optional pop animation */
+    }
+
+     /* Retro Progress */
+    .retro-progress {
+      @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted shadow-retro-inset;
+    }
+     .retro-progress-indicator {
+       @apply h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out; /* Smoother transition */
+    }
+
+     /* Retro Alert */
+    .retro-alert {
+      @apply relative w-full border-2 border-foreground p-3 bg-background/80 shadow-retro-sm [&>svg]:absolute [&>svg]:left-3 [&>svg]:top-3 [&>svg]:text-foreground [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-2px];
+    }
+    .retro-alert-destructive {
+       @apply border-destructive text-destructive bg-destructive/10 [&>svg]:text-destructive animate-retro-alert-pulse; /* Pulse animation for destructive */
+    }
+     .retro-alert-accent {
+        @apply border-accent text-accent bg-accent/10 [&>svg]:text-accent;
+     }
+
+     /* Retro Card (using retro-window base) */
+    .retro-card {
+        @apply retro-window; /* Alias for consistency */
+    }
+    .retro-card-header {
+         @apply flex flex-col space-y-1 p-2 px-3 border-b-2 border-foreground; /* Adjust padding */
+    }
+    .retro-card-content {
+       @apply p-3; /* Remove border-t if header exists */
+    }
+     .retro-card-footer {
+        @apply flex items-center p-3 pt-0; /* Remove border-t if content exists */
+     }
+
+     /* Retro Table */
+     .retro-table thead {
+        @apply bg-foreground/10 border-b-2 border-foreground;
+     }
+     .retro-table th {
+       @apply border border-foreground/50 p-1.5 px-2 text-left text-foreground font-medium;
+     }
+      .retro-table td {
+        @apply border border-foreground/50 p-1.5 px-2;
+      }
+     .retro-table tr:hover {
+        @apply bg-foreground/5;
+     }
+     .retro-table tr {
+         @apply transition-colors duration-150;
+     }
+
+}
+
+@layer utilities {
+  /* Add any custom utility classes if needed */
+  .text-shadow-retro {
+     text-shadow: 1px 1px 0px hsl(var(--foreground)/0.7);
+  }
+  .text-shadow-retro-primary {
+     text-shadow: 1px 1px 0px hsl(var(--primary-foreground)/0.7);
+  }
 }

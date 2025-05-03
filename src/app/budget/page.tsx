@@ -30,14 +30,14 @@ interface BudgetItem {
   color: string;
 }
 
-// Initial Mock data with more pastel colors
+// Initial Mock data with neon chart colors
 const initialBudgetData: BudgetItem[] = [
-  { id: "1", category: "Food & Groceries", spent: 450, budget: 600, color: "hsl(var(--chart-1))" },
-  { id: "2", category: "Transportation", spent: 150, budget: 200, color: "hsl(var(--chart-2))" },
-  { id: "3", category: "Entertainment", spent: 250, budget: 300, color: "hsl(var(--chart-3))" },
-  { id: "4", category: "Utilities", spent: 180, budget: 200, color: "hsl(var(--chart-4))" },
-  { id: "5", category: "Shopping", spent: 300, budget: 400, color: "hsl(var(--chart-5))" },
-  { id: "6", category: "Rent/Mortgage", spent: 1200, budget: 1200, color: "hsl(var(--muted))" }, // Muted for fixed expenses
+  { id: "1", category: "Food & Groceries", spent: 450, budget: 600, color: "hsl(var(--chart-1))" }, // Cyan
+  { id: "2", category: "Transportation", spent: 150, budget: 200, color: "hsl(var(--chart-2))" }, // Magenta
+  { id: "3", category: "Entertainment", spent: 250, budget: 300, color: "hsl(var(--chart-3))" }, // Yellow
+  { id: "4", category: "Utilities", spent: 180, budget: 200, color: "hsl(var(--chart-4))" }, // Green
+  { id: "5", category: "Shopping", spent: 300, budget: 400, color: "hsl(var(--chart-5))" }, // Purple
+  { id: "6", category: "Rent/Mortgage", spent: 1200, budget: 1200, color: "hsl(var(--muted))" }, // Dark Grey
 ];
 
 export default function BudgetPage() {
@@ -98,11 +98,11 @@ export default function BudgetPage() {
 
   const submitAddTransaction = () => {
       const amount = parseFloat(newTransaction.amount);
-      if (!isNaN(amount) && newTransaction.category) { // Allow 0 amount for corrections? Maybe not.
+      if (!isNaN(amount) && newTransaction.category && amount > 0) { // Only add positive amounts
           setBudgetData(prevData =>
               prevData.map(item =>
                   item.category === newTransaction.category
-                      ? { ...item, spent: Math.max(0, item.spent + amount) } // Ensure spent doesn't go below 0
+                      ? { ...item, spent: item.spent + amount } // Add to spent
                       : item
               )
           );
@@ -110,59 +110,65 @@ export default function BudgetPage() {
           setIsAddTransactionOpen(false);
           setNewTransaction({ category: initialBudgetData[0]?.category || '', amount: '' });
       } else {
-          console.error("Invalid transaction input");
+          console.error("Invalid transaction input (must be positive amount and have category)");
+          // TODO: Add user feedback (e.g., toast)
       }
   };
 
   return (
-    <div className="space-y-6">
-       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-         <h1 className="text-2xl font-semibold">Budget Tracker</h1> {/* Modern heading */}
+    <div className="space-y-4"> {/* Reduced spacing */}
+       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
+         <h1 className="text-2xl font-medium">BUDGET TRACKER</h1> {/* Retro heading */}
           <Dialog open={isAddTransactionOpen} onOpenChange={setIsAddTransactionOpen}>
              <DialogTrigger asChild>
-                <Button variant="solid"> {/* Solid button */}
+                <Button variant="primary"> {/* Use retro button */}
                  <PlusCircle className="mr-2 h-4 w-4" /> Add Transaction
                </Button>
              </DialogTrigger>
-             {/* Standard Dialog Styling */}
-             <DialogContent className="sm:max-w-[450px]"> {/* Slightly wider */}
-                <DialogHeader>
-                  <DialogTitle className="text-lg">Add New Transaction</DialogTitle>
+             {/* Retro Dialog Styling */}
+             <DialogContent className="retro-window sm:max-w-[450px]"> {/* Retro window style */}
+                 <DialogHeader className="retro-window-header !bg-secondary !text-secondary-foreground"> {/* Use secondary color */}
+                  <DialogTitle>Add New Transaction</DialogTitle>
+                   <div className="retro-window-controls">
+                      <span className="!bg-secondary !border-secondary-foreground"></span>
+                      <span className="!bg-secondary !border-secondary-foreground"></span>
+                       <DialogClose asChild>
+                          <span className="!bg-destructive !border-destructive-foreground cursor-pointer"></span>
+                       </DialogClose>
+                  </div>
                 </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <DialogDescription>
+                <div className="space-y-3 p-3 retro-window-content !border-t-0"> {/* Retro content */}
+                  <DialogDescription className="!text-foreground/80 text-sm"> {/* Adjust description style */}
                     Log an expense for a specific budget category.
                   </DialogDescription>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="category-select" className="text-right">
+                  <div className="grid grid-cols-4 items-center gap-2">
+                    <Label htmlFor="category-select" className="text-right text-sm">
                       Category
                     </Label>
                      <Select value={newTransaction.category} onValueChange={handleTransactionCategoryChange}>
-                       <SelectTrigger id="category-select" className="col-span-3">
+                       <SelectTrigger id="category-select" className="col-span-3 retro-select-trigger"> {/* Retro select */}
                          <SelectValue placeholder="Select category" />
                        </SelectTrigger>
-                       <SelectContent>
+                       <SelectContent className="retro-select-content"> {/* Retro content */}
                          {budgetData.map(item => (
-                           <SelectItem key={item.id} value={item.category}>{item.category}</SelectItem>
+                           <SelectItem key={item.id} value={item.category} className="retro-select-item">{item.category}</SelectItem>
                          ))}
-                          {/* Consider if Income/Other should be handled differently */}
-                          {/* <SelectItem value="Income">Income</SelectItem> */}
-                          <SelectItem value="Other">Other</SelectItem>
+                          {/* <SelectItem value="Other" className="retro-select-item">Other</SelectItem> */}
                        </SelectContent>
                      </Select>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="amount-input" className="text-right">
+                  <div className="grid grid-cols-4 items-center gap-2">
+                    <Label htmlFor="amount-input" className="text-right text-sm">
                       Amount ($)
                     </Label>
-                    <Input id="amount-input" type="number" value={newTransaction.amount} onChange={handleTransactionInputChange} placeholder="e.g., 25.50" className="col-span-3" />
+                    <Input id="amount-input" type="number" value={newTransaction.amount} onChange={handleTransactionInputChange} placeholder="e.g., 25.50" className="col-span-3 retro-input" /> {/* Retro input */}
                   </div>
                 </div>
-                <DialogFooter className="flex sm:justify-end gap-2"> {/* Adjusted footer layout */}
+                <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-3"> {/* Adjusted footer layout */}
                     <DialogClose asChild>
-                       <Button type="button" variant="outline">Cancel</Button>
+                       <Button type="button" variant="default">Cancel</Button> {/* Use retro button */}
                     </DialogClose>
-                   <Button type="submit" variant="solidAccent" onClick={submitAddTransaction}>
+                   <Button type="submit" variant="secondary" onClick={submitAddTransaction}> {/* Use retro button */}
                      Add Transaction
                    </Button>
                 </DialogFooter>
@@ -170,33 +176,37 @@ export default function BudgetPage() {
             </Dialog>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[1fr_1fr]"> {/* Adjusted grid */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-[1fr_1fr]"> {/* Adjusted grid */}
         {/* Overall Budget Summary */}
-        <Card>
-           <CardHeader>
-             <CardTitle className="flex items-center gap-2 text-lg">
-                <HandCoins className="h-5 w-5 text-primary" /> {/* Use primary color */}
+        <Card className="retro-card"> {/* Use retro class */}
+           <CardHeader className="retro-card-header !bg-accent !text-accent-foreground"> {/* Accent header */}
+             <CardTitle className="flex items-center gap-2">
+                <HandCoins className="h-5 w-5" />
                 Monthly Overview
              </CardTitle>
-             <CardDescription>Your spending vs. total budget.</CardDescription>
+               <div className="retro-window-controls">
+                    <span className="!bg-accent !border-accent-foreground"></span>
+                    <span className="!bg-accent !border-accent-foreground"></span>
+                    <span className="!bg-accent !border-accent-foreground"></span>
+                </div>
            </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="retro-card-content !border-t-0 space-y-3"> {/* Use retro class */}
             <div className="text-center">
-               <p className="text-sm text-muted-foreground">Total Spent This Month</p>
-               <p className="text-3xl font-semibold">${totalSpent.toLocaleString()}</p> {/* Larger font */}
+               <p className="text-sm text-muted-foreground">Total Spent</p>
+               <p className="text-2xl font-medium">${totalSpent.toLocaleString()}</p> {/* Adjusted size */}
             </div>
-             <Progress value={totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0} className="h-2.5" /> {/* Adjusted height */}
-             <div className="flex justify-between text-sm text-muted-foreground">
-               <span>${Math.max(0, totalBudget - totalSpent).toLocaleString()} remaining</span>
-               <span>Total Budget: ${totalBudget.toLocaleString()}</span>
+             <Progress value={totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0} className="retro-progress h-3" indicatorClassName="retro-progress-indicator !bg-accent"/> {/* Retro progress, accent color */}
+             <div className="flex justify-between text-xs text-muted-foreground">
+               <span>${Math.max(0, totalBudget - totalSpent).toLocaleString()} Left</span>
+               <span>Budget: ${totalBudget.toLocaleString()}</span>
              </div>
              <div className="flex gap-2 pt-2">
-                 <Button variant="outline" className="flex-1" onClick={toggleEditMode}>
+                 <Button variant={isEditMode ? "secondary" : "default"} className="flex-1" onClick={toggleEditMode}> {/* Use retro button */}
                     {isEditMode ? <Save className="mr-2 h-4 w-4" /> : <Edit className="mr-2 h-4 w-4" />}
                     {isEditMode ? 'Save Budgets' : 'Edit Budgets'}
                  </Button>
                  {isEditMode && (
-                     <Button variant="ghost" size="icon" onClick={cancelEditMode} className="text-muted-foreground hover:text-destructive">
+                     <Button variant="ghost" size="icon" onClick={cancelEditMode} className="text-muted-foreground hover:text-destructive"> {/* Retro button */}
                         <X className="h-4 w-4"/>
                         <span className="sr-only">Cancel</span>
                      </Button>
@@ -206,15 +216,19 @@ export default function BudgetPage() {
         </Card>
 
          {/* Spending Categories Chart */}
-        <Card>
-            <CardHeader>
-             <CardTitle className="flex items-center gap-2 text-lg">
-                <TrendingUp className="h-5 w-5 text-secondary" /> {/* Use secondary color */}
+        <Card className="retro-card"> {/* Use retro class */}
+            <CardHeader className="retro-card-header !bg-primary !text-primary-foreground"> {/* Primary header */}
+             <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
                 Spending by Category
              </CardTitle>
-              <CardDescription>Visual breakdown of your expenses.</CardDescription>
+               <div className="retro-window-controls">
+                    <span className="!bg-primary !border-primary-foreground"></span>
+                    <span className="!bg-primary !border-primary-foreground"></span>
+                    <span className="!bg-primary !border-primary-foreground"></span>
+                </div>
            </CardHeader>
-           <CardContent className="h-[280px]"> {/* Increased height */}
+           <CardContent className="retro-card-content !border-t-0 h-[250px]"> {/* Adjusted height */}
              <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                    <Pie
@@ -222,18 +236,22 @@ export default function BudgetPage() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    outerRadius={80} // Adjusted size
-                    innerRadius={40} // Adjusted donut size
+                    outerRadius={70} // Adjusted size
+                    innerRadius={35} // Adjusted donut size
                     fill="#8884d8"
                     dataKey="value"
                     nameKey="name"
                    >
                     {pieChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.fill} className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" /> // Add focus style
+                      <Cell key={`cell-${index}`} fill={entry.fill} stroke={"hsl(var(--background))"} strokeWidth={1} className="focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1" /> // Add stroke for separation
                     ))}
                   </Pie>
-                   <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--popover))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)', boxShadow: 'hsl(var(--shadow))' }} itemStyle={{ color: 'hsl(var(--popover-foreground))' }} formatter={(value: number, name: string) => [`$${value.toLocaleString()}`, name]} />
-                   <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+                   <Tooltip
+                     contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--foreground))', fontFamily: 'var(--font-press-start)', fontSize: '10px', boxShadow: 'none' }} // Retro tooltip
+                     itemStyle={{ color: 'hsl(var(--foreground))' }}
+                     formatter={(value: number, name: string) => [`$${value.toLocaleString()}`, name]}
+                   />
+                   <Legend wrapperStyle={{ fontSize: '10px', paddingTop: '10px', fontFamily: 'var(--font-press-start)' }} /> {/* Retro legend */}
                 </PieChart>
              </ResponsiveContainer>
           </CardContent>
@@ -241,65 +259,69 @@ export default function BudgetPage() {
       </div>
 
       {/* Detailed Budget Table */}
-       <Card className="overflow-hidden"> {/* Prevent shadow clipping */}
-          <CardHeader>
-           <CardTitle className="text-lg">Budget Details</CardTitle>
-           <CardDescription>Track spending for each category against its budget.</CardDescription>
+       <Card className="retro-card overflow-hidden"> {/* Use retro class */}
+          <CardHeader className="retro-card-header"> {/* Use retro class */}
+           <CardTitle>Budget Details</CardTitle>
+            <div className="retro-window-controls">
+                <span></span><span></span><span></span>
+            </div>
          </CardHeader>
-        <CardContent className="p-0"> {/* Remove padding to allow table full width */}
-           {/* Modern table styling */}
-          <Table>
-             <TableHeader>
-              <TableRow>
-                 <TableHead className="w-[200px]">Category</TableHead>
-                 <TableHead className="text-right">Spent</TableHead>
-                 <TableHead className="text-right w-[120px]">Budget</TableHead>
-                 <TableHead className="text-right">Remaining</TableHead>
-                 <TableHead className="w-[150px]">Progress</TableHead> {/* Adjusted width */}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {budgetData.map((item) => {
-                 const percentage = item.budget > 0 ? Math.min((item.spent / item.budget) * 100, 100) : 0;
-                 const remaining = item.budget - item.spent;
-                 const progressColor = remaining < 0 ? "bg-destructive" : percentage > 85 ? "bg-accent" : "bg-primary";
-
-                return (
-                  <TableRow key={item.id}>
-                     <TableCell className="font-medium">{item.category}</TableCell>
-                     <TableCell className="text-right">${item.spent.toLocaleString()}</TableCell>
-                    <TableCell className="text-right">
-                       {isEditMode ? (
-                         <Input
-                           type="number"
-                           value={editingBudgets[item.id] ?? ''}
-                           onChange={(e) => handleEditBudgetChange(item.id, e.target.value)}
-                            className="h-8 text-right !py-1 !text-sm w-24" // Smaller input, fixed width
-                           />
-                       ) : (
-                         `$${item.budget.toLocaleString()}`
-                       )}
-                    </TableCell>
-                     <TableCell className={cn("text-right", remaining < 0 ? 'text-destructive font-medium' : 'text-muted-foreground')}>
-                      {remaining < 0 ? `-$${Math.abs(remaining).toLocaleString()}` : `$${remaining.toLocaleString()}`}
-                    </TableCell>
-                    <TableCell>
-                       <Progress value={percentage} className={cn("h-2", progressColor)} indicatorClassName={progressColor} />
-                    </TableCell>
+        <CardContent className="retro-card-content !border-t-0 p-0"> {/* Remove padding */}
+          <div className="overflow-x-auto">
+              <Table className="retro-table"> {/* Use retro class */}
+                 <TableHeader>
+                  <TableRow>
+                     <TableHead className="w-[150px] sm:w-[200px]">Category</TableHead> {/* Adjust width */}
+                     <TableHead className="text-right">Spent</TableHead>
+                     <TableHead className="text-right w-[100px] sm:w-[120px]">Budget</TableHead> {/* Adjust width */}
+                     <TableHead className="text-right">Remaining</TableHead>
+                     <TableHead className="w-[120px] sm:w-[150px]">Progress</TableHead> {/* Adjust width */}
                   </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                </TableHeader>
+                <TableBody>
+                  {budgetData.map((item) => {
+                     const percentage = item.budget > 0 ? Math.min((item.spent / item.budget) * 100, 100) : 0;
+                     const remaining = item.budget - item.spent;
+                     const progressColor = remaining < 0 ? "!bg-destructive" : percentage > 85 ? "!bg-accent" : "!bg-primary"; // Use !important if needed
+
+                    return (
+                      <TableRow key={item.id}>
+                         <TableCell className="font-medium">{item.category}</TableCell>
+                         <TableCell className="text-right">${item.spent.toLocaleString()}</TableCell>
+                        <TableCell className="text-right">
+                           {isEditMode ? (
+                             <Input
+                               type="number"
+                               value={editingBudgets[item.id] ?? ''}
+                               onChange={(e) => handleEditBudgetChange(item.id, e.target.value)}
+                                className="retro-input h-7 !py-0 !text-sm w-20 sm:w-24" // Retro input, smaller
+                               />
+                           ) : (
+                             `$${item.budget.toLocaleString()}`
+                           )}
+                        </TableCell>
+                         <TableCell className={cn("text-right", remaining < 0 ? 'text-destructive font-medium' : 'text-muted-foreground')}>
+                          {remaining < 0 ? `-$${Math.abs(remaining).toLocaleString()}` : `$${remaining.toLocaleString()}`}
+                        </TableCell>
+                        <TableCell>
+                           <Progress value={percentage} className={cn("retro-progress h-2.5", progressColor)} indicatorClassName={cn("retro-progress-indicator", progressColor)} /> {/* Retro progress */}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+          </div>
         </CardContent>
       </Card>
     </div>
   );
 }
 
-// Extend Progress props to accept indicator class name
-declare module '@/components/ui/progress' {
-  interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
-    indicatorClassName?: string;
-  }
-}
+// Note: Progress indicator class modification might require direct style override or adjustments in the component itself if cn doesn't suffice.
+// Remove the ProgressProps declaration extension if not needed/implemented in progress.tsx
+// declare module '@/components/ui/progress' {
+//   interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
+//     indicatorClassName?: string;
+//   }
+// }

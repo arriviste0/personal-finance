@@ -9,8 +9,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      // Modern card style: rounded, border, background, subtle shadow
-      "rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-1",
+      "retro-card", // Use retro card style
       className
     )}
     {...props}
@@ -24,8 +23,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    // Standard padding and flex layout for header
-    className={cn("flex flex-col space-y-1.5 p-4 md:p-6", className)} // Adjusted padding
+    className={cn("retro-card-header", className)} // Use retro card header style
     {...props}
   />
 ))
@@ -34,16 +32,17 @@ CardHeader.displayName = "CardHeader"
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <h3 // Use h3 for semantic title
     ref={ref}
     className={cn(
-      // Standard title styling
-      "text-lg font-semibold leading-none tracking-tight", // Adjusted size
+      "text-lg font-medium leading-none", // Keep base styling, adjust size if needed
       className
     )}
     {...props}
-   />
+   >
+     {children}
+   </h3>
 ))
 CardTitle.displayName = "CardTitle"
 
@@ -64,7 +63,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-4 md:p-6 pt-0", className)} {...props} /> // Adjusted padding
+  <div ref={ref} className={cn("retro-card-content pt-0", className)} {...props} /> // Use retro card content style
 ))
 CardContent.displayName = "CardContent"
 
@@ -74,8 +73,7 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    // Standard padding and flex layout for footer
-    className={cn("flex items-center p-4 md:p-6 pt-0", className)} // Adjusted padding
+    className={cn("retro-card-footer", className)} // Use retro card footer style
     {...props}
   />
 ))
