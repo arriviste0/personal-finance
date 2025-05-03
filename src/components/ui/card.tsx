@@ -9,8 +9,8 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      // Apply retro window style
-      "retro-window",
+      // Modern card style: rounded, border, background, subtle shadow
+      "rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-1",
       className
     )}
     {...props}
@@ -20,36 +20,26 @@ Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { showControls?: boolean }
->(({ className, showControls = true, children, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    // Apply retro window header style
-    className={cn("retro-window-header", className)}
+    // Standard padding and flex layout for header
+    className={cn("flex flex-col space-y-1.5 p-4 md:p-6", className)} // Adjusted padding
     {...props}
-  >
-      <div className="flex-1">{children}</div>
-      {showControls && (
-         <div className="retro-window-controls">
-             <span /> {/* Minimize */}
-             <span /> {/* Maximize */}
-             <span className="!bg-destructive border-destructive-foreground" /> {/* Close */}
-         </div>
-      )}
-  </div>
+  />
 ))
 CardHeader.displayName = "CardHeader"
 
 const CardTitle = React.forwardRef<
-  HTMLParagraphElement, // Changed to p for better semantics usually
-  React.HTMLAttributes<HTMLHeadingElement> // Kept HTMLAttributes for compatibility
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
-  // Use <p> tag but keep the styling as h3 equivalent for consistency
-  <p
+  <h3 // Use h3 for semantic title
     ref={ref}
     className={cn(
-      // Use header text styles
-      "text-sm font-bold leading-none tracking-tight", // Adjusted for header
+      // Standard title styling
+      "text-lg font-semibold leading-none tracking-tight", // Adjusted size
       className
     )}
     {...props}
@@ -62,9 +52,9 @@ const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p // Use <p> tag
+  <p
     ref={ref}
-    className={cn("text-xs text-primary-foreground/80", className)} // Adjusted for header
+    className={cn("text-sm text-muted-foreground", className)} // Standard description styling
     {...props}
   />
 ))
@@ -74,7 +64,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("retro-window-content", className)} {...props} /> // Apply content style
+  <div ref={ref} className={cn("p-4 md:p-6 pt-0", className)} {...props} /> // Adjusted padding
 ))
 CardContent.displayName = "CardContent"
 
@@ -84,8 +74,8 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    // Apply content style padding, but keep flex properties
-    className={cn("flex items-center retro-window-content pt-0", className)}
+    // Standard padding and flex layout for footer
+    className={cn("flex items-center p-4 md:p-6 pt-0", className)} // Adjusted padding
     {...props}
   />
 ))

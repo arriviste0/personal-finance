@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import { VT323 } from "next/font/google"; // Import VT323 font
+import { Inter } from "next/font/google"; // Import Inter font
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import AppLayout from "@/components/layout/AppLayout";
 import { Toaster } from "@/components/ui/toaster";
 
-// Configure VT323 font
-const vt323 = VT323({
+// Configure Inter font
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-vt323", // Define CSS variable
-  weight: ['400'], // VT323 only has 400 weight
+  variable: "--font-inter", // Define CSS variable
 });
 
 
@@ -29,7 +28,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          vt323.variable // Apply font variable
+          inter.variable // Apply font variable
         )}
       >
         <AppLayout>{children}</AppLayout>

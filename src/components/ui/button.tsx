@@ -5,34 +5,35 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-2 border-foreground active:translate-y-px active:translate-x-px active:shadow-none", // Retro base style: no radius, thick border, active state removes shadow
+  // Base style: inline-flex, centered, rounded, transition, focus visible
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95", // Added active state, changed rounding, font-medium, duration
   {
     variants: {
       variant: {
-        default: // Primary retro button: solid color, shadow
-          "bg-card text-card-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-muted",
+        default: // Now Outline is default
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         destructive:
-           "bg-destructive text-destructive-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-destructive/90",
-        outline: // Simple outline, less prominent
-          "border-foreground bg-transparent text-foreground hover:bg-foreground/10 shadow-none", // No shadow for outline
+           "border border-destructive/50 bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+           "border border-input bg-background hover:bg-accent hover:text-accent-foreground", // Standard outline
         secondary:
-           "bg-secondary text-secondary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-secondary/90",
-        ghost: "border-transparent hover:bg-foreground/10 shadow-none", // No border/shadow for ghost
-        link: "text-primary underline-offset-4 hover:underline border-transparent shadow-none", // No border/shadow for link
-        solid: // Alias for primary retro button style
-           "bg-primary text-primary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-primary/90",
-        solidAccent: // Accent retro button style
-           "bg-accent text-accent-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-accent/90"
+           "border border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "border border-transparent hover:bg-accent hover:text-accent-foreground",
+        link: "border border-transparent text-primary underline-offset-4 hover:underline",
+        solid: // Explicit solid primary
+           "border border-transparent bg-primary text-primary-foreground hover:bg-primary/90",
+        solidAccent: // Explicit solid accent
+           "border border-transparent bg-accent text-accent-foreground hover:bg-accent/90",
       },
       size: {
         default: "h-10 px-4 py-2",
-        sm: "h-9 px-3", // No rounding change needed
-        lg: "h-11 px-8", // No rounding change needed
+        sm: "h-9 rounded-md px-3", // Consistent rounding
+        lg: "h-11 rounded-md px-8", // Consistent rounding
         icon: "h-10 w-10",
       },
     },
     defaultVariants: {
-      variant: "default", // Default is now the retro shaded button
+      variant: "default", // Outline is now the default style
       size: "default",
     },
   }
@@ -49,7 +50,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+           buttonVariants({ variant, size, className }),
+           "hover:scale-[1.02]" // Add subtle scale hover effect globally
+        )}
         ref={ref}
         {...props}
       />
@@ -59,3 +63,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+

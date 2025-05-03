@@ -4,80 +4,80 @@
 
 @layer base {
   :root {
-    /* Retro OS Palette */
-    --background: 40 30% 92%; /* Beige/Off-white */
-    --foreground: 240 10% 15%; /* Dark Gray/Near Black */
+    /* Retro-Modern Pastel Palette (Inspired by reference image) */
+    --background: 40 50% 96%; /* Light Beige */
+    --foreground: 240 10% 10%; /* Near Black */
 
-    --card: 210 15% 95%; /* Light Gray (Window Background) */
+    --card: 0 0% 100%; /* White */
     --card-foreground: 240 10% 15%; /* Dark Gray/Near Black */
 
-    --popover: 210 15% 95%; /* Light Gray */
+    --popover: 0 0% 100%; /* White */
     --popover-foreground: 240 10% 15%; /* Dark Gray/Near Black */
 
-    --primary: 220 70% 50%; /* Bold Blue (Window Title Bar/Active Element) */
+    --primary: 340 82% 60%; /* Pastel Pink/Rose */
     --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 50 90% 60%; /* Bold Yellow (Highlight/Secondary Action) */
+    --secondary: 210 80% 65%; /* Pastel Blue */
     --secondary-foreground: 240 10% 15%; /* Dark Gray/Near Black */
 
-    --muted: 210 20% 88%; /* Medium Gray (Disabled/Subtle BG) */
-    --muted-foreground: 240 10% 40%; /* Medium-Dark Gray */
+    --muted: 220 20% 94%; /* Light Gray */
+    --muted-foreground: 240 10% 45%; /* Medium Gray */
 
-    --accent: 0 70% 55%; /* Bold Red (Attention/Accent) */
-    --accent-foreground: 0 0% 100%; /* White */
+    --accent: 45 90% 60%; /* Pastel Yellow/Gold */
+    --accent-foreground: 240 10% 15%; /* Dark Gray/Near Black */
 
-    --destructive: 0 70% 55%; /* Bold Red */
+    --destructive: 0 70% 60%; /* Soft Red */
     --destructive-foreground: 0 0% 100%; /* White */
 
-    --border: 240 10% 50%; /* Medium Gray Border */
-    --input: 0 0% 100%; /* White Input Background */
-    --ring: 220 70% 60%; /* Lighter Blue for focus */
+    --border: 240 10% 85%; /* Light Gray Border */
+    --input: 240 5% 96%;   /* Slightly off-white Input Background */
+    --ring: 210 80% 70%; /* Lighter Blue for focus */
 
-    /* Chart Colors - Keep distinct but fit the theme */
-    --chart-1: 220 60% 65%; /* Lighter Blue */
-    --chart-2: 50 80% 70%; /* Lighter Yellow */
-    --chart-3: 0 60% 70%; /* Lighter Red */
-    --chart-4: 120 40% 60%; /* Muted Green */
-    --chart-5: 270 50% 65%; /* Muted Purple */
+    /* Chart Colors - Pastel theme */
+    --chart-1: 340 70% 75%; /* Lighter Pink */
+    --chart-2: 210 70% 75%; /* Lighter Blue */
+    --chart-3: 45 80% 70%;  /* Lighter Yellow */
+    --chart-4: 130 50% 70%; /* Soft Mint Green */
+    --chart-5: 270 60% 75%; /* Soft Lavender */
 
-    --radius: 0.25rem; /* Smaller radius for sharper corners */
+    --radius: 0.5rem; /* Slightly larger radius for modern feel */
   }
 
   .dark {
-    /* Dark Mode Retro Palette - Adjust as needed */
-    --background: 240 10% 10%; /* Very Dark Blue */
-    --foreground: 210 15% 85%; /* Light Gray Text */
+     /* Optional Dark Mode - Adjust colors as needed */
+    --background: 240 10% 10%;
+    --foreground: 210 15% 85%;
 
-    --card: 240 10% 18%; /* Darker Blue/Gray */
-    --card-foreground: 210 15% 85%; /* Light Gray Text */
+    --card: 240 10% 15%;
+    --card-foreground: 210 15% 85%;
 
-    --popover: 240 10% 18%; /* Darker Blue/Gray */
-    --popover-foreground: 210 15% 85%; /* Light Gray Text */
+    --popover: 240 10% 15%;
+    --popover-foreground: 210 15% 85%;
 
-    --primary: 220 70% 60%; /* Brighter Blue */
-    --primary-foreground: 240 10% 10%; /* Very Dark Blue */
+    --primary: 340 70% 65%;
+    --primary-foreground: 240 10% 10%;
 
-    --secondary: 50 80% 65%; /* Brighter Yellow */
-    --secondary-foreground: 240 10% 10%; /* Very Dark Blue */
+    --secondary: 210 70% 70%;
+    --secondary-foreground: 240 10% 10%;
 
-    --muted: 240 10% 25%; /* Dark Muted Blue/Gray */
-    --muted-foreground: 210 15% 65%; /* Medium Gray */
+    --muted: 240 10% 25%;
+    --muted-foreground: 210 15% 65%;
 
-    --accent: 0 70% 65%; /* Brighter Red */
-    --accent-foreground: 240 10% 10%; /* Very Dark Blue */
+    --accent: 45 80% 65%;
+    --accent-foreground: 240 10% 10%;
 
-    --destructive: 0 70% 65%; /* Brighter Red */
-    --destructive-foreground: 240 10% 10%; /* Very Dark Blue */
+    --destructive: 0 60% 65%;
+    --destructive-foreground: 240 10% 10%;
 
-    --border: 240 10% 40%; /* Medium Dark Gray Border */
-    --input: 240 10% 22%; /* Slightly Lighter Dark Blue */
-    --ring: 220 70% 70%; /* Brighter Blue for focus */
+    --border: 240 10% 30%;
+    --input: 240 10% 20%;
+    --ring: 210 70% 75%;
 
-     --chart-1: 220 70% 70%;
-     --chart-2: 50 80% 70%;
-     --chart-3: 0 60% 70%;
-     --chart-4: 120 40% 65%;
-     --chart-5: 270 50% 70%;
+     --chart-1: 340 70% 70%;
+     --chart-2: 210 70% 70%;
+     --chart-3: 45 80% 70%;
+     --chart-4: 130 50% 70%;
+     --chart-5: 270 60% 70%;
   }
 }
 
@@ -87,32 +87,16 @@
   }
   body {
     @apply bg-background text-foreground;
-     font-family: var(--font-vt323), monospace; /* Apply retro font */
-     /* Increase base font size for pixel fonts */
-     @apply text-base;
+     font-family: var(--font-inter), sans-serif; /* Apply new font */
   }
-  /* Apply retro font to inputs/buttons too */
+  /* Apply font to inputs/buttons too */
   input, button, select, textarea {
-     font-family: var(--font-vt323), monospace;
+     font-family: var(--font-inter), sans-serif;
   }
-  /* Basic Window Style for Cards */
-    .retro-window {
-        @apply border-2 border-foreground bg-card shadow-[4px_4px_0px_0px_hsl(var(--foreground))];
-    }
-    .retro-window-header {
-        @apply bg-primary text-primary-foreground p-1 px-2 border-b-2 border-foreground text-sm flex justify-between items-center;
-    }
-     .retro-window-content {
-        @apply p-2; /* Adjust padding as needed */
-    }
-    .retro-window-controls span {
-      @apply inline-block w-3 h-3 border border-primary-foreground rounded-full bg-primary ml-1;
-    }
 
-}
+  /* Remove old retro styles */
+  .retro-window, .retro-window-header, .retro-window-content, .retro-window-controls span {
+    /* Reset styles if needed, or just rely on component styling */
+  }
 
-/* Remove glassmorphism */
-.glass {
- /* No special styles needed, rely on standard card styling */
- @apply bg-card;
 }

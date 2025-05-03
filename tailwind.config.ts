@@ -10,7 +10,7 @@ export default {
   theme: {
   	extend: {
        fontFamily: { // Add font family
-         sans: ["var(--font-vt323)", "monospace"], // Use VT323 as default sans
+         sans: ["var(--font-inter)", "sans-serif"], // Use Inter as default sans
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -53,7 +53,7 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			},
-  			sidebar: {
+  			sidebar: { // Keep sidebar colors if needed, or adjust
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',
   				primary: 'hsl(var(--sidebar-primary))',
