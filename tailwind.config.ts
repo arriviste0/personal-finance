@@ -11,7 +11,7 @@ export default {
   	extend: {
        fontFamily: { // Update font family
          sans: ["var(--font-sans)", "system-ui", "sans-serif"], // Use Inter as default sans
-         // mono: ["var(--font-press-start)", "monospace"], // Remove mono override if not needed
+         heading: ["var(--font-heading)", "system-ui", "sans-serif"], // Use Press Start 2P for headings
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -99,10 +99,10 @@ export default {
          'retro-alert-pulse': 'retro-alert-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       boxShadow: { // Keep retro shadow
-        'retro': '4px 4px 0px 0px hsl(var(--foreground))',
-        'retro-sm': '2px 2px 0px 0px hsl(var(--foreground))',
-        'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.5)',
-        'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--background)/0.5)',
+         'retro': '4px 4px 0px 0px hsl(var(--foreground))',
+         'retro-sm': '2px 2px 0px 0px hsl(var(--foreground))',
+         'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.2)', // Lighter inset shadow for light theme
+         'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.1)', // Even lighter inset
       },
   	}
   },
