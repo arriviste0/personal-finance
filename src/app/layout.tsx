@@ -1,22 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Press_Start_2P } from "next/font/google"; // Import Inter and Press Start 2P fonts
+import { Inter } from "next/font/google"; // Import only Inter font
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import AppLayout from "@/components/layout/AppLayout";
 import { Toaster } from "@/components/ui/toaster";
 
-// Configure Inter font for body text
+// Configure Inter font
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans", // Define CSS variable for sans-serif
+  variable: "--font-sans", // Define CSS variable for sans-serif font
 });
 
-// Configure Press Start 2P font for headings
-const pressStart2P = Press_Start_2P({
-  subsets: ["latin"],
-  weight: "400", // Press Start 2P only supports 400 weight
-  variable: "--font-heading", // Define CSS variable for heading font
-});
+// Removed Press Start 2P font import
 
 export const metadata: Metadata = {
   title: "FinTrack",
@@ -31,11 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      {/* Apply Inter font variable to the body */}
       <body
         className={cn(
-          "min-h-screen bg-background text-foreground font-sans antialiased", // Use sans font family as default
-           inter.variable, // Apply Inter font variable
-           pressStart2P.variable // Apply Press Start 2P font variable
+          "min-h-screen bg-background text-foreground font-sans antialiased",
+           inter.variable
+           // Removed Press Start 2P variable
         )}
       >
         <AppLayout>{children}</AppLayout>

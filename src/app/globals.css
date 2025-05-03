@@ -1,7 +1,6 @@
 /* Import Inter font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-/* Import Press Start 2P font */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* Removed Press Start 2P font import */
 
 
 @tailwind base;
@@ -11,63 +10,59 @@
 
 @layer base {
   :root {
-    /* Light Theme */
-    --background: 0 0% 100%; /* White */
-    --foreground: 240 10% 3.9%; /* Near Black */
+    /* Light Theme - Adjusted for a more professional finance feel */
+    --background: 210 20% 98%; /* Very Light Cool Grey */
+    --foreground: 215 25% 25%; /* Dark Desaturated Blue/Grey */
 
-    --card: 0 0% 98%; /* Very Light Grey */
-    --card-foreground: 240 10% 3.9%; /* Near Black */
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 215 25% 25%; /* Dark Desaturated Blue/Grey */
 
     --popover: 0 0% 100%; /* White */
-    --popover-foreground: 240 10% 3.9%; /* Near Black */
+    --popover-foreground: 215 25% 25%; /* Dark Desaturated Blue/Grey */
 
-    --primary: 220 90% 55%; /* Bright Blue */
+    --primary: 210 70% 50%; /* Calmer Blue */
     --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 270 90% 60%; /* Bright Purple */
+    --secondary: 260 60% 55%; /* Muted Purple */
     --secondary-foreground: 0 0% 100%; /* White */
 
-    --muted: 240 5% 96%; /* Light Grey */
-    --muted-foreground: 240 5% 45%; /* Medium Grey */
+    --muted: 210 20% 94%; /* Light Cool Grey */
+    --muted-foreground: 215 15% 55%; /* Medium Cool Grey */
 
-    --accent: 340 90% 60%; /* Bright Pink/Rose */
+    --accent: 340 70% 55%; /* Softer Pink/Rose */
     --accent-foreground: 0 0% 100%; /* White */
 
-    --destructive: 0 84% 60%; /* Bright Red */
+    --destructive: 0 70% 50%; /* Slightly less intense Red */
     --destructive-foreground: 0 0% 100%; /* White */
 
-    --border: 240 5% 90%; /* Light Grey Border */
-    --input: 0 0% 98%;   /* Very Light Grey Input Background */
-    --ring: 220 90% 65%; /* Lighter Blue for focus rings */
+    --border: 210 15% 88%; /* Cool Grey Border */
+    --input: 0 0% 100%;   /* White Input Background */
+    --ring: 210 70% 60%; /* Lighter Calmer Blue for focus rings */
 
-    /* Chart Colors - Light theme */
-    --chart-1: 220 90% 55%; /* Bright Blue */
-    --chart-2: 270 90% 60%; /* Bright Purple */
-    --chart-3: 340 90% 60%; /* Bright Pink/Rose */
-    --chart-4: 160 90% 45%; /* Teal/Green */
-    --chart-5: 30 100% 55%; /* Orange */
+    /* Chart Colors - Adjusted Light theme */
+    --chart-1: 210 70% 50%; /* Calmer Blue */
+    --chart-2: 260 60% 55%; /* Muted Purple */
+    --chart-3: 340 70% 55%; /* Softer Pink/Rose */
+    --chart-4: 160 60% 40%; /* Desaturated Teal/Green */
+    --chart-5: 30 80% 50%; /* Muted Orange */
 
     --radius: 0rem; /* No border radius for retro */
   }
 
-  /* No separate dark mode needed as default is dark */
 }
 
 @layer base {
   * {
-    @apply border-border; /* Use light grey border */
+    @apply border-border; /* Use cool grey border */
   }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans), system-ui, sans-serif; /* Apply Inter font */
-     /* Optional: Keep subtle scanlines or grid if desired */
-    /* background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 3px 3px; */
   }
-  /* Apply base font styling - Adjust sizes for better finance app readability */
+  /* Apply base font styling - Ensure headings use the sans font */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight text-foreground; /* Use foreground color */
-    font-family: var(--font-heading), system-ui, sans-serif; /* Heading font */
+    @apply font-semibold tracking-tight text-foreground;
+    font-family: var(--font-sans), system-ui, sans-serif; /* Use Inter for headings */
   }
 
   h1 { @apply text-2xl sm:text-3xl md:text-4xl; }
@@ -75,8 +70,8 @@
   h3 { @apply text-lg sm:text-xl md:text-2xl; }
   h4 { @apply text-base sm:text-lg md:text-xl; }
   p, li, td, label, span, button, input, select, textarea, legend, div, a {
-     @apply text-sm sm:text-base; /* Default text size */
-     font-family: var(--font-sans), system-ui, sans-serif; /* Ensure Inter applies */
+     @apply text-sm sm:text-base;
+     font-family: var(--font-sans), system-ui, sans-serif;
   }
 
   /* General Link Styling */
@@ -96,8 +91,8 @@
 @layer components {
    /* Retro Button Base Style */
    .retro-button {
-      @apply inline-flex items-center justify-center px-4 py-2 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-base font-medium; /* Base size, font weight */
-      font-family: var(--font-heading), system-ui, sans-serif; /* Button font */
+      @apply inline-flex items-center justify-center px-4 py-2 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-base font-medium; /* Base size, keep font weight */
+      font-family: var(--font-sans), system-ui, sans-serif; /* Use Inter for buttons */
 
         /* Hover Effects */
         @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/5 active:translate-y-px active:translate-x-px active:shadow-none;
@@ -128,30 +123,29 @@
         @apply px-3 py-1.5 text-sm shadow-retro-sm;
     }
      .retro-button-lg {
-        @apply px-6 py-3 text-lg shadow-retro; /* Larger button */
+        @apply px-6 py-3 text-lg shadow-retro;
      }
      .retro-button-icon {
-        @apply h-9 w-9 p-0; /* Standard icon button size */
+        @apply h-9 w-9 p-0;
      }
 
    /* Retro Window Style */
    .retro-window {
       @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200;
-      /* Hover effect for card/window */
-      @apply hover:shadow-[6px_6px_0px_0px_hsl(var(--primary)/0.8)];
+      @apply hover:shadow-[5px_5px_0px_0px_hsl(var(--primary)/0.7)]; /* Adjusted hover shadow */
    }
    .retro-window-header {
       @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-primary text-primary-foreground;
-      font-family: var(--font-heading), system-ui, sans-serif;
+      font-family: var(--font-sans), system-ui, sans-serif; /* Use Inter */
    }
    .retro-window-content {
-       @apply p-4 border-t-2 border-foreground; /* Adjust padding */
+       @apply p-4 border-t-2 border-foreground;
    }
    .retro-window-controls {
-      @apply flex space-x-1.5 items-center; /* Slightly more spacing */
+      @apply flex space-x-1.5 items-center;
    }
    .retro-window-controls span {
-       @apply block h-3 w-3 border border-foreground bg-background transition-transform duration-100 hover:scale-110; /* Standard controls size */
+       @apply block h-3 w-3 border border-foreground bg-background transition-transform duration-100 hover:scale-110;
    }
    .retro-window-controls span:first-child { /* Minimize */
        @apply bg-accent border-accent-foreground;
@@ -165,37 +159,37 @@
 
     /* Retro Input */
     .retro-input {
-        @apply flex h-10 w-full border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150; /* Dark inset shadow */
-        @apply focus:border-primary focus:bg-background; /* Focus state */
+        @apply flex h-10 w-full border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150;
+        @apply focus:border-primary focus:bg-background;
         font-family: var(--font-sans), system-ui, sans-serif;
     }
      /* Retro Textarea */
     .retro-textarea {
-      @apply flex min-h-[80px] w-full border-2 border-foreground bg-input p-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150; /* Dark inset shadow */
-      @apply focus:border-primary focus:bg-background; /* Focus state */
+      @apply flex min-h-[80px] w-full border-2 border-foreground bg-input p-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150;
+      @apply focus:border-primary focus:bg-background;
       font-family: var(--font-sans), system-ui, sans-serif;
     }
 
      /* Retro Select */
     .retro-select-trigger {
         @apply flex h-10 w-full items-center justify-between border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark [&>span]:truncate transition-colors duration-150;
-         @apply data-[state=open]:border-primary data-[state=open]:bg-background; /* Open state */
+         @apply data-[state=open]:border-primary data-[state=open]:bg-background;
          font-family: var(--font-sans), system-ui, sans-serif;
     }
     .retro-select-content {
-        @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80; /* Use background for popover, add animation */
+        @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80;
     }
      .retro-select-item {
-         @apply relative flex w-full cursor-pointer select-none items-center py-1.5 pl-8 pr-2 text-base outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100; /* Adjusted padding */
+         @apply relative flex w-full cursor-pointer select-none items-center py-1.5 pl-8 pr-2 text-base outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100;
           font-family: var(--font-sans), system-ui, sans-serif;
      }
      /* Retro Checkbox */
     .retro-checkbox {
-        @apply peer h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150; /* Use input background */
+        @apply peer h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150;
         @apply hover:border-primary;
     }
     .retro-checkbox[data-state="checked"] {
-        @apply animate-retro-check-pop; /* Optional pop animation */
+        @apply animate-retro-check-pop;
     }
 
      /* Retro Progress */
@@ -203,7 +197,7 @@
       @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted shadow-retro-inset;
     }
      .retro-progress-indicator {
-       @apply h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out; /* Smoother transition */
+       @apply h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out;
     }
 
      /* Retro Alert */
@@ -212,7 +206,7 @@
        font-family: var(--font-sans), system-ui, sans-serif;
     }
     .retro-alert-destructive {
-       @apply border-destructive text-destructive bg-destructive/10 [&>svg]:text-destructive animate-retro-alert-pulse; /* Pulse animation for destructive */
+       @apply border-destructive text-destructive bg-destructive/10 [&>svg]:text-destructive animate-retro-alert-pulse;
     }
      .retro-alert-accent {
         @apply border-accent text-accent bg-accent/10 [&>svg]:text-accent;
@@ -220,16 +214,16 @@
 
      /* Retro Card (using retro-window base) */
     .retro-card {
-        @apply retro-window; /* Alias for consistency */
+        @apply retro-window;
     }
     .retro-card-header {
-         @apply flex flex-col space-y-1.5 p-3 px-4 border-b-2 border-foreground; /* Adjust padding */
+         @apply flex flex-col space-y-1.5 p-3 px-4 border-b-2 border-foreground;
     }
     .retro-card-content {
-       @apply p-4; /* Remove border-t if header exists */
+       @apply p-4;
     }
      .retro-card-footer {
-        @apply flex items-center p-4 pt-0; /* Remove border-t if content exists */
+        @apply flex items-center p-4 pt-0;
      }
 
      /* Retro Table */
@@ -237,11 +231,11 @@
         @apply bg-muted border-b-2 border-foreground;
      }
      .retro-table th {
-       @apply border border-border p-2 px-3 text-left text-foreground font-medium; /* Adjust padding */
-       font-family: var(--font-heading), system-ui, sans-serif;
+       @apply border border-border p-2 px-3 text-left text-foreground font-medium;
+       font-family: var(--font-sans), system-ui, sans-serif; /* Use Inter */
      }
       .retro-table td {
-        @apply border border-border p-2 px-3; /* Adjust padding */
+        @apply border border-border p-2 px-3;
          font-family: var(--font-sans), system-ui, sans-serif;
       }
      .retro-table tr:hover {
@@ -254,12 +248,11 @@
 }
 
 @layer utilities {
-  /* Text shadow can look odd with non-pixel fonts, consider removing or adjusting */
   .text-shadow-retro {
-     text-shadow: 1px 1px 0px hsl(var(--foreground)/0.2); /* Lighter shadow for light theme */
+     text-shadow: 1px 1px 0px hsl(var(--foreground)/0.15); /* Adjusted shadow */
   }
   .text-shadow-retro-primary {
-     text-shadow: 1px 1px 0px hsl(var(--primary)/0.4); /* Use primary color for shadow */
+     text-shadow: 1px 1px 0px hsl(var(--primary)/0.3);
   }
 }
 

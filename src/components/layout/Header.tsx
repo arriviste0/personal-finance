@@ -1,47 +1,49 @@
 import Link from "next/link";
 import { CircleDollarSign, Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button"; // Still use Button for structure
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"; // Import SheetClose
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 export default function Header() {
   return (
-     <header className="sticky top-0 z-50 w-full border-b-2 border-foreground bg-background text-foreground shadow-sm"> {/* Use background, keep border */}
-      <div className="container flex h-14 max-w-screen-2xl items-center justify-between"> {/* Adjusted height */}
+     <header className="sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground">
+      <div className="container flex h-12 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-           <CircleDollarSign className="h-7 w-7 text-primary" /> {/* Use primary color for icon */}
-           <span className="font-heading text-2xl font-bold text-foreground">FinTrack</span> {/* Heading font, foreground color */}
+           <CircleDollarSign className="h-6 w-6 text-primary-foreground" />
+           <span className="font-sans text-xl font-medium">FinTrack</span> {/* Use sans font */}
+           {/* Removed space */}
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden gap-6 text-base md:flex"> {/* Increased gap */}
+        <nav className="hidden gap-4 text-base md:flex">
+           {/* Added space */}
           <Link
             href="/"
-             className="font-medium text-foreground/80 transition-colors hover:text-primary hover:underline underline-offset-4" // Use primary for hover
+             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2" // Softer hover
           >
             Dashboard
           </Link>
           <Link
             href="/savings-goals"
-             className="font-medium text-foreground/80 transition-colors hover:text-primary hover:underline underline-offset-4"
+             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
           >
             Savings Goals
           </Link>
           <Link
             href="/budget"
-             className="font-medium text-foreground/80 transition-colors hover:text-primary hover:underline underline-offset-4"
+             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
           >
             Budget
           </Link>
           <Link
             href="/tax-planner"
-             className="font-medium text-foreground/80 transition-colors hover:text-primary hover:underline underline-offset-4"
+             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
           >
             Tax Planner
           </Link>
            <Link
             href="/ai-assistant"
-             className="font-medium text-accent transition-colors hover:text-accent/80 hover:underline underline-offset-4" // Accent color for AI
+             className="font-medium text-accent/90 transition-colors hover:text-accent hover:underline underline-offset-2" // Use accent for AI
           >
             AI Assistant
           </Link>
@@ -51,65 +53,62 @@ export default function Header() {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-               {/* Use Button component but apply retro classes */}
               <Button
-                 variant="ghost" // Use ghost variant for better contrast
+                 variant="outline" // Use outline for mobile trigger
                  size="icon"
-                 className="retro-button-ghost text-foreground hover:bg-muted/50 h-9 w-9" // Ghost style with foreground text
+                 className="retro-button border-primary-foreground text-primary-foreground hover:bg-primary/80 !shadow-none h-8 w-8" // Specific styling for mobile trigger
                >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-             {/* Retro Sheet styling */}
             <SheetContent
                side="left"
-               className="w-[250px] retro-window !rounded-none !border-foreground !shadow-[4px_4px_0px_0px_hsl(var(--foreground))] !p-0" // Apply retro window styling
+               className="w-[250px] retro-window !rounded-none !border-foreground !shadow-[4px_4px_0px_0px_hsl(var(--foreground))] !p-0"
             >
                 {/* Retro Header for Sheet */}
                 <div className="retro-window-header !bg-secondary !text-secondary-foreground">
-                   <span className="text-lg font-heading">Menu</span>
+                   <span className="text-lg font-sans font-medium">Menu</span> {/* Use sans font */}
                    <div className="retro-window-controls">
                        <span className="!border-secondary-foreground !bg-secondary"></span>
                        <span className="!border-secondary-foreground !bg-secondary"></span>
-                        {/* Close button integrated into header */}
                        <SheetClose asChild>
                          <span className="!bg-destructive !border-destructive-foreground cursor-pointer"></span>
                        </SheetClose>
                    </div>
                 </div>
-               <nav className="grid gap-4 text-lg font-medium p-4 retro-window-content"> {/* Standard padding and gap */}
+               <nav className="grid gap-4 text-lg font-medium p-4 retro-window-content">
                  <Link
                   href="/"
-                  className="flex items-center gap-3 text-lg font-semibold mb-2" // Larger text, spacing
+                  className="flex items-center gap-3 text-lg font-medium mb-2" // Keep font-medium for emphasis
                 >
-                  <CircleDollarSign className="h-7 w-7 text-primary" />
-                  <span className="text-foreground font-heading">FinTrack</span>
+                  <CircleDollarSign className="h-6 w-6 text-primary" /> {/* Use primary color */}
+                  <span className="text-foreground font-sans">FinTrack</span> {/* Use sans font */}
                 </Link>
-                <Link href="/" className="text-foreground hover:underline hover:text-primary underline-offset-4">
+                <Link href="/" className="text-foreground hover:underline hover:text-primary underline-offset-2">
                   Dashboard
                 </Link>
                 <Link
                   href="/savings-goals"
-                  className="text-foreground hover:underline hover:text-primary underline-offset-4"
+                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
                 >
                   Savings Goals
                 </Link>
                 <Link
                   href="/budget"
-                  className="text-foreground hover:underline hover:text-primary underline-offset-4"
+                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
                 >
                   Budget
                 </Link>
                 <Link
                   href="/tax-planner"
-                  className="text-foreground hover:underline hover:text-primary underline-offset-4"
+                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
                  >
                   Tax Planner
                 </Link>
                  <Link
                   href="/ai-assistant"
-                   className="text-accent hover:underline hover:text-accent/80 underline-offset-4"
+                   className="text-accent hover:underline hover:text-accent/80 underline-offset-2"
                  >
                   AI Assistant
                 </Link>

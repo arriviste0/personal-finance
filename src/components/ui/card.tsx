@@ -33,10 +33,10 @@ const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, children, ...props }, ref) => (
-  <h3 // Use h3 for semantic title
+  <h3
     ref={ref}
     className={cn(
-      "text-lg font-medium leading-none", // Keep base styling, adjust size if needed
+      "text-lg font-semibold leading-none font-sans", // Use sans font, ensure font-semibold
       className
     )}
     {...props}
@@ -53,7 +53,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)} // Standard description styling
+    className={cn("text-sm text-muted-foreground font-sans", className)} // Use sans font
     {...props}
   />
 ))
@@ -63,7 +63,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("retro-card-content pt-0", className)} {...props} /> // Use retro card content style
+  <div ref={ref} className={cn("retro-card-content pt-0", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 

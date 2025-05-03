@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 // Define variants using the retro base class and variant-specific classes from globals.css
 const buttonVariants = cva(
-  "retro-button", // Base retro button style
+  "retro-button", // Base retro button style applied via globals.css
   {
     variants: {
       variant: {
@@ -17,9 +17,7 @@ const buttonVariants = cva(
         destructive: "retro-button-destructive",
         ghost: "retro-button-ghost",
         link: "retro-button-link",
-        // Deprecated modern variants (can be removed if not used)
-        // solid: "retro-button-primary",
-        // solidAccent: "retro-button-accent",
+        outline: "retro-button-outline", // Explicit outline variant
       },
       size: {
         default: "", // Base style handles default size
@@ -46,7 +44,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, className }), "font-sans")} // Ensure sans font is applied
         ref={ref}
         {...props}
       />

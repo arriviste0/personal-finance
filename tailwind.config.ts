@@ -9,9 +9,9 @@ export default {
   ],
   theme: {
   	extend: {
-       fontFamily: { // Update font family
+       fontFamily: {
          sans: ["var(--font-sans)", "system-ui", "sans-serif"], // Use Inter as default sans
-         heading: ["var(--font-heading)", "system-ui", "sans-serif"], // Use Press Start 2P for headings
+         heading: ["var(--font-sans)", "system-ui", "sans-serif"], // Use Inter for headings as well
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -55,7 +55,7 @@ export default {
   				'5': 'hsl(var(--chart-5))'
   			},
   		},
-  		borderRadius: { // Keep no rounding
+  		borderRadius: {
         none: '0',
         sm: '0',
         DEFAULT: '0',
@@ -98,11 +98,11 @@ export default {
          'retro-check-pop': 'retro-check-pop 0.3s ease-out',
          'retro-alert-pulse': 'retro-alert-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
-      boxShadow: { // Keep retro shadow
-         'retro': '4px 4px 0px 0px hsl(var(--foreground))',
+      boxShadow: {
+         'retro': '3px 3px 0px 0px hsl(var(--foreground))', // Slightly reduced shadow
          'retro-sm': '2px 2px 0px 0px hsl(var(--foreground))',
-         'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.2)', // Lighter inset shadow for light theme
-         'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.1)', // Even lighter inset
+         'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.15)', // Adjusted inset shadow
+         'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.1)',
       },
   	}
   },
