@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,9 +33,9 @@ export default function Home() {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {/* Savings Goals Overview */}
-      <Card className="col-span-1 lg:col-span-2"> {/* Removed glass class */}
+      <Card className="col-span-1 lg:col-span-2">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-2xl font-bold"> {/* Adjusted font */}
+          <CardTitle className="flex items-center gap-2 text-2xl font-bold">
              <PiggyBank className="h-6 w-6 text-primary" />
              Savings Goals Overview
           </CardTitle>
@@ -52,19 +53,19 @@ export default function Home() {
                    ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
                  </span>
               </div>
-              <Progress value={(goal.current / goal.target) * 100} className="h-2 [&>div]:bg-primary" /> {/* Ensured progress bar color */}
+              <Progress value={(goal.current / goal.target) * 100} className="h-2 [&>div]:bg-primary" />
             </div>
           ))}
-           <Button asChild variant="outline" className="w-full mt-4 border-accent text-accent hover:bg-accent/10"> {/* Use outline variant */}
+           <Button asChild variant="outline" className="w-full mt-4 border-accent text-accent hover:bg-accent/10">
               <Link href="/savings-goals">View All Goals</Link>
            </Button>
         </CardContent>
       </Card>
 
       {/* Budget Summary */}
-      <Card className="col-span-1"> {/* Removed glass class */}
+      <Card className="col-span-1">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-2xl font-bold"> {/* Adjusted font */}
+          <CardTitle className="flex items-center gap-2 text-2xl font-bold">
              <HandCoins className="h-6 w-6 text-secondary" />
              Budget Summary
           </CardTitle>
@@ -84,22 +85,22 @@ export default function Home() {
                   tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
                   width={80}
                  />
-                 <ChartTooltip cursor={{ fill: 'hsl(var(--card))' }} content={<ChartTooltipContent hideLabel />} /> {/* Adjusted cursor fill */}
+                 <ChartTooltip cursor={{ fill: 'hsl(var(--card))' }} content={<ChartTooltipContent hideLabel />} />
                  <Bar dataKey="budget" stackId="a" fill="hsl(var(--muted))" radius={[0, 4, 4, 0]} barSize={15}/>
                 <Bar dataKey="spent" stackId="a" fill="hsl(var(--secondary))" radius={[4, 0, 0, 4]} barSize={15}/>
               </BarChart>
              </ResponsiveContainer>
           </ChartContainer>
-          <Button asChild variant="outline" className="w-full mt-4 border-secondary text-secondary hover:bg-secondary/10"> {/* Use outline variant */}
+          <Button asChild variant="outline" className="w-full mt-4 border-secondary text-secondary hover:bg-secondary/10">
               <Link href="/budget">Manage Budget</Link>
            </Button>
         </CardContent>
       </Card>
 
        {/* AI Assistant Quick Access */}
-      <Card className="col-span-1 md:col-span-2 lg:col-span-1"> {/* Removed glass class */}
+      <Card className="col-span-1 md:col-span-2 lg:col-span-1">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-2xl font-bold"> {/* Adjusted font */}
+          <CardTitle className="flex items-center gap-2 text-2xl font-bold">
             <Lightbulb className="h-6 w-6 text-accent" />
              AI Savings Assistant
           </CardTitle>
@@ -109,7 +110,7 @@ export default function Home() {
           <p className="text-center text-sm text-muted-foreground">
             Analyze your spending patterns and get tailored advice to reach your goals faster.
           </p>
-           <Button asChild variant="solidAccent" className="w-full"> {/* Use solid accent variant */}
+           <Button asChild variant="solidAccent" className="w-full">
             <Link href="/ai-assistant">Get AI Tips</Link>
           </Button>
            <Button asChild variant="link" className="text-accent">
