@@ -10,16 +10,14 @@ export default function Header() {
       <div className="container flex h-12 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="mr-6 flex items-center space-x-2">
            <CircleDollarSign className="h-6 w-6 text-primary-foreground" />
-           <span className="font-sans text-xl font-medium">FinTrack</span> {/* Use sans font */}
-           {/* Removed space */}
+           <span className="font-sans text-xl font-medium">FinTrack</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden gap-4 text-base md:flex">
-           {/* Added space */}
           <Link
             href="/"
-             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2" // Softer hover
+             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
           >
             Dashboard
           </Link>
@@ -34,6 +32,12 @@ export default function Header() {
              className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
           >
             Budget
+          </Link>
+           <Link
+            href="/expenses" // Added Expenses link
+             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
+          >
+            Expenses
           </Link>
           <Link
             href="/tax-planner"
@@ -54,9 +58,9 @@ export default function Header() {
           <Sheet>
             <SheetTrigger asChild>
               <Button
-                 variant="outline" // Use outline for mobile trigger
+                 variant="outline"
                  size="icon"
-                 className="retro-button border-primary-foreground text-primary-foreground hover:bg-primary/80 !shadow-none h-8 w-8" // Specific styling for mobile trigger
+                 className="retro-button border-primary-foreground text-primary-foreground hover:bg-primary/80 !shadow-none h-8 w-8"
                >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
@@ -68,22 +72,22 @@ export default function Header() {
             >
                 {/* Retro Header for Sheet */}
                 <div className="retro-window-header !bg-secondary !text-secondary-foreground">
-                   <span className="text-lg font-sans font-medium">Menu</span> {/* Use sans font */}
+                   <span className="text-lg font-sans font-medium">Menu</span>
                    <div className="retro-window-controls">
                        <span className="!border-secondary-foreground !bg-secondary"></span>
                        <span className="!border-secondary-foreground !bg-secondary"></span>
                        <SheetClose asChild>
-                         <span className="!bg-destructive !border-destructive-foreground cursor-pointer"></span>
+                         <span className="!bg-destructive !border-destructive-foreground cursor-pointer"><X className="h-2 w-2 text-destructive-foreground relative -top-px -left-px"/></span>
                        </SheetClose>
                    </div>
                 </div>
                <nav className="grid gap-4 text-lg font-medium p-4 retro-window-content">
                  <Link
                   href="/"
-                  className="flex items-center gap-3 text-lg font-medium mb-2" // Keep font-medium for emphasis
+                  className="flex items-center gap-3 text-lg font-medium mb-2"
                 >
-                  <CircleDollarSign className="h-6 w-6 text-primary" /> {/* Use primary color */}
-                  <span className="text-foreground font-sans">FinTrack</span> {/* Use sans font */}
+                  <CircleDollarSign className="h-6 w-6 text-primary" />
+                  <span className="text-foreground font-sans">FinTrack</span>
                 </Link>
                 <Link href="/" className="text-foreground hover:underline hover:text-primary underline-offset-2">
                   Dashboard
@@ -99,6 +103,12 @@ export default function Header() {
                   className="text-foreground hover:underline hover:text-primary underline-offset-2"
                 >
                   Budget
+                </Link>
+                 <Link
+                  href="/expenses" // Added Expenses link
+                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
+                 >
+                  Expenses
                 </Link>
                 <Link
                   href="/tax-planner"

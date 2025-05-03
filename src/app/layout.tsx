@@ -11,12 +11,10 @@ const inter = Inter({
   variable: "--font-sans", // Define CSS variable for sans-serif font
 });
 
-// Removed Press Start 2P font import
-
 export const metadata: Metadata = {
-  title: "FinTrack",
+  title: "FinTrack Pro", // Updated title
   description:
-    "Your personal finance companion for savings goals, budgeting, and tax planning.",
+    "Your modern finance companion for savings goals, budgeting, tax planning, expense tracking, and AI insights.", // Updated description
 };
 
 export default function RootLayout({
@@ -31,7 +29,6 @@ export default function RootLayout({
         className={cn(
           "min-h-screen bg-background text-foreground font-sans antialiased",
            inter.variable
-           // Removed Press Start 2P variable
         )}
       >
         <AppLayout>{children}</AppLayout>
