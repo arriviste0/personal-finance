@@ -1,5 +1,5 @@
-/* Import Press Start 2P font */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* Import Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,7 +8,7 @@
 
 @layer base {
   :root {
-    /* Retro Neon Dark Theme */
+    /* Retro Neon Dark Theme (Keeping colors as user requested) */
     --background: 240 10% 8%; /* Very Dark Blue/Black */
     --foreground: 180 100% 85%; /* Bright Cyan/Light Grey */
 
@@ -56,27 +56,24 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-press-start), monospace; /* Apply Press Start 2P font */
-    /* Optional: Add subtle scanlines or grid */
+    font-family: var(--font-sans), system-ui, sans-serif; /* Apply Inter font */
+     /* Optional: Keep subtle scanlines or grid if desired */
     /* background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 3px 3px; */
-     /* letter-spacing: 1px; */ /* Slightly increase letter spacing for pixel fonts */
   }
-  /* Apply font to specific elements */
-  input, button, select, textarea, label, legend, h1, h2, h3, h4, h5, h6, p, span, div, a, li, th, td, caption {
-    font-family: var(--font-press-start), monospace !important;
-    /* Base font size for pixel font readability - adjust as needed */
-    @apply text-xs sm:text-sm; /* Slightly smaller base size for pixel font */
-    line-height: 1.5; /* Adjust line height for pixel fonts */
+  /* Apply base font styling - Adjust sizes for better finance app readability */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-foreground; /* Use foreground color */
   }
 
-    /* Responsive heading sizes */
-  h1 { @apply text-xl sm:text-2xl md:text-3xl; }
-  h2 { @apply text-lg sm:text-xl md:text-2xl; }
-  h3 { @apply text-base sm:text-lg md:text-xl; }
-  h4 { @apply text-sm sm:text-base md:text-lg; }
-  p, li, td, label, span { @apply text-xs sm:text-sm; } /* Consistent paragraph/list/etc size */
-
+  h1 { @apply text-2xl sm:text-3xl md:text-4xl; }
+  h2 { @apply text-xl sm:text-2xl md:text-3xl; }
+  h3 { @apply text-lg sm:text-xl md:text-2xl; }
+  h4 { @apply text-base sm:text-lg md:text-xl; }
+  p, li, td, label, span, button, input, select, textarea, legend, div, a {
+     @apply text-sm sm:text-base; /* Default text size */
+     font-family: var(--font-sans), system-ui, sans-serif; /* Ensure Inter applies */
+  }
 
   /* General Link Styling */
   a {
@@ -93,9 +90,9 @@
 }
 
 @layer components {
-   /* Retro Button Base Style */
+   /* Retro Button Base Style - Keep hover effects, remove font override */
    .retro-button {
-      @apply inline-flex items-center justify-center px-3 py-1.5 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-sm; /* Base size small */
+      @apply inline-flex items-center justify-center px-4 py-2 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-sm font-medium; /* Base size, font weight */
 
         /* Hover Effects */
         @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/10 active:translate-y-px active:translate-x-px active:shadow-none;
@@ -123,32 +120,32 @@
         @apply border-transparent bg-transparent shadow-none underline underline-offset-2 text-accent hover:text-accent/80 h-auto p-0 text-sm hover:translate-x-0 hover:translate-y-0; /* No move on link */
     }
     .retro-button-sm {
-        @apply px-2 py-1 text-xs shadow-retro-sm;
+        @apply px-3 py-1.5 text-xs shadow-retro-sm;
     }
      .retro-button-lg {
-        @apply px-5 py-2 text-base shadow-retro;
+        @apply px-6 py-3 text-lg shadow-retro; /* Larger button */
      }
      .retro-button-icon {
-        @apply h-8 w-8 p-0; /* Smaller icon button */
+        @apply h-9 w-9 p-0; /* Standard icon button size */
      }
 
-   /* Retro Window Style */
+   /* Retro Window Style - Keep structure, remove font override */
    .retro-window {
       @apply border-2 border-foreground bg-background shadow-retro overflow-hidden transition-shadow duration-200;
       /* Hover effect for card/window */
       @apply hover:shadow-[6px_6px_0px_0px_hsl(var(--primary)/0.8)];
    }
    .retro-window-header {
-      @apply flex items-center justify-between p-1.5 px-2 border-b-2 border-foreground bg-primary text-primary-foreground;
+      @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-primary text-primary-foreground;
    }
    .retro-window-content {
-       @apply p-3 border-t-2 border-foreground; /* Adjust padding */
+       @apply p-4 border-t-2 border-foreground; /* Adjust padding */
    }
    .retro-window-controls {
-      @apply flex space-x-1 items-center;
+      @apply flex space-x-1.5 items-center; /* Slightly more spacing */
    }
    .retro-window-controls span {
-       @apply block h-2.5 w-2.5 border border-foreground bg-background transition-transform duration-100 hover:scale-110; /* Smaller controls, hover effect */
+       @apply block h-3 w-3 border border-foreground bg-background transition-transform duration-100 hover:scale-110; /* Standard controls size */
    }
    .retro-window-controls span:first-child { /* Minimize */
        @apply bg-accent border-accent-foreground;
@@ -160,27 +157,27 @@
        @apply bg-destructive border-destructive-foreground;
    }
 
-    /* Retro Input */
+    /* Retro Input - Remove font override */
     .retro-input {
-        @apply flex h-9 w-full border-2 border-foreground bg-input px-2 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150; /* Dark inset shadow */
+        @apply flex h-10 w-full border-2 border-foreground bg-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150; /* Dark inset shadow */
         @apply focus:border-accent focus:bg-background; /* Focus state */
     }
-     /* Retro Textarea */
+     /* Retro Textarea - Remove font override */
     .retro-textarea {
-      @apply flex min-h-[60px] w-full border-2 border-foreground bg-input p-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150; /* Dark inset shadow */
+      @apply flex min-h-[80px] w-full border-2 border-foreground bg-input p-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150; /* Dark inset shadow */
       @apply focus:border-accent focus:bg-background; /* Focus state */
     }
 
-     /* Retro Select */
+     /* Retro Select - Remove font override */
     .retro-select-trigger {
-        @apply flex h-9 w-full items-center justify-between border-2 border-foreground bg-input px-2 py-1 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark [&>span]:truncate transition-colors duration-150;
+        @apply flex h-10 w-full items-center justify-between border-2 border-foreground bg-input px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark [&>span]:truncate transition-colors duration-150;
          @apply data-[state=open]:border-accent data-[state=open]:bg-background; /* Open state */
     }
     .retro-select-content {
         @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80; /* Use background for popover, add animation */
     }
      .retro-select-item {
-         @apply relative flex w-full cursor-pointer select-none items-center py-1 pl-6 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100; /* Adjusted padding */
+         @apply relative flex w-full cursor-pointer select-none items-center py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100; /* Adjusted padding */
      }
      /* Retro Checkbox */
     .retro-checkbox {
@@ -199,9 +196,9 @@
        @apply h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out; /* Smoother transition */
     }
 
-     /* Retro Alert */
+     /* Retro Alert - Remove font override */
     .retro-alert {
-      @apply relative w-full border-2 border-foreground p-3 bg-background/80 shadow-retro-sm [&>svg]:absolute [&>svg]:left-3 [&>svg]:top-3 [&>svg]:text-foreground [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-2px];
+      @apply relative w-full border-2 border-foreground p-4 bg-background/80 shadow-retro-sm [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-2px];
     }
     .retro-alert-destructive {
        @apply border-destructive text-destructive bg-destructive/10 [&>svg]:text-destructive animate-retro-alert-pulse; /* Pulse animation for destructive */
@@ -215,24 +212,24 @@
         @apply retro-window; /* Alias for consistency */
     }
     .retro-card-header {
-         @apply flex flex-col space-y-1 p-2 px-3 border-b-2 border-foreground; /* Adjust padding */
+         @apply flex flex-col space-y-1.5 p-3 px-4 border-b-2 border-foreground; /* Adjust padding */
     }
     .retro-card-content {
-       @apply p-3; /* Remove border-t if header exists */
+       @apply p-4; /* Remove border-t if header exists */
     }
      .retro-card-footer {
-        @apply flex items-center p-3 pt-0; /* Remove border-t if content exists */
+        @apply flex items-center p-4 pt-0; /* Remove border-t if content exists */
      }
 
-     /* Retro Table */
+     /* Retro Table - Remove font override */
      .retro-table thead {
         @apply bg-foreground/10 border-b-2 border-foreground;
      }
      .retro-table th {
-       @apply border border-foreground/50 p-1.5 px-2 text-left text-foreground font-medium;
+       @apply border border-foreground/50 p-2 px-3 text-left text-foreground font-medium; /* Adjust padding */
      }
       .retro-table td {
-        @apply border border-foreground/50 p-1.5 px-2;
+        @apply border border-foreground/50 p-2 px-3; /* Adjust padding */
       }
      .retro-table tr:hover {
         @apply bg-foreground/5;
@@ -244,11 +241,11 @@
 }
 
 @layer utilities {
-  /* Add any custom utility classes if needed */
-  .text-shadow-retro {
+  /* Text shadow can look odd with non-pixel fonts, consider removing or adjusting */
+  /* .text-shadow-retro {
      text-shadow: 1px 1px 0px hsl(var(--foreground)/0.7);
   }
   .text-shadow-retro-primary {
      text-shadow: 1px 1px 0px hsl(var(--primary-foreground)/0.7);
-  }
+  } */
 }

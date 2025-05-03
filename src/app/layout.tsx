@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import { Press_Start_2P } from "next/font/google"; // Import Press Start 2P font
+import { Inter } from "next/font/google"; // Import Inter font
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import AppLayout from "@/components/layout/AppLayout";
 import { Toaster } from "@/components/ui/toaster";
 
-// Configure Press Start 2P font
-const pressStart2P = Press_Start_2P({
+// Configure Inter font
+const inter = Inter({
   subsets: ["latin"],
-  weight: "400", // Press Start 2P only has regular weight
-  variable: "--font-press-start", // Define CSS variable (ensure this matches tailwind.config and globals.css)
+  variable: "--font-sans", // Define CSS variable for sans-serif
 });
 
 
@@ -25,11 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background text-foreground font-mono", // Use mono font family
-          pressStart2P.variable // Apply font variable
+          "min-h-screen bg-background text-foreground font-sans antialiased", // Use sans font family
+           inter.variable // Apply font variable
         )}
       >
         <AppLayout>{children}</AppLayout>
