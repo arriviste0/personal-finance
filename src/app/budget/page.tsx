@@ -20,6 +20,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; // Import Select
 
 interface BudgetItem {
   id: string;
@@ -43,6 +44,8 @@ export default function BudgetPage() {
   const [budgetData, setBudgetData] = useState<BudgetItem[]>(initialBudgetData);
   const [editingBudgets, setEditingBudgets] = useState<Record<string, number>>({});
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
+  const [newTransaction, setNewTransaction] = useState({ category: initialBudgetData[0]?.category || '', amount: '' });
 
   const totalSpent = useMemo(() => budgetData.reduce((sum, item) => sum + item.spent, 0), [budgetData]);
   const totalBudget = useMemo(() => budgetData.reduce((sum, item) => sum + item.budget, 0), [budgetData]);
@@ -85,92 +88,113 @@ export default function BudgetPage() {
      setIsEditMode(false);
   }
 
-  // Mock function for adding a transaction
-  const handleAddTransaction = (category: string, amount: number) => {
-    // In a real app, this would update backend data and re-fetch or update state optimistically
-    setBudgetData(prevData =>
-      prevData.map(item =>
-        item.category === category
-          ? { ...item, spent: item.spent + amount }
-          : item
-      )
-    );
-    console.log(`Added transaction: ${amount} to ${category}`);
+  const handleTransactionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { id, value } = e.target;
+      setNewTransaction(prev => ({ ...prev, [id]: value }));
+  };
+
+   const handleTransactionCategoryChange = (value: string) => {
+       setNewTransaction(prev => ({ ...prev, category: value }));
+   };
+
+
+  const submitAddTransaction = () => {
+      const amount = parseFloat(newTransaction.amount);
+      if (!isNaN(amount) && amount !== 0 && newTransaction.category) {
+          // In a real app, this would update backend data
+          setBudgetData(prevData =>
+              prevData.map(item =>
+                  item.category === newTransaction.category
+                      ? { ...item, spent: item.spent + amount } // Add or subtract based on amount sign
+                      : item
+              )
+          );
+          console.log(`Added transaction: ${amount} to ${newTransaction.category}`);
+          setIsAddTransactionOpen(false); // Close dialog
+          setNewTransaction({ category: initialBudgetData[0]?.category || '', amount: '' }); // Reset form
+      } else {
+          // Handle invalid input (optional: show error message)
+          console.error("Invalid transaction input");
+      }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Budget Tracker</h1>
-         <Dialog>
-          <DialogTrigger asChild>
-             <Button variant="solidAccent"> {/* Solid accent button */}
-              <PlusCircle className="mr-2 h-4 w-4" /> Add Transaction
-            </Button>
-          </DialogTrigger>
-           <DialogContent className="sm:max-w-[425px]">
-             <DialogHeader>
-               <DialogTitle>Add New Transaction</DialogTitle>
-               <DialogDescription>
-                 Log a new expense to track your spending.
-               </DialogDescription>
-             </DialogHeader>
-             <div className="grid gap-4 py-4">
-               {/* Simple form for demo */}
-               <div className="grid grid-cols-4 items-center gap-4">
-                 <Label htmlFor="category" className="text-right">
-                   Category
-                 </Label>
-                 {/* In a real app, use a Select component populated with budgetData categories */}
-                  <Input id="category" defaultValue="Food & Groceries" className="col-span-3" />
-               </div>
-               <div className="grid grid-cols-4 items-center gap-4">
-                 <Label htmlFor="amount" className="text-right">
-                   Amount ($)
-                 </Label>
-                 <Input id="amount" type="number" defaultValue="25.50" className="col-span-3" />
-               </div>
-             </div>
-             <DialogFooter>
-                <DialogClose asChild>
-                   <Button type="button" variant="secondary">Cancel</Button>
-                </DialogClose>
-               {/* Implement actual saving logic */}
-               <Button type="submit" variant="solidAccent" onClick={() => {
-                   const category = (document.getElementById('category') as HTMLInputElement)?.value || 'Other';
-                   const amount = parseFloat((document.getElementById('amount') as HTMLInputElement)?.value || '0');
-                   if (amount > 0) {
-                       handleAddTransaction(category, amount);
-                       // Add logic to close dialog after adding
-                       console.log("Should close dialog here"); // Placeholder
-                   }
-               }}>
-                 Add Expense
+       <div className="flex items-center justify-between border-b-2 border-foreground pb-2 mb-4">
+         <h1 className="text-2xl font-medium uppercase">Budget Tracker</h1> {/* Retro heading */}
+          <Dialog open={isAddTransactionOpen} onOpenChange={setIsAddTransactionOpen}>
+             <DialogTrigger asChild>
+                <Button variant="solid"> {/* Default retro button */}
+                 <PlusCircle className="mr-2 h-4 w-4" /> Add Transaction
                </Button>
-             </DialogFooter>
-           </DialogContent>
-         </Dialog>
+             </DialogTrigger>
+              {/* Retro Dialog Styling */}
+             <DialogContent className="retro-window !rounded-none sm:max-w-[425px]">
+                <DialogHeader className="retro-window-header !text-left !p-1 !px-2">
+                  <DialogTitle>Add Transaction</DialogTitle>
+                   <div className="retro-window-controls">
+                       <span/><span/><span className="!bg-destructive !border-destructive-foreground"/>
+                   </div>
+                </DialogHeader>
+                <div className="retro-window-content space-y-4 !pt-4">
+                  <DialogDescription>
+                    Log a new expense or income (use negative for income/refunds).
+                  </DialogDescription>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="category" className="text-right">
+                      Category
+                    </Label>
+                     <Select value={newTransaction.category} onValueChange={handleTransactionCategoryChange}>
+                       <SelectTrigger id="category" className="col-span-3">
+                         <SelectValue placeholder="Select category" />
+                       </SelectTrigger>
+                       <SelectContent>
+                         {budgetData.map(item => (
+                           <SelectItem key={item.id} value={item.category}>{item.category}</SelectItem>
+                         ))}
+                          <SelectItem value="Income">Income</SelectItem> {/* Add Income Option */}
+                          <SelectItem value="Other">Other</SelectItem>
+                       </SelectContent>
+                     </Select>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="amount" className="text-right">
+                      Amount ($)
+                    </Label>
+                    <Input id="amount" type="number" value={newTransaction.amount} onChange={handleTransactionInputChange} placeholder="e.g., 25.50 or -50" className="col-span-3" />
+                  </div>
+                </div>
+                <DialogFooter className="retro-window-content !pt-0 flex sm:justify-between">
+                    <DialogClose asChild>
+                       <Button type="button" variant="outline">Cancel</Button>
+                    </DialogClose>
+                   <Button type="submit" variant="solidAccent" onClick={submitAddTransaction}>
+                     Add
+                   </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Overall Budget Summary */}
-        <Card> {/* Removed glass class */}
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-               <HandCoins className="h-6 w-6 text-secondary" />
-               Monthly Overview
-            </CardTitle>
-            <CardDescription>Your spending vs. your total budget this month.</CardDescription>
-          </CardHeader>
+        <Card>
+           <CardHeader>
+             <CardTitle className="flex items-center gap-2 text-lg">
+                <HandCoins className="h-5 w-5" />
+                Monthly Overview
+             </CardTitle>
+             <CardDescription>Spending vs. Budget.</CardDescription>
+           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
                <p className="text-sm text-muted-foreground">Total Spent</p>
-               <p className="text-3xl font-bold">${totalSpent.toLocaleString()}</p>
+               <p className="text-2xl font-medium">${totalSpent.toLocaleString()}</p> {/* Adjusted size */}
             </div>
-             <Progress value={totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0} className="h-3 [&>div]:bg-secondary" /> {/* Ensured progress bar color */}
+             <Progress value={totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0} className="h-3 [&>div]:bg-secondary" />
              <div className="flex justify-between text-sm text-muted-foreground">
                <span>${(totalBudget - totalSpent).toLocaleString()} left</span>
-               <span>Total Budget: ${totalBudget.toLocaleString()}</span>
+               <span>Budget: ${totalBudget.toLocaleString()}</span>
              </div>
              <div className="flex gap-2">
                  <Button variant="outline" className="flex-1 border-primary text-primary hover:bg-primary/10" onClick={toggleEditMode}>
@@ -178,9 +202,9 @@ export default function BudgetPage() {
                     {isEditMode ? 'Save Budgets' : 'Edit Budgets'}
                  </Button>
                  {isEditMode && (
-                     <Button variant="ghost" size="icon" onClick={cancelEditMode} className="border-transparent text-muted-foreground hover:text-destructive">
+                     <Button variant="ghost" size="icon" onClick={cancelEditMode} className="!border-transparent !shadow-none text-muted-foreground hover:text-destructive">
                         <X className="h-4 w-4"/>
-                        <span className="sr-only">Cancel Edits</span>
+                        <span className="sr-only">Cancel</span>
                      </Button>
                  )}
              </div>
@@ -188,15 +212,15 @@ export default function BudgetPage() {
         </Card>
 
          {/* Spending Categories Chart */}
-        <Card> {/* Removed glass class */}
-           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-               <TrendingUp className="h-6 w-6 text-primary" />
-               Spending by Category
-            </CardTitle>
-             <CardDescription>How your spending breaks down.</CardDescription>
-          </CardHeader>
-           <CardContent className="h-[300px]">
+        <Card>
+            <CardHeader>
+             <CardTitle className="flex items-center gap-2 text-lg">
+                <TrendingUp className="h-5 w-5" />
+                Spending by Category
+             </CardTitle>
+              <CardDescription>Spending breakdown.</CardDescription>
+           </CardHeader>
+           <CardContent className="h-[250px]"> {/* Adjusted height */}
              <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                    <Pie
@@ -204,18 +228,18 @@ export default function BudgetPage() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    outerRadius={80}
-                    fill="#8884d8" // Default fill, overridden by Cell
-                    dataKey="value" // Use 'value' as defined in pieChartData
-                    nameKey="name"   // Use 'name' as defined in pieChartData
-                    // label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    outerRadius={70} // Adjusted size
+                    innerRadius={30} // Added inner radius for donut
+                    fill="#8884d8"
+                    dataKey="value"
+                    nameKey="name"
                    >
                     {pieChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} /> // Use 'fill' from pieChartData
+                      <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.fill} /> // Added stroke for separation
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: number, name: string) => [`$${value.toLocaleString()}`, name]} />
-                  <Legend />
+                   <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--foreground))', borderRadius: '0px' }} itemStyle={{ color: 'hsl(var(--foreground))' }} formatter={(value: number, name: string) => [`$${value.toLocaleString()}`, name]} />
+                   <Legend wrapperStyle={{ fontSize: '12px' }} />
                 </PieChart>
              </ResponsiveContainer>
           </CardContent>
@@ -223,50 +247,50 @@ export default function BudgetPage() {
       </div>
 
       {/* Detailed Budget Table */}
-       <Card> {/* Removed glass class */}
-        <CardHeader>
-          <CardTitle>Budget Details</CardTitle>
-          <CardDescription>Track spending across different categories.</CardDescription>
-        </CardHeader>
+       <Card>
+          <CardHeader>
+           <CardTitle className="text-lg">Budget Details</CardTitle>
+           <CardDescription>Category spending tracker.</CardDescription>
+         </CardHeader>
         <CardContent>
-          <Table>
-             <TableHeader>
+           {/* Apply retro table styling */}
+          <Table className="border-2 border-foreground">
+             <TableHeader className="border-b-2 border-foreground bg-muted">
               <TableRow>
-                <TableHead>Category</TableHead>
-                <TableHead className="text-right">Spent</TableHead>
-                <TableHead className="text-right w-[150px]">Budget</TableHead> {/* Adjusted width */}
-                <TableHead className="text-right">Remaining</TableHead>
-                <TableHead className="w-[150px]">Progress</TableHead> {/* Adjusted width */}
+                 <TableHead className="border-r-2 border-foreground">Category</TableHead>
+                 <TableHead className="text-right border-r-2 border-foreground">Spent</TableHead>
+                 <TableHead className="text-right w-[120px] border-r-2 border-foreground">Budget</TableHead> {/* Adjusted width */}
+                 <TableHead className="text-right border-r-2 border-foreground">Remaining</TableHead>
+                 <TableHead className="w-[120px]">Progress</TableHead> {/* Adjusted width */}
               </TableRow>
             </TableHeader>
             <TableBody>
               {budgetData.map((item) => {
-                 const percentage = item.budget > 0 ? Math.min((item.spent / item.budget) * 100, 100) : 0; // Cap at 100%
+                 const percentage = item.budget > 0 ? Math.min((item.spent / item.budget) * 100, 100) : 0;
                  const remaining = item.budget - item.spent;
                  const progressClassName = cn(
-                    "h-2 rounded-full overflow-hidden", // Added rounded and overflow
-                    "[&>div]:rounded-full", // Round indicator inside
-                    remaining < 0 ? "[&>div]:bg-destructive" : // Destructive if over budget
-                    percentage > 85 ? "[&>div]:bg-secondary" : // Secondary (warning) if close
-                    "[&>div]:bg-primary" // Primary otherwise
+                    "h-3 rounded-none overflow-hidden border-2 border-foreground bg-muted", // Retro progress style
+                    remaining < 0 ? "[&>div]:bg-destructive" :
+                    percentage > 85 ? "[&>div]:bg-secondary" :
+                    "[&>div]:bg-primary"
                  );
                 return (
-                  <TableRow key={item.id}>
-                    <TableCell className="font-medium">{item.category}</TableCell>
-                    <TableCell className="text-right">${item.spent.toLocaleString()}</TableCell>
-                    <TableCell className="text-right">
+                  <TableRow key={item.id} className="border-b-2 border-foreground last:border-b-0">
+                     <TableCell className="font-medium border-r-2 border-foreground">{item.category}</TableCell>
+                     <TableCell className="text-right border-r-2 border-foreground">${item.spent.toLocaleString()}</TableCell>
+                    <TableCell className="text-right border-r-2 border-foreground">
                        {isEditMode ? (
                          <Input
                            type="number"
                            value={editingBudgets[item.id] ?? ''}
                            onChange={(e) => handleEditBudgetChange(item.id, e.target.value)}
-                           className="h-8 text-right"
+                            className="h-8 text-right !py-1 !text-sm" // Smaller input
                            />
                        ) : (
                          `$${item.budget.toLocaleString()}`
                        )}
                     </TableCell>
-                    <TableCell className={cn("text-right", remaining < 0 ? 'text-destructive' : 'text-muted-foreground')}>
+                     <TableCell className={cn("text-right border-r-2 border-foreground", remaining < 0 ? 'text-destructive font-medium' : 'text-muted-foreground')}>
                       {remaining < 0 ? `-$${Math.abs(remaining).toLocaleString()}` : `$${remaining.toLocaleString()}`}
                     </TableCell>
                     <TableCell>

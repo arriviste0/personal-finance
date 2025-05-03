@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Quicksand } from "next/font/google"; // Import Quicksand
+import { VT323 } from "next/font/google"; // Import VT323 font
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import AppLayout from "@/components/layout/AppLayout";
 import { Toaster } from "@/components/ui/toaster";
 
-// Configure Quicksand font
-const quicksand = Quicksand({
+// Configure VT323 font
+const vt323 = VT323({
   subsets: ["latin"],
-  variable: "--font-quicksand", // Define CSS variable
-  weight: ['400', '500', '700'], // Choose appropriate weights
+  variable: "--font-vt323", // Define CSS variable
+  weight: ['400'], // VT323 only has 400 weight
 });
 
 
@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          quicksand.variable // Apply font variable
+          vt323.variable // Apply font variable
         )}
       >
         <AppLayout>{children}</AppLayout>

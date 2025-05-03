@@ -10,7 +10,7 @@ export default {
   theme: {
   	extend: {
        fontFamily: { // Add font family
-         sans: ["var(--font-quicksand)", "sans-serif"], // Use Quicksand as default sans
+         sans: ["var(--font-vt323)", "monospace"], // Use VT323 as default sans
        },
   		colors: {
   			background: 'hsl(var(--background))',

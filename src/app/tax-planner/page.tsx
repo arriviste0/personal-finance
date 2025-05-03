@@ -53,7 +53,7 @@ export default function TaxPlannerPage() {
   const form = useForm<TaxFormValues>({
     resolver: zodResolver(taxFormSchema),
     defaultValues: {
-      annualIncome: 75000, // More typical income
+      annualIncome: 75000,
       filingStatus: "single",
       deductions: 13850, // Approx standard deduction for single 2023
       credits: 0,
@@ -67,38 +67,42 @@ export default function TaxPlannerPage() {
 
     try {
       const taxInfo: TaxInformation = values;
+      // Simulate API call delay for retro feel
+      await new Promise(resolve => setTimeout(resolve, 700));
       const estimate = await estimateTaxes(taxInfo);
       setTaxEstimate(estimate);
     } catch (err) {
       console.error("Error estimating taxes:", err);
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
-      setError(`Failed to estimate taxes: ${errorMessage}. Please check your inputs.`);
+      setError(`Failed to estimate taxes: ${errorMessage}. Check inputs.`);
     } finally {
       setIsLoading(false);
     }
   }
 
   const formatCurrency = (amount: number) => {
-      return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      // Format for retro display - no decimals unless necessary
+      return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   }
 
   return (
     <div className="space-y-6">
-       <div className="flex items-center justify-between">
-         <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <FileText className="h-8 w-8 text-secondary" /> {/* Changed icon color */}
-            Tax Planner
-         </h1>
-         {/* Potential future action button */}
-       </div>
+        <div className="flex items-center justify-between border-b-2 border-foreground pb-2 mb-4">
+            <h1 className="text-2xl font-medium uppercase flex items-center gap-2">
+               <FileText className="h-6 w-6" /> {/* Icon color from text */}
+               Tax Planner
+            </h1>
+            {/* Potential future action button */}
+          </div>
+
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Tax Information Form */}
-         <Card> {/* Removed glass class */}
-          <CardHeader>
-            <CardTitle>Estimate Your Taxes</CardTitle>
-            <CardDescription>Enter your financial information for an estimate.</CardDescription>
-          </CardHeader>
+          <Card>
+           <CardHeader>
+             <CardTitle>Estimate Your Taxes</CardTitle>
+             <CardDescription>Enter info for estimate.</CardDescription>
+           </CardHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <CardContent className="space-y-4">
@@ -107,12 +111,12 @@ export default function TaxPlannerPage() {
                   name="annualIncome"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Gross Annual Income ($)</FormLabel>
+                      <FormLabel>Annual Income ($)</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="e.g., 75000" {...field} />
                       </FormControl>
-                       <FormDescription>Your total income before deductions.</FormDescription>
-                      <FormMessage />
+                       <FormDescription className="text-xs">Total income before deductions.</FormDescription>
+                      <FormMessage className="text-xs" />
                     </FormItem>
                   )}
                 />
@@ -125,17 +129,17 @@ export default function TaxPlannerPage() {
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select filing status" />
+                            <SelectValue placeholder="Select status" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="single">Single</SelectItem>
-                          <SelectItem value="married_filing_jointly">Married Filing Jointly</SelectItem>
-                          <SelectItem value="married_filing_separately">Married Filing Separately</SelectItem>
+                          <SelectItem value="married_filing_jointly">Married Jointly</SelectItem>
+                          <SelectItem value="married_filing_separately">Married Separately</SelectItem>
                           <SelectItem value="head_of_household">Head of Household</SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <FormMessage className="text-xs"/>
                     </FormItem>
                   )}
                 />
@@ -144,12 +148,12 @@ export default function TaxPlannerPage() {
                   name="deductions"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Total Deductions ($)</FormLabel>
+                      <FormLabel>Deductions ($)</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="e.g., 13850" {...field} />
                       </FormControl>
-                      <FormDescription>Standard or itemized deductions.</FormDescription>
-                      <FormMessage />
+                      <FormDescription className="text-xs">Standard or itemized.</FormDescription>
+                      <FormMessage className="text-xs"/>
                     </FormItem>
                   )}
                 />
@@ -158,18 +162,18 @@ export default function TaxPlannerPage() {
                   name="credits"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Total Tax Credits ($)</FormLabel>
+                      <FormLabel>Tax Credits ($)</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="e.g., 1000" {...field} />
                       </FormControl>
-                       <FormDescription>Credits directly reduce your tax.</FormDescription>
-                      <FormMessage />
+                       <FormDescription className="text-xs">Directly reduce tax owed.</FormDescription>
+                      <FormMessage className="text-xs"/>
                     </FormItem>
                   )}
                 />
               </CardContent>
                <CardFooter>
-                 <Button type="submit" disabled={isLoading || !form.formState.isValid} variant="solidAccent" className="w-full"> {/* Solid accent, check validity */}
+                  <Button type="submit" disabled={isLoading || !form.formState.isValid} variant="solidAccent" className="w-full">
                    {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Calculating...
@@ -184,70 +188,69 @@ export default function TaxPlannerPage() {
         </Card>
 
         {/* Tax Estimate Display */}
-        <Card> {/* Removed glass class */}
-          <CardHeader>
-            <CardTitle>Tax Estimate & Suggestions</CardTitle>
-            <CardDescription>Estimated liability and potential savings.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 min-h-[300px] flex flex-col"> {/* Increased min-height */}
+        <Card>
+           <CardHeader>
+             <CardTitle>Tax Estimate & Suggestions</CardTitle>
+             <CardDescription>Estimated liability & savings.</CardDescription>
+           </CardHeader>
+           <CardContent className="space-y-4 min-h-[350px] flex flex-col"> {/* Adjusted min-height */}
             {isLoading && (
                <div className="flex flex-1 flex-col items-center justify-center text-muted-foreground">
                  <Loader2 className="h-8 w-8 animate-spin mb-2" />
-                 <p>Calculating estimate...</p>
+                 <p className="uppercase text-sm">Calculating...</p> {/* Retro loader text */}
                </div>
             )}
              {error && (
-                <Alert variant="destructive" className="flex-1">
-                   <AlertTitle>Error</AlertTitle>
-                   <AlertDescription>{error}</AlertDescription>
-                </Alert>
+                 <Alert variant="destructive" className="retro-window !border-destructive !shadow-[2px_2px_0px_0px_hsl(var(--destructive))] flex-1">
+                    <AlertTitle className="retro-window-header !bg-destructive !text-destructive-foreground !border-destructive !text-sm !font-medium">ERROR</AlertTitle>
+                    <AlertDescription className="retro-window-content !pt-2">{error}</AlertDescription>
+                 </Alert>
              )}
              {!isLoading && !error && !taxEstimate && (
                  <div className="flex flex-1 flex-col items-center justify-center text-center text-muted-foreground">
-                    <FileText className="h-12 w-12 mb-4" />
-                    <p>Enter your information and click "Estimate Taxes" to see results.</p>
+                    <FileText className="h-10 w-10 mb-3" />
+                    <p className="text-sm">Enter info & click "Estimate Taxes".</p>
                  </div>
              )}
              {taxEstimate && !isLoading && !error && (
-               <div className="space-y-6 flex-1"> {/* Increased spacing */}
-                 <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                        <Label className="text-xs text-muted-foreground block mb-1">Taxable Income</Label>
-                        <p className="font-medium">{formatCurrency(taxEstimate.taxableIncome)}</p>
+               <div className="space-y-5 flex-1"> {/* Adjusted spacing */}
+                 <div className="grid grid-cols-2 gap-3 text-sm border-2 border-foreground p-2">
+                    <div className="border-r-2 border-foreground pr-2">
+                         <Label className="text-xs text-muted-foreground block mb-0.5 uppercase">Taxable Income</Label>
+                        <p className="font-medium text-base">{formatCurrency(taxEstimate.taxableIncome)}</p>
                     </div>
                     <div>
-                        <Label className="text-xs text-muted-foreground block mb-1">Tax Liability (Before Credits)</Label>
-                        <p className="font-medium">{formatCurrency(taxEstimate.estimatedTaxLiability)}</p>
+                         <Label className="text-xs text-muted-foreground block mb-0.5 uppercase">Tax (Before Credits)</Label>
+                        <p className="font-medium text-base">{formatCurrency(taxEstimate.estimatedTaxLiability)}</p>
                     </div>
-                    <div>
-                        <Label className="text-xs text-muted-foreground block mb-1">Effective Tax Rate</Label>
-                        <p className="font-medium flex items-center gap-1"><Percent className="h-3 w-3" /> {taxEstimate.effectiveTaxRate.toFixed(2)}%</p>
+                     <div className="border-r-2 border-foreground pr-2 pt-2 border-t-2 border-foreground">
+                         <Label className="text-xs text-muted-foreground block mb-0.5 uppercase">Effective Rate</Label>
+                        <p className="font-medium flex items-center gap-1 text-base"><Percent className="h-3 w-3" /> {taxEstimate.effectiveTaxRate.toFixed(1)}%</p> {/* Simplified rate */}
                     </div>
-                    <div className="bg-primary/10 p-3 rounded-md col-span-2">
-                        <Label className="text-xs text-primary/80 block mb-1">Final Estimated Tax</Label>
-                        <p className="text-2xl font-bold text-primary">{formatCurrency(taxEstimate.finalTaxAmount)}</p>
+                    <div className="bg-primary/10 p-2 col-span-2 border-t-2 border-foreground text-center">
+                         <Label className="text-xs text-primary block mb-0.5 uppercase">Final Estimated Tax</Label>
+                        <p className="text-xl font-medium text-primary">{formatCurrency(taxEstimate.finalTaxAmount)}</p>
                     </div>
 
                  </div>
                  <div>
-                    <h4 className="font-semibold mb-2 flex items-center gap-1 text-base"> {/* Adjusted size */}
-                       <Lightbulb className="h-5 w-5 text-accent" /> Tax Saving Suggestions:
+                     <h4 className="font-medium mb-1 flex items-center gap-1 text-base uppercase">
+                       <Lightbulb className="h-5 w-5 text-accent" /> Suggestions:
                     </h4>
-                    <ul className="space-y-1.5 list-disc list-inside text-sm bg-muted/50 p-3 rounded-md"> {/* Added bg */}
+                     <ul className="space-y-1 list-disc list-inside text-sm bg-muted/50 p-2 border border-foreground/50"> {/* Retro list */}
                      {taxEstimate.taxSavingSuggestions.length > 0 ? (
                        taxEstimate.taxSavingSuggestions.map((suggestion, index) => (
                         <li key={index}>{suggestion}</li>
                       ))
                      ) : (
-                       <li>No specific suggestions based on current input. Consider consulting a tax professional.</li>
+                       <li>No specific suggestions. Consult a pro!</li>
                      )}
                    </ul>
                  </div>
-                  <Alert variant="default" className="bg-secondary/10 border-secondary/30 text-secondary-foreground"> {/* Adjusted alert style */}
-                     <FileText className="h-4 w-4 !text-secondary" /> {/* Icon color */}
-                     <AlertTitle className="font-semibold">Disclaimer</AlertTitle> {/* Title styling */}
-                     <AlertDescription>
-                       This is a simplified estimate for informational purposes only. Tax laws are complex. Always consult a qualified tax professional for personalized advice.
+                  <Alert variant="default" className="retro-window !border-secondary !shadow-[2px_2px_0px_0px_hsl(var(--secondary))]">
+                      <AlertTitle className="retro-window-header !bg-secondary !text-secondary-foreground !border-secondary !text-sm !font-medium">Disclaimer</AlertTitle>
+                      <AlertDescription className="retro-window-content !pt-2 text-xs">
+                        This is a simple estimate for info ONLY. Tax laws are complex. Consult a qualified professional.
                     </AlertDescription>
                    </Alert>
                </div>

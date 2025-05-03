@@ -9,8 +9,8 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      // Added slightly thicker border, subtle shadow
-      "rounded-lg border-2 border-border bg-card text-card-foreground shadow-md",
+      // Apply retro window style
+      "retro-window",
       className
     )}
     {...props}
@@ -20,13 +20,23 @@ Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { showControls?: boolean }
+>(({ className, showControls = true, children, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    // Apply retro window header style
+    className={cn("retro-window-header", className)}
     {...props}
-  />
+  >
+      <div className="flex-1">{children}</div>
+      {showControls && (
+         <div className="retro-window-controls">
+             <span /> {/* Minimize */}
+             <span /> {/* Maximize */}
+             <span className="!bg-destructive border-destructive-foreground" /> {/* Close */}
+         </div>
+      )}
+  </div>
 ))
 CardHeader.displayName = "CardHeader"
 
@@ -38,8 +48,8 @@ const CardTitle = React.forwardRef<
   <p
     ref={ref}
     className={cn(
-      // Adjusted font size and weight for playful typography
-      "text-xl font-bold leading-none tracking-tight",
+      // Use header text styles
+      "text-sm font-bold leading-none tracking-tight", // Adjusted for header
       className
     )}
     {...props}
@@ -54,7 +64,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p // Use <p> tag
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("text-xs text-primary-foreground/80", className)} // Adjusted for header
     {...props}
   />
 ))
@@ -64,7 +74,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  <div ref={ref} className={cn("retro-window-content", className)} {...props} /> // Apply content style
 ))
 CardContent.displayName = "CardContent"
 
@@ -74,7 +84,8 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    // Apply content style padding, but keep flex properties
+    className={cn("flex items-center retro-window-content pt-0", className)}
     {...props}
   />
 ))

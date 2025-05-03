@@ -5,32 +5,34 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border", // Added default border
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-2 border-foreground active:translate-y-px active:translate-x-px active:shadow-none", // Retro base style: no radius, thick border, active state removes shadow
   {
     variants: {
       variant: {
-        default: // Changed default to outlined style
-          "border-primary bg-transparent text-primary hover:bg-primary/10",
+        default: // Primary retro button: solid color, shadow
+          "bg-card text-card-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-muted",
         destructive:
-          "border-destructive bg-transparent text-destructive hover:bg-destructive/10",
-        outline: // Kept outline, but can be identical to default now
-          "border-input bg-background hover:bg-accent hover:text-accent-foreground",
+           "bg-destructive text-destructive-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-destructive/90",
+        outline: // Simple outline, less prominent
+          "border-foreground bg-transparent text-foreground hover:bg-foreground/10 shadow-none", // No shadow for outline
         secondary:
-           "border-secondary bg-transparent text-secondary hover:bg-secondary/10",
-        ghost: "border-transparent hover:bg-accent hover:text-accent-foreground", // Remove border for ghost
-        link: "text-primary underline-offset-4 hover:underline border-transparent", // Remove border for link
-        solid: "bg-primary text-primary-foreground hover:bg-primary/90 border-primary", // Added solid variant if needed
-        solidAccent: "bg-accent text-accent-foreground hover:bg-accent/90 border-accent" // Added solid accent variant
+           "bg-secondary text-secondary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-secondary/90",
+        ghost: "border-transparent hover:bg-foreground/10 shadow-none", // No border/shadow for ghost
+        link: "text-primary underline-offset-4 hover:underline border-transparent shadow-none", // No border/shadow for link
+        solid: // Alias for primary retro button style
+           "bg-primary text-primary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-primary/90",
+        solidAccent: // Accent retro button style
+           "bg-accent text-accent-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-accent/90"
       },
       size: {
         default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        sm: "h-9 px-3", // No rounding change needed
+        lg: "h-11 px-8", // No rounding change needed
         icon: "h-10 w-10",
       },
     },
     defaultVariants: {
-      variant: "default", // Default is now outlined
+      variant: "default", // Default is now the retro shaded button
       size: "default",
     },
   }

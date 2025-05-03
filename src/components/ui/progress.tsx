@@ -12,14 +12,14 @@ const Progress = React.forwardRef<
   <ProgressPrimitive.Root
     ref={ref}
     className={cn(
-      // Use muted as the background for better contrast with pastel colors
-      "relative h-2 w-full overflow-hidden rounded-full bg-muted",
+      // Retro progress: no radius, thick border, muted background
+      "relative h-4 w-full overflow-hidden rounded-none border-2 border-foreground bg-muted",
       className
     )}
     {...props}
   >
     <ProgressPrimitive.Indicator
-      // Default indicator uses primary color now
+      // Retro indicator: primary color
       className="h-full w-full flex-1 bg-primary transition-all"
       style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
     />
