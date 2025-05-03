@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { CircleDollarSign, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet"; // Added SheetTitle
 import { cn } from "@/lib/utils";
 
 export default function Header() {
@@ -11,7 +11,7 @@ export default function Header() {
       <div className="container flex h-12 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="mr-6 flex items-center space-x-2">
            <CircleDollarSign className="h-6 w-6 text-primary-foreground" />
-           <span className="font-sans text-xl font-medium">FinTrack Pro</span> {/* Updated Name */}
+           <span className="font-sans text-xl font-medium">FinTrack</span> {/* Updated Name */}
         </Link>
 
         {/* Desktop Navigation */}
@@ -60,7 +60,7 @@ export default function Header() {
           </Link>
            <Link
             href="/ai-assistant"
-             className="font-medium text-accent transition-colors hover:text-accent/80 hover:underline underline-offset-2" // Use accent for AI
+             className="font-medium text-yellow-300 transition-colors hover:text-yellow-200 hover:underline underline-offset-2" // Use accent for AI
           >
             AI Assistant
           </Link>
@@ -90,7 +90,9 @@ export default function Header() {
             >
                 {/* Retro Header for Sheet */}
                 <div className="retro-window-header !bg-secondary !text-secondary-foreground">
-                   <span className="text-lg font-sans font-medium">Menu</span>
+                   <SheetTitle> {/* Added SheetTitle for accessibility */}
+                        <span className="text-lg font-sans font-medium">Menu</span>
+                   </SheetTitle>
                    <div className="retro-window-controls">
                        <span className="!border-secondary-foreground !bg-secondary"></span>
                        <span className="!border-secondary-foreground !bg-secondary"></span>
@@ -108,7 +110,7 @@ export default function Header() {
                   className="flex items-center gap-3 text-lg font-medium mb-2"
                 >
                   <CircleDollarSign className="h-6 w-6 text-primary" />
-                  <span className="text-foreground font-sans">FinTrack Pro</span>
+                  <span className="text-foreground font-sans">FinTrack</span>
                 </Link>
                 <Link href="/dashboard" className="text-foreground hover:underline hover:text-primary underline-offset-2">
                   Dashboard
