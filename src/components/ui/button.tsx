@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -10,7 +11,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "retro-button-outline", // Retro outline is default
+        default: "retro-button-default", // Default uses outline styling
         primary: "retro-button-primary",
         secondary: "retro-button-secondary",
         accent: "retro-button-accent",
@@ -44,7 +45,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }), "font-sans")} // Ensure sans font is applied
+        className={cn(buttonVariants({ variant, size }), className, "font-sans")} // Ensure sans font is applied and merge classes correctly
         ref={ref}
         {...props}
       />
@@ -54,3 +55,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+

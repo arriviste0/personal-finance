@@ -1,3 +1,4 @@
+
 /* Import Inter font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -95,6 +96,9 @@
         /* Hover Effects */
         @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/5 active:translate-y-px active:translate-x-px active:shadow-none;
    }
+   .retro-button-default { /* Default style is outline */
+       @apply hover:bg-foreground/5;
+   }
    .retro-button-primary {
       @apply bg-primary text-primary-foreground border-primary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-primary/90;
    }
@@ -108,7 +112,7 @@
        @apply bg-destructive text-destructive-foreground border-destructive-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-destructive/90;
     }
     .retro-button-outline {
-        /* Default already uses bg-transparent */
+        /* Explicit outline variant (same as default) */
          @apply hover:bg-foreground/5;
     }
    .retro-button-ghost {
@@ -142,24 +146,31 @@
    .retro-window-controls {
       @apply flex space-x-1.5 items-center;
    }
-   .retro-window-controls span {
+   .retro-window-controls span, .retro-window-controls button {
        @apply block h-3 w-3 border border-foreground bg-background transition-transform duration-100 hover:scale-110;
    }
    /* Specific colors for controls in default retro window header */
-   .retro-window > .retro-window-header > .retro-window-controls span:first-child {
+   .retro-window > .retro-window-header > .retro-window-controls span:first-child,
+   .retro-window > .retro-window-header > .retro-window-controls button:first-child {
        @apply bg-yellow-400 border-yellow-600;
    }
-   .retro-window > .retro-window-header > .retro-window-controls span:nth-child(2) {
+   .retro-window > .retro-window-header > .retro-window-controls span:nth-child(2),
+   .retro-window > .retro-window-header > .retro-window-controls button:nth-child(2) {
        @apply bg-green-400 border-green-600;
    }
-   .retro-window > .retro-window-header > .retro-window-controls span:last-child {
+   .retro-window > .retro-window-header > .retro-window-controls span:last-child,
+   .retro-window > .retro-window-header > .retro-window-controls button:last-child {
        @apply bg-red-500 border-red-700;
    }
     /* Controls with colored headers inherit header colors */
     .retro-window-header.bg-primary > .retro-window-controls span,
+    .retro-window-header.bg-primary > .retro-window-controls button,
     .retro-window-header.bg-secondary > .retro-window-controls span,
+    .retro-window-header.bg-secondary > .retro-window-controls button,
     .retro-window-header.bg-accent > .retro-window-controls span,
-    .retro-window-header.bg-destructive > .retro-window-controls span {
+    .retro-window-header.bg-accent > .retro-window-controls button,
+    .retro-window-header.bg-destructive > .retro-window-controls span,
+    .retro-window-header.bg-destructive > .retro-window-controls button {
         @apply bg-inherit border-inherit opacity-80 hover:opacity-100;
     }
 
@@ -286,3 +297,4 @@
   0%, 100% { border-color: hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.4); }
   50% { border-color: hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); }
 }
+

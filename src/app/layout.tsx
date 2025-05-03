@@ -1,9 +1,10 @@
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google"; // Import only Inter font
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import AppLayout from "@/components/layout/AppLayout";
-import { Toaster } from "@/components/ui/toaster";
+// import { Toaster } from "@/components/ui/toaster"; // Removed from here
 
 // Configure Inter font
 const inter = Inter({
@@ -31,8 +32,9 @@ export default function RootLayout({
            inter.variable
         )}
       >
+        {/* Wrap children with AppLayout which now includes the Toaster */}
         <AppLayout>{children}</AppLayout>
-        <Toaster />
+         {/* <Toaster /> // Removed from here */}
       </body>
     </html>
   );

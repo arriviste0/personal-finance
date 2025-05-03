@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { CircleDollarSign, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,13 +11,13 @@ export default function Header() {
       <div className="container flex h-12 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="mr-6 flex items-center space-x-2">
            <CircleDollarSign className="h-6 w-6 text-primary-foreground" />
-           <span className="font-sans text-xl font-medium">FinTrack</span>
+           <span className="font-sans text-xl font-medium">FinTrack Pro</span> {/* Updated Name */}
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden gap-4 text-base md:flex">
           <Link
-            href="/"
+            href="/dashboard" // Link to dashboard instead of root
              className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
           >
             Dashboard
@@ -63,6 +64,11 @@ export default function Header() {
           >
             AI Assistant
           </Link>
+           {/* Placeholder for Auth Buttons */}
+           {/* <div className="flex items-center gap-2">
+               <Button variant="secondary" size="sm" className="retro-button">Login</Button>
+               <Button variant="default" size="sm" className="retro-button">Sign Up</Button>
+           </div> */}
         </nav>
 
         {/* Mobile Navigation */}
@@ -102,9 +108,9 @@ export default function Header() {
                   className="flex items-center gap-3 text-lg font-medium mb-2"
                 >
                   <CircleDollarSign className="h-6 w-6 text-primary" />
-                  <span className="text-foreground font-sans">FinTrack</span>
+                  <span className="text-foreground font-sans">FinTrack Pro</span>
                 </Link>
-                <Link href="/" className="text-foreground hover:underline hover:text-primary underline-offset-2">
+                <Link href="/dashboard" className="text-foreground hover:underline hover:text-primary underline-offset-2">
                   Dashboard
                 </Link>
                  <Link
@@ -149,6 +155,10 @@ export default function Header() {
                  >
                   AI Assistant
                 </Link>
+                 {/* Placeholder for Mobile Auth Links */}
+                 {/* <Separator className="my-2" />
+                 <Link href="/login" className="text-foreground hover:underline hover:text-primary underline-offset-2">Login</Link>
+                 <Link href="/signup" className="text-foreground hover:underline hover:text-primary underline-offset-2">Sign Up</Link> */}
               </nav>
             </SheetContent>
           </Sheet>
