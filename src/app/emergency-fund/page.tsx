@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ShieldAlert, PlusCircle, MinusCircle, DollarSign, ListChecks, Check, Trash2 } from "lucide-react";
+import { ShieldAlert, PlusCircle, MinusCircle, DollarSign, ListChecks, Check, Trash2, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -347,3 +347,4 @@ export default function EmergencyFundPage() {
     </div>
   );
 }
+
