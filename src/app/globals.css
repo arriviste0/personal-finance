@@ -219,7 +219,7 @@
 
      /* Retro Alert */
     .retro-alert {
-      @apply relative w-full border-2 border-foreground p-4 bg-card [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-2px];
+      @apply relative w-full border-2 border-foreground p-4 bg-card [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-2px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground;
        font-family: var(--font-sans), system-ui, sans-serif;
     }
     .retro-alert-destructive {
@@ -298,10 +298,12 @@
   50% { border-color: hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 body {
     font-family: 'VT323', monospace;
-}
+}*/
 
 /* Additional styles for other components can be added here if needed */
+
+
