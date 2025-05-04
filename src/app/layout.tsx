@@ -1,4 +1,4 @@
-use client";
+'use client';
 
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google"; // Import Quicksand font
@@ -40,4 +40,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 

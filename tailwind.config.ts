@@ -73,8 +73,8 @@ export default {
           to: { height: '0' },
         },
         'retro-glow': {
-          '0%, 100%': { 'box-shadow': '0 0 3px 1px hsl(var(--primary)/0.5)' },
-          '50%': { 'box-shadow': '0 0 6px 2px hsl(var(--primary)/0.7)' },
+          '0%, 100%': { 'box-shadow': '0 0 4px 1px hsl(var(--primary)/0.6)' },
+          '50%': { 'box-shadow': '0 0 8px 3px hsl(var(--primary)/0.8)' },
         },
         'retro-blink': {
             '0%, 100%': { opacity: '1' },
@@ -99,8 +99,8 @@ export default {
          'retro-alert-pulse': 'retro-alert-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       boxShadow: {
-         'retro': '3px 3px 0px 0px hsl(var(--foreground))', // Slightly reduced shadow
-         'retro-sm': '2px 2px 0px 0px hsl(var(--foreground))',
+         'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.15)', // Slightly reduced shadow
+         'retro-sm': '2px 2px 0px 0px hsl(var(--foreground)/0.15)',
          'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.15)', // Adjusted inset shadow
          'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.1)',
       },
