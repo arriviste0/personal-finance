@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ShieldAlert, PlusCircle, MinusCircle, DollarSign, ListChecks, Check, Trash2,  } from "lucide-react";
+import { ShieldAlert, PlusCircle, MinusCircle, DollarSign, ListChecks, Check, Trash2, Edit  } from "lucide-react";
 import { X } from 'lucide-react'; // Import Textarea // Import X from lucide-react
 
 import {
@@ -373,3 +373,4 @@ export default function EmergencyFundPage() {
     </div>
   );
 }
+
