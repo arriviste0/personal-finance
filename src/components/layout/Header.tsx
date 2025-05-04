@@ -1,13 +1,15 @@
+'use client'; // Added 'use client' directive
 
 import Link from "next/link";
-import { CircleDollarSign, Menu, X } from "lucide-react";
+import { CircleDollarSign, Menu, X, Banknote } from "lucide-react"; // Added Banknote
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet"; // Added SheetTitle
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast"; // Import useToast
 
 export default function Header() {
-    const { toast } = useToast();
+    const { toast } = useToast(); // This hook requires the component to be a Client Component
+
     const handleLinkAccount = () => {
         // In a real application, initiate the Plaid Link flow here.
         // For this demo, show a success message using the toast.
