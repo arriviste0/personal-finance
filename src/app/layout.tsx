@@ -1,9 +1,8 @@
-'use client';
 
-import type {Metadata} from 'next';
-import {Inter} from 'next/font/google'; // Import Inter font
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google'; // Import Inter font
 import './globals.css';
-import {cn} from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
 
 // Configure Inter font
@@ -38,5 +37,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-

@@ -10,8 +10,8 @@ export default {
   theme: {
   	extend: {
        fontFamily: {
-         sans: ["ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"], // Default sans-serif
-         heading: ["ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"], // Default sans-serif
+         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'], // Correctly use CSS variable
+         heading: ['var(--font-sans)', 'system-ui', 'sans-serif'], // Correctly use CSS variable
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -52,15 +52,16 @@ export default {
   				'2': 'hsl(var(--chart-2))',
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
+  				'5': 'hsl(var(--chart-5))',
+          '6': 'hsl(var(--chart-6))' // Added chart color
   			},
   		},
   		borderRadius: {
         none: '0',
-        sm: '0',
-        DEFAULT: '0',
-        md: '0',
-        lg: '0',
+        sm: '0', // No radius for retro
+        DEFAULT: '0', // No radius for retro
+        md: '0', // No radius for retro
+        lg: '0', // No radius for retro
         full: '9999px',
       },
   		keyframes: {
@@ -81,13 +82,13 @@ export default {
             '50%': { opacity: '0.5' },
         },
          'retro-check-pop': {
-           '0%': { transform: 'scale(0.8); opacity: 0.5; }
-           '80%': { transform: 'scale(1.1); opacity: 1' }
-           '100%': { transform: 'scale(1); opacity: 1' }
+           '0%': { transform: 'scale(0.8)', opacity: '0.5' }, // Wrapped transform in quotes
+           '80%': { transform: 'scale(1.1)', opacity: '1' }, // Wrapped transform in quotes
+           '100%': { transform: 'scale(1)', opacity: '1' }, // Wrapped transform in quotes
          },
          'retro-alert-pulse': {
-            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.4); }
-            '50%': { borderColor: 'hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); }
+            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7)', boxShadow: '0 0 0 0 hsl(var(--destructive)/0.4)' }, // Wrapped box-shadow in quotes
+            '50%': { borderColor: 'hsl(var(--destructive))', boxShadow: '0 0 0 3px hsl(var(--destructive)/0.1)' }, // Wrapped box-shadow in quotes
          }
       },
       animation: {
@@ -108,3 +109,4 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+

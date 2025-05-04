@@ -1,4 +1,3 @@
-/* Import Inter font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -9,44 +8,47 @@
 @layer base {
   :root {
     /* Light Theme - Adjusted for better contrast and finance feel */
-    --background: 0, 0%, 100%; /* White */
-    --foreground: 220, 15%, 20%; /* Dark Blue-Grey */
+    --background: 0 0% 100%; /* White */
+    --foreground: 220 15% 20%; /* Dark Blue-Grey */
 
-    --card: 210, 20%, 98%; /* Very Light Cool Grey */
-    --card-foreground: 220, 15%, 20%; /* Dark Blue-Grey */
+    --card: 210 20% 98%; /* Very Light Cool Grey */
+    --card-foreground: 220 15% 20%; /* Dark Blue-Grey */
 
-    --popover: 0, 0%, 100%; /* White */
-    --popover-foreground: 220, 15%, 20%; /* Dark Blue-Grey */
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 220 15% 20%; /* Dark Blue-Grey */
 
-    --primary: 210, 80%, 55%; /* Slightly brighter Blue */
-    --primary-foreground: 0, 0%, 100%; /* White */
+    --primary: 210 80% 55%; /* Slightly brighter Blue */
+    --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 260, 65%, 60%; /* Clearer Purple */
-    --secondary-foreground: 0, 0%, 100%; /* White */
+    --secondary: 260 65% 60%; /* Clearer Purple */
+    --secondary-foreground: 0 0% 100%; /* White */
 
-    --muted: 210, 25%, 95%; /* Light Grey */
-    --muted-foreground: 215, 15%, 45%; /* Medium Grey - Darker */
+    --muted: 210 25% 95%; /* Light Grey */
+    --muted-foreground: 215 15% 45%; /* Medium Grey - Darker */
 
-    --accent: 340, 75%, 60%; /* Brighter Pink/Rose */
-    --accent-foreground: 0, 0%, 100%; /* White */
+    --accent: 340 75% 60%; /* Brighter Pink/Rose */
+    --accent-foreground: 0 0% 100%; /* White */
 
-    --destructive: 0, 75%, 55%; /* Clearer Red */
-    --destructive-foreground: 0, 0%, 100%; /* White */
+    --destructive: 0 75% 55%; /* Clearer Red */
+    --destructive-foreground: 0 0% 100%; /* White */
 
-    --border: 210, 15%, 85%; /* Light Grey Border - Slightly darker */
-    --input: 0, 0%, 100%;   /* White Input Background */
-    --ring: 210, 70%, 65%; /* Lighter Blue for focus rings */
+    --border: 210 15% 85%; /* Light Grey Border - Slightly darker */
+    --input: 210 15% 85%;   /* Light Grey Input Background */
+    --ring: 210 70% 65%; /* Lighter Blue for focus rings */
 
     /* Chart Colors - Adjusted Light theme with better contrast */
-    --chart-1: 210, 80%, 55%; /* Brighter Blue */
-    --chart-2: 260, 65%, 60%; /* Clearer Purple */
-    --chart-3: 340, 75%, 60%; /* Brighter Pink/Rose */
-    --chart-4: 160, 65%, 45%; /* Clearer Teal/Green */
-    --chart-5: 35, 85%, 55%; /* Brighter Orange */
+    --chart-1: 210 80% 55%; /* Brighter Blue */
+    --chart-2: 260 65% 60%; /* Clearer Purple */
+    --chart-3: 340 75% 60%; /* Brighter Pink/Rose */
+    --chart-4: 160 65% 45%; /* Clearer Teal/Green */
+    --chart-5: 35 85% 55%; /* Brighter Orange */
+    --chart-6: 190 70% 50%; /* Added cyan for flexibility */
+
 
     --radius: 0rem; /* No border radius for retro */
   }
 
+  /* Removed dark theme definition */
 }
 
 @layer base {
@@ -199,14 +201,19 @@
          @apply relative flex w-full cursor-pointer select-none items-center py-1.5 pl-8 pr-2 text-base outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100;
           font-family: var(--font-sans), system-ui, sans-serif;
      }
-     /* Retro Checkbox */
-    .retro-checkbox {
-        @apply peer h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150;
+     /* Retro Checkbox / Switch */
+    .retro-checkbox, [role="switch"] {
+        /* @apply peer h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150; */
+         @apply h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150;
         @apply hover:border-primary;
     }
-    .retro-checkbox[data-state="checked"] {
+    .retro-checkbox[data-state="checked"], [role="switch"][data-state="checked"] {
         @apply animate-retro-check-pop;
     }
+    /* Switch specific thumb */
+     [role="switch"] > span {
+         @apply pointer-events-none block h-3 w-3 rounded-full bg-foreground shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0 data-[state=checked]:bg-primary-foreground;
+     }
 
      /* Retro Progress */
     .retro-progress {
@@ -297,14 +304,24 @@
   50% { border-color: hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); }
 }
 
-/*@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
-body {
-    font-family: 'VT323', monospace;
-}*/
-
-/* Additional styles for other components can be added here if needed */
-.vt323_4fb8853f-module__We9b0a__variable {
-  font-family: 'VT323';
+/* Override specific ShadCN styles that clash with retro */
+[data-radix-select-content-wrapper] {
+    box-shadow: none !important; /* Remove default select content shadow */
 }
 
+[data-radix-progress-root] {
+   border-radius: 0 !important;
+}
+
+/* Ensure consistent font */
+.font-sans {
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+}
+
+/* Ensure charts use sans font */
+.recharts-wrapper {
+    font-family: var(--font-sans), system-ui, sans-serif !important;
+}
+.recharts-text {
+     font-family: var(--font-sans), system-ui, sans-serif !important;
+}
