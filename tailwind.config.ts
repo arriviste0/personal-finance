@@ -83,7 +83,7 @@ export default {
          'retro-check-pop': {
            '0%': { transform: 'scale(0.8)', opacity: '0.5' },
            '80%': { transform: 'scale(1.1)', opacity: '1' },
-           '100%': { transform: 'scale(1)', opacity: '1' },
+           '100%': { transform: 'scale(1)', opacity: 1 },
          },
          'retro-alert-pulse': {
             '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.4); },
