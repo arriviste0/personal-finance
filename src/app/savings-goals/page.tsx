@@ -1,9 +1,10 @@
+'use client'; // Added 'use client' directive
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { PlusCircle, PiggyBank, HandCoins, Target, Edit, Trash2, Save, X, MinusCircle, DollarSign, CheckCircle } from "lucide-react";
-// import Link from "next/link"; // Remove unused import
+import { PlusCircle, PiggyBank, HandCoins, Target, Edit, Trash2, DollarSign, CheckCircle, X } from "lucide-react"; // Added X
 import {
   Dialog,
   DialogContent,
@@ -34,7 +35,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/select"; // Import Select components
 import { cn } from '@/lib/utils';
 
 interface SavingsGoal {
@@ -131,6 +132,7 @@ export default function SavingsGoalsPage() {
                 </Button>
             </DialogTrigger>
             <GoalFormDialog
+              key="create-goal-dialog" // Added key for consistency
               title="Create New Savings Goal"
               description="Define your new financial target."
               onSave={handleCreateGoal}
@@ -143,15 +145,15 @@ export default function SavingsGoalsPage() {
         {goals.map((goal) => {
             const percentage = goal.target > 0 ? Math.round((goal.current / goal.target) * 100) : 0;
             const isComplete = percentage >= 100;
-            const iconColor = isComplete ? 'text-green-400' : (goal.iconName === 'HandCoins' ? 'text-yellow-400' : goal.iconName === 'Target' ? 'text-blue-400' : 'text-primary'); // Use theme colors conceptually
+            const iconColor = isComplete ? 'text-green-500' : (goal.iconName === 'HandCoins' ? 'text-secondary' : goal.iconName === 'Target' ? 'text-blue-500' : 'text-primary'); // Use theme colors more directly
             const IconComponent = getIcon(isComplete ? 'CheckCircle' : goal.iconName, cn("h-8 w-8", iconColor));
 
             return (
-              <Card key={goal.id} className="retro-window flex flex-col group relative overflow-visible">
+              <Card key={goal.id} className="retro-card flex flex-col group relative overflow-visible"> {/* retro-card */}
                  <div className="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
                       <Dialog open={isEditDialogOpen && editingGoal?.id === goal.id} onOpenChange={(open) => {if (!open) setEditingGoal(null); setIsEditDialogOpen(open);}}>
                         <DialogTrigger asChild>
-                            <Button variant="outline" size="icon" className="retro-button-icon h-7 w-7 bg-background/80 hover:bg-muted">
+                            <Button variant="outline" size="icon" className="retro-button retro-button-icon h-7 w-7 bg-background/80 hover:bg-muted">
                                <Edit className="h-4 w-4 text-muted-foreground"/>
                                <span className="sr-only">Edit Goal</span>
                             </Button>
@@ -167,55 +169,49 @@ export default function SavingsGoalsPage() {
                      </Dialog>
                      <AlertDialog>
                        <AlertDialogTrigger asChild>
-                         <Button variant="outline" size="icon" className="retro-button-icon h-7 w-7 bg-background/80 hover:text-destructive">
-                            <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive"/>
+                         <Button variant="outline" size="icon" className="retro-button retro-button-icon h-7 w-7 bg-background/80 hover:bg-destructive/10 hover:border-destructive/50">
+                            <Trash2 className="h-4 w-4 text-muted-foreground group-hover:text-destructive"/>
                             <span className="sr-only">Delete Goal</span>
                          </Button>
                        </AlertDialogTrigger>
                        <AlertDialogContent className="retro-window">
                            <AlertDialogHeader className="retro-window-header !bg-destructive !text-destructive-foreground">
-                             <AlertDialogTitle className="text-xl">Are you absolutely sure?</AlertDialogTitle> {/* Larger title */}
-                             <AlertDialogDescription className="!text-destructive-foreground/90 text-base"> {/* Larger text */}
-                                This action cannot be undone. This will permanently delete the "{goal.name}" savings goal.
-                             </AlertDialogDescription>
-                              <div className="retro-window-controls">
-                                <span className="!bg-destructive !border-destructive-foreground"></span>
-                                <span className="!bg-destructive !border-destructive-foreground"></span>
-                            </div>
+                             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                              <div className="retro-window-controls"><span></span><span></span></div>
                          </AlertDialogHeader>
-
-                         <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex !sm:justify-end !gap-3"> {/* Increased gap */}
+                         <AlertDialogDescription className="retro-window-content !border-t-0 pt-2">
+                              This action cannot be undone. This will permanently delete the "{goal.name}" savings goal.
+                         </AlertDialogDescription>
+                         <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
                            <AlertDialogCancel asChild><Button variant="secondary" className="retro-button">Cancel</Button></AlertDialogCancel>
                            <AlertDialogAction asChild><Button variant="destructive" className="retro-button" onClick={() => handleDeleteGoal(goal.id)}>Yes, Delete Goal</Button></AlertDialogAction>
                          </AlertDialogFooter>
                        </AlertDialogContent>
                      </AlertDialog>
                    </div>
-                  <CardHeader className="retro-window-header flex-row items-center gap-4 pb-2">
+                  <CardHeader className="retro-card-header flex-row items-center gap-4 pb-2">
                    {IconComponent}
                    <div className="flex-1">
-                     <CardTitle className="text-xl font-medium">{goal.name}</CardTitle> {/* Larger title */}
-                      <CardDescription className="text-base leading-tight !text-primary-foreground/80">{goal.description}</CardDescription> {/* Larger text */}
+                     <CardTitle className="text-base font-semibold">{goal.name}</CardTitle>
+                      <CardDescription className="text-sm leading-tight !text-primary-foreground/80">{goal.description}</CardDescription>
                    </div>
                     <div className="retro-window-controls">
-                        <span className="!bg-primary !border-primary-foreground"></span>
-                        <span className="!bg-primary !border-primary-foreground"></span>
-                        <span className="!bg-primary !border-primary-foreground"></span>
+                        <span></span><span></span><span></span>
                     </div>
                  </CardHeader>
-                <CardContent className="retro-window-content flex-1 space-y-3 pt-4">
-                   <Progress value={percentage} className={cn("h-3.5", isComplete && "[&>div]:bg-green-500")} /> {/* Slightly thicker */}
-                  <div className="text-base text-muted-foreground flex justify-between items-center"> {/* Base text size */}
-                     <span className={cn("font-medium", isComplete && "text-green-400")}>
+                <CardContent className="retro-card-content flex-1 space-y-3 pt-4">
+                   <Progress value={percentage} className={cn("h-3 retro-progress", isComplete && "indicator:!bg-green-500")} indicatorClassName={cn("retro-progress-indicator", isComplete ? "!bg-green-500" : "!bg-primary")} />
+                  <div className="text-sm text-muted-foreground flex justify-between items-center">
+                     <span className={cn("font-medium", isComplete && "text-green-500")}>
                         {isComplete ? "Goal Achieved!" : `${percentage}% Funded`}
                      </span>
-                     <span>${goal.current.toLocaleString()} / <span className="font-medium text-foreground">${goal.target.toLocaleString()}</span></span>
+                     <span>${goal.current.toLocaleString()} / <span className="font-semibold text-foreground">${goal.target.toLocaleString()}</span></span>
                   </div>
                 </CardContent>
-                <CardFooter className="retro-window-content !border-t-0 pt-0 pb-4 px-4">
+                <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                    <Button
-                     variant="outline"
-                     className="retro-button w-full border-primary text-primary hover:bg-primary/10 hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                     variant="primary" // Changed to primary
+                     className="retro-button w-full disabled:opacity-50 disabled:cursor-not-allowed"
                      onClick={() => openAddFundsDialog(goal.id)}
                      disabled={isComplete}
                     >
@@ -229,22 +225,22 @@ export default function SavingsGoalsPage() {
          {/* Add New Goal Card Placeholder */}
          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
-                 <button className="retro-window flex flex-col items-center justify-center p-6 min-h-[240px] text-center group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:shadow-[4px_4px_0px_0px_hsl(var(--ring))] transition-shadow duration-200 hover:shadow-[6px_6px_0px_0px_hsl(var(--primary))]"> {/* Taller card */}
-                    <div className="retro-window-header w-full">
-                       <span>New Goal</span>
+                 <button className="retro-card flex flex-col items-center justify-center p-6 min-h-[240px] text-center group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:shadow-[4px_4px_0px_0px_hsl(var(--ring))] transition-shadow duration-200 hover:shadow-[6px_6px_0px_0px_hsl(var(--primary))]">
+                    <div className="retro-card-header w-full !bg-muted"> {/* Use muted background */}
+                       <CardTitle className="text-base font-semibold">New Goal</CardTitle>
                        <div className="retro-window-controls">
                             <span></span><span></span><span></span>
                        </div>
                     </div>
-                     <div className="retro-window-content flex-1 flex flex-col items-center justify-center w-full">
-                       <PlusCircle className="h-12 w-12 text-muted-foreground group-hover:text-primary transition-colors duration-200 mb-4" /> {/* Larger icon */}
-                       <span className="text-xl font-medium mb-1 text-foreground group-hover:text-primary">Create New Goal</span>
-                       <span className="text-base text-muted-foreground">Click here to start saving!</span>
+                     <div className="retro-card-content flex-1 flex flex-col items-center justify-center w-full pt-4">
+                       <PlusCircle className="h-10 w-10 text-muted-foreground group-hover:text-primary transition-colors duration-200 mb-3" />
+                       <span className="text-base font-medium mb-1 text-foreground group-hover:text-primary">Create New Goal</span>
+                       <span className="text-sm text-muted-foreground">Click here to start saving!</span>
                      </div>
                  </button>
             </DialogTrigger>
             <GoalFormDialog
-              key="create"
+              key="create-new-goal-dialog" // Added key
               title="Create New Savings Goal"
               description="Define your new financial target."
               onSave={handleCreateGoal}
@@ -257,28 +253,31 @@ export default function SavingsGoalsPage() {
        <Dialog open={isAddFundsDialogOpen} onOpenChange={setIsAddFundsDialogOpen}>
           <DialogContent className="retro-window sm:max-w-[425px]">
              <DialogHeader className="retro-window-header !bg-accent !text-accent-foreground">
-               <DialogTitle className="text-xl">Manage Funds: {currentFundsGoal?.name}</DialogTitle> {/* Larger title */}
-               <DialogDescription className="!text-accent-foreground/90 text-base"> {/* Larger text */}
-                 Current Progress: ${currentFundsGoal?.current.toLocaleString()} / ${currentFundsGoal?.target.toLocaleString()}
+               <DialogTitle>Manage Funds: {currentFundsGoal?.name}</DialogTitle>
+               <DialogDescription className="!text-accent-foreground/90">
+                 Current: ${currentFundsGoal?.current.toLocaleString()} / Target: ${currentFundsGoal?.target.toLocaleString()}
                </DialogDescription>
                <div className="retro-window-controls">
                    <span className="!bg-accent !border-accent-foreground"></span>
                    <span className="!bg-accent !border-accent-foreground"></span>
                     <DialogClose asChild>
-                       <span className="!bg-destructive !border-destructive-foreground cursor-pointer"></span>
+                        <Button variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
+                           <X className="h-3 w-3"/>
+                           <span className="sr-only">Close</span>
+                       </Button>
                     </DialogClose>
                </div>
              </DialogHeader>
              <div className="space-y-4 p-4 retro-window-content">
                <div className="grid grid-cols-4 items-center gap-4">
-                 <Label htmlFor={`modify-amount-${fundsGoalId}`} className="text-right text-base"> {/* Base text size */}
+                 <Label htmlFor={`modify-amount-${fundsGoalId}`} className="text-right">
                    Amount ($)
                  </Label>
                  <Input id={`modify-amount-${fundsGoalId}`} type="number" defaultValue="50" className="col-span-3 retro-input" />
                </div>
-                <p className="text-sm text-muted-foreground text-center px-4">Enter a positive value to add funds, or a negative value to remove funds.</p>
+                <p className="text-xs text-muted-foreground text-center px-4">Enter a positive value to add funds, or a negative value to remove funds.</p>
              </div>
-             <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-3 !p-4"> {/* Increased gap */}
+             <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                <DialogClose asChild>
                     <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
                </DialogClose>
@@ -354,33 +353,35 @@ function GoalFormDialog({ title, description, goal, onSave, onClose }: GoalFormD
   return (
     <DialogContent className="retro-window sm:max-w-[450px]">
       <DialogHeader className="retro-window-header">
-        <DialogTitle className="text-xl">{title}</DialogTitle> {/* Larger title */}
-         <DialogDescription className="!text-primary-foreground/80 text-base">{description}</DialogDescription> {/* Larger text */}
+        <DialogTitle>{title}</DialogTitle>
+         <DialogDescription className="!text-primary-foreground/80">{description}</DialogDescription>
         <div className="retro-window-controls">
-            <span className="!bg-primary !border-primary-foreground"></span>
-            <span className="!bg-primary !border-primary-foreground"></span>
+            <span></span><span></span>
              <DialogClose asChild>
-                 <span className="!bg-destructive !border-destructive-foreground cursor-pointer"></span>
+                <Button variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
+                   <X className="h-3 w-3"/>
+                   <span className="sr-only">Close</span>
+                </Button>
              </DialogClose>
         </div>
       </DialogHeader>
       <div className="grid gap-4 p-4 retro-window-content">
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="name" className="text-right text-base">Name</Label> {/* Base text size */}
+          <Label htmlFor="name" className="text-right">Name</Label>
           <Input id="name" name="name" value={formData.name} onChange={handleChange} className={cn("col-span-3 retro-input", errors.name && 'border-destructive focus:border-destructive focus:ring-destructive')} />
-           {errors.name && <p className="col-start-2 col-span-3 text-sm text-destructive -mt-1">{errors.name}</p>}
+           {errors.name && <p className="col-start-2 col-span-3 text-xs text-destructive -mt-1">{errors.name}</p>}
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="target" className="text-right text-base">Target ($)</Label>
+          <Label htmlFor="target" className="text-right">Target ($)</Label>
           <Input id="target" name="target" type="number" min="0.01" step="0.01" value={formData.target} onChange={handleChange} className={cn("col-span-3 retro-input", errors.target && 'border-destructive focus:border-destructive focus:ring-destructive')} />
-           {errors.target && <p className="col-start-2 col-span-3 text-sm text-destructive -mt-1">{errors.target}</p>}
+           {errors.target && <p className="col-start-2 col-span-3 text-xs text-destructive -mt-1">{errors.target}</p>}
         </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="description" className="text-right text-base">Description</Label>
-          <Textarea id="description" name="description" value={formData.description} onChange={handleChange} className="col-span-3 h-24 retro-textarea" placeholder="Optional: Add some details..." /> {/* Taller textarea */}
+        <div className="grid grid-cols-4 items-start gap-4"> {/* Changed to items-start */}
+          <Label htmlFor="description" className="text-right pt-2">Description</Label> {/* Added pt-2 */}
+          <Textarea id="description" name="description" value={formData.description} onChange={handleChange} className="col-span-3 h-20 retro-textarea" placeholder="Optional: Add some details..." />
         </div>
          <div className="grid grid-cols-4 items-center gap-4">
-           <Label htmlFor="iconName" className="text-right text-base">Icon</Label>
+           <Label htmlFor="iconName" className="text-right">Icon</Label>
            <Select name="iconName" value={formData.iconName} onValueChange={(value) => handleChange({ target: { name: 'iconName', value } } as any)}>
                 <SelectTrigger id="iconName" className="col-span-3 retro-select-trigger">
                     <SelectValue placeholder="Select an icon" />
@@ -398,7 +399,7 @@ function GoalFormDialog({ title, description, goal, onSave, onClose }: GoalFormD
            </Select>
          </div>
       </div>
-      <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-3 !p-4"> {/* Increased gap */}
+      <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
         <Button type="button" variant="secondary" className="retro-button" onClick={onClose}>Cancel</Button>
         <Button type="submit" variant="primary" className="retro-button" onClick={handleSave}>{goal ? 'Save Changes' : 'Create Goal'}</Button>
       </DialogFooter>
