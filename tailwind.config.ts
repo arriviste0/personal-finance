@@ -10,8 +10,8 @@ export default {
   theme: {
   	extend: {
        fontFamily: {
-         sans: ["Inter", "sans-serif"], // Use Inter as default sans
-         heading: ["Inter", "sans-serif"], // Use Inter for headings as well
+         sans: ["ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"], // Default sans-serif
+         heading: ["ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"], // Default sans-serif
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -78,16 +78,16 @@ export default {
         },
         'retro-blink': {
             '0%, 100%': { opacity: '1' },
-            '50%': { opacity: '0.6' },
+            '50%': { opacity: '0.5' },
         },
          'retro-check-pop': {
-           '0%': { transform: 'scale(0.8)', opacity: '0.5' },
-           '80%': { transform: 'scale(1.1)', opacity: '1' },
-           '100%': { transform: 'scale(1)', opacity: 1 },
+           '0%': { transform: 'scale(0.8); opacity: 0.5; }
+           '80%': { transform: 'scale(1.1); opacity: 1' }
+           '100%': { transform: 'scale(1); opacity: 1' }
          },
          'retro-alert-pulse': {
-            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.4); },
-            '50%': { borderColor: 'hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); },
+            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.4); }
+            '50%': { borderColor: 'hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); }
          }
       },
       animation: {
