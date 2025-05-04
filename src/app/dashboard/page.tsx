@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend } from "recharts";
-import { HandCoins, PiggyBank, Target, Lightbulb, ListChecks, TrendingDown, Landmark, ShieldAlert, Activity, PlusCircle, TrendingUp, Banknote, X } from "lucide-react"; // Added Banknote, X
+import { HandCoins, PiggyBank, Target, Lightbulb, ListChecks, TrendingDown, Landmark, ShieldAlert, Activity, PlusCircle, TrendingUp, Banknote, X, DollarSign } from "lucide-react"; // Added Banknote, X, DollarSign
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,7 +19,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog"; // Import Dialog components
-
+import { useToast } from "@/hooks/use-toast"; // Import useToast
 
 const savingsGoals = [
   { name: "Dream Vacation", current: 750, target: 2000, icon: <PiggyBank className="h-5 w-5 text-primary" /> },
@@ -59,10 +59,21 @@ const emergencyFund = { current: 4500, target: 15000 }; // Mock emergency fund d
 
 export default function DashboardPage() {
   const [bankLinkModalOpen, setBankLinkModalOpen] = useState(false); // State for bank linking modal
+    const { toast } = useToast(); // Hook for displaying toasts
 
   const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
+
+   const handleBankLink = () => {
+       // In a real application, initiate the Plaid Link flow here.
+       // For this demo, show a success message using the toast.
+       toast({
+           title: "Bank Account Linked!",
+           description: "Successfully connected to your bank account.",
+       });
+       setBankLinkModalOpen(false);
+   };
 
   return (
      <> {/* Wrap with fragment to allow modal */}
@@ -206,10 +217,9 @@ export default function DashboardPage() {
                      width={85}
                     />
                     <ChartTooltip
-                       cursor={{ fill: 'hsl(var(--accent)/0.15)' }}
                        contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--border))', fontFamily: 'var(--font-sans)', fontSize: '12px', boxShadow: 'none' }}
                        itemStyle={{ color: 'hsl(var(--foreground))' }}
-                       content={<ChartTooltipContent indicator="dot" hideLabel />}
+                       formatter={(value: number, name: string) => [`$${value.toLocaleString()}`, name]}
                      />
                     <Bar dataKey="budget" stackId="a" fill="hsl(var(--muted))" radius={0} barSize={16}/>
                    <Bar dataKey="spent" stackId="a" fill="hsl(var(--secondary))" radius={0} barSize={16}/> {/* Adjusted color */}

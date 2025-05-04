@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -169,7 +167,7 @@ export default function SavingsGoalsPage() {
                      </Dialog>
                      <AlertDialog>
                        <AlertDialogTrigger asChild>
-                         <Button variant="outline" size="icon" className="retro-button-icon h-7 w-7 bg-background/80 hover:bg-destructive/10">
+                         <Button variant="outline" size="icon" className="retro-button-icon h-7 w-7 bg-background/80 hover:text-destructive">
                             <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive"/>
                             <span className="sr-only">Delete Goal</span>
                          </Button>
@@ -300,7 +298,6 @@ export default function SavingsGoalsPage() {
     </div>
   );
 }
-
 
 // --- Reusable Goal Form Dialog Component ---
 interface GoalFormDialogProps {

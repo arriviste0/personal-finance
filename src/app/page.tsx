@@ -1,11 +1,11 @@
-'use client';
+use client";
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CircleDollarSign, Banknote, PiggyBank, Landmark, TrendingUp, Lightbulb, ShieldAlert, BarChart, Sparkles, Check, Award } from 'lucide-react'; // Added icons
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -191,7 +191,6 @@ export default function LandingPage() {
            variants={sectionVariants}
            initial="hidden"
            whileInView="visible"
-           viewport={{ once: true, amount: 0.2 }}
          >
            <div className="container mx-auto text-center">
              <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground">Pricing Plans</h2>
@@ -214,11 +213,11 @@ export default function LandingPage() {
                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Manual Expense Logging</li>
                    </ul>
                  </CardContent>
-                  
+                  <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                     <Link href="/dashboard" passHref className="w-full">
                         <Button variant="outline" className="w-full retro-button">Start Free (Demo)</Button>
                     </Link>
-                  
+                  </CardFooter>
                </Card>
 
                 {/* Pro Plan */}
@@ -240,11 +239,11 @@ export default function LandingPage() {
                        <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Priority Support</li>
                      </ul>
                   </CardContent>
-                   
+                   <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                      <Link href="/dashboard" passHref className="w-full">
                          <Button variant="primary" className="w-full retro-button">Go Pro (Demo)</Button>
                      </Link>
-                   
+                   </CardFooter>
                 </Card>
 
                {/* Enterprise/Custom Plan (Optional) */}
@@ -263,9 +262,9 @@ export default function LandingPage() {
                       <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Advanced Reporting</li>
                     </ul>
                   </CardContent>
-                   
+                  <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                      <Button variant="secondary" className="w-full retro-button">Contact Sales</Button>
-                   
+                   </CardFooter>
                </Card>
              </div>
            </div>

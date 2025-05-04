@@ -4,8 +4,19 @@ import { CircleDollarSign, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet"; // Added SheetTitle
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Header() {
+    const { toast } = useToast();
+    const handleLinkAccount = () => {
+        // In a real application, initiate the Plaid Link flow here.
+        // For this demo, show a success message using the toast.
+        toast({
+            title: "Bank Account Linking (Placeholder)",
+            description: "This would normally launch a secure bank linking process.",
+        });
+    };
+
   return (
      <header className="sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground">
       <div className="container flex h-12 max-w-screen-2xl items-center justify-between">
@@ -157,6 +168,9 @@ export default function Header() {
                  >
                   AI Assistant
                 </Link>
+                   <Button variant="accent" className="w-full retro-button" onClick={handleLinkAccount}>
+                       <Banknote className="mr-2 h-4 w-4"/> Link Bank Account
+                   </Button>
                  {/* Placeholder for Mobile Auth Links */}
                  {/* <Separator className="my-2" />
                  <Link href="/login" className="text-foreground hover:underline hover:text-primary underline-offset-2">Login</Link>

@@ -24,6 +24,7 @@ import { format, parseISO } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea'; // Import Textarea
+import { useToast } from "@/hooks/use-toast";
 
 interface EmergencyFundTransaction {
     id: string;
@@ -61,6 +62,7 @@ export default function EmergencyFundPage() {
   const [modifyNotes, setModifyNotes] = useState<string>('');
   const [targetAmount, setTargetAmount] = useState<string>(fundData.target.toString());
   const [isEditingTarget, setIsEditingTarget] = useState(false);
+    const { toast } = useToast(); // Hook for displaying toasts
 
 
   const sortedTransactions = useMemo(() => {
@@ -86,9 +88,18 @@ export default function EmergencyFundPage() {
        if (!isNaN(newTarget) && newTarget >= 0) {
            setFundData(prev => ({ ...prev, target: newTarget }));
            setIsEditingTarget(false);
+            toast({
+                title: "Target Updated",
+                description: "Emergency fund target has been successfully updated.",
+            });
        } else {
            // Add error handling/feedback if needed
            setTargetAmount(fundData.target.toString()); // Revert if invalid
+           toast({
+               title: "Error",
+               description: "Invalid target amount. Please enter a valid number.",
+               variant: "destructive",
+           });
        }
    };
 
@@ -119,9 +130,18 @@ export default function EmergencyFundPage() {
           setIsModifyFundOpen(false);
           setModifyAmount('');
           setModifyNotes('');
+           toast({
+               title: "Transaction Recorded",
+               description: "Your emergency fund transaction has been recorded.",
+           });
       } else {
           // Handle invalid amount error (e.g., show a toast)
           console.error("Invalid amount entered.");
+           toast({
+               title: "Error",
+               description: "Please enter a valid amount.",
+               variant: "destructive",
+           });
       }
   };
 
@@ -141,6 +161,10 @@ export default function EmergencyFundPage() {
             current: Math.max(0, newCurrentAmount),
             transactions: prev.transactions.filter(tx => tx.id !== id)
         }));
+        toast({
+            title: "Transaction Deleted",
+            description: "The transaction has been successfully deleted.",
+        });
         // TODO: Add confirmation dialog and success toast
     };
 

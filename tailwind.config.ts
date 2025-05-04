@@ -10,8 +10,8 @@ export default {
   theme: {
   	extend: {
        fontFamily: {
-         sans: ["var(--font-sans)", "system-ui", "sans-serif"], // Use Inter as default sans
-         heading: ["var(--font-sans)", "system-ui", "sans-serif"], // Use Inter for headings as well
+         sans: ["Inter", "sans-serif"], // Use Inter as default sans
+         heading: ["Inter", "sans-serif"], // Use Inter for headings as well
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -86,8 +86,8 @@ export default {
            '100%': { transform: 'scale(1)', opacity: '1' },
          },
          'retro-alert-pulse': {
-            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7)' },
-            '50%': { borderColor: 'hsl(var(--destructive))' },
+            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.4); },
+            '50%': { borderColor: 'hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); },
          }
       },
       animation: {
