@@ -42,14 +42,14 @@ export default function LandingPage() {
              FinTrack Pro combines powerful budgeting, goal tracking, tax planning, and AI insights into a sleek, retro-modern interface. Stop guessing, start growing.
            </p>
            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link href="/dashboard" passHref>
+            <Link href="/get-started" passHref> {/* Link to Get Started */}
                <Button variant="primary" size="lg" className="retro-button">
-                Get Started (Demo)
+                Get Started
                </Button>
             </Link>
-            <Link href="#features" passHref>
+            <Link href="/login" passHref> {/* Link to Login */}
               <Button variant="outline" size="lg" className="retro-button">
-                Learn More
+                Login
               </Button>
              </Link>
           </div>
@@ -214,8 +214,8 @@ export default function LandingPage() {
                    </ul>
                  </CardContent>
                   <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                    <Link href="/dashboard" passHref className="w-full">
-                        <Button variant="outline" className="w-full retro-button">Start Free (Demo)</Button>
+                    <Link href="/get-started" passHref className="w-full"> {/* Link to Get Started */}
+                        <Button variant="outline" className="w-full retro-button">Start Free</Button>
                     </Link>
                   </CardFooter>
                </Card>
@@ -240,8 +240,8 @@ export default function LandingPage() {
                      </ul>
                   </CardContent>
                    <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                     <Link href="/dashboard" passHref className="w-full">
-                         <Button variant="primary" className="w-full retro-button">Go Pro (Demo)</Button>
+                     <Link href="/get-started" passHref className="w-full"> {/* Link to Get Started */}
+                         <Button variant="primary" className="w-full retro-button">Go Pro</Button>
                      </Link>
                    </CardFooter>
                 </Card>
@@ -283,9 +283,9 @@ export default function LandingPage() {
           <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
             Stop drifting, start directing. Join FinTrack Pro today and build the financial future you deserve.
           </p>
-          <Link href="/dashboard" passHref>
+          <Link href="/get-started" passHref> {/* Link to Get Started */}
             <Button variant="primary" size="lg" className="retro-button">
-              Get Started Now (Demo)
+              Get Started Now
             </Button>
           </Link>
        </motion.section>
