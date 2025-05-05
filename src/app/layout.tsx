@@ -1,9 +1,9 @@
-
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google'; // Import Inter font
 import './globals.css';
 import { cn } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
+import SessionProvider from '@/providers/SessionProvider'; // Import SessionProvider
 
 // Configure Inter font
 const inter = Inter({
@@ -31,8 +31,10 @@ export default function RootLayout({
           inter.variable
         )}
       >
-        {/* Wrap children with AppLayout which now includes the Toaster */}
-        <AppLayout>{children}</AppLayout>
+         {/* Wrap AppLayout with SessionProvider */}
+         <SessionProvider>
+            <AppLayout>{children}</AppLayout>
+         </SessionProvider>
       </body>
     </html>
   );

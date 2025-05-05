@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react'; // Import useState
+import React, { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react'; // Import useSession and signOut
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend } from "recharts";
-import { HandCoins, PiggyBank, Target, Lightbulb, ListChecks, TrendingDown, Landmark, ShieldAlert, Activity, PlusCircle, TrendingUp, Banknote, X, DollarSign } from "lucide-react"; // Added Banknote, X, DollarSign
+import { HandCoins, PiggyBank, Target, Lightbulb, ListChecks, TrendingDown, Landmark, ShieldAlert, Activity, PlusCircle, TrendingUp, Banknote, X, DollarSign, LogOut, Loader2 } from "lucide-react"; // Added LogOut, Loader2
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -18,8 +19,9 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/dialog"; // Import Dialog components
-import { useToast } from "@/hooks/use-toast"; // Import useToast
+} from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 const savingsGoals = [
   { name: "Dream Vacation", current: 750, target: 2000, icon: <PiggyBank className="h-5 w-5 text-primary" /> },
@@ -58,26 +60,59 @@ const emergencyFund = { current: 4500, target: 15000 }; // Mock emergency fund d
 
 
 export default function DashboardPage() {
-  const [bankLinkModalOpen, setBankLinkModalOpen] = useState(false); // State for bank linking modal
-    const { toast } = useToast(); // Hook for displaying toasts
+  const { data: session, status } = useSession(); // Get session status
+  const router = useRouter(); // Get router instance
+  const [bankLinkModalOpen, setBankLinkModalOpen] = useState(false);
+  const { toast } = useToast();
+
+   // Redirect to login if not authenticated
+   React.useEffect(() => {
+     if (status === 'unauthenticated') {
+       router.push('/login');
+     }
+   }, [status, router]);
+
+   // Show loading state while session is loading
+   if (status === 'loading') {
+     return (
+       <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
+         <Loader2 className="h-12 w-12 animate-spin text-primary" />
+         <p className="ml-4 text-muted-foreground">Loading dashboard...</p>
+       </div>
+     );
+   }
+
+   // Render nothing or a message if unauthenticated (should be redirected)
+   if (!session) {
+     return null; // Or a "Redirecting..." message
+   }
 
   const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
    const handleBankLink = () => {
-       // In a real application, initiate the Plaid Link flow here.
-       // For this demo, show a success message using the toast.
        toast({
-           title: "Bank Account Linked!",
+           title: "Bank Account Linked! (Placeholder)",
            description: "Successfully connected to your bank account.",
        });
        setBankLinkModalOpen(false);
    };
 
+   const handleSignOut = async () => {
+       await signOut({ redirect: true, callbackUrl: '/' }); // Redirect to home page after sign out
+   };
+
   return (
-     <> {/* Wrap with fragment to allow modal */}
-     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"> {/* Adjusted grid columns */}
+     <>
+      <div className="flex justify-between items-center mb-6">
+         <h1 className="text-2xl font-semibold">Welcome back, {session?.user?.name || 'User'}!</h1>
+         <Button variant="destructive" size="sm" className="retro-button" onClick={handleSignOut}>
+            <LogOut className="mr-2 h-4 w-4"/> Sign Out
+         </Button>
+      </div>
+
+     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
         {/* Quick Actions */}
         <Card className="retro-card col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-1">
@@ -113,7 +148,6 @@ export default function DashboardPage() {
                        <TrendingUp className="mr-2 h-4 w-4"/> Log Investment
                     </Button>
                 </Link>
-                 {/* Add Bank Link Button */}
                  <Button variant="accent" className="w-full retro-button" onClick={() => setBankLinkModalOpen(true)}>
                      <Banknote className="mr-2 h-4 w-4"/> Link Bank Account
                  </Button>
@@ -216,7 +250,7 @@ export default function DashboardPage() {
                      tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
                      width={85}
                     />
-                    <ChartTooltip
+                    <RechartsTooltip
                        contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--border))', fontFamily: 'var(--font-sans)', fontSize: '12px', boxShadow: 'none' }}
                        itemStyle={{ color: 'hsl(var(--foreground))' }}
                        formatter={(value: number, name: string) => [`$${value.toLocaleString()}`, name]}
@@ -384,7 +418,7 @@ export default function DashboardPage() {
               <Button
                   className="w-full retro-button"
                   variant="primary"
-                  onClick={() => alert('Initiate Plaid Link flow... (placeholder)')}
+                  onClick={handleBankLink} // Updated to call the placeholder function
               >
                 <PlusCircle className="mr-2 h-4 w-4"/> Connect with Plaid
               </Button>

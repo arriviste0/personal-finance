@@ -1,22 +1,26 @@
-'use client'; // Added 'use client' directive
+'use client';
 
 import Link from "next/link";
-import { CircleDollarSign, Menu, X, Banknote } from "lucide-react"; // Added Banknote
+import { CircleDollarSign, Menu, X, Banknote, LogOut } from "lucide-react"; // Added LogOut
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast"; // Import useToast
+import { useToast } from "@/hooks/use-toast";
+import { useSession, signOut } from 'next-auth/react'; // Import useSession and signOut
 
 export default function Header() {
-    const { toast } = useToast(); // This hook requires the component to be a Client Component
+    const { toast } = useToast();
+    const { data: session, status } = useSession(); // Get session status
 
     const handleLinkAccount = () => {
-        // In a real application, initiate the Plaid Link flow here.
-        // For this demo, show a success message using the toast.
         toast({
             title: "Bank Account Linking (Placeholder)",
             description: "This would normally launch a secure bank linking process.",
         });
+    };
+
+    const handleSignOut = async () => {
+        await signOut({ redirect: true, callbackUrl: '/' }); // Redirect to home page after sign out
     };
 
   return (
@@ -24,64 +28,57 @@ export default function Header() {
       <div className="container flex h-12 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="mr-6 flex items-center space-x-2">
            <CircleDollarSign className="h-6 w-6 text-primary-foreground" />
-           <span className="font-sans text-xl font-medium">FinTrack</span> {/* Updated Name */}
+           <span className="font-sans text-xl font-medium">FinTrack</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden gap-4 text-base md:flex">
-          <Link
-            href="/dashboard" // Link to dashboard instead of root
-             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
-          >
-            Dashboard
-          </Link>
-           <Link
-            href="/budget"
-             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
-          >
-            Budget
-          </Link>
-           <Link
-            href="/expenses"
-             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
-          >
-            Expenses
-          </Link>
-           <Link
-            href="/savings-goals"
-             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
-          >
-            Savings Goals
-          </Link>
-           <Link
-            href="/investments" // Added Investments link
-             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
-          >
-            Investments
-          </Link>
-          <Link
-            href="/emergency-fund" // Added Emergency Fund link
-            className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
-          >
-            Emergency Fund
-          </Link>
-          <Link
-            href="/tax-planner"
-             className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2"
-          >
-            Tax Planner
-          </Link>
-           <Link
-            href="/ai-assistant"
-             className="font-medium text-yellow-300 transition-colors hover:text-yellow-200 hover:underline underline-offset-2" // Use accent for AI
-          >
-            AI Assistant
-          </Link>
-           {/* Placeholder for Auth Buttons */}
-           {/* <div className="flex items-center gap-2">
-               <Button variant="secondary" size="sm" className="retro-button">Login</Button>
-               <Button variant="default" size="sm" className="retro-button">Sign Up</Button>
-           </div> */}
+        <nav className="hidden gap-4 text-base md:flex items-center"> {/* Added items-center */}
+          {status === 'authenticated' && (
+             <>
+                 <Link href="/dashboard" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">
+                    Dashboard
+                 </Link>
+                 <Link href="/budget" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">
+                    Budget
+                 </Link>
+                 <Link href="/expenses" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">
+                    Expenses
+                 </Link>
+                 <Link href="/savings-goals" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">
+                    Savings Goals
+                 </Link>
+                 <Link href="/investments" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">
+                    Investments
+                 </Link>
+                  <Link href="/emergency-fund" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">
+                    Emergency Fund
+                 </Link>
+                  <Link href="/tax-planner" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">
+                    Tax Planner
+                 </Link>
+                 <Link href="/ai-assistant" className="font-medium text-yellow-300 transition-colors hover:text-yellow-200 hover:underline underline-offset-2">
+                    AI Assistant
+                 </Link>
+                 <Button variant="secondary" size="sm" className="retro-button" onClick={handleSignOut}>
+                     <LogOut className="mr-1 h-4 w-4"/> Sign Out
+                 </Button>
+             </>
+          )}
+           {status === 'unauthenticated' && (
+               <>
+                  {/* Maybe show simplified nav or just auth buttons */}
+                   <Link href="/#features" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">Features</Link>
+                   <Link href="/#pricing" className="font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground hover:underline underline-offset-2">Pricing</Link>
+                   <div className="flex items-center gap-2 ml-auto"> {/* Use ml-auto to push auth buttons right */}
+                      <Link href="/login" passHref>
+                         <Button variant="secondary" size="sm" className="retro-button">Login</Button>
+                      </Link>
+                      <Link href="/get-started" passHref>
+                         <Button variant="outline" size="sm" className="retro-button !border-primary-foreground !text-primary-foreground hover:!bg-primary-foreground/10">Sign Up</Button>
+                      </Link>
+                   </div>
+               </>
+            )}
         </nav>
 
         {/* Mobile Navigation */}
@@ -101,7 +98,6 @@ export default function Header() {
                side="left"
                className="w-[250px] retro-window !rounded-none !border-foreground !shadow-[4px_4px_0px_0px_hsl(var(--foreground))] !p-0"
             >
-                {/* Retro Header for Sheet */}
                 <div className="retro-window-header !bg-secondary !text-secondary-foreground">
                    <SheetTitle> {/* Added SheetTitle for accessibility */}
                         <span className="text-lg font-sans font-medium">Menu</span>
@@ -125,58 +121,53 @@ export default function Header() {
                   <CircleDollarSign className="h-6 w-6 text-primary" />
                   <span className="text-foreground font-sans">FinTrack</span>
                 </Link>
-                <Link href="/dashboard" className="text-foreground hover:underline hover:text-primary underline-offset-2">
-                  Dashboard
-                </Link>
-                 <Link
-                  href="/budget"
-                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
-                >
-                  Budget
-                </Link>
-                 <Link
-                  href="/expenses"
-                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
-                 >
-                  Expenses
-                </Link>
-                 <Link
-                  href="/savings-goals"
-                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
-                >
-                  Savings Goals
-                </Link>
-                 <Link
-                  href="/investments" // Added Investments link
-                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
-                 >
-                  Investments
-                </Link>
-                <Link
-                  href="/emergency-fund" // Added Emergency Fund link
-                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
-                 >
-                  Emergency Fund
-                </Link>
-                <Link
-                  href="/tax-planner"
-                  className="text-foreground hover:underline hover:text-primary underline-offset-2"
-                 >
-                  Tax Planner
-                </Link>
-                 <Link
-                  href="/ai-assistant"
-                   className="text-accent hover:underline hover:text-accent/80 underline-offset-2"
-                 >
-                  AI Assistant
-                </Link>
-                   <Button variant="accent" className="w-full retro-button" onClick={handleLinkAccount}>
-                       <Banknote className="mr-2 h-4 w-4"/> Link Bank Account
-                   </Button>
-                 {/* Placeholder for Mobile Auth Links */}
-                 {/* <Separator className="my-2" />
-                 <Link href="/login" className="text-foreground hover:underline hover:text-primary underline-offset-2">Login</Link>
-                 <Link href="/signup" className="text-foreground hover:underline hover:text-primary underline-offset-2">Sign Up</Link> */}
+                {status === 'authenticated' ? (
+                     <>
+                        <Link href="/dashboard" className="text-foreground hover:underline hover:text-primary underline-offset-2">
+                          Dashboard
+                        </Link>
+                         <Link href="/budget" className="text-foreground hover:underline hover:text-primary underline-offset-2">
+                          Budget
+                         </Link>
+                         <Link href="/expenses" className="text-foreground hover:underline hover:text-primary underline-offset-2">
+                          Expenses
+                         </Link>
+                         <Link href="/savings-goals" className="text-foreground hover:underline hover:text-primary underline-offset-2">
+                          Savings Goals
+                         </Link>
+                         <Link href="/investments" className="text-foreground hover:underline hover:text-primary underline-offset-2">
+                          Investments
+                         </Link>
+                         <Link href="/emergency-fund" className="text-foreground hover:underline hover:text-primary underline-offset-2">
+                          Emergency Fund
+                         </Link>
+                         <Link href="/tax-planner" className="text-foreground hover:underline hover:text-primary underline-offset-2">
+                          Tax Planner
+                         </Link>
+                         <Link href="/ai-assistant" className="text-accent hover:underline hover:text-accent/80 underline-offset-2">
+                          AI Assistant
+                         </Link>
+                         <Button variant="accent" className="w-full retro-button" onClick={handleLinkAccount}>
+                             <Banknote className="mr-2 h-4 w-4"/> Link Bank Account
+                         </Button>
+                          <Button variant="destructive" size="sm" className="retro-button mt-4" onClick={handleSignOut}>
+                             <LogOut className="mr-2 h-4 w-4"/> Sign Out
+                         </Button>
+                    </>
+                 ) : (
+                     <>
+                         <Link href="/#features" className="text-foreground hover:underline hover:text-primary underline-offset-2">Features</Link>
+                         <Link href="/#pricing" className="text-foreground hover:underline hover:text-primary underline-offset-2">Pricing</Link>
+                         <div className="flex flex-col gap-3 mt-4">
+                            <Link href="/login" passHref>
+                                <Button variant="primary" className="w-full retro-button">Login</Button>
+                            </Link>
+                             <Link href="/get-started" passHref>
+                                <Button variant="secondary" className="w-full retro-button">Sign Up</Button>
+                            </Link>
+                         </div>
+                     </>
+                 )}
               </nav>
             </SheetContent>
           </Sheet>

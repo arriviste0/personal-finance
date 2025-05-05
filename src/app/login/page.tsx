@@ -1,49 +1,72 @@
 'use client';
 
 import React, { useState } from 'react';
+import { signIn } from 'next-auth/react'; // Import signIn
+import { useRouter } from 'next/navigation'; // Import useRouter
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import { LogIn, Mail, KeyRound } from 'lucide-react';
+import { LogIn, Mail, KeyRound, Loader2 } from 'lucide-react'; // Added Loader2
 import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null); // State for login errors
     const { toast } = useToast();
+    const router = useRouter(); // Initialize useRouter
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
+        setError(null); // Clear previous errors
 
-        // --- Placeholder Login Logic ---
-        // In a real app, you'd call your authentication API here.
-        console.log('Login attempt with:', { email, password });
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
-
-        // Example success/error handling
-        if (email === 'test@example.com' && password === 'password') {
-            toast({
-                title: "Login Successful!",
-                description: "Welcome back!",
+        try {
+            const result = await signIn('credentials', {
+                redirect: false, // Don't redirect automatically, handle manually
+                email,
+                password,
             });
-            // Redirect to dashboard (using Next.js router or window.location)
-            // router.push('/dashboard');
-            alert('Login successful! Redirecting... (placeholder)');
-             window.location.href = '/dashboard'; // Simple redirect for demo
-        } else {
-            toast({
-                title: "Login Failed",
-                description: "Invalid email or password.",
+
+            if (result?.error) {
+                 // Handle specific errors or show a generic message
+                 setError(result.error === 'CredentialsSignin' ? 'Invalid email or password.' : result.error);
+                 toast({
+                     title: "Login Failed",
+                     description: result.error === 'CredentialsSignin' ? 'Invalid email or password.' : 'An error occurred during login.',
+                     variant: "destructive",
+                 });
+            } else if (result?.ok) {
+                // Login successful
+                toast({
+                    title: "Login Successful!",
+                    description: "Welcome back! Redirecting to dashboard...",
+                });
+                 router.push('/dashboard'); // Redirect to dashboard on success
+            } else {
+                 // Handle other potential issues (e.g., network error)
+                 setError('An unexpected error occurred. Please try again.');
+                 toast({
+                     title: "Login Error",
+                     description: "An unexpected error occurred. Please try again.",
+                     variant: "destructive",
+                 });
+             }
+
+        } catch (err) {
+             console.error('Login exception:', err);
+             setError('An unexpected error occurred. Please try again.');
+             toast({
+                title: "Login Error",
+                description: "An unexpected error occurred. Please try again.",
                 variant: "destructive",
-            });
+             });
+        } finally {
+             setIsLoading(false);
         }
-        // --- End Placeholder ---
-
-        setIsLoading(false);
     };
 
     return (
@@ -77,6 +100,8 @@ export default function LoginPage() {
                                 required
                                 className="retro-input pl-9"
                                 disabled={isLoading}
+                                aria-invalid={!!error} // Indicate error state
+                                aria-describedby={error ? "login-error" : undefined}
                             />
                         </div>
                         <div className="space-y-1.5 relative">
@@ -91,9 +116,15 @@ export default function LoginPage() {
                                 required
                                 className="retro-input pl-9"
                                 disabled={isLoading}
+                                aria-invalid={!!error} // Indicate error state
+                                aria-describedby={error ? "login-error" : undefined}
                             />
                         </div>
+                         {error && ( // Display error message
+                             <p id="login-error" className="text-sm text-destructive text-center pt-2">{error}</p>
+                         )}
                          <div className="text-right text-sm">
+                            {/* Link to a future forgot password page */}
                             <Link href="/forgot-password" className="text-primary hover:underline underline-offset-2">
                                 Forgot Password?
                             </Link>
@@ -103,10 +134,7 @@ export default function LoginPage() {
                         <Button type="submit" variant="primary" className="w-full retro-button" disabled={isLoading}>
                             {isLoading ? (
                                 <>
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                     Logging In...
                                 </>
                             ) : (

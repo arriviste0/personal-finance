@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import { UserPlus, Mail, KeyRound, User } from 'lucide-react';
+import { UserPlus, Mail, KeyRound, User, Loader2 } from 'lucide-react'; // Added Loader2
 import { useToast } from '@/hooks/use-toast';
 
 export default function GetStartedPage() {
@@ -17,10 +18,11 @@ export default function GetStartedPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { toast } = useToast();
+    const router = useRouter(); // Initialize useRouter
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
+        setError(null); // Clear previous errors
 
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
@@ -43,34 +45,46 @@ export default function GetStartedPage() {
 
         setIsLoading(true);
 
-        // --- Placeholder Signup Logic ---
-        // In a real app, you'd call your registration API here.
-        console.log('Signup attempt with:', { name, email, password });
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, password }),
+            });
 
-        // Example success/error handling (replace with actual API response check)
-        const success = Math.random() > 0.2; // Simulate success/failure
+            const data = await response.json();
 
-        if (success) {
+            if (!response.ok) {
+                // Handle specific errors from the API
+                 setError(data.message || `Signup failed with status: ${response.status}`);
+                 toast({
+                     title: "Signup Failed",
+                     description: data.message || "Could not create account. Please try again later.",
+                     variant: "destructive",
+                 });
+            } else {
+                // Signup successful
+                 toast({
+                     title: "Account Created!",
+                     description: "Welcome to FinTrack Pro! Redirecting to login...",
+                 });
+                 // Redirect to login page after successful registration
+                 router.push('/login');
+            }
+        } catch (err) {
+             console.error('Signup exception:', err);
+             const errorMessage = err instanceof Error ? err.message : 'An unexpected network error occurred.';
+             setError(`An error occurred: ${errorMessage}`);
              toast({
-                 title: "Account Created!",
-                 description: "Welcome to FinTrack Pro! Redirecting to login...",
-             });
-             // Redirect to login or dashboard
-             // router.push('/login');
-              alert('Signup successful! Redirecting to login... (placeholder)');
-             window.location.href = '/login'; // Simple redirect for demo
-        } else {
-             setError("Failed to create account. Please try again.");
-             toast({
-                 title: "Signup Failed",
-                 description: "Could not create account. Please try again later.",
+                 title: "Signup Error",
+                 description: "An unexpected error occurred. Please try again.",
                  variant: "destructive",
              });
+        } finally {
+             setIsLoading(false);
         }
-        // --- End Placeholder ---
-
-        setIsLoading(false);
     };
 
     return (
@@ -104,6 +118,8 @@ export default function GetStartedPage() {
                                 required
                                 className="retro-input pl-9"
                                 disabled={isLoading}
+                                aria-invalid={!!error} // Indicate error state for related fields
+                                aria-describedby={error ? "signup-error" : undefined}
                             />
                         </div>
                         <div className="space-y-1.5 relative">
@@ -118,6 +134,8 @@ export default function GetStartedPage() {
                                 required
                                 className="retro-input pl-9"
                                 disabled={isLoading}
+                                aria-invalid={!!error}
+                                aria-describedby={error ? "signup-error" : undefined}
                             />
                         </div>
                         <div className="space-y-1.5 relative">
@@ -132,6 +150,8 @@ export default function GetStartedPage() {
                                 required
                                 className="retro-input pl-9"
                                 disabled={isLoading}
+                                aria-invalid={!!error}
+                                aria-describedby={error ? "signup-error" : undefined}
                             />
                         </div>
                         <div className="space-y-1.5 relative">
@@ -146,18 +166,17 @@ export default function GetStartedPage() {
                                 required
                                 className="retro-input pl-9"
                                 disabled={isLoading}
+                                aria-invalid={!!error}
+                                aria-describedby={error ? "signup-error" : undefined}
                             />
                         </div>
-                        {error && <p className="text-sm text-destructive text-center">{error}</p>}
+                        {error && <p id="signup-error" className="text-sm text-destructive text-center pt-2">{error}</p>}
                     </CardContent>
                     <CardFooter className="retro-card-content !border-t-2 !pt-4 !pb-4 flex flex-col gap-4">
                         <Button type="submit" variant="accent" className="w-full retro-button" disabled={isLoading}>
                             {isLoading ? (
                                 <>
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                     Creating Account...
                                 </>
                             ) : (
