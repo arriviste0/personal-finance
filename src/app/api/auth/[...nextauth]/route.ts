@@ -1,25 +1,100 @@
-Based on the error message, it seems like the NextAuth.js client is trying to fetch data but receiving HTML instead of the expected JSON. This often happens when the API endpoint is not configured correctly or is returning an error page.
+import NextAuth from 'next-auth';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import clientPromise from '@/lib/mongodb';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { compare } from 'bcrypt';
+import { MongoClient, ObjectId } from 'mongodb';
 
-Here's a breakdown of potential causes and fixes:
+// Define the structure of the user object returned by the authorize callback
+interface User {
+  id: string; // Use string for ObjectId representation
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+}
 
-*   **Incorrect API Route Configuration:**
-    *   Double-check that your NextAuth.js API routes are set up correctly within the `pages/api/auth/[...nextauth].js` (or `.ts`) file.
-    *   Verify that the `NextAuth` function is correctly handling requests and returning a JSON response.
-*   **Missing Environment Variables:**
-    *   NextAuth.js relies on environment variables for configuration. Make sure the required variables (like `NEXTAUTH_SECRET`, `MONGODB_URI`, etc.) are set in your `.env` file. The NextAuth URL variable is deprecated you do not need it.
-    *   If you recently added or changed any environment variables, restart your Next.js development server to ensure the changes are loaded.
-*   **CORS Issues:**
-    *   Cross-Origin Resource Sharing (CORS) problems can occur if your Next.js application is running on a different domain or port than your API endpoint.
-*   **Server-Side Errors:**
-    *   Inspect your server-side logs for any errors occurring within the NextAuth.js API routes.
-*   **Network Issues:**
-    *   Although less likely in local development, ensure that there are no network connectivity issues preventing the client from reaching the API endpoint.
-*   **Middleware Interruption:**
-    *   Review any custom middleware in your Next.js application (`middleware.ts` or `_middleware.js` in the `pages` directory) that might be interfering with the NextAuth.js API routes.
 
-To provide a more specific solution, I need more context, the code for the `/src/app/api/auth/[...nextauth]/route.ts` file and also check you have installed these files.
+export const authOptions = {
+  adapter: MongoDBAdapter(clientPromise),
+  providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: "Email", type: "email", placeholder: "jsmith@example.com" },
+        password: { label: "Password", type: "password" }
+      },
+       async authorize(credentials): Promise<User | null> {
+         if (!credentials?.email || !credentials.password) {
+           throw new Error('Please provide email and password');
+         }
 
-```json
-    "@next-auth/mongodb-adapter": "^1.1.3",
-    "next-auth": "^4.24.7",
-```
+        const client: MongoClient = await clientPromise;
+        const db = client.db(); // Use default db from connection string
+        const usersCollection = db.collection('users');
+
+        const user = await usersCollection.findOne({ email: credentials.email });
+
+        if (!user) {
+          console.log("User not found with email:", credentials.email);
+           throw new Error('No user found with this email.');
+        }
+
+         // Log found user for debugging (remove sensitive data in production)
+         // console.log("User found:", { id: user._id, email: user.email });
+
+        const isValidPassword = await compare(credentials.password, user.password);
+
+        if (!isValidPassword) {
+           console.log("Invalid password attempt for email:", credentials.email);
+           throw new Error('Incorrect password.');
+        }
+
+         console.log("Authentication successful for:", user.email);
+
+        // Return the user object in the expected format
+         return {
+           id: user._id.toString(), // Convert ObjectId to string
+           name: user.name,
+           email: user.email,
+           image: user.image, // Include image if available
+         };
+       }
+    })
+  ],
+  session: {
+    strategy: 'jwt' as const, // Use JWT strategy
+  },
+  callbacks: {
+     async jwt({ token, user }: { token: any, user?: User | any }) {
+       // console.log("JWT Callback - Token:", token, "User:", user);
+       // Persist the user id to the token right after signin
+       if (user) {
+         token.id = user.id;
+         // Add other user properties if needed, e.g., token.name = user.name
+       }
+       return token;
+     },
+     async session({ session, token }: { session: any, token: any }) {
+       // console.log("Session Callback - Session:", session, "Token:", token);
+       // Send properties to the client, like an access_token and user id from the token.
+       if (token?.id && session?.user) {
+         session.user.id = token.id as string;
+       }
+       // console.log("Modified Session:", session);
+       return session;
+     }
+  },
+  pages: {
+    signIn: '/login', // Redirect users to custom login page
+    // signOut: '/auth/signout',
+    // error: '/auth/error', // Error code passed in query string as ?error=
+    // verifyRequest: '/auth/verify-request', // (used for email/passwordless sign in)
+    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out to disable)
+  },
+  secret: process.env.NEXTAUTH_SECRET, // Secret for JWT signing
+  debug: process.env.NODE_ENV === 'development', // Enable debug messages in development
+};
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
