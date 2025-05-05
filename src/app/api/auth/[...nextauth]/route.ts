@@ -4,8 +4,10 @@ import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from '@/lib/mongodb';
 import { compare } from 'bcrypt';
 import { MongoClient, ObjectId } from 'mongodb';
+import { NextResponse } from 'next/server';
 
 export const authOptions: NextAuthOptions = {
+  debug: true,
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     CredentialsProvider({
@@ -19,39 +21,44 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const client: MongoClient = await clientPromise;
-        const db = client.db(); // Use default db from connection string
-        const usersCollection = db.collection('users');
+        try {
+          const client: MongoClient = await clientPromise;
+          const db = client.db(); // Use default db from connection string
+          const usersCollection = db.collection('users');
 
-        const user = await usersCollection.findOne({ email: credentials.email });
+          const user = await usersCollection.findOne({ email: credentials.email });
 
-        if (!user) {
-          console.log('No user found with email:', credentials.email);
-          return null;
+          if (!user) {
+            console.log('No user found with email:', credentials.email);
+            return null;
+          }
+
+          // Check if user has a password (might be OAuth user)
+          if (!user.password) {
+               console.log('User found but has no password (likely OAuth user)');
+               return null;
+          }
+
+
+          const isValidPassword = await compare(credentials.password, user.password);
+
+          if (!isValidPassword) {
+            console.log('Password mismatch for user:', credentials.email);
+            return null;
+          }
+
+           console.log('Login successful for:', user.email);
+          // Return user object required by NextAuth, ensuring it has an 'id'
+          return {
+            id: user._id.toString(), // Convert ObjectId to string
+            name: user.name,
+            email: user.email,
+            // Add other user properties if needed
+          };
+        } catch (error) {
+          console.error("Authentication error:", error);
+          return null; // Or throw the error if you want to handle it differently
         }
-
-        // Check if user has a password (might be OAuth user)
-        if (!user.password) {
-             console.log('User found but has no password (likely OAuth user)');
-             return null;
-        }
-
-
-        const isValidPassword = await compare(credentials.password, user.password);
-
-        if (!isValidPassword) {
-          console.log('Password mismatch for user:', credentials.email);
-          return null;
-        }
-
-         console.log('Login successful for:', user.email);
-        // Return user object required by NextAuth, ensuring it has an 'id'
-        return {
-          id: user._id.toString(), // Convert ObjectId to string
-          name: user.name,
-          email: user.email,
-          // Add other user properties if needed
-        };
       },
     }),
   ],
