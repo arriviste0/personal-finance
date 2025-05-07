@@ -1,20 +1,21 @@
 import NextAuth from 'next-auth';
+import type { AuthOptions } from 'next-auth';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from '@/lib/mongodb';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcrypt';
-import { MongoClient, ObjectId } from 'mongodb';
+import type { MongoClient, ObjectId } from 'mongodb'; // Ensure ObjectId is imported if directly used
 
 // Define the structure of the user object returned by the authorize callback
-interface User {
-  id: string; // Use string for ObjectId representation
+interface UserAuthResponse {
+  id: string;
   name?: string | null;
   email?: string | null;
   image?: string | null;
 }
 
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     CredentialsProvider({
@@ -23,76 +24,70 @@ export const authOptions = {
         email: { label: "Email", type: "email", placeholder: "jsmith@example.com" },
         password: { label: "Password", type: "password" }
       },
-       async authorize(credentials): Promise<User | null> {
+       async authorize(credentials, req): Promise<UserAuthResponse | null> {
+         console.log("[NextAuth] Authorize attempt for email:", credentials?.email);
          if (!credentials?.email || !credentials.password) {
+           console.error("[NextAuth] Missing email or password in credentials.");
            throw new Error('Please provide email and password');
          }
 
         const client: MongoClient = await clientPromise;
-        const db = client.db(); // Use default db from connection string
+        const db = client.db(); 
         const usersCollection = db.collection('users');
 
         const user = await usersCollection.findOne({ email: credentials.email });
 
         if (!user) {
-          console.log("User not found with email:", credentials.email);
+          console.warn("[NextAuth] User not found with email:", credentials.email);
            throw new Error('No user found with this email.');
         }
-
-         // Log found user for debugging (remove sensitive data in production)
-         // console.log("User found:", { id: user._id, email: user.email });
+        
+        // console.log("[NextAuth] User found in DB:", { id: user._id, email: user.email });
 
         const isValidPassword = await compare(credentials.password, user.password);
 
         if (!isValidPassword) {
-           console.log("Invalid password attempt for email:", credentials.email);
+           console.warn("[NextAuth] Invalid password attempt for email:", credentials.email);
            throw new Error('Incorrect password.');
         }
 
-         console.log("Authentication successful for:", user.email);
+         console.log("[NextAuth] Authentication successful for:", user.email);
 
-        // Return the user object in the expected format
          return {
-           id: user._id.toString(), // Convert ObjectId to string
+           id: user._id.toString(), 
            name: user.name,
            email: user.email,
-           image: user.image, // Include image if available
+           image: user.image, 
          };
        }
     })
   ],
   session: {
-    strategy: 'jwt' as const, // Use JWT strategy
+    strategy: 'jwt' as const,
   },
   callbacks: {
-     async jwt({ token, user }: { token: any, user?: User | any }) {
-       // console.log("JWT Callback - Token:", token, "User:", user);
-       // Persist the user id to the token right after signin
+     async jwt({ token, user }) {
+       // console.log("[NextAuth] JWT Callback - Input Token:", token, "Input User:", user);
        if (user) {
          token.id = user.id;
-         // Add other user properties if needed, e.g., token.name = user.name
        }
+       // console.log("[NextAuth] JWT Callback - Output Token:", token);
        return token;
      },
-     async session({ session, token }: { session: any, token: any }) {
-       // console.log("Session Callback - Session:", session, "Token:", token);
-       // Send properties to the client, like an access_token and user id from the token.
+     async session({ session, token }) {
+       // console.log("[NextAuth] Session Callback - Input Session:", session, "Input Token:", token);
        if (token?.id && session?.user) {
          session.user.id = token.id as string;
        }
-       // console.log("Modified Session:", session);
+       // console.log("[NextAuth] Session Callback - Output Session:", session);
        return session;
      }
   },
   pages: {
-    signIn: '/login', // Redirect users to custom login page
-    // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
-    // verifyRequest: '/auth/verify-request', // (used for email/passwordless sign in)
-    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out to disable)
+    signIn: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET, // Secret for JWT signing
-  debug: process.env.NODE_ENV === 'development', // Enable debug messages in development
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development',
 };
 
 const handler = NextAuth(authOptions);
