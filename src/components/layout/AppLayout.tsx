@@ -1,6 +1,5 @@
-
 import type React from "react";
-import Header from "./Header";
+import Navbar from "./Navbar";
 import { Toaster } from "@/components/ui/toaster"; // Import Toaster
 
 interface AppLayoutProps {
@@ -10,7 +9,7 @@ interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Header />
+      <Navbar />
       <main className="flex-1 container mx-auto px-4 py-6 md:py-8 lg:py-10"> {/* Use container and adjust padding */}
           {children}
       </main>
