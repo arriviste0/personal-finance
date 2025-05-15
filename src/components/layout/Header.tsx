@@ -30,25 +30,24 @@ export default function Header() {
     const isAuthenticated = status === 'authenticated';
 
     const headerClasses = isLandingPage && !isAuthenticated
-        ? "sticky top-0 z-50 w-full bg-black text-white shadow-md" // Landing page, unauthenticated: black background with a subtle shadow
-        : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground"; // App header or authenticated landing page
+        ? "sticky top-0 z-50 w-full bg-black text-white shadow-md"
+        : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground";
 
-    // Updated navLinkClasses for Gumroad-like styling on landing page
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
         const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Make /about active if path starts with /about
 
         if (isLandingPage && !isAuthenticated) {
-            if (isMobile) { // Mobile specific styling for landing unauthenticated
+            if (isMobile) {
                  if (isActive && href === '/about') {
                     return "bg-gray-700 text-white rounded-md py-2 px-3 block text-base font-medium";
                  }
                  return "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md py-2 px-3 block text-base font-medium transition-colors";
             }
             // Desktop specific styling for landing unauthenticated
-            if (isActive && href === '/about') {
+            if (isActive && href === '/about') { // Example for "About" link being active
                 return "bg-white text-black rounded-md px-3 py-1.5 text-sm font-medium";
             }
-            // Added hover effect for other links
+            // Added hover effect with rounded corners for other links
             return "text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
         }
         // Default app links styling (authenticated or non-landing pages)
@@ -57,7 +56,7 @@ export default function Header() {
         }
         return cn(
             "font-medium text-primary-foreground/80 hover:text-primary-foreground hover:underline underline-offset-2",
-            isActive && "text-primary-foreground underline" // Example active style for app pages
+            isActive && "text-primary-foreground underline"
         );
     };
 
@@ -72,7 +71,7 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden gap-x-3 lg:gap-x-5 text-base md:flex items-center">
-          {isAuthenticated && ( // Links for authenticated users (applies to all pages including landing)
+          {isAuthenticated && (
              <>
                  <Link href="/dashboard" className={navLinkClasses('/dashboard')}>Dashboard</Link>
                  <Link href="/budget" className={navLinkClasses('/budget')}>Budget</Link>
@@ -87,13 +86,12 @@ export default function Header() {
                  </Button>
              </>
           )}
-           {!isAuthenticated && ( // Links for unauthenticated users
+           {!isAuthenticated && (
                <>
                   {isLandingPage ? (
                     <>
-                      {/* Landing page specific nav items - matching Gumroad */}
                       <Link href="/#services" className={navLinkClasses('/#services')}>Discover</Link>
-                      <Link href="/about" className={navLinkClasses('/about')}>About</Link>
+                      <Link href="/about" className={navLinkClasses('/about')}>About</Link> {/* Styled as active for demo */}
                       <Link href="/#why-fintrack" className={navLinkClasses('/#why-fintrack')}>Features</Link>
                       <Link href="/#pricing" className={navLinkClasses('/#pricing')}>Pricing</Link>
                       <div className="flex items-center gap-x-2 lg:gap-x-3 ml-auto">
@@ -108,7 +106,6 @@ export default function Header() {
                       </div>
                     </>
                   ) : (
-                    // Links for other pages when unauthenticated (e.g. /login, /get-started)
                      <div className="flex items-center gap-2 ml-auto">
                         <Link href="/login" passHref>
                            <Button variant="outline" size="sm" className={cn("retro-button", "!border-primary-foreground !text-primary-foreground hover:!bg-primary-foreground/10")}>Login</Button>
@@ -131,7 +128,7 @@ export default function Header() {
                  size="icon"
                  className={cn(
                     "retro-button !shadow-none h-8 w-8",
-                    (isLandingPage && !isAuthenticated) ? "border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white" : "border-primary-foreground text-primary-foreground hover:bg-primary/80"
+                    (isLandingPage && !isAuthenticated) ? "border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md" : "border-primary-foreground text-primary-foreground hover:bg-primary/80"
                  )}
                >
                 <Menu className="h-5 w-5" />
@@ -142,7 +139,7 @@ export default function Header() {
                side="left"
                className={cn(
                    "w-[280px] retro-window !rounded-none !p-0",
-                   (isLandingPage && !isAuthenticated) ? "bg-black !border-gray-700 text-white" : "bg-card !border-foreground text-foreground" // Use card for default app mobile menu
+                   (isLandingPage && !isAuthenticated) ? "bg-black !border-gray-700 text-white" : "bg-card !border-foreground text-foreground"
                 )}
             >
                 <div className={cn(
@@ -197,10 +194,10 @@ export default function Header() {
                               <Link href="/#pricing" className={navLinkClasses('/#pricing', true)}>Pricing</Link>
                               <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-gray-700">
                                 <Link href="/login" passHref>
-                                    <Button variant="outline" className="w-full retro-button !text-white !border-gray-500 hover:!bg-gray-700">Log in</Button>
+                                    <Button variant="outline" className="w-full retro-button !text-white !border-gray-500 hover:!bg-gray-700 rounded-md">Log in</Button>
                                 </Link>
                                  <Link href="/get-started" passHref>
-                                    <Button variant="default" className="w-full retro-button bg-pink-500 hover:bg-pink-600 text-white border-pink-500 !shadow-none">Get Started</Button>
+                                    <Button variant="default" className="w-full retro-button bg-pink-500 hover:bg-pink-600 text-white border-pink-500 !shadow-none rounded-md">Get Started</Button>
                                 </Link>
                               </div>
                             </>
