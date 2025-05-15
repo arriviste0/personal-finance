@@ -34,7 +34,7 @@ export default function Header() {
         : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground";
 
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
-        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about"));
+        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Example for active link
 
         if (isLandingPage && !isAuthenticated) {
             if (isMobile) {
@@ -44,14 +44,14 @@ export default function Header() {
                  return "text-gray-300 hover:bg-white hover:text-black rounded-md py-2 px-3 block text-base font-medium transition-colors";
             }
             // Desktop specific styling for landing unauthenticated
-            if (isActive) {
+            if (isActive) { // Example: About page is active
                 return "bg-white text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
             }
             return "text-white hover:bg-white hover:text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
         }
         // Default app links styling (authenticated or non-landing pages)
         if (isMobile) {
-            return cn("text-gray-700 hover:underline hover:text-primary underline-offset-2 py-1.5 block", isActive && "text-primary underline");
+            return cn("text-foreground hover:underline hover:text-primary underline-offset-2 py-1.5 block", isActive && "text-primary underline");
         }
         return cn(
             "font-medium text-primary-foreground/80 hover:text-primary-foreground hover:underline underline-offset-2",
@@ -90,19 +90,19 @@ export default function Header() {
                   {isLandingPage ? (
                     <>
                       <Link href="/#services" className={navLinkClasses('/#services')}>Discover</Link>
-                      <Link href="/about" className={navLinkClasses('/about')}>About</Link>
+                      <Link href="/about" className={navLinkClasses('/about', false)}>About</Link> {/* Pass false for isMobile */}
                       <Link href="/#why-fintrack" className={navLinkClasses('/#why-fintrack')}>Features</Link>
                       <Link href="/#pricing" className={navLinkClasses('/#pricing')}>Pricing</Link>
-                      <div className="flex items-center gap-x-2 lg:gap-x-3 ml-auto">
+                      <div className="flex items-center gap-x-2 ml-auto"> {/* Reduced gap */}
                         <Link
                             href="/login"
-                            className="text-white border border-white rounded-md px-3 py-1.5 text-sm font-medium transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                            className="text-white border border-white rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black" // Adjusted padding
                         >
                            Log in
                         </Link>
                         <Link href="/get-started" passHref>
                            <Button
-                             className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-4 py-1.5 text-sm font-semibold border-0 shadow-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                             className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-3 py-1.5 text-sm font-semibold border-0 shadow-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black" // Adjusted padding
                            >
                             Get Started
                            </Button>
@@ -231,5 +231,3 @@ export default function Header() {
     </header>
   );
 }
-
-    
