@@ -34,7 +34,7 @@ export default function Header() {
         : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground";
 
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
-        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Example active state for /about
+        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about"));
 
         if (isLandingPage && !isAuthenticated) {
             if (isMobile) {
@@ -96,12 +96,14 @@ export default function Header() {
                       <div className="flex items-center gap-x-2 lg:gap-x-3 ml-auto">
                         <Link
                             href="/login"
-                            className="text-white hover:bg-white hover:text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors"
+                            className="text-white border border-white rounded-md px-3 py-1.5 text-sm font-medium transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                         >
                            Log in
                         </Link>
                         <Link href="/get-started" passHref>
-                           <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-4 py-1.5 text-sm font-semibold border-0 shadow-none">
+                           <Button
+                             className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-4 py-1.5 text-sm font-semibold border-0 shadow-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                           >
                             Get Started
                            </Button>
                         </Link>
@@ -197,7 +199,7 @@ export default function Header() {
                               <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-gray-700">
                                 <Link
                                     href="/login"
-                                    className="text-gray-300 hover:bg-white hover:text-black rounded-md py-2 px-3 block text-base font-medium transition-colors"
+                                    className="text-white border border-white rounded-md py-2 px-3 block text-base font-medium transition-colors hover:bg-white hover:text-black"
                                 >
                                     Log in
                                 </Link>
