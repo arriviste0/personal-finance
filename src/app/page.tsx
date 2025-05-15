@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign } from 'lucide-react'; // Added CircleDollarSign
+import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
@@ -18,8 +18,6 @@ const services = [
     bgColorClass: "bg-[#2EC4B6]", // Teal
     iconColorClass: "text-white",
     textColorClass: "text-white",
-    tagBgClass: "bg-white/20",
-    tagTextColorClass: "text-white",
     href: "/budget"
   },
   {
@@ -30,8 +28,6 @@ const services = [
     bgColorClass: "bg-[#FF6B6B]", // Red
     iconColorClass: "text-white",
     textColorClass: "text-white",
-    tagBgClass: "bg-white/20",
-    tagTextColorClass: "text-white",
     href: "/savings-goals"
   },
   {
@@ -42,8 +38,6 @@ const services = [
     bgColorClass: "bg-[#FFD166]", // Yellow
     iconColorClass: "text-black",
     textColorClass: "text-black",
-    tagBgClass: "bg-black/10",
-    tagTextColorClass: "text-black",
     href: "/ai-assistant"
   },
   {
@@ -54,8 +48,6 @@ const services = [
     bgColorClass: "bg-[#F79F79]", // Orange
     iconColorClass: "text-black",
     textColorClass: "text-black",
-    tagBgClass: "bg-black/10",
-    tagTextColorClass: "text-black",
     href: "/expenses"
   },
   {
@@ -66,8 +58,6 @@ const services = [
     bgColorClass: "bg-[#A0C4FF]", // Light Blue
     iconColorClass: "text-black",
     textColorClass: "text-black",
-    tagBgClass: "bg-black/10",
-    tagTextColorClass: "text-black",
     href: "/tax-planner"
   },
   {
@@ -78,8 +68,6 @@ const services = [
     bgColorClass: "bg-[#BDB2FF]", // Lavender/Purple
     iconColorClass: "text-black",
     textColorClass: "text-black",
-    tagBgClass: "bg-black/10",
-    tagTextColorClass: "text-black",
     href: "/investments"
   },
 ];
@@ -147,7 +135,7 @@ export default function LandingPage() {
                   </CardHeader>
                   <CardContent className="p-0 text-xs !border-0 font-sans">
                     <p>Unlock reports and insights to maximize your financial health and achieve your goals faster.</p>
-                    <Link href="/ai-assistant" className="text-white underline mt-2 inline-block text-xs font-sans">Explore AI Features <ArrowRight className="inline h-3 w-3" /></Link>
+                    <Link href="/ai-assistant" className="text-white mt-2 inline-block text-xs font-sans link-underline">Explore AI Features <ArrowRight className="inline h-3 w-3" /></Link>
                   </CardContent>
                 </motion.div>
                 <motion.div
@@ -221,7 +209,7 @@ export default function LandingPage() {
                 const IconComponent = service.icon;
                 return (
                   <motion.div key={service.title} whileHover={{ y: -5, boxShadow: "6px 6px 0px #000" }} transition={{ type: "spring", stiffness: 300 }}>
-                    <Link href={service.href} passHref>
+                    <Link href={service.href} passHref className="no-underline">
                       <Card className={`border-2 border-black rounded-xl shadow-[4px_4px_0px_#000] flex flex-col h-full p-6 transition-all duration-300 hover:shadow-[6px_6px_0px_#000] ${service.bgColorClass} group`}>
                         <div className="relative mb-4">
                           <IconComponent className={`h-12 w-12 ${service.iconColorClass} mb-3 transition-transform duration-300 group-hover:scale-110`} />
@@ -232,7 +220,7 @@ export default function LandingPage() {
                           <h4 className={`text-xs font-semibold mb-2 uppercase tracking-wider font-sans ${service.textColorClass} opacity-70`}>Popular tags</h4>
                           <div className="flex flex-wrap gap-2">
                             {service.tags.map(tag => (
-                              <span key={tag} className={`text-xs font-medium px-3 py-1 rounded-full ${service.tagBgClass} ${service.tagTextColorClass} font-sans`}>{tag}</span>
+                              <span key={tag} className={`text-xs font-medium px-3 py-1 rounded-full border border-black bg-white text-black hover:bg-black hover:text-white hover:border-white transition-all duration-150 cursor-pointer font-sans`}>{tag}</span>
                             ))}
                           </div>
                         </div>
@@ -269,7 +257,7 @@ export default function LandingPage() {
                     </ul>
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
-                    <Link href="/get-started" passHref className="w-full">
+                    <Link href="/get-started" passHref className="w-full no-underline">
                       <Button variant="outline" className="w-full retro-button border-primary text-primary hover:bg-primary hover:text-primary-foreground">Get Started</Button>
                     </Link>
                   </CardFooter>
@@ -293,7 +281,7 @@ export default function LandingPage() {
                     </ul>
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
-                     <Link href="/get-started?plan=pro" passHref className="w-full">
+                     <Link href="/get-started?plan=pro" passHref className="w-full no-underline">
                        <Button className="w-full retro-button bg-primary text-primary-foreground hover:bg-primary/90">Choose Pro</Button>
                     </Link>
                   </CardFooter>
@@ -315,7 +303,7 @@ export default function LandingPage() {
                     </ul>
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
-                     <Link href="/contact-sales" passHref className="w-full">
+                     <Link href="/contact-sales" passHref className="w-full no-underline">
                         <Button variant="outline" className="w-full retro-button border-black text-black hover:bg-black hover:text-white">Contact Sales</Button>
                     </Link>
                   </CardFooter>
@@ -353,7 +341,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Link href="/get-started" passHref>
+              <Link href="/get-started" passHref className="no-underline">
                 <Button size="lg" className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -389,34 +377,34 @@ export default function LandingPage() {
             <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Quick Links</h4>
               <ul className="space-y-2 text-sm font-sans">
-                <li><Link href="#why-fintrack" className="hover:text-yellow-400 hover:underline">Why FinTrack Pro?</Link></li>
-                <li><Link href="#services" className="hover:text-yellow-400 hover:underline">Our Features</Link></li>
-                <li><Link href="#pricing" className="hover:text-yellow-400 hover:underline">Pricing Plans</Link></li>
-                <li><Link href="/get-started" className="hover:text-yellow-400 hover:underline">Sign Up</Link></li>
-                <li><Link href="/login" className="hover:text-yellow-400 hover:underline">Login</Link></li>
+                <li><Link href="#why-fintrack" className="hover:text-yellow-400 no-underline">Why FinTrack Pro?</Link></li>
+                <li><Link href="#services" className="hover:text-yellow-400 no-underline">Our Features</Link></li>
+                <li><Link href="#pricing" className="hover:text-yellow-400 no-underline">Pricing Plans</Link></li>
+                <li><Link href="/get-started" className="hover:text-yellow-400 no-underline">Sign Up</Link></li>
+                <li><Link href="/login" className="hover:text-yellow-400 no-underline">Login</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Resources</h4>
               <ul className="space-y-2 text-sm font-sans">
-                <li><Link href="/blog" className="hover:text-yellow-400 hover:underline">Blog</Link></li>
-                <li><Link href="/faq" className="hover:text-yellow-400 hover:underline">FAQ</Link></li>
-                <li><Link href="/support" className="hover:text-yellow-400 hover:underline">Support Center</Link></li>
-                <li><Link href="/terms" className="hover:text-yellow-400 hover:underline">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-yellow-400 hover:underline">Privacy Policy</Link></li>
+                <li><Link href="/blog" className="hover:text-yellow-400 no-underline">Blog</Link></li>
+                <li><Link href="/faq" className="hover:text-yellow-400 no-underline">FAQ</Link></li>
+                <li><Link href="/support" className="hover:text-yellow-400 no-underline">Support Center</Link></li>
+                <li><Link href="/terms" className="hover:text-yellow-400 no-underline">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="hover:text-yellow-400 no-underline">Privacy Policy</Link></li>
               </ul>
             </div>
              <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Follow Us</h4>
                 <div className="flex space-x-4">
-                    <Link href="#" aria-label="Facebook" className="text-gray-400 hover:text-yellow-400 transition-colors"><Facebook className="h-6 w-6"/></Link>
-                    <Link href="#" aria-label="Twitter" className="text-gray-400 hover:text-yellow-400 transition-colors"><Twitter className="h-6 w-6"/></Link>
-                    <Link href="#" aria-label="Instagram" className="text-gray-400 hover:text-yellow-400 transition-colors"><Instagram className="h-6 w-6"/></Link>
-                    <Link href="#" aria-label="YouTube" className="text-gray-400 hover:text-yellow-400 transition-colors"><Youtube className="h-6 w-6"/></Link>
+                    <Link href="#" aria-label="Facebook" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Facebook className="h-6 w-6"/></Link>
+                    <Link href="#" aria-label="Twitter" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Twitter className="h-6 w-6"/></Link>
+                    <Link href="#" aria-label="Instagram" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Instagram className="h-6 w-6"/></Link>
+                    <Link href="#" aria-label="YouTube" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Youtube className="h-6 w-6"/></Link>
                 </div>
                  <div className="mt-6">
                     <h4 className="text-lg font-semibold text-white mb-2 font-sans">Need Help?</h4>
-                    <Link href="/contact" className="text-sm text-yellow-400 hover:underline font-sans">Contact Our Support Team</Link>
+                    <Link href="/contact" className="text-sm text-yellow-400 hover:underline font-sans no-underline">Contact Our Support Team</Link>
                  </div>
             </div>
           </div>
@@ -435,4 +423,3 @@ const CheckCircle = ({className}: {className?: string}) => (
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
   </svg>
 );
-

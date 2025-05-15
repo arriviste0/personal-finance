@@ -74,10 +74,14 @@
      font-family: var(--font-sans), system-ui, sans-serif;
   }
 
-  /* General Link Styling */
+  /* General Link Styling - Removed global underline */
   a {
-    @apply text-primary hover:text-primary/80 underline underline-offset-4;
+    @apply text-primary hover:text-primary/80; /* Removed underline underline-offset-4 */
   }
+  a.link-underline { /* Add this class if specific underline is needed */
+    @apply underline underline-offset-4;
+  }
+
 
   /* Remove default focus outline, rely on ring */
   *:focus {
@@ -120,7 +124,7 @@
       @apply border-transparent bg-transparent shadow-none hover:bg-foreground/5 hover:text-foreground hover:translate-x-0 hover:translate-y-0; /* No move on ghost */
    }
     .retro-button-link {
-        @apply border-transparent bg-transparent shadow-none underline underline-offset-2 text-primary hover:text-primary/80 h-auto p-0 text-base hover:translate-x-0 hover:translate-y-0; /* No move on link */
+        @apply border-transparent bg-transparent shadow-none text-primary hover:text-primary/80 h-auto p-0 text-base hover:translate-x-0 hover:translate-y-0; /* No move on link */
     }
     .retro-button-sm {
         @apply px-3 py-1.5 text-sm shadow-retro-sm;
@@ -203,7 +207,6 @@
      }
      /* Retro Checkbox / Switch */
     .retro-checkbox, [role="switch"] {
-        /* @apply peer h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150; */
          @apply h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150;
         @apply hover:border-primary;
     }
