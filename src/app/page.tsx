@@ -16,7 +16,7 @@ const services = [
     description: "Take control of your spending with intuitive budgeting tools. Set limits, track progress, and achieve financial clarity.",
     icon: HandCoins,
     tags: ["monthly budget", "category tracking", "spending limits"],
-    bgColorClass: "bg-[#2EC4B6]", 
+    bgColorClass: "bg-[#2EC4B6]",
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/budget"
@@ -26,7 +26,7 @@ const services = [
     description: "Define your financial goals, from vacations to down payments, and watch your savings grow with automated tracking.",
     icon: PiggyBank,
     tags: ["dream vacation", "new home", "education fund"],
-    bgColorClass: "bg-[#FF6B6B]", 
+    bgColorClass: "bg-[#FF6B6B]",
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/savings-goals"
@@ -36,7 +36,7 @@ const services = [
     description: "Get personalized insights, spending analysis, and proactive tips from our intelligent AI assistant to optimize your finances.",
     icon: Lightbulb,
     tags: ["smart insights", "spending analysis", "proactive tips"],
-    bgColorClass: "bg-[#FFD166]", 
+    bgColorClass: "bg-[#FFD166]",
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/ai-assistant"
@@ -46,7 +46,7 @@ const services = [
     description: "Log every penny with ease. Categorize expenses, view trends, and understand where your money goes.",
     icon: ListChecks,
     tags: ["receipt scan", "categorization", "spending reports"],
-    bgColorClass: "bg-[#F79F79]", 
+    bgColorClass: "bg-[#F79F79]",
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/expenses"
@@ -56,7 +56,7 @@ const services = [
     description: "Estimate your tax liability, track deductions, and get ready for tax season with our helpful planning tools.",
     icon: FileText,
     tags: ["tax estimate", "deductions", "IRS forms"],
-    bgColorClass: "bg-[#A0C4FF]", 
+    bgColorClass: "bg-[#A0C4FF]",
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/tax-planner"
@@ -66,7 +66,7 @@ const services = [
     description: "Monitor your stocks, mutual funds, crypto, and other investments all in one place. Make informed decisions.",
     icon: Landmark,
     tags: ["stocks", "crypto", "portfolio overview"],
-    bgColorClass: "bg-[#BDB2FF]", 
+    bgColorClass: "bg-[#BDB2FF]",
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/investments"
@@ -79,9 +79,9 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* Main Content Area */}
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-amber-50 text-gray-800">
-          <div className="container mx-auto">
+        {/* Hero Section - Full width background, content centered */}
+        <section className="py-16 sm:py-24 bg-amber-50 text-gray-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8"> {/* Centered content with padding */}
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
@@ -156,16 +156,16 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Flow Diagram Section */}
-        <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 text-center">
-          <div className="container mx-auto">
+        {/* Flow Diagram Section - Full width background possible, content centered */}
+        <section className="py-16 sm:py-24 text-center"> {/* Removed px, bg is default */}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8"> {/* Centered content */}
             <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
               You Know All Those Financial Goals You Have?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
               We want you to achieve them, with a clear plan, and see what works.
             </p>
-            <motion.div 
+            <motion.div
               className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -182,7 +182,7 @@ export default function LandingPage() {
                     data-ai-hint="finance mascot walking"
                   />
               </div>
-             
+
               <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
                 {/* Top-Left */}
                 <div className="text-left flex items-center space-x-2">
@@ -214,9 +214,9 @@ export default function LandingPage() {
         </section>
 
 
-        {/* Why FinTrack Pro Section */}
-        <section id="why-fintrack" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-          <div className="container mx-auto text-center">
+        {/* Why FinTrack Pro Section - Content centered */}
+        <section id="why-fintrack" className="py-16 sm:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4 font-sans">Why Choose FinTrack Pro?</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
               We provide a comprehensive suite of tools designed to simplify your financial life, powered by cutting-edge AI.
@@ -259,9 +259,9 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Potential Savings Section */}
+        {/* Potential Savings Section - Full width background */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
-          <div className="container mx-auto text-center relative">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
             {[
               { icon: DollarSign, color: 'bg-pink-400', top: '10%', left: '15%', delay: 0, size: 'h-12 w-12 md:h-16 md:w-16' },
               { icon: Euro, color: 'bg-green-400', top: '20%', left: '80%', delay: 0.2, size: 'h-10 w-10 md:h-14 md:w-14' },
@@ -319,9 +319,9 @@ export default function LandingPage() {
         </section>
 
 
-        {/* Our Services Section */}
-        <section id="services" className="py-16 sm:py-24 bg-muted/40 px-4 sm:px-6 lg:px-8">
-          <div className="container mx-auto">
+        {/* Our Services Section - Full width background possible, content centered */}
+        <section id="services" className="py-16 sm:py-24 bg-muted/40">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 font-sans">Explore Our Core Features</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {services.map((service) => {
@@ -353,9 +353,9 @@ export default function LandingPage() {
         </section>
 
 
-        {/* Pricing Section */}
-        <section id="pricing" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-          <div className="container mx-auto text-center">
+        {/* Pricing Section - Content centered */}
+        <section id="pricing" className="py-16 sm:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4 font-sans">Simple, Transparent Pricing</h2>
             <p className="text-lg text-gray-600 max-w-xl mx-auto mb-12 font-sans">
               Choose the plan that's right for you. Get started for free!
@@ -433,9 +433,9 @@ export default function LandingPage() {
         </section>
 
 
-        {/* Call to Action Section */}
-        <section className="py-16 sm:py-24 bg-primary text-primary-foreground px-4 sm:px-6 lg:px-8">
-          <div className="container mx-auto max-w-3xl text-center">
+        {/* Call to Action Section - Full width background */}
+        <section className="py-16 sm:py-24 bg-primary text-primary-foreground">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -470,9 +470,9 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer */}
-       <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto">
+      {/* Footer - Full width background */}
+       <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 md:gap-12 mb-10">
             <div className="lg:pr-8">
               <h3 className="text-2xl lg:text-3xl font-semibold text-white mb-6 font-sans leading-snug">
@@ -538,5 +538,3 @@ const CheckCircle = ({className}: {className?: string}) => (
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
   </svg>
 );
-
-    
