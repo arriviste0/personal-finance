@@ -1,302 +1,309 @@
+
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { CircleDollarSign, Banknote, PiggyBank, Landmark, TrendingUp, Lightbulb, ShieldAlert, BarChart, Sparkles, Check, Award } from 'lucide-react'; // Added icons
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-const featureVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
-};
+import Image from 'next/image';
+import { ArrowRight, BarChart2, Briefcase, DollarSign, Handshake, Inbox, LineChart, MessageCircle, Percent, TrendingUp, Users, Youtube, Facebook, Twitter, Instagram } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'; // Added CardFooter
+import { Input } from '@/components/ui/input';
 
 export default function LandingPage() {
-    const [fadeIn, setFadeIn] = useState(false);
-
-    useEffect(() => {
-        // Trigger fade-in animation on mount
-        setFadeIn(true);
-    }, []);
-
   return (
-    <div className={`min-h-screen flex flex-col transition-opacity duration-1000 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}>
-      {/* Hero Section */}
-       <section className="flex-1 flex flex-col items-center justify-center text-center py-20 px-4 bg-gradient-to-b from-background via-muted/30 to-background">
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-           <CircleDollarSign className="h-24 w-24 text-primary mb-8 mx-auto animate-retro-glow" />
-           <h1 className="text-4xl md:text-6xl font-bold mb-4 text-foreground text-shadow-retro font-heading">
-             Take Control of Your <span className="text-primary">Financial Future</span>
-          </h1>
-           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-             FinTrack Pro combines powerful budgeting, goal tracking, tax planning, and AI insights into a sleek, retro-modern interface. Stop guessing, start growing.
-           </p>
-           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link href="/get-started" passHref> {/* Link to Get Started */}
-               <Button variant="primary" size="lg" className="retro-button">
-                Get Started
-               </Button>
-            </Link>
-            <Link href="/login" passHref> {/* Link to Login */}
-              <Button variant="outline" size="lg" className="retro-button">
-                Login
-              </Button>
-             </Link>
+    <div className="flex flex-col min-h-screen bg-amber-50 text-gray-800">
+      {/* Main Content Area */}
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
+                  Invest Your <span className="text-yellow-500">Money</span> In The Future
+                </h1>
+                <p className="text-lg text-gray-600 max-w-xl">
+                  We help you to turn your finances for the better future and get a finance experience in managing finances.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link href="/get-started" passHref>
+                    <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
+                      Get Started
+                    </Button>
+                  </Link>
+                  <Link href="#services" passHref>
+                    <Button variant="outline" className="border-green-500 text-green-600 hover:bg-green-500 hover:text-white font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
+                      Learn More
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              <div className="relative mt-12 lg:mt-0">
+                <div className="absolute -top-8 -left-8 w-20 h-20 bg-yellow-300 rounded-full opacity-50 animate-pulse"></div>
+                <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-green-300 rounded-lg opacity-50 transform rotate-12 animate-pulse delay-500"></div>
+                <Image
+                  src="https://placehold.co/600x500.png"
+                  alt="Financial Growth"
+                  width={600}
+                  height={500}
+                  className="rounded-lg shadow-xl z-10 relative"
+                  data-ai-hint="man business tablet"
+                />
+                <Card className="absolute -bottom-10 -left-10 sm:-left-16 bg-orange-400 text-white p-4 rounded-lg shadow-2xl w-60 sm:w-72 z-20 retro-card">
+                  <CardHeader className="p-0 mb-2 !bg-transparent !border-0">
+                    <CardTitle className="text-sm font-semibold !text-white">Data Visualization</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0 text-xs !border-0">
+                    <p>Reports, And Insights To Maximize Your Finances And Help Achieve Your Goals.</p>
+                    <Link href="#" className="text-white underline mt-2 inline-block text-xs">Contact Our Expert <ArrowRight className="inline h-3 w-3" /></Link>
+                  </CardContent>
+                </Card>
+                <div className="absolute top-4 right-4 bg-white p-3 rounded-lg shadow-lg z-20 flex items-center space-x-2">
+                  <TrendingUp className="h-6 w-6 text-green-500" />
+                  <div>
+                    <p className="text-xs font-semibold">Growth Your</p>
+                    <p className="text-xs text-gray-500">Revenue Today</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </motion.div>
-      </section>
+        </section>
 
-       {/* "Why FinTrack Pro?" Section */}
-       <motion.section
-          id="why"
-          className="py-20 px-4 bg-muted/50"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-         <div className="container mx-auto text-center">
-           <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground">Why Choose FinTrack Pro?</h2>
-           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
-              Go beyond simple tracking. We empower you with the tools and insights needed for true financial mastery.
-           </p>
-           <div className="grid md:grid-cols-3 gap-8 text-left">
-              <div className="flex items-start gap-4">
-                 <BarChart className="h-8 w-8 text-secondary mt-1 flex-shrink-0" />
-                 <div>
-                   <h3 className="text-xl font-medium mb-2">Holistic View</h3>
-                   <p className="text-muted-foreground">See your budgets, goals, expenses, investments, and potential taxes all in one place.</p>
-                 </div>
-              </div>
-              <div className="flex items-start gap-4">
-                 <Sparkles className="h-8 w-8 text-accent mt-1 flex-shrink-0" />
-                 <div>
-                   <h3 className="text-xl font-medium mb-2">AI-Powered Insights</h3>
-                   <p className="text-muted-foreground">Receive personalized tips and analysis to optimize your savings and spending habits.</p>
-                 </div>
-              </div>
-               <div className="flex items-start gap-4">
-                 <Award className="h-8 w-8 text-primary mt-1 flex-shrink-0" />
-                 <div>
-                   <h3 className="text-xl font-medium mb-2">Intuitive Design</h3>
-                   <p className="text-muted-foreground">Enjoy a unique retro-modern interface that's both fun and easy to navigate.</p>
-                 </div>
-              </div>
-           </div>
-         </div>
-       </motion.section>
+        {/* Partners Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto text-center">
+            <h3 className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-8">
+              We Cooperate From Financial Companies In The World
+            </h3>
+            <div className="flex flex-wrap justify-center items-center gap-x-12 sm:gap-x-16 gap-y-8">
+              <p className="text-xl font-semibold text-gray-400 hover:text-gray-600 transition-colors">AngelList</p>
+              <p className="text-xl font-semibold text-gray-400 hover:text-gray-600 transition-colors">THE WORLD BANK</p>
+              <p className="text-xl font-semibold text-gray-400 hover:text-gray-600 transition-colors">bankinter</p>
+              <p className="text-xl font-semibold text-gray-400 hover:text-gray-600 transition-colors">Bankier.pl</p>
+            </div>
+          </div>
+        </section>
 
-       {/* Features Section */}
-       <motion.section
-          id="features"
-          className="py-20 px-4"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
+        {/* Benefits Section */}
+        <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <Card className="border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] retro-card">
+                <CardContent className="p-6 space-y-3 !border-0">
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-blue-500 text-white rounded-full p-3">
+                      <Percent className="h-6 w-6" />
+                    </div>
+                    <p className="text-lg font-semibold">50%</p>
+                  </div>
+                  <p className="text-gray-600">
+                    Save Half Your Salary To Stabilize Your Financial Management, We Help You To Be Even Better.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] retro-card">
+                <CardContent className="p-6 space-y-3 !border-0">
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-red-500 text-white rounded-full p-3">
+                      <DollarSign className="h-6 w-6" />
+                    </div>
+                     <p className="text-lg font-semibold">$2 Bonus</p>
+                  </div>
+                  <p className="text-gray-600">
+                    Do An Investigation To Increase Your Financial Savings And Get A Bonus For Each Month.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Services Section */}
+        <section id="services" className="py-16 sm:py-24 bg-white px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">Our Services</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <Card className="bg-yellow-400 text-black border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] flex flex-col retro-card">
+                <CardHeader className="!bg-transparent !border-0">
+                  <LineChart className="h-10 w-10 mb-3" />
+                  <CardTitle className="text-xl font-semibold">Invest Management</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow !border-0">
+                  <p className="text-sm">We Take A Holistic, Comprehensive Approach To Investment Management That's Shaped By Decades Of Research To Determine The Most Efficient Investment Policy.</p>
+                </CardContent>
+                <CardFooter className="!border-0 !bg-transparent">
+                  <Link href="#" className="font-semibold hover:underline flex items-center">Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </CardFooter>
+              </Card>
+              <Card className="bg-green-500 text-white border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] flex flex-col retro-card">
+                <CardHeader className="!bg-transparent !border-0">
+                  <TrendingUp className="h-10 w-10 mb-3" />
+                  <CardTitle className="text-xl font-semibold !text-white">Financial Plan</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow !border-0">
+                  <p className="text-sm">The Financial Needs Of Each Client Is As Unique As Their Own Fingerprints. Our Goal In Financial Planning Is To Give You The Peace Of Mind That You Are On The Right Track.</p>
+                </CardContent>
+                 <CardFooter className="!border-0 !bg-transparent">
+                   <Link href="#" className="font-semibold hover:underline flex items-center">Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </CardFooter>
+              </Card>
+              <Card className="bg-orange-500 text-white border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] flex flex-col retro-card">
+                <CardHeader className="!bg-transparent !border-0">
+                  <Briefcase className="h-10 w-10 mb-3" />
+                  <CardTitle className="text-xl font-semibold !text-white">Wealth Investment</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow !border-0">
+                  <p className="text-sm">We Take A Holistic, Comprehensive Approach To Investment Management That's Shaped By Decades Of Research To Determine The Most Efficient Investment Policy.</p>
+                </CardContent>
+                 <CardFooter className="!border-0 !bg-transparent">
+                   <Link href="#" className="font-semibold hover:underline flex items-center">Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </CardFooter>
+              </Card>
+              <Card className="bg-blue-600 text-white border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] flex flex-col retro-card">
+                <CardHeader className="!bg-transparent !border-0">
+                  <Handshake className="h-10 w-10 mb-3" />
+                  <CardTitle className="text-xl font-semibold !text-white">Fiduciary Advice</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow !border-0">
+                  <p className="text-sm">An Employer Sponsored Retirement Plan Is One Of The Most Important Employee Benefits You Can Offer. Our Expertise Lies In Helping You Mitigate Fiduciary Liability.</p>
+                </CardContent>
+                 <CardFooter className="!border-0 !bg-transparent">
+                   <Link href="#" className="font-semibold hover:underline flex items-center">Learn More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Article Section */}
+        <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">Our Article</h2>
+            <div className="grid lg:grid-cols-3 gap-8">
+              <Card className="lg:col-span-2 border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] p-0 overflow-hidden retro-card">
+                <Image
+                  src="https://placehold.co/800x400.png"
+                  alt="Fundamentals of Investment"
+                  width={800}
+                  height={400}
+                  className="w-full h-64 object-cover"
+                  data-ai-hint="finance planning desk"
+                />
+                <div className="p-6 bg-orange-500 text-white">
+                  <h3 className="text-2xl font-semibold mb-3">Fundamentals Of Success Investment</h3>
+                  <div className="flex items-center space-x-2 text-xs mb-4">
+                    <Image src="https://placehold.co/32x32.png" alt="Marcus Claide" width={32} height={32} className="rounded-full" data-ai-hint="man portrait" />
+                    <span>Marcus Claide</span>
+                    <span>|</span>
+                    <span>12 May, 2021</span>
+                  </div>
+                  <Link href="#" className="font-semibold hover:underline flex items-center">Read More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                </div>
+              </Card>
+              <div className="space-y-8">
+                <Card className="border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] retro-card">
+                  <CardContent className="p-6 !border-0">
+                    <h4 className="text-lg font-semibold mb-2">Take Advantage Of Tax-Smart Strategies To Help Better Reach Goals</h4>
+                    <div className="flex items-center space-x-2 text-xs text-gray-500 mb-3">
+                       <Image src="https://placehold.co/24x24.png" alt="Dwaine Clark" width={24} height={24} className="rounded-full" data-ai-hint="woman portrait" />
+                       <span>Dwaine Clarck</span>
+                       <span>|</span>
+                       <span>12 May, 2021</span>
+                    </div>
+                    <Link href="#" className="text-sm font-semibold text-yellow-600 hover:underline flex items-center">Read More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                  </CardContent>
+                </Card>
+                <Card className="border-2 border-black rounded-lg shadow-[4px_4px_0px_#000] retro-card">
+                  <CardContent className="p-6 !border-0">
+                    <h4 className="text-lg font-semibold mb-2">How To Find A Financial Adviser You Can Trust</h4>
+                     <div className="flex items-center space-x-2 text-xs text-gray-500 mb-3">
+                       <Image src="https://placehold.co/24x24.png" alt="Vender Cerck" width={24} height={24} className="rounded-full" data-ai-hint="man glasses portrait" />
+                       <span>Vender Cerck</span>
+                       <span>|</span>
+                       <span>12 May, 2021</span>
+                    </div>
+                    <Link href="#" className="text-sm font-semibold text-yellow-600 hover:underline flex items-center">Read More <ArrowRight className="ml-1 h-4 w-4" /></Link>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Questions Section */}
+        <section className="py-16 sm:py-24 bg-white px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto max-w-3xl text-center border-2 border-black rounded-lg shadow-[6px_6px_0px_#000] p-8 sm:p-12 relative retro-card">
+             <div className="absolute top-4 left-4 h-3 w-3 bg-yellow-400 rounded-full animate-ping"></div>
+             <div className="absolute top-8 right-8 h-4 w-4 bg-green-400 rounded-full animate-ping delay-300"></div>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6">
+              We Know That You're Going To Have A Lot Of Questions, And We're Here To Help!
+            </h2>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
+                <MessageCircle className="mr-2 h-5 w-5" /> Send Message
+              </Button>
+              <Button variant="outline" className="border-green-500 text-green-600 hover:bg-green-500 hover:text-white font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
+                <Inbox className="mr-2 h-5 w-5" /> Online Chat
+              </Button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-black text-gray-300 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto">
-           <h2 className="text-3xl md:text-4xl font-semibold text-center mb-12 text-foreground">Core Features</h2>
-           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <motion.div variants={featureVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
-              <Card className="retro-card h-full">
-                <CardHeader className="retro-card-header !bg-secondary !text-secondary-foreground">
-                  <PiggyBank className="h-8 w-8 mb-2" />
-                  <CardTitle className="text-xl">Savings Goals</CardTitle>
-                  <div className="retro-window-controls"><span className="!bg-secondary !border-secondary-foreground"></span><span className="!bg-secondary !border-secondary-foreground"></span><span className="!bg-secondary !border-secondary-foreground"></span></div>
-                </CardHeader>
-                <CardContent className="retro-card-content !border-t-0 pt-4">
-                   <p className="text-muted-foreground">Define, visualize, and track your progress towards financial milestones, big or small.</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div variants={featureVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
-              <Card className="retro-card h-full">
-                <CardHeader className="retro-card-header !bg-primary !text-primary-foreground">
-                  <Landmark className="h-8 w-8 mb-2" />
-                  <CardTitle className="text-xl">Intuitive Budgeting</CardTitle>
-                   <div className="retro-window-controls"><span className="!bg-primary !border-primary-foreground"></span><span className="!bg-primary !border-primary-foreground"></span><span className="!bg-primary !border-primary-foreground"></span></div>
-                </CardHeader>
-                <CardContent className="retro-card-content !border-t-0 pt-4">
-                   <p className="text-muted-foreground">Set budgets, track spending by category, and gain clarity on where your money goes.</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div variants={featureVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
-              <Card className="retro-card h-full">
-                <CardHeader className="retro-card-header !bg-accent !text-accent-foreground">
-                  <Lightbulb className="h-8 w-8 mb-2" />
-                  <CardTitle className="text-xl">AI Savings Assistant</CardTitle>
-                   <div className="retro-window-controls"><span className="!bg-accent !border-accent-foreground"></span><span className="!bg-accent !border-accent-foreground"></span><span className="!bg-accent !border-accent-foreground"></span></div>
-                </CardHeader>
-                <CardContent className="retro-card-content !border-t-0 pt-4">
-                   <p className="text-muted-foreground">Receive personalized insights and actionable tips to optimize your savings strategy.</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-             <motion.div variants={featureVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
-               <Card className="retro-card h-full">
-                 <CardHeader className="retro-card-header"> {/* Default Header */}
-                   <TrendingUp className="h-8 w-8 mb-2 text-green-500" />
-                   <CardTitle className="text-xl">Investment Tracking</CardTitle>
-                    <div className="retro-window-controls"><span></span><span></span><span></span></div>
-                 </CardHeader>
-                 <CardContent className="retro-card-content !border-t-0 pt-4">
-                    <p className="text-muted-foreground">Manually log and monitor your investment portfolio performance and asset allocation.</p>
-                 </CardContent>
-               </Card>
-            </motion.div>
-            <motion.div variants={featureVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
-              <Card className="retro-card h-full">
-                 <CardHeader className="retro-card-header !bg-destructive !text-destructive-foreground">
-                   <ShieldAlert className="h-8 w-8 mb-2" />
-                   <CardTitle className="text-xl">Emergency Fund</CardTitle>
-                    <div className="retro-window-controls"><span className="!bg-destructive !border-destructive-foreground"></span><span className="!bg-destructive !border-destructive-foreground"></span><span className="!bg-destructive !border-destructive-foreground"></span></div>
-                 </CardHeader>
-                <CardContent className="retro-card-content !border-t-0 pt-4">
-                   <p className="text-muted-foreground">Build, track, and manage your financial safety net for peace of mind.</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div variants={featureVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
-              <Card className="retro-card h-full">
-                 <CardHeader className="retro-card-header !bg-primary !text-primary-foreground">
-                  <Banknote className="h-8 w-8 mb-2" />
-                   <CardTitle className="text-xl">Expense Logging</CardTitle>
-                    <div className="retro-window-controls"><span className="!bg-primary !border-primary-foreground"></span><span className="!bg-primary !border-primary-foreground"></span><span className="!bg-primary !border-primary-foreground"></span></div>
-                 </CardHeader>
-                 <CardContent className="retro-card-content !border-t-0 pt-4">
-                   <p className="text-muted-foreground">Quickly add and categorize your expenses to stay on top of your spending.</p>
-                 </CardContent>
-              </Card>
-            </motion.div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+            <div>
+              <h3 className="text-xl font-bold text-white mb-4">Fin.Co</h3>
+              <p className="text-sm leading-relaxed">
+                Enter Your Email To Get Latest News!
+              </p>
+              <form className="mt-4 flex">
+                <Input
+                  type="email"
+                  placeholder="Enter your email..."
+                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 rounded-l-md focus:ring-yellow-500 focus:border-yellow-500 flex-grow retro-input"
+                />
+                <Button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-r-md px-4 py-2 retro-button !rounded-l-none">
+                  <ArrowRight className="h-5 w-5" />
+                </Button>
+              </form>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4">Services</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="#services" className="hover:text-yellow-400">Investment Management</Link></li>
+                <li><Link href="#services" className="hover:text-yellow-400">Financial Plan</Link></li>
+                <li><Link href="#services" className="hover:text-yellow-400">Wealth Investment</Link></li>
+                <li><Link href="#services" className="hover:text-yellow-400">Fiduciary Advice</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4">Company</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="#" className="hover:text-yellow-400">About Us</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400">Article</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400">Community</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400">50% Halt</Link></li> {/* This link seems odd, keeping from image */}
+              </ul>
+            </div>
+             <div>
+              <h4 className="text-lg font-semibold text-white mb-4">Follow Us On</h4>
+                <div className="flex space-x-4">
+                    <Link href="#" className="text-gray-400 hover:text-yellow-400"><Facebook className="h-6 w-6"/></Link>
+                    <Link href="#" className="text-gray-400 hover:text-yellow-400"><Twitter className="h-6 w-6"/></Link>
+                    <Link href="#" className="text-gray-400 hover:text-yellow-400"><Instagram className="h-6 w-6"/></Link>
+                    <Link href="#" className="text-gray-400 hover:text-yellow-400"><Youtube className="h-6 w-6"/></Link>
+                </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 pt-8 text-center text-sm">
+            <p>&copy; {new Date().getFullYear()} Fin.Co. All Rights Reserved. (Demo Application)</p>
           </div>
         </div>
-      </motion.section>
-
-       {/* Pricing Section (Placeholder) */}
-        <motion.section
-           id="pricing"
-           className="py-20 px-4 bg-muted/50"
-           variants={sectionVariants}
-           initial="hidden"
-           whileInView="visible"
-         >
-           <div className="container mx-auto text-center">
-             <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground">Pricing Plans</h2>
-             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
-               Choose the plan that fits your financial journey. Start free, upgrade anytime.
-             </p>
-             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
-               {/* Free Plan */}
-               <Card className="retro-card">
-                  <CardHeader className="retro-card-header">
-                      <CardTitle className="text-2xl">Free</CardTitle>
-                      <CardDescription>Get started with essential tracking tools.</CardDescription>
-                     <div className="retro-window-controls"><span></span><span></span><span></span></div>
-                  </CardHeader>
-                 <CardContent className="retro-card-content !border-t-0 space-y-4 pt-4">
-                   <p className="text-4xl font-bold">$0<span className="text-sm text-muted-foreground">/month</span></p>
-                   <ul className="space-y-2 text-left text-muted-foreground">
-                     <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Basic Budgeting</li>
-                     <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Savings Goal Tracking (up to 3)</li>
-                     <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Manual Expense Logging</li>
-                   </ul>
-                 </CardContent>
-                  <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                    <Link href="/get-started" passHref className="w-full"> {/* Link to Get Started */}
-                        <Button variant="outline" className="w-full retro-button">Start Free</Button>
-                    </Link>
-                  </CardFooter>
-               </Card>
-
-                {/* Pro Plan */}
-                <Card className="retro-card border-primary shadow-[4px_4px_0px_0px_hsl(var(--primary))]">
-                   <CardHeader className="retro-card-header !bg-primary !text-primary-foreground">
-                       <CardTitle className="text-2xl">Pro</CardTitle>
-                       <CardDescription className="!text-primary-foreground/80">Unlock advanced features & AI.</CardDescription>
-                      <div className="retro-window-controls"><span className="!bg-primary !border-primary-foreground"></span><span className="!bg-primary !border-primary-foreground"></span><span className="!bg-primary !border-primary-foreground"></span></div>
-                   </CardHeader>
-                  <CardContent className="retro-card-content !border-t-0 space-y-4 pt-4">
-                     <p className="text-4xl font-bold">$9<span className="text-sm text-muted-foreground">/month</span></p>
-                     <ul className="space-y-2 text-left text-muted-foreground">
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> All Free Features</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Unlimited Savings Goals</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> AI Savings Assistant</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Detailed Investment Tracking</li>
-                       <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Emergency Fund Management</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Tax Estimator</li>
-                       <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Priority Support</li>
-                     </ul>
-                  </CardContent>
-                   <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                     <Link href="/get-started" passHref className="w-full"> {/* Link to Get Started */}
-                         <Button variant="primary" className="w-full retro-button">Go Pro</Button>
-                     </Link>
-                   </CardFooter>
-                </Card>
-
-               {/* Enterprise/Custom Plan (Optional) */}
-               <Card className="retro-card">
-                   <CardHeader className="retro-card-header !bg-secondary !text-secondary-foreground">
-                       <CardTitle className="text-2xl">Enterprise</CardTitle>
-                       <CardDescription className="!text-secondary-foreground/80">Tailored solutions for teams.</CardDescription>
-                      <div className="retro-window-controls"><span className="!bg-secondary !border-secondary-foreground"></span><span className="!bg-secondary !border-secondary-foreground"></span><span className="!bg-secondary !border-secondary-foreground"></span></div>
-                   </CardHeader>
-                  <CardContent className="retro-card-content !border-t-0 space-y-4 pt-4">
-                    <p className="text-4xl font-bold">Custom</p>
-                    <ul className="space-y-2 text-left text-muted-foreground">
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> All Pro Features</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Dedicated Account Manager</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Custom Integrations</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-green-500"/> Advanced Reporting</li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                     <Button variant="secondary" className="w-full retro-button">Contact Sales</Button>
-                   </CardFooter>
-               </Card>
-             </div>
-           </div>
-         </motion.section>
-
-
-       {/* Call to Action Section */}
-       <motion.section
-          className="py-20 px-4 text-center bg-gradient-to-t from-background via-muted/30 to-background"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-       >
-          <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground">Ready to Take Control?</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-            Stop drifting, start directing. Join FinTrack Pro today and build the financial future you deserve.
-          </p>
-          <Link href="/get-started" passHref> {/* Link to Get Started */}
-            <Button variant="primary" size="lg" className="retro-button">
-              Get Started Now
-            </Button>
-          </Link>
-       </motion.section>
-
-       {/* Footer (Simple) */}
-        <footer className="py-6 text-center border-t-2 border-foreground bg-muted">
-            <p className="text-sm text-muted-foreground">
-                © {new Date().getFullYear()} FinTrack Pro. All rights reserved. (Demo Application)
-            </p>
-        </footer>
-
+      </footer>
     </div>
   );
 }
