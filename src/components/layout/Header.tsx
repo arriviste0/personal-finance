@@ -35,19 +35,21 @@ export default function Header() {
 
     // Updated navLinkClasses for Gumroad-like styling on landing page
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
-        const isActive = pathname === href;
+        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Make /about active if path starts with /about
+
         if (isLandingPage && !isAuthenticated) {
             if (isMobile) { // Mobile specific styling for landing unauthenticated
-                 if (isActive && href === '/about') { // Example active style for "About"
+                 if (isActive && href === '/about') {
                     return "bg-gray-700 text-white rounded-md py-2 px-3 block text-base font-medium";
                  }
                  return "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md py-2 px-3 block text-base font-medium transition-colors";
             }
             // Desktop specific styling for landing unauthenticated
-            if (isActive && href === '/about') { // Example active style for "About"
+            if (isActive && href === '/about') {
                 return "bg-white text-black rounded-md px-3 py-1.5 text-sm font-medium";
             }
-            return "text-gray-300 hover:text-white px-3 py-1.5 text-sm font-medium transition-colors";
+            // Added hover effect for other links
+            return "text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
         }
         // Default app links styling (authenticated or non-landing pages)
         if (isMobile) {
@@ -63,7 +65,7 @@ export default function Header() {
   return (
      <header className={headerClasses}>
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
+        <Link href="/" className="mr-6 flex items-center space-x-2 no-underline">
            <CircleDollarSign className={cn("h-7 w-7", (isLandingPage && !isAuthenticated) ? "text-white" : "text-primary-foreground")} />
            <span className={cn("font-sans text-xl font-bold", (isLandingPage && !isAuthenticated) ? "text-white" : "text-primary-foreground")}>Fin.Co</span>
         </Link>
@@ -91,12 +93,12 @@ export default function Header() {
                     <>
                       {/* Landing page specific nav items - matching Gumroad */}
                       <Link href="/#services" className={navLinkClasses('/#services')}>Discover</Link>
-                      <Link href="/about" className={navLinkClasses('/about')}>About</Link> {/* Styled as active if pathname is /about */}
+                      <Link href="/about" className={navLinkClasses('/about')}>About</Link>
                       <Link href="/#why-fintrack" className={navLinkClasses('/#why-fintrack')}>Features</Link>
                       <Link href="/#pricing" className={navLinkClasses('/#pricing')}>Pricing</Link>
                       <div className="flex items-center gap-x-2 lg:gap-x-3 ml-auto">
                         <Link href="/login" passHref>
-                           <Button variant="link" className="text-white hover:underline px-3 py-1.5 text-sm font-medium no-underline">Log in</Button>
+                           <Button variant="outline" className="text-white hover:bg-white/10 border-white/50 hover:border-white rounded-md px-3 py-1.5 text-sm font-medium">Log in</Button>
                         </Link>
                         <Link href="/get-started" passHref>
                            <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-4 py-1.5 text-sm font-semibold shadow-none border-none hover:shadow-none">
