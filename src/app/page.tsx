@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign, Euro, IndianRupee, Bitcoin, JapaneseYen } from 'lucide-react';
+import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign, Euro, IndianRupee, Bitcoin, JapaneseYen, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
@@ -16,7 +16,7 @@ const services = [
     description: "Take control of your spending with intuitive budgeting tools. Set limits, track progress, and achieve financial clarity.",
     icon: HandCoins,
     tags: ["monthly budget", "category tracking", "spending limits"],
-    bgColorClass: "bg-[#2EC4B6]", // Teal
+    bgColorClass: "bg-[#2EC4B6]", 
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/budget"
@@ -26,7 +26,7 @@ const services = [
     description: "Define your financial goals, from vacations to down payments, and watch your savings grow with automated tracking.",
     icon: PiggyBank,
     tags: ["dream vacation", "new home", "education fund"],
-    bgColorClass: "bg-[#FF6B6B]", // Red
+    bgColorClass: "bg-[#FF6B6B]", 
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/savings-goals"
@@ -36,7 +36,7 @@ const services = [
     description: "Get personalized insights, spending analysis, and proactive tips from our intelligent AI assistant to optimize your finances.",
     icon: Lightbulb,
     tags: ["smart insights", "spending analysis", "proactive tips"],
-    bgColorClass: "bg-[#FFD166]", // Yellow
+    bgColorClass: "bg-[#FFD166]", 
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/ai-assistant"
@@ -46,7 +46,7 @@ const services = [
     description: "Log every penny with ease. Categorize expenses, view trends, and understand where your money goes.",
     icon: ListChecks,
     tags: ["receipt scan", "categorization", "spending reports"],
-    bgColorClass: "bg-[#F79F79]", // Orange
+    bgColorClass: "bg-[#F79F79]", 
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/expenses"
@@ -56,7 +56,7 @@ const services = [
     description: "Estimate your tax liability, track deductions, and get ready for tax season with our helpful planning tools.",
     icon: FileText,
     tags: ["tax estimate", "deductions", "IRS forms"],
-    bgColorClass: "bg-[#A0C4FF]", // Light Blue
+    bgColorClass: "bg-[#A0C4FF]", 
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/tax-planner"
@@ -66,7 +66,7 @@ const services = [
     description: "Monitor your stocks, mutual funds, crypto, and other investments all in one place. Make informed decisions.",
     icon: Landmark,
     tags: ["stocks", "crypto", "portfolio overview"],
-    bgColorClass: "bg-[#BDB2FF]", // Lavender/Purple
+    bgColorClass: "bg-[#BDB2FF]", 
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/investments"
@@ -96,12 +96,12 @@ export default function LandingPage() {
                   We empower you to transform your financial landscape, providing a seamless experience in managing your finances for a prosperous tomorrow.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/get-started" passHref>
+                  <Link href="/get-started" passHref className="no-underline">
                     <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
                       Get Started Free
                     </Button>
                   </Link>
-                  <Link href="#services" passHref>
+                  <Link href="#services" passHref className="no-underline">
                     <Button variant="outline" className="border-green-500 text-green-600 hover:bg-green-500 hover:text-white font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
                       Discover Features
                     </Button>
@@ -156,6 +156,64 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Flow Diagram Section */}
+        <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 text-center">
+          <div className="container mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
+              You Know All Those Financial Goals You Have?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
+              We want you to achieve them, with a clear plan, and see what works.
+            </p>
+            <motion.div 
+              className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
+                 <Image
+                    src="https://placehold.co/128x64/FFC107/000000.png?text=YOU"
+                    alt="Animated character"
+                    width={128}
+                    height={64}
+                    className="object-contain"
+                    data-ai-hint="finance mascot walking"
+                  />
+              </div>
+             
+              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
+                {/* Top-Left */}
+                <div className="text-left flex items-center space-x-2">
+                  <ChevronRight className="h-6 w-6 text-black"/>
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">The FinTrack Way</span>
+                </div>
+                {/* Top-Right */}
+                <div className="text-right flex items-center justify-end space-x-2">
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Budget & Track</span>
+                  <ChevronRight className="h-6 w-6 text-black"/>
+                </div>
+                {/* Bottom-Left */}
+                <div className="text-left flex items-center space-x-2">
+                   <ChevronLeft className="h-6 w-6 text-black"/>
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Achieve Your Goals</span>
+                </div>
+                {/* Bottom-Right */}
+                <div className="text-right flex items-center justify-end space-x-2">
+                   <span className="font-semibold text-black text-sm sm:text-base font-sans">Save & Invest</span>
+                   <ChevronLeft className="h-6 w-6 text-black"/>
+                </div>
+                 {/* Dashed line to form the track - simplified */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-full h-[70%] border-2 border-dashed border-black rounded-[45px] opacity-50"></div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+
         {/* Why FinTrack Pro Section */}
         <section id="why-fintrack" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
           <div className="container mx-auto text-center">
@@ -204,7 +262,6 @@ export default function LandingPage() {
         {/* Potential Savings Section */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto text-center relative">
-            {/* Animated Coins */}
             {[
               { icon: DollarSign, color: 'bg-pink-400', top: '10%', left: '15%', delay: 0, size: 'h-12 w-12 md:h-16 md:w-16' },
               { icon: Euro, color: 'bg-green-400', top: '20%', left: '80%', delay: 0.2, size: 'h-10 w-10 md:h-14 md:w-14' },
@@ -313,9 +370,9 @@ export default function LandingPage() {
                   <CardContent className="!border-0 flex-grow text-center">
                     <p className="text-4xl font-bold my-4 font-sans !text-black">$0<span className="text-base font-normal text-gray-500">/mo</span></p>
                     <ul className="space-y-2 text-sm text-gray-600 text-left font-sans">
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Budget Tracking</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Expense Management</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Limited AI Insights</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Budget Tracking</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Expense Management</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Limited AI Insights</li>
                     </ul>
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
@@ -335,11 +392,11 @@ export default function LandingPage() {
                   <CardContent className="!border-0 flex-grow text-center">
                     <p className="text-4xl font-bold my-4 font-sans !text-black">$9<span className="text-base font-normal text-gray-500">/mo</span></p>
                      <ul className="space-y-2 text-sm text-gray-600 text-left font-sans">
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> All Basic Features</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Advanced AI Insights</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Investment Tracking</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Tax Planning Tools</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Priority Support</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> All Basic Features</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Advanced AI Insights</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Investment Tracking</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Tax Planning Tools</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Priority Support</li>
                     </ul>
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
@@ -358,10 +415,10 @@ export default function LandingPage() {
                   <CardContent className="!border-0 flex-grow text-center">
                     <p className="text-4xl font-bold my-4 font-sans !text-black">Custom</p>
                      <ul className="space-y-2 text-sm text-gray-600 text-left font-sans">
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> All Pro Features</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Multi-user Access</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Custom Integrations</li>
-                      <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Dedicated Account Manager</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> All Pro Features</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Multi-user Access</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Custom Integrations</li>
+                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Dedicated Account Manager</li>
                     </ul>
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
@@ -482,3 +539,4 @@ const CheckCircle = ({className}: {className?: string}) => (
   </svg>
 );
 
+    
