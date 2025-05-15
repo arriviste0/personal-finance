@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -354,62 +355,63 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
-            <div>
-              <h3 className="text-xl font-bold text-white mb-4 font-sans flex items-center">
-                <CircleDollarSign className="h-7 w-7 mr-2 text-yellow-400"/> FinTrack Pro
+          {/* Top part: Subscribe and Links */}
+          <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 md:gap-12 mb-10">
+            {/* Column 1: Subscribe */}
+            <div className="lg:pr-8">
+              <h3 className="text-2xl lg:text-3xl font-semibold text-white mb-6 font-sans leading-snug">
+                Subscribe to get tips and tactics to grow the way you want.
               </h3>
-              <p className="text-sm leading-relaxed font-sans">
-                Get the latest financial tips and product updates straight to your inbox.
-              </p>
               <form className="mt-4 flex">
                 <Input
                   type="email"
-                  placeholder="Enter your email..."
-                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 rounded-l-md focus:ring-yellow-500 focus:border-yellow-500 flex-grow retro-input !rounded-r-none"
+                  placeholder="Your email address"
+                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 rounded-l-md focus:ring-yellow-500 focus:border-yellow-500 flex-grow retro-input !rounded-r-none !border-r-0 !shadow-none"
                   aria-label="Email for newsletter"
                 />
-                <Button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-r-md px-3 py-2 retro-button !rounded-l-none !border-l-0">
+                <Button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-r-md px-4 py-2 retro-button !rounded-l-none !border-l-0 !shadow-retro-sm hover:!shadow-retro active:!translate-y-0 active:!translate-x-0">
                   <ArrowRight className="h-5 w-5" />
                 </Button>
               </form>
             </div>
+
+            {/* Column 2: Links (Help, etc.) */}
             <div>
-              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Quick Links</h4>
-              <ul className="space-y-2 text-sm font-sans">
-                <li><Link href="#why-fintrack" className="hover:text-yellow-400 no-underline">Why FinTrack Pro?</Link></li>
-                <li><Link href="#services" className="hover:text-yellow-400 no-underline">Our Features</Link></li>
-                <li><Link href="#pricing" className="hover:text-yellow-400 no-underline">Pricing Plans</Link></li>
-                <li><Link href="/get-started" className="hover:text-yellow-400 no-underline">Sign Up</Link></li>
-                <li><Link href="/login" className="hover:text-yellow-400 no-underline">Login</Link></li>
+              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Help</h4>
+              <ul className="space-y-3 text-sm font-sans">
+                <li><Link href="/support" className="hover:text-yellow-400 transition-colors no-underline">Help</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Marketplace</Link></li>
+                <li><Link href="/terms" className="hover:text-yellow-400 transition-colors no-underline">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="hover:text-yellow-400 transition-colors no-underline">Privacy Policy</Link></li>
               </ul>
             </div>
+
+            {/* Column 3: Links (Company, etc.) */}
             <div>
-              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Resources</h4>
-              <ul className="space-y-2 text-sm font-sans">
-                <li><Link href="/blog" className="hover:text-yellow-400 no-underline">Blog</Link></li>
-                <li><Link href="/faq" className="hover:text-yellow-400 no-underline">FAQ</Link></li>
-                <li><Link href="/support" className="hover:text-yellow-400 no-underline">Support Center</Link></li>
-                <li><Link href="/terms" className="hover:text-yellow-400 no-underline">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-yellow-400 no-underline">Privacy Policy</Link></li>
+              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Company</h4>
+              <ul className="space-y-3 text-sm font-sans">
+                <li><Link href="#services" className="hover:text-yellow-400 transition-colors no-underline">Features</Link></li>
+                <li><Link href="#pricing" className="hover:text-yellow-400 transition-colors no-underline">Pricing</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">About</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Jobs</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Board meetings</Link></li>
               </ul>
-            </div>
-             <div>
-              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Follow Us</h4>
-                <div className="flex space-x-4">
-                    <Link href="#" aria-label="Facebook" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Facebook className="h-6 w-6"/></Link>
-                    <Link href="#" aria-label="Twitter" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Twitter className="h-6 w-6"/></Link>
-                    <Link href="#" aria-label="Instagram" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Instagram className="h-6 w-6"/></Link>
-                    <Link href="#" aria-label="YouTube" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Youtube className="h-6 w-6"/></Link>
-                </div>
-                 <div className="mt-6">
-                    <h4 className="text-lg font-semibold text-white mb-2 font-sans">Need Help?</h4>
-                    <Link href="/contact" className="text-sm text-yellow-400 hover:underline font-sans no-underline">Contact Our Support Team</Link>
-                 </div>
             </div>
           </div>
-          <div className="border-t border-gray-700 pt-8 text-center text-sm font-sans">
-            <p>&copy; {new Date().getFullYear()} FinTrack Pro. All Rights Reserved. (Demo Application for Fictional Company)</p>
+
+          {/* Bottom part: Copyright and Social Icons */}
+          <div className="border-t border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm">
+            <div className="flex items-center mb-4 sm:mb-0">
+                <CircleDollarSign className="h-6 w-6 mr-2 text-yellow-400"/>
+                <span className="text-white font-semibold font-sans mr-2">FinTrack Pro</span>
+                <span className="text-gray-400 font-sans">&copy; {new Date().getFullYear()}. All Rights Reserved.</span>
+            </div>
+            <div className="flex space-x-4">
+              <Link href="#" aria-label="Twitter" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Twitter className="h-5 w-5"/></Link>
+              <Link href="#" aria-label="YouTube" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Youtube className="h-5 w-5"/></Link>
+              <Link href="#" aria-label="Instagram" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Instagram className="h-5 w-5"/></Link>
+              <Link href="#" aria-label="Facebook" className="text-gray-400 hover:text-yellow-400 transition-colors no-underline"><Facebook className="h-5 w-5"/></Link>
+            </div>
           </div>
         </div>
       </footer>
