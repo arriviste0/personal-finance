@@ -34,28 +34,33 @@ export default function Header() {
         : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground";
 
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
-        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Example for active link
+        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about"));
 
         if (isLandingPage && !isAuthenticated) {
             if (isMobile) {
-                 if (isActive) {
+                 if (isActive && href === "/about") { // Active "About" on mobile
                     return "bg-white text-black rounded-md py-2 px-3 block text-base font-medium transition-colors";
                  }
+                 // Default mobile links on landing
                  return "text-gray-300 hover:bg-white hover:text-black rounded-md py-2 px-3 block text-base font-medium transition-colors";
             }
             // Desktop specific styling for landing unauthenticated
-            if (isActive) { // Example: About page is active
-                return "bg-white text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
+            if (isActive && href === "/about") { // Special active "About" link
+                return "inline-flex items-center justify-center bg-white text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
             }
-            return "text-white hover:bg-white hover:text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
+            // Other nav links
+            return "inline-flex items-center justify-center text-white rounded-md px-3 py-1.5 text-sm font-medium transition-colors duration-150 ease-in-out hover:bg-white hover:text-black";
         }
         // Default app links styling (authenticated or non-landing pages)
         if (isMobile) {
-            return cn("text-foreground hover:underline hover:text-primary underline-offset-2 py-1.5 block", isActive && "text-primary underline");
+            return cn(
+                "text-foreground hover:underline hover:text-primary underline-offset-2 py-1.5 block",
+                isActive && "text-primary underline font-semibold" // Added font-semibold for active mobile
+            );
         }
         return cn(
             "font-medium text-primary-foreground/80 hover:text-primary-foreground hover:underline underline-offset-2",
-            isActive && "text-primary-foreground underline"
+            isActive && "text-primary-foreground underline font-semibold" // Added font-semibold for active desktop
         );
     };
 
@@ -69,7 +74,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden gap-x-3 lg:gap-x-5 text-base md:flex items-center">
+        <nav className="hidden gap-x-3 lg:gap-x-4 text-sm md:flex items-center"> {/* Adjusted gap */}
           {isAuthenticated && (
              <>
                  <Link href="/dashboard" className={navLinkClasses('/dashboard')}>Dashboard</Link>
@@ -90,19 +95,19 @@ export default function Header() {
                   {isLandingPage ? (
                     <>
                       <Link href="/#services" className={navLinkClasses('/#services')}>Discover</Link>
-                      <Link href="/about" className={navLinkClasses('/about', false)}>About</Link> {/* Pass false for isMobile */}
+                      <Link href="/about" className={navLinkClasses('/about', false)}>About</Link>
                       <Link href="/#why-fintrack" className={navLinkClasses('/#why-fintrack')}>Features</Link>
                       <Link href="/#pricing" className={navLinkClasses('/#pricing')}>Pricing</Link>
                       <div className="flex items-center gap-x-2 ml-auto"> {/* Reduced gap */}
                         <Link
                             href="/login"
-                            className="text-white border border-white rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black" // Adjusted padding
+                            className="inline-flex items-center justify-center text-white border border-white rounded-md px-3 py-1.5 text-sm font-medium transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                         >
                            Log in
                         </Link>
                         <Link href="/get-started" passHref>
                            <Button
-                             className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-3 py-1.5 text-sm font-semibold border-0 shadow-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black" // Adjusted padding
+                             className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-4 py-1.5 text-sm font-semibold border-0 shadow-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                            >
                             Get Started
                            </Button>
@@ -158,7 +163,7 @@ export default function Header() {
                        <span className={cn((isLandingPage && !isAuthenticated) ? "!border-gray-500 !bg-gray-700" : "!border-foreground !bg-muted")}></span>
                        <SheetClose asChild>
                          <Button variant="ghost" size="icon" className={cn(
-                            "h-4 w-4 p-0 !shadow-none !bg-red-500 !text-white hover:!bg-red-600",
+                            "h-4 w-4 p-0 !shadow-none !border-none !bg-red-500 !text-white hover:!bg-red-600",
                             (isLandingPage && !isAuthenticated) ? "!border-gray-500" : "!border-black"
                           )}>
                             <X className="h-3 w-3"/>
@@ -199,7 +204,7 @@ export default function Header() {
                               <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-gray-700">
                                 <Link
                                     href="/login"
-                                    className="text-white border border-white rounded-md py-2 px-3 block text-base font-medium transition-colors hover:bg-white hover:text-black"
+                                    className="inline-flex items-center justify-center text-white border border-white rounded-md py-2 px-3 block text-base font-medium transition-colors hover:bg-white hover:text-black"
                                 >
                                     Log in
                                 </Link>
@@ -231,3 +236,4 @@ export default function Header() {
     </header>
   );
 }
+
