@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign } from 'lucide-react';
+import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign, Euro, IndianRupee, Bitcoin, JapaneseYen } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
@@ -101,7 +101,7 @@ export default function LandingPage() {
                       Get Started Free
                     </Button>
                   </Link>
-                  <Link href="#features" passHref>
+                  <Link href="#services" passHref>
                     <Button variant="outline" className="border-green-500 text-green-600 hover:bg-green-500 hover:text-white font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
                       Discover Features
                     </Button>
@@ -136,7 +136,7 @@ export default function LandingPage() {
                   </CardHeader>
                   <CardContent className="p-0 text-xs !border-0 font-sans">
                     <p>Unlock reports and insights to maximize your financial health and achieve your goals faster.</p>
-                    <Link href="/ai-assistant" className="text-white mt-2 inline-block text-xs font-sans link-underline">Explore AI Features <ArrowRight className="inline h-3 w-3" /></Link>
+                    <Link href="/ai-assistant" className="text-white mt-2 inline-block text-xs font-sans link-underline no-underline">Explore AI Features <ArrowRight className="inline h-3 w-3" /></Link>
                   </CardContent>
                 </motion.div>
                 <motion.div
@@ -201,6 +201,67 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Potential Savings Section */}
+        <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
+          <div className="container mx-auto text-center relative">
+            {/* Animated Coins */}
+            {[
+              { icon: DollarSign, color: 'bg-pink-400', top: '10%', left: '15%', delay: 0, size: 'h-12 w-12 md:h-16 md:w-16' },
+              { icon: Euro, color: 'bg-green-400', top: '20%', left: '80%', delay: 0.2, size: 'h-10 w-10 md:h-14 md:w-14' },
+              { icon: IndianRupee, color: 'bg-blue-400', top: '60%', left: '5%', delay: 0.4, size: 'h-14 w-14 md:h-18 md:w-18' },
+              { icon: Bitcoin, color: 'bg-yellow-400', top: '70%', left: '90%', delay: 0.1, size: 'h-12 w-12 md:h-16 md:w-16' },
+              { icon: JapaneseYen, color: 'bg-purple-400', top: '5%', left: '50%', delay: 0.3, size: 'h-10 w-10 md:h-12 md:w-12' },
+            ].map((coin, index) => (
+              <motion.div
+                key={index}
+                className={`absolute ${coin.color} rounded-full flex items-center justify-center text-white shadow-lg ${coin.size}`}
+                style={{ top: coin.top, left: coin.left }}
+                animate={{ y: [0, -10, 0, 10, 0], x: [0, 5, 0, -5, 0], rotate: [0, 5, 0, -5, 0] }}
+                transition={{ duration: 4 + index * 0.5, repeat: Infinity, ease: "easeInOut", delay: coin.delay }}
+              >
+                <coin.icon className="h-1/2 w-1/2" />
+              </motion.div>
+            ))}
+
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gray-900 mb-4 font-sans relative z-10"
+            >
+              $1,234,567
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto mb-12 font-sans relative z-10"
+            >
+              Potential annual savings our users achieve with FinTrack Pro!
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="relative z-10"
+            >
+              <Image
+                src="https://placehold.co/800x400.png"
+                alt="Illustration of people happily using FinTrack Pro to save money"
+                width={800}
+                height={400}
+                className="rounded-lg shadow-xl mx-auto"
+                data-ai-hint="people saving money finance app illustration"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+
         {/* Our Services Section */}
         <section id="services" className="py-16 sm:py-24 bg-muted/40 px-4 sm:px-6 lg:px-8">
           <div className="container mx-auto">
@@ -221,7 +282,7 @@ export default function LandingPage() {
                           <h4 className={`text-xs font-semibold mb-2 uppercase tracking-wider font-sans ${service.textColorClass} opacity-70`}>Popular tags</h4>
                           <div className="flex flex-wrap gap-2">
                             {service.tags.map(tag => (
-                              <span key={tag} className={`text-xs font-medium px-3 py-1 rounded-full border border-black bg-white text-black hover:bg-black hover:text-white hover:border-white transition-all duration-150 cursor-pointer font-sans`}>{tag}</span>
+                              <span key={tag} className={`text-xs font-medium px-3 py-1 rounded-full border border-black bg-white text-black hover:bg-black hover:text-white hover:border-white transition-all duration-150 cursor-pointer font-sans no-underline`}>{tag}</span>
                             ))}
                           </div>
                         </div>
@@ -353,11 +414,9 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+       <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto">
-          {/* Top part: Subscribe and Links */}
           <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 md:gap-12 mb-10">
-            {/* Column 1: Subscribe */}
             <div className="lg:pr-8">
               <h3 className="text-2xl lg:text-3xl font-semibold text-white mb-6 font-sans leading-snug">
                 Subscribe to get tips and tactics to grow the way you want.
@@ -366,16 +425,15 @@ export default function LandingPage() {
                 <Input
                   type="email"
                   placeholder="Your email address"
-                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 rounded-l-md focus:ring-yellow-500 focus:border-yellow-500 flex-grow retro-input !rounded-r-none !border-r-0 !shadow-none"
+                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 rounded-l-md focus:ring-yellow-500 focus:border-yellow-500 flex-grow retro-input !rounded-r-none !border-r-0 !shadow-none !h-11"
                   aria-label="Email for newsletter"
                 />
-                <Button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-r-md px-4 py-2 retro-button !rounded-l-none !border-l-0 !shadow-retro-sm hover:!shadow-retro active:!translate-y-0 active:!translate-x-0">
+                <Button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-r-md px-4 py-2 retro-button !h-11 !rounded-l-none !border-l-0 !shadow-retro-sm hover:!shadow-retro active:!translate-y-0 active:!translate-x-0">
                   <ArrowRight className="h-5 w-5" />
                 </Button>
               </form>
             </div>
 
-            {/* Column 2: Links (Help, etc.) */}
             <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Help</h4>
               <ul className="space-y-3 text-sm font-sans">
@@ -386,7 +444,6 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            {/* Column 3: Links (Company, etc.) */}
             <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Company</h4>
               <ul className="space-y-3 text-sm font-sans">
@@ -399,7 +456,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Bottom part: Copyright and Social Icons */}
           <div className="border-t border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm">
             <div className="flex items-center mb-4 sm:mb-0">
                 <CircleDollarSign className="h-6 w-6 mr-2 text-yellow-400"/>
@@ -425,3 +481,4 @@ const CheckCircle = ({className}: {className?: string}) => (
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
   </svg>
 );
+
