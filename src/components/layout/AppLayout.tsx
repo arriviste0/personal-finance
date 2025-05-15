@@ -21,7 +21,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         className={cn(
           "flex-1",
           isLandingPage ? "" : "container mx-auto px-4", // Remove container for landing page
-          "py-6 md:py-8 lg:py-10" // Keep vertical padding consistent or adjust as needed
+          isLandingPage ? "pb-6 md:pb-8 lg:pb-10" : "py-6 md:py-8 lg:py-10" // Remove top padding for landing page
         )}
       >
           {children}
