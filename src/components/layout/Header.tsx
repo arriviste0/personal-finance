@@ -2,7 +2,7 @@
 'use client';
 
 import Link from "next/link";
-import { CircleDollarSign, Menu, X, Banknote, LogOut, ArrowRight } from "lucide-react"; // Added ArrowRight
+import { CircleDollarSign, Menu, X, Banknote, LogOut, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -34,25 +34,24 @@ export default function Header() {
         : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground";
 
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
-        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Make /about active if path starts with /about
+        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Example active state for /about
 
         if (isLandingPage && !isAuthenticated) {
             if (isMobile) {
-                 if (isActive && href === '/about') {
-                    return "bg-gray-700 text-white rounded-md py-2 px-3 block text-base font-medium";
+                 if (isActive) {
+                    return "bg-white text-black rounded-md py-2 px-3 block text-base font-medium transition-colors";
                  }
-                 return "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md py-2 px-3 block text-base font-medium transition-colors";
+                 return "text-gray-300 hover:bg-white hover:text-black rounded-md py-2 px-3 block text-base font-medium transition-colors";
             }
             // Desktop specific styling for landing unauthenticated
-            if (isActive && href === '/about') { // Example for "About" link being active
-                return "bg-white text-black rounded-md px-3 py-1.5 text-sm font-medium";
+            if (isActive) {
+                return "bg-white text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
             }
-            // Added hover effect with rounded corners for other links
-            return "text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
+            return "text-white hover:bg-white hover:text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors";
         }
         // Default app links styling (authenticated or non-landing pages)
         if (isMobile) {
-            return "text-gray-700 hover:underline hover:text-primary underline-offset-2 py-1.5 block";
+            return cn("text-gray-700 hover:underline hover:text-primary underline-offset-2 py-1.5 block", isActive && "text-primary underline");
         }
         return cn(
             "font-medium text-primary-foreground/80 hover:text-primary-foreground hover:underline underline-offset-2",
@@ -91,15 +90,18 @@ export default function Header() {
                   {isLandingPage ? (
                     <>
                       <Link href="/#services" className={navLinkClasses('/#services')}>Discover</Link>
-                      <Link href="/about" className={navLinkClasses('/about')}>About</Link> {/* Styled as active for demo */}
+                      <Link href="/about" className={navLinkClasses('/about')}>About</Link>
                       <Link href="/#why-fintrack" className={navLinkClasses('/#why-fintrack')}>Features</Link>
                       <Link href="/#pricing" className={navLinkClasses('/#pricing')}>Pricing</Link>
                       <div className="flex items-center gap-x-2 lg:gap-x-3 ml-auto">
-                        <Link href="/login" passHref>
-                           <Button variant="outline" className="text-white hover:bg-white/10 border-white/50 hover:border-white rounded-md px-3 py-1.5 text-sm font-medium">Log in</Button>
+                        <Link
+                            href="/login"
+                            className="text-white hover:bg-white hover:text-black rounded-md px-3 py-1.5 text-sm font-medium transition-colors"
+                        >
+                           Log in
                         </Link>
                         <Link href="/get-started" passHref>
-                           <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-4 py-1.5 text-sm font-semibold shadow-none border-none hover:shadow-none">
+                           <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-4 py-1.5 text-sm font-semibold border-0 shadow-none">
                             Get Started
                            </Button>
                         </Link>
@@ -193,11 +195,16 @@ export default function Header() {
                               <Link href="/#why-fintrack" className={navLinkClasses('/#why-fintrack', true)}>Features</Link>
                               <Link href="/#pricing" className={navLinkClasses('/#pricing', true)}>Pricing</Link>
                               <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-gray-700">
-                                <Link href="/login" passHref>
-                                    <Button variant="outline" className="w-full retro-button !text-white !border-gray-500 hover:!bg-gray-700 rounded-md">Log in</Button>
+                                <Link
+                                    href="/login"
+                                    className="text-gray-300 hover:bg-white hover:text-black rounded-md py-2 px-3 block text-base font-medium transition-colors"
+                                >
+                                    Log in
                                 </Link>
                                  <Link href="/get-started" passHref>
-                                    <Button variant="default" className="w-full retro-button bg-pink-500 hover:bg-pink-600 text-white border-pink-500 !shadow-none rounded-md">Get Started</Button>
+                                    <Button className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-md py-2 text-base font-semibold border-0 shadow-none">
+                                        Get Started
+                                    </Button>
                                 </Link>
                               </div>
                             </>
