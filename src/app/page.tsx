@@ -97,7 +97,7 @@ export default function LandingPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
                     <Link href="/get-started" passHref className="no-underline">
-                        <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
+                        <Button className="bg-white text-black hover:bg-yellow-400 hover:text-black font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
                         Get Started Free
                         </Button>
                     </Link>
@@ -178,36 +178,36 @@ export default function LandingPage() {
               We provide a comprehensive suite of tools designed to simplify your financial life, powered by cutting-edge AI.
             </p>
             <div className="grid md:grid-cols-3 gap-8">
-              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
+              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="group">
                 <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] h-full">
                   <CardHeader className="!bg-transparent !border-0 text-center">
                     <ShieldAlert className="h-12 w-12 text-yellow-500 mx-auto mb-3" />
                     <CardTitle className="font-sans !text-black">Secure & Private</CardTitle>
                   </CardHeader>
                   <CardContent className="!border-0 text-center">
-                    <p className="text-sm text-gray-600 font-sans">Bank-level security and encryption to keep your financial data safe and private.</p>
+                    <p className="text-sm text-gray-600 font-sans group-hover:text-yellow-500 transition-colors">Bank-level security and encryption to keep your financial data safe and private.</p>
                   </CardContent>
                 </Card>
               </motion.div>
-              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
+              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="group">
                 <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] h-full">
                   <CardHeader className="!bg-transparent !border-0 text-center">
                     <Lightbulb className="h-12 w-12 text-accent mx-auto mb-3" />
                     <CardTitle className="font-sans !text-black">AI-Powered Insights</CardTitle>
                   </CardHeader>
                   <CardContent className="!border-0 text-center">
-                    <p className="text-sm text-gray-600 font-sans">Intelligent suggestions, spending analysis, and personalized plans to optimize your finances.</p>
+                    <p className="text-sm text-gray-600 font-sans group-hover:text-yellow-500 transition-colors">Intelligent suggestions, spending analysis, and personalized plans to optimize your finances.</p>
                   </CardContent>
                 </Card>
               </motion.div>
-              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
+              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="group">
                 <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] h-full">
                   <CardHeader className="!bg-transparent !border-0 text-center">
                     <Package className="h-12 w-12 text-secondary mx-auto mb-3" />
                     <CardTitle className="font-sans !text-black">All-In-One Platform</CardTitle>
                   </CardHeader>
                   <CardContent className="!border-0 text-center">
-                    <p className="text-sm text-gray-600 font-sans">Budgeting, expenses, savings, investments, and taxes seamlessly integrated in one app.</p>
+                    <p className="text-sm text-gray-600 font-sans group-hover:text-yellow-500 transition-colors">Budgeting, expenses, savings, investments, and taxes seamlessly integrated in one app.</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -247,24 +247,24 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        
+
         {/* Potential Savings Section - Updated */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-            {/* Decorative Icons - Simplified static positioning for now */}
-             <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
-                 <CircleDollarSign className="w-full h-full text-pink-400 opacity-70" /> {/* Placeholder for ¢ coin */}
+            {/* Decorative Icons */}
+             <motion.div initial={{ opacity: 0, scale: 0.5, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
+                 <CircleDollarSign className="w-full h-full text-pink-400 opacity-70" />
              </motion.div>
-             <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute top-[10%] right-[12%] w-12 h-12 sm:w-16 sm:h-16 z-0">
+             <motion.div initial={{ opacity: 0, scale: 0.5, y: -20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute top-[10%] right-[12%] w-12 h-12 sm:w-16 sm:h-16 z-0">
                  <GraduationCap className="w-full h-full text-blue-400 opacity-70" />
              </motion.div>
-             <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.4 }} className="absolute top-[2%] right-[30%] w-10 h-10 sm:w-12 sm:h-12 z-0">
+             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="absolute top-[2%] right-[30%] w-10 h-10 sm:w-12 sm:h-12 z-0">
                  <Cloud className="w-full h-full text-gray-400 opacity-60" />
              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.5 }} className="absolute top-[20%] right-[5%] w-16 h-16 sm:w-20 sm:h-20 z-0">
+              <motion.div initial={{ opacity: 0, scale: 0.7, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }} className="absolute top-[20%] right-[5%] w-16 h-16 sm:w-20 sm:h-20 z-0">
                  <PiggyBank className="w-full h-full text-pink-500 opacity-70" />
              </motion.div>
-             <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.6 }} className="absolute top-[25%] left-[20%] w-12 h-12 sm:w-14 sm:h-14 z-0">
+             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.6 }} className="absolute top-[25%] left-[20%] w-12 h-12 sm:w-14 sm:h-14 z-0">
                  <Landmark className="w-full h-full text-yellow-500 opacity-70" />
              </motion.div>
 
@@ -286,24 +286,6 @@ export default function LandingPage() {
             >
               Potential annual savings our users achieve with FinTrack Pro!
             </motion.p>
-            
-            {/* Placeholder for the full cartoon illustration */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="relative max-w-4xl mx-auto mt-8"
-            >
-              <Image
-                src="https://placehold.co/900x450.png" 
-                alt="Illustration of people achieving financial goals"
-                width={900}
-                height={450}
-                className="rounded-lg shadow-xl"
-                data-ai-hint="financial freedom cartoon people saving investing debt-free"
-              />
-            </motion.div>
           </div>
         </section>
         
@@ -325,7 +307,7 @@ export default function LandingPage() {
             >
               <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
                  <Image
-                    src="https://placehold.co/128x64/FFC107/000000.png"
+                    src="https://placehold.co/128x64.png"
                     alt="Animated character"
                     width={128}
                     height={64}
@@ -376,11 +358,11 @@ export default function LandingPage() {
               <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 300 }}>
                 <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] p-6 flex flex-col h-full">
                   <CardHeader className="!bg-transparent !border-0 text-center">
-                    <CardTitle className="text-2xl font-bold font-sans !text-black">Basic</CardTitle>
-                    <CardDescription className="font-sans !text-gray-500">For individuals getting started</CardDescription>
+                    <CardTitle className="text-2xl font-bold font-sans !text-yellow-500">Basic</CardTitle>
+                    <CardDescription className="font-sans !text-yellow-500">For individuals getting started</CardDescription>
                   </CardHeader>
                   <CardContent className="!border-0 flex-grow text-center">
-                    <p className="text-4xl font-bold my-4 font-sans !text-black">$0<span className="text-base font-normal text-gray-500">/mo</span></p>
+                    <p className="text-4xl font-bold my-4 font-sans !text-yellow-500">$0<span className="text-base font-normal text-gray-500">/mo</span></p>
                     <ul className="space-y-2 text-sm text-gray-600 text-left font-sans">
                       <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Budget Tracking</li>
                       <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Expense Management</li>
@@ -421,11 +403,11 @@ export default function LandingPage() {
               <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 300 }}>
                 <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] p-6 flex flex-col h-full">
                   <CardHeader className="!bg-transparent !border-0 text-center">
-                    <CardTitle className="text-2xl font-bold font-sans !text-black">Enterprise</CardTitle>
-                    <CardDescription className="font-sans !text-gray-500">For businesses & teams</CardDescription>
+                    <CardTitle className="text-2xl font-bold font-sans !text-yellow-500">Enterprise</CardTitle>
+                    <CardDescription className="font-sans !text-yellow-500">For businesses & teams</CardDescription>
                   </CardHeader>
                   <CardContent className="!border-0 flex-grow text-center">
-                    <p className="text-4xl font-bold my-4 font-sans !text-black">Custom</p>
+                    <p className="text-4xl font-bold my-4 font-sans !text-yellow-500">Custom</p>
                      <ul className="space-y-2 text-sm text-gray-600 text-left font-sans">
                       <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> All Pro Features</li>
                       <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Multi-user Access</li>
@@ -435,7 +417,7 @@ export default function LandingPage() {
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
                      <Link href="/contact-sales" passHref className="w-full no-underline">
-                        <Button variant="outline" className="w-full retro-button border-black text-black hover:bg-black hover:text-white">Contact Sales</Button>
+                        <Button variant="outline" className="w-full retro-button border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">Contact Sales</Button>
                     </Link>
                   </CardFooter>
                 </Card>
@@ -473,7 +455,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Link href="/get-started" passHref className="no-underline">
-                <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
+                <Button size="lg" className="bg-white text-black hover:bg-yellow-400 hover:text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -485,7 +467,7 @@ export default function LandingPage() {
       {/* Footer */}
        <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 md:gap-12 mb-10">
+          <div className="grid lg:grid-cols-[2fr_1fr] gap-8 md:gap-12 mb-10"> {/* Changed to 2fr 1fr for wider email input */}
             <div className="lg:pr-8">
               <h3 className="text-2xl lg:text-3xl font-semibold text-white mb-6 font-sans leading-snug">
                 Subscribe to get tips and tactics to grow the way you want.
@@ -503,25 +485,8 @@ export default function LandingPage() {
               </form>
             </div>
 
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Help</h4>
-              <ul className="space-y-3 text-sm font-sans">
-                <li><Link href="/support" className="hover:text-yellow-400 transition-colors no-underline">Help</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Marketplace</Link></li>
-                <li><Link href="/terms" className="hover:text-yellow-400 transition-colors no-underline">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-yellow-400 transition-colors no-underline">Privacy Policy</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Company</h4>
-              <ul className="space-y-3 text-sm font-sans">
-                <li><Link href="#services" className="hover:text-yellow-400 transition-colors no-underline">Features</Link></li>
-                <li><Link href="#pricing" className="hover:text-yellow-400 transition-colors no-underline">Pricing</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">About</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Jobs</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Board meetings</Link></li>
-              </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12 lg:col-start-2"> {/* Placeholder for links if needed later or other content */}
+                 {/* Help and Company columns were removed here */}
             </div>
           </div>
 
@@ -550,4 +515,6 @@ const CheckCircle = ({className}: {className?: string}) => (
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
   </svg>
 );
+    
+
     
