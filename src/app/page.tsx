@@ -156,6 +156,7 @@ export default function LandingPage() {
           </div>
         </section>
 
+
         {/* Why FinTrack Pro Section - Content centered */}
         <section id="why-fintrack" className="py-16 sm:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -201,6 +202,39 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Our Services Section - Full width background possible, content centered */}
+        <section id="services" className="py-16 sm:py-24 bg-muted/40">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 font-sans">Explore Our Core Features</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service) => {
+                const IconComponent = service.icon;
+                return (
+                  <motion.div key={service.title} whileHover={{ y: -5, boxShadow: "6px 6px 0px #000" }} transition={{ type: "spring", stiffness: 300 }}>
+                    <Link href={service.href} passHref className="no-underline">
+                      <Card className={`border-2 border-black rounded-xl shadow-[4px_4px_0px_#000] flex flex-col h-full p-6 transition-all duration-300 hover:shadow-[6px_6px_0px_#000] ${service.bgColorClass} group`}>
+                        <div className="relative mb-4">
+                          <IconComponent className={`h-12 w-12 ${service.iconColorClass} mb-3 transition-transform duration-300 group-hover:scale-110`} />
+                        </div>
+                        <h3 className={`text-xl font-bold mb-2 font-sans ${service.textColorClass}`}>{service.title}</h3>
+                        <p className={`text-sm flex-grow mb-4 font-sans ${service.textColorClass} opacity-90`}>{service.description}</p>
+                        <div>
+                          <h4 className={`text-xs font-semibold mb-2 uppercase tracking-wider font-sans ${service.textColorClass} opacity-70`}>Popular tags</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {service.tags.map(tag => (
+                              <span key={tag} className={`text-xs font-medium px-3 py-1 rounded-full border border-black bg-white text-black hover:bg-black hover:text-white hover:border-white transition-all duration-150 cursor-pointer font-sans no-underline`}>{tag}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
         {/* Potential Savings Section - Full width background */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
@@ -240,40 +274,6 @@ export default function LandingPage() {
             >
               Potential annual savings our users achieve with FinTrack Pro!
             </motion.p>
-          </div>
-        </section>
-
-
-        {/* Our Services Section - Full width background possible, content centered */}
-        <section id="services" className="py-16 sm:py-24 bg-muted/40">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 font-sans">Explore Our Core Features</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service) => {
-                const IconComponent = service.icon;
-                return (
-                  <motion.div key={service.title} whileHover={{ y: -5, boxShadow: "6px 6px 0px #000" }} transition={{ type: "spring", stiffness: 300 }}>
-                    <Link href={service.href} passHref className="no-underline">
-                      <Card className={`border-2 border-black rounded-xl shadow-[4px_4px_0px_#000] flex flex-col h-full p-6 transition-all duration-300 hover:shadow-[6px_6px_0px_#000] ${service.bgColorClass} group`}>
-                        <div className="relative mb-4">
-                          <IconComponent className={`h-12 w-12 ${service.iconColorClass} mb-3 transition-transform duration-300 group-hover:scale-110`} />
-                        </div>
-                        <h3 className={`text-xl font-bold mb-2 font-sans ${service.textColorClass}`}>{service.title}</h3>
-                        <p className={`text-sm flex-grow mb-4 font-sans ${service.textColorClass} opacity-90`}>{service.description}</p>
-                        <div>
-                          <h4 className={`text-xs font-semibold mb-2 uppercase tracking-wider font-sans ${service.textColorClass} opacity-70`}>Popular tags</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {service.tags.map(tag => (
-                              <span key={tag} className={`text-xs font-medium px-3 py-1 rounded-full border border-black bg-white text-black hover:bg-black hover:text-white hover:border-white transition-all duration-150 cursor-pointer font-sans no-underline`}>{tag}</span>
-                            ))}
-                          </div>
-                        </div>
-                      </Card>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
           </div>
         </section>
 
