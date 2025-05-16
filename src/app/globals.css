@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -48,7 +49,6 @@
     --radius: 0rem; /* No border radius for retro */
   }
 
-  /* Removed dark theme definition */
 }
 
 @layer base {
@@ -76,7 +76,7 @@
 
   /* General Link Styling - Removed global underline */
   a {
-    @apply text-primary hover:text-primary/80; /* Removed underline underline-offset-4 */
+    @apply text-primary hover:text-primary/80;
   }
   a.link-underline { /* Add this class if specific underline is needed */
     @apply underline underline-offset-4;
@@ -328,3 +328,37 @@
 .recharts-text {
      font-family: var(--font-sans), system-ui, sans-serif !important;
 }
+
+/* Partner Slider Animations */
+.partner-slider-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative; /* For potential pseudo-elements like fades */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+}
+
+.partner-slider-track {
+  display: flex;
+  /* Calculate width: (number of original items * (width of item + gap)) * number of duplications for loop */
+  /* For this example, assuming each item is ~150px wide and there are 7 items, doubled for loop = 7 * 150 * 2 = 2100px */
+  /* Or more simply, use fit-content if the parent has a defined width and this element is allowed to overflow for animation */
+  width: fit-content; 
+  animation: scrollPartners 40s linear infinite;
+}
+
+.partner-slider-track > div { /* Each partner item in the track */
+  flex-shrink: 0;
+  white-space: nowrap; /* Prevent text wrapping for partner names */
+}
+
+@keyframes scrollPartners {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    /* Scroll one full set of logos. If the track contains two sets, this is -50% of the track's total width. */
+    transform: translateX(-50%); 
+  }
+}
+
