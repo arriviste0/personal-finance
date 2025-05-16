@@ -155,7 +155,7 @@ export default function LandingPage() {
                 </div>
             </div>
         </section>
-        
+
         {/* Partners Section */}
         <section className="py-12 sm:py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -173,10 +173,7 @@ export default function LandingPage() {
         {/* Why FinTrack Pro Section */}
         <section id="why-fintrack" className="py-16 sm:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 font-sans">Why Choose FinTrack Pro?</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
-              We provide a comprehensive suite of tools designed to simplify your financial life, powered by cutting-edge AI.
-            </p>
+            {/* Removed h2 and p as requested */}
             <div className="grid md:grid-cols-3 gap-8">
               <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="group">
                 <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] h-full">
@@ -286,10 +283,11 @@ export default function LandingPage() {
             >
               Potential annual savings our users achieve with FinTrack Pro!
             </motion.p>
+            {/* Image removed as requested */}
           </div>
         </section>
-        
-        {/* Flow Diagram Section */}
+
+        {/* Flow Diagram Section (Moved Here) */}
         <section className="py-16 sm:py-24 text-center">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
@@ -346,14 +344,10 @@ export default function LandingPage() {
           </div>
         </section>
 
-
         {/* Pricing Section */}
         <section id="pricing" className="py-16 sm:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 font-sans">Simple, Transparent Pricing</h2>
-            <p className="text-lg text-gray-600 max-w-xl mx-auto mb-12 font-sans">
-              Choose the plan that's right for you. Get started for free!
-            </p>
+            {/* Removed h2 and p as requested */}
             <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 300 }}>
                 <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] p-6 flex flex-col h-full">
@@ -426,7 +420,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-
         {/* Call to Action Section */}
         <section className="py-16 sm:py-24 bg-yellow-400 text-black">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
@@ -467,7 +460,7 @@ export default function LandingPage() {
       {/* Footer */}
        <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[2fr_1fr] gap-8 md:gap-12 mb-10"> {/* Changed to 2fr 1fr for wider email input */}
+          <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 md:gap-12 mb-10">
             <div className="lg:pr-8">
               <h3 className="text-2xl lg:text-3xl font-semibold text-white mb-6 font-sans leading-snug">
                 Subscribe to get tips and tactics to grow the way you want.
@@ -485,8 +478,25 @@ export default function LandingPage() {
               </form>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12 lg:col-start-2"> {/* Placeholder for links if needed later or other content */}
-                 {/* Help and Company columns were removed here */}
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Help</h4>
+              <ul className="space-y-2">
+                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Help</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Marketplace</Link></li>
+                <li><Link href="/terms" className="hover:text-yellow-400 transition-colors no-underline">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="hover:text-yellow-400 transition-colors no-underline">Privacy Policy</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4 font-sans">Company</h4>
+              <ul className="space-y-2">
+                <li><Link href="#services" className="hover:text-yellow-400 transition-colors no-underline">Features</Link></li>
+                <li><Link href="#pricing" className="hover:text-yellow-400 transition-colors no-underline">Pricing</Link></li>
+                <li><Link href="/about" className="hover:text-yellow-400 transition-colors no-underline">About</Link></li>
+                <li><Link href="/jobs" className="hover:text-yellow-400 transition-colors no-underline">Jobs</Link></li>
+                <li><Link href="/board-meetings" className="hover:text-yellow-400 transition-colors no-underline">Board meetings</Link></li>
+              </ul>
             </div>
           </div>
 
