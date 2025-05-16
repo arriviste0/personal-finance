@@ -16,7 +16,7 @@ const services = [
     description: "Take control of your spending with intuitive budgeting tools. Set limits, track progress, and achieve financial clarity.",
     icon: HandCoins,
     tags: ["monthly budget", "category tracking", "spending limits"],
-    bgColorClass: "bg-[#2EC4B6]",
+    bgColorClass: "bg-[#2EC4B6]", // Teal
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/budget"
@@ -26,7 +26,7 @@ const services = [
     description: "Define your financial goals, from vacations to down payments, and watch your savings grow with automated tracking.",
     icon: PiggyBank,
     tags: ["dream vacation", "new home", "education fund"],
-    bgColorClass: "bg-[#FF6B6B]",
+    bgColorClass: "bg-[#FF6B6B]", // Red
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/savings-goals"
@@ -34,9 +34,9 @@ const services = [
   {
     title: "AI Financial Advisor",
     description: "Get personalized insights, spending analysis, and proactive tips from our intelligent AI assistant to optimize your finances.",
-    icon: Lightbulb,
+    icon: Lightbulb, // Changed from BrainCircuit to Lightbulb for variety
     tags: ["smart insights", "spending analysis", "proactive tips"],
-    bgColorClass: "bg-[#FFD166]",
+    bgColorClass: "bg-[#FFD166]", // Yellow
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/ai-assistant"
@@ -46,7 +46,7 @@ const services = [
     description: "Log every penny with ease. Categorize expenses, view trends, and understand where your money goes.",
     icon: ListChecks,
     tags: ["receipt scan", "categorization", "spending reports"],
-    bgColorClass: "bg-[#F79F79]",
+    bgColorClass: "bg-[#F79F79]", // Light Orange/Peach
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/expenses"
@@ -56,7 +56,7 @@ const services = [
     description: "Estimate your tax liability, track deductions, and get ready for tax season with our helpful planning tools.",
     icon: FileText,
     tags: ["tax estimate", "deductions", "IRS forms"],
-    bgColorClass: "bg-[#A0C4FF]",
+    bgColorClass: "bg-[#A0C4FF]", // Light Blue
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/tax-planner"
@@ -66,7 +66,7 @@ const services = [
     description: "Monitor your stocks, mutual funds, crypto, and other investments all in one place. Make informed decisions.",
     icon: Landmark,
     tags: ["stocks", "crypto", "portfolio overview"],
-    bgColorClass: "bg-[#BDB2FF]",
+    bgColorClass: "bg-[#BDB2FF]", // Lavender
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/investments"
@@ -167,9 +167,9 @@ export default function LandingPage() {
         </section>
 
         {/* Why Choose Fin.Co Section */}
-        <section className="py-16 sm:py-24 bg-muted/30">
+        <section className="py-16 sm:py-24 bg-amber-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 font-sans">Why Smart People Choose Fin.Co</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 font-sans text-gray-800">Why Smart People Choose Fin.Co</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
               We're not just another finance app. We're your dedicated partner in achieving financial freedom.
             </p>
@@ -193,13 +193,13 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Partners Section - Updated for Automatic Slider */}
+        {/* Partners Section */}
         <section className="py-12 sm:py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <p className="text-center text-sm text-gray-500 uppercase tracking-wider font-sans mb-8">Trusted by leading financial companies</p>
             <div className="partner-slider-container">
               <div className="partner-slider-track">
-                {[...partners, ...partners].map((partner, index) => ( // Duplicate partners for seamless loop
+                {[...partners, ...partners].map((partner, index) => (
                   <div key={`${partner}-${index}`} className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 px-5 sm:px-8 py-2">
                     <span className="text-xl sm:text-2xl font-medium font-sans">{partner}</span>
                   </div>
@@ -243,24 +243,25 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Potential Savings Section - Updated with new image and icon animation */}
+        {/* Potential Savings Section */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-             <motion.div initial={{ opacity: 0, scale: 0.5, y: 20 }} animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }} transition={{ duration: 2.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.2 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
-                 <CircleDollarSign className="w-full h-full text-pink-400 opacity-70" />
-             </motion.div>
-             <motion.div initial={{ opacity: 0, scale: 0.5, y: -20 }} animate={{ opacity: 1, scale: 1, y: [0, 10, 0] }} transition={{ duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.3 }} className="absolute top-[10%] right-[12%] w-12 h-12 sm:w-16 sm:h-16 z-0">
-                 <GraduationCap className="w-full h-full text-blue-400 opacity-70" />
-             </motion.div>
-             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: [-5, 5, -5] }} transition={{ duration: 3.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.4 }} className="absolute top-[2%] right-[30%] w-10 h-10 sm:w-12 sm:h-12 z-0">
-                 <Cloud className="w-full h-full text-gray-400 opacity-60" />
-             </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.7, y: 20 }} animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }} transition={{ duration: 2.8, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.5 }} className="absolute top-[20%] right-[5%] w-16 h-16 sm:w-20 sm:h-20 z-0">
-                 <PiggyBank className="w-full h-full text-pink-500 opacity-70" />
-             </motion.div>
-             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: [5, -5, 5] }} transition={{ duration: 3.2, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.6 }} className="absolute top-[25%] left-[20%] w-12 h-12 sm:w-14 sm:h-14 z-0">
-                 <Landmark className="w-full h-full text-yellow-500 opacity-70" />
-             </motion.div>
+             {/* Decorative Floating Icons */}
+              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.1 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
+                <CircleDollarSign className="w-full h-full text-pink-400 opacity-70" />
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1, y: [0, 8, 0] }} transition={{ duration: 3.5, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 0.3 }} className="absolute top-[10%] right-[12%] w-12 h-12 sm:w-16 sm:h-16 z-0">
+                  <GraduationCap className="w-full h-full text-blue-400 opacity-70" />
+              </motion.div>
+              <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: [0, 5, 0] }} transition={{ duration: 4, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 0.5 }} className="absolute bottom-[15%] left-[15%] w-10 h-10 sm:w-12 sm:h-12 z-0">
+                  <Cloud className="w-full h-full text-gray-400 opacity-60" />
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }} transition={{ duration: 2.8, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.2 }} className="absolute top-[20%] right-[5%] w-14 h-14 sm:w-16 sm:h-16 z-0">
+                  <PiggyBank className="w-full h-full text-pink-500 opacity-70" />
+              </motion.div>
+              <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: [0, -5, 0] }} transition={{ duration: 3.2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 0.4 }} className="absolute bottom-[20%] right-[20%] w-12 h-12 sm:w-14 sm:h-14 z-0">
+                  <Landmark className="w-full h-full text-yellow-600 opacity-70" />
+              </motion.div>
 
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -282,12 +283,12 @@ export default function LandingPage() {
             </motion.p>
             <div className="mt-8">
               <Image
-                src="https://placehold.co/900x300.png"
-                alt="Illustration of people achieving financial goals: one running debt-free, one celebrating with money, one investing on a laptop"
+                src="https://storage.googleapis.com/idx-dev-fe-plugin-ai-test-assets/01J3Y6N12P55GSJBDY71G3P981.png"
+                alt="Cartoon illustration of people achieving financial goals: one running debt-free, one celebrating with money, one investing on a laptop"
                 width={900}
                 height={300}
-                className="rounded-lg shadow-xl mx-auto"
-                data-ai-hint="financial freedom cartoon people saving investing debt-free"
+                className="rounded-lg shadow-xl mx-auto w-full max-w-[900px]"
+                data-ai-hint="financial success debt-free saving investing"
               />
             </div>
           </div>
@@ -312,11 +313,11 @@ export default function LandingPage() {
               <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
                  <Image
                     src="https://placehold.co/128x64.png"
-                    alt="Animated character"
+                    alt="Animated character walking the financial path"
                     width={128}
                     height={64}
                     className="object-contain"
-                    data-ai-hint="finance mascot walking"
+                    data-ai-hint="finance mascot walking path"
                   />
               </div>
 
@@ -346,7 +347,7 @@ export default function LandingPage() {
         </section>
 
 
-        {/* Playful Pricing Section */}
+        {/* Pricing Section */}
         <section id="pricing" className="py-16 sm:py-24 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-sans">Ready to Level Up Your Finances?</h2>
@@ -392,7 +393,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="flex"
               >
-                <Card className="retro-card border-2 border-yellow-500 p-8 shadow-[6px_6px_0px_hsl(var(--yellow-500)/0.6)] flex flex-col justify-between hover:shadow-[8px_8px_0px_hsl(var(--yellow-500)/0.7)] transition-shadow w-full relative overflow-visible">
+                <Card className="retro-card border-2 border-yellow-500 p-8 shadow-[4px_4px_0px_hsl(var(--yellow-500)/0.4)] flex flex-col justify-between hover:shadow-[6px_6px_0px_hsl(var(--yellow-500)/0.5)] transition-shadow w-full relative overflow-visible">
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                     <span className="bg-yellow-500 text-black text-xs font-bold uppercase px-4 py-1 rounded-full shadow-md font-sans">Best Value</span>
                   </div>
@@ -453,7 +454,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Link href="/get-started" passHref className="no-underline">
-                <Button size="lg" className="bg-white text-black hover:bg-yellow-400 font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
+                <Button size="lg" className="bg-white text-black hover:bg-yellow-500 hover:text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
