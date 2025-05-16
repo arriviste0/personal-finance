@@ -1,10 +1,11 @@
+
 import NextAuth from 'next-auth';
 import type { AuthOptions } from 'next-auth';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from '@/lib/mongodb';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcrypt';
-import type { MongoClient, ObjectId } from 'mongodb'; // Ensure ObjectId is imported if directly used
+import type { MongoClient } from 'mongodb';
 
 // Define the structure of the user object returned by the authorize callback
 interface UserAuthResponse {
@@ -25,10 +26,10 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" }
       },
        async authorize(credentials, req): Promise<UserAuthResponse | null> {
-         console.log("[NextAuth] Authorize attempt for email:", credentials?.email);
+         // console.log("[NextAuth] Authorize attempt for email:", credentials?.email);
          if (!credentials?.email || !credentials.password) {
            console.error("[NextAuth] Missing email or password in credentials.");
-           throw new Error('Please provide email and password');
+           throw new Error('Please provide email and password.');
          }
 
         const client: MongoClient = await clientPromise;
@@ -51,7 +52,7 @@ export const authOptions: AuthOptions = {
            throw new Error('Incorrect password.');
         }
 
-         console.log("[NextAuth] Authentication successful for:", user.email);
+         // console.log("[NextAuth] Authentication successful for:", user.email);
 
          return {
            id: user._id.toString(), 
@@ -69,7 +70,7 @@ export const authOptions: AuthOptions = {
      async jwt({ token, user }) {
        // console.log("[NextAuth] JWT Callback - Input Token:", token, "Input User:", user);
        if (user) {
-         token.id = user.id;
+         token.id = user.id; // Add user ID to the JWT token
        }
        // console.log("[NextAuth] JWT Callback - Output Token:", token);
        return token;
@@ -77,14 +78,14 @@ export const authOptions: AuthOptions = {
      async session({ session, token }) {
        // console.log("[NextAuth] Session Callback - Input Session:", session, "Input Token:", token);
        if (token?.id && session?.user) {
-         session.user.id = token.id as string;
+         session.user.id = token.id as string; // Add user ID to the session object
        }
        // console.log("[NextAuth] Session Callback - Output Session:", session);
        return session;
      }
   },
   pages: {
-    signIn: '/login',
+    signIn: '/login', // Redirect users to /login if they are not authenticated
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === 'development',
