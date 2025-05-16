@@ -170,45 +170,60 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Why FinTrack Pro Section */}
-        <section id="why-fintrack" className="py-16 sm:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {/* Removed h2 and p as requested */}
-            <div className="grid md:grid-cols-3 gap-8">
-              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="group">
-                <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] h-full">
-                  <CardHeader className="!bg-transparent !border-0 text-center">
-                    <ShieldAlert className="h-12 w-12 text-yellow-500 mx-auto mb-3" />
-                    <CardTitle className="font-sans !text-black">Secure & Private</CardTitle>
-                  </CardHeader>
-                  <CardContent className="!border-0 text-center">
-                    <p className="text-sm text-gray-600 font-sans group-hover:text-yellow-500 transition-colors">Bank-level security and encryption to keep your financial data safe and private.</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="group">
-                <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] h-full">
-                  <CardHeader className="!bg-transparent !border-0 text-center">
-                    <Lightbulb className="h-12 w-12 text-accent mx-auto mb-3" />
-                    <CardTitle className="font-sans !text-black">AI-Powered Insights</CardTitle>
-                  </CardHeader>
-                  <CardContent className="!border-0 text-center">
-                    <p className="text-sm text-gray-600 font-sans group-hover:text-yellow-500 transition-colors">Intelligent suggestions, spending analysis, and personalized plans to optimize your finances.</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="group">
-                <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] h-full">
-                  <CardHeader className="!bg-transparent !border-0 text-center">
-                    <Package className="h-12 w-12 text-secondary mx-auto mb-3" />
-                    <CardTitle className="font-sans !text-black">All-In-One Platform</CardTitle>
-                  </CardHeader>
-                  <CardContent className="!border-0 text-center">
-                    <p className="text-sm text-gray-600 font-sans group-hover:text-yellow-500 transition-colors">Budgeting, expenses, savings, investments, and taxes seamlessly integrated in one app.</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </div>
+        {/* Flow Diagram Section */}
+        <section className="py-16 sm:py-24 text-center">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
+              You Know All Those Financial Goals You Have?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
+              We want you to achieve them, with a clear plan, and see what works.
+            </p>
+            <motion.div
+              className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
+                 <Image
+                    src="https://placehold.co/128x64.png"
+                    alt="Animated character"
+                    width={128}
+                    height={64}
+                    className="object-contain"
+                    data-ai-hint="finance mascot walking"
+                  />
+              </div>
+
+              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
+                {/* Top-Left */}
+                <div className="text-left flex items-center space-x-2">
+                  <ChevronRight className="h-6 w-6 text-black"/>
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">The FinTrack Way</span>
+                </div>
+                {/* Top-Right */}
+                <div className="text-right flex items-center justify-end space-x-2">
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Budget & Track</span>
+                  <ChevronRight className="h-6 w-6 text-black"/>
+                </div>
+                {/* Bottom-Left */}
+                <div className="text-left flex items-center space-x-2">
+                   <ChevronLeft className="h-6 w-6 text-black"/>
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Achieve Your Goals</span>
+                </div>
+                {/* Bottom-Right */}
+                <div className="text-right flex items-center justify-end space-x-2">
+                   <span className="font-semibold text-black text-sm sm:text-base font-sans">Save & Invest</span>
+                   <ChevronLeft className="h-6 w-6 text-black"/>
+                </div>
+                 {/* Dashed line to form the track - simplified */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-full h-[70%] border-2 border-dashed border-black rounded-[45px] opacity-50"></div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -283,140 +298,6 @@ export default function LandingPage() {
             >
               Potential annual savings our users achieve with FinTrack Pro!
             </motion.p>
-            {/* Image removed as requested */}
-          </div>
-        </section>
-
-        {/* Flow Diagram Section (Moved Here) */}
-        <section className="py-16 sm:py-24 text-center">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
-              You Know All Those Financial Goals You Have?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
-              We want you to achieve them, with a clear plan, and see what works.
-            </p>
-            <motion.div
-              className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
-                 <Image
-                    src="https://placehold.co/128x64.png"
-                    alt="Animated character"
-                    width={128}
-                    height={64}
-                    className="object-contain"
-                    data-ai-hint="finance mascot walking"
-                  />
-              </div>
-
-              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
-                {/* Top-Left */}
-                <div className="text-left flex items-center space-x-2">
-                  <ChevronRight className="h-6 w-6 text-black"/>
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">The FinTrack Way</span>
-                </div>
-                {/* Top-Right */}
-                <div className="text-right flex items-center justify-end space-x-2">
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Budget & Track</span>
-                  <ChevronRight className="h-6 w-6 text-black"/>
-                </div>
-                {/* Bottom-Left */}
-                <div className="text-left flex items-center space-x-2">
-                   <ChevronLeft className="h-6 w-6 text-black"/>
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Achieve Your Goals</span>
-                </div>
-                {/* Bottom-Right */}
-                <div className="text-right flex items-center justify-end space-x-2">
-                   <span className="font-semibold text-black text-sm sm:text-base font-sans">Save & Invest</span>
-                   <ChevronLeft className="h-6 w-6 text-black"/>
-                </div>
-                 {/* Dashed line to form the track - simplified */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-full h-[70%] border-2 border-dashed border-black rounded-[45px] opacity-50"></div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Pricing Section */}
-        <section id="pricing" className="py-16 sm:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {/* Removed h2 and p as requested */}
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 300 }}>
-                <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] p-6 flex flex-col h-full">
-                  <CardHeader className="!bg-transparent !border-0 text-center">
-                    <CardTitle className="text-2xl font-bold font-sans !text-yellow-500">Basic</CardTitle>
-                    <CardDescription className="font-sans !text-yellow-500">For individuals getting started</CardDescription>
-                  </CardHeader>
-                  <CardContent className="!border-0 flex-grow text-center">
-                    <p className="text-4xl font-bold my-4 font-sans !text-yellow-500">$0<span className="text-base font-normal text-gray-500">/mo</span></p>
-                    <ul className="space-y-2 text-sm text-gray-600 text-left font-sans">
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Budget Tracking</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Expense Management</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Limited AI Insights</li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter className="!border-0 !bg-transparent mt-4">
-                    <Link href="/get-started" passHref className="w-full no-underline">
-                      <Button variant="outline" className="w-full retro-button border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">Get Started</Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 300 }}>
-                <Card className="retro-card border-2 border-yellow-500 shadow-[4px_4px_0px_#ca8a04] p-6 flex flex-col h-full relative">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-black px-3 py-1 text-xs font-semibold rounded-full font-sans">POPULAR</div>
-                  <CardHeader className="!bg-transparent !border-0 text-center pt-8">
-                    <CardTitle className="text-2xl font-bold font-sans !text-black">Pro</CardTitle>
-                    <CardDescription className="font-sans !text-gray-500">For serious finance trackers</CardDescription>
-                  </CardHeader>
-                  <CardContent className="!border-0 flex-grow text-center">
-                    <p className="text-4xl font-bold my-4 font-sans !text-black">$9<span className="text-base font-normal text-gray-500">/mo</span></p>
-                     <ul className="space-y-2 text-sm text-gray-600 text-left font-sans">
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> All Basic Features</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Advanced AI Insights</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Investment Tracking</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Tax Planning Tools</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Priority Support</li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter className="!border-0 !bg-transparent mt-4">
-                     <Link href="/get-started?plan=pro" passHref className="w-full no-underline">
-                       <Button className="w-full retro-button bg-yellow-500 text-black hover:bg-yellow-600">Choose Pro</Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 300 }}>
-                <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] p-6 flex flex-col h-full">
-                  <CardHeader className="!bg-transparent !border-0 text-center">
-                    <CardTitle className="text-2xl font-bold font-sans !text-yellow-500">Enterprise</CardTitle>
-                    <CardDescription className="font-sans !text-yellow-500">For businesses & teams</CardDescription>
-                  </CardHeader>
-                  <CardContent className="!border-0 flex-grow text-center">
-                    <p className="text-4xl font-bold my-4 font-sans !text-yellow-500">Custom</p>
-                     <ul className="space-y-2 text-sm text-gray-600 text-left font-sans">
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> All Pro Features</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Multi-user Access</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Custom Integrations</li>
-                      <li className="flex items-center no-underline"><CheckCircle className="h-4 w-4 text-green-500 mr-2"/> Dedicated Account Manager</li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter className="!border-0 !bg-transparent mt-4">
-                     <Link href="/contact-sales" passHref className="w-full no-underline">
-                        <Button variant="outline" className="w-full retro-button border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">Contact Sales</Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            </div>
           </div>
         </section>
 
@@ -448,7 +329,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Link href="/get-started" passHref className="no-underline">
-                <Button size="lg" className="bg-white text-black hover:bg-yellow-400 hover:text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
+                <Button size="lg" className="bg-white text-black hover:bg-yellow-500 hover:text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -478,7 +359,7 @@ export default function LandingPage() {
               </form>
             </div>
 
-            <div>
+             <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Help</h4>
               <ul className="space-y-2">
                 <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Help</Link></li>
@@ -528,3 +409,4 @@ const CheckCircle = ({className}: {className?: string}) => (
     
 
     
+
