@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign, Euro, IndianRupee, Bitcoin, JapaneseYen, ChevronRight, ChevronLeft, GraduationCap, Cloud } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign, Euro, IndianRupee, Bitcoin, JapaneseYen, ChevronRight, ChevronLeft, GraduationCap, Cloud, ShieldCheck, BrainCircuit, Sparkles, Zap } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
 
 const services = [
@@ -16,7 +16,7 @@ const services = [
     description: "Take control of your spending with intuitive budgeting tools. Set limits, track progress, and achieve financial clarity.",
     icon: HandCoins,
     tags: ["monthly budget", "category tracking", "spending limits"],
-    bgColorClass: "bg-[#2EC4B6]", // Teal
+    bgColorClass: "bg-[#2EC4B6]",
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/budget"
@@ -26,7 +26,7 @@ const services = [
     description: "Define your financial goals, from vacations to down payments, and watch your savings grow with automated tracking.",
     icon: PiggyBank,
     tags: ["dream vacation", "new home", "education fund"],
-    bgColorClass: "bg-[#FF6B6B]", // Red
+    bgColorClass: "bg-[#FF6B6B]",
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/savings-goals"
@@ -36,7 +36,7 @@ const services = [
     description: "Get personalized insights, spending analysis, and proactive tips from our intelligent AI assistant to optimize your finances.",
     icon: Lightbulb,
     tags: ["smart insights", "spending analysis", "proactive tips"],
-    bgColorClass: "bg-[#FFD166]", // Yellow
+    bgColorClass: "bg-[#FFD166]",
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/ai-assistant"
@@ -46,7 +46,7 @@ const services = [
     description: "Log every penny with ease. Categorize expenses, view trends, and understand where your money goes.",
     icon: ListChecks,
     tags: ["receipt scan", "categorization", "spending reports"],
-    bgColorClass: "bg-[#F79F79]", // Orange
+    bgColorClass: "bg-[#F79F79]",
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/expenses"
@@ -56,7 +56,7 @@ const services = [
     description: "Estimate your tax liability, track deductions, and get ready for tax season with our helpful planning tools.",
     icon: FileText,
     tags: ["tax estimate", "deductions", "IRS forms"],
-    bgColorClass: "bg-[#A0C4FF]", // Light Blue
+    bgColorClass: "bg-[#A0C4FF]",
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/tax-planner"
@@ -66,7 +66,7 @@ const services = [
     description: "Monitor your stocks, mutual funds, crypto, and other investments all in one place. Make informed decisions.",
     icon: Landmark,
     tags: ["stocks", "crypto", "portfolio overview"],
-    bgColorClass: "bg-[#BDB2FF]", // Light Purple
+    bgColorClass: "bg-[#BDB2FF]",
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/investments"
@@ -156,6 +156,33 @@ export default function LandingPage() {
             </div>
         </section>
 
+        {/* Why Choose Fin.Co Section */}
+        <section className="py-16 sm:py-24 bg-muted/30">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 font-sans">Why Smart People Choose Fin.Co</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
+              We're not just another finance app. We're your dedicated partner in achieving financial freedom.
+            </p>
+            <div className="grid md:grid-cols-3 gap-8 text-left">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} className="p-6 bg-card rounded-xl shadow-retro hover:shadow-[5px_5px_0px_hsl(var(--yellow-500)/0.4)] transition-shadow">
+                <Package className="h-10 w-10 text-yellow-500 mb-4" />
+                <h3 className="text-xl font-bold mb-2 font-sans">All-In-One Simplicity</h3>
+                <p className="text-gray-600 font-sans">Budgeting, expenses, goals, investments, and taxes – everything seamlessly integrated. No more app-hopping!</p>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="p-6 bg-card rounded-xl shadow-retro hover:shadow-[5px_5px_0px_hsl(var(--yellow-500)/0.4)] transition-shadow">
+                <BrainCircuit className="h-10 w-10 text-yellow-500 mb-4" />
+                <h3 className="text-xl font-bold mb-2 font-sans">AI-Powered Brilliance</h3>
+                <p className="text-gray-600 font-sans">Our intelligent assistant offers personalized insights, automates tasks, and helps you make smarter financial decisions.</p>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="p-6 bg-card rounded-xl shadow-retro hover:shadow-[5px_5px_0px_hsl(var(--yellow-500)/0.4)] transition-shadow">
+                <ShieldCheck className="h-10 w-10 text-yellow-500 mb-4" />
+                <h3 className="text-xl font-bold mb-2 font-sans">Secure & Transparent</h3>
+                <p className="text-gray-600 font-sans">Bank-level security to protect your data. Clear, honest features with no hidden fees.</p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
         {/* Partners Section */}
         <section className="py-12 sm:py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -167,63 +194,6 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Flow Diagram Section */}
-        <section className="py-16 sm:py-24 text-center">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
-              You Know All Those Financial Goals You Have?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
-              We want you to achieve them, with a clear plan, and see what works.
-            </p>
-            <motion.div
-              className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
-                 <Image
-                    src="https://placehold.co/128x64.png"
-                    alt="Animated character"
-                    width={128}
-                    height={64}
-                    className="object-contain"
-                    data-ai-hint="finance mascot walking"
-                  />
-              </div>
-
-              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
-                {/* Top-Left */}
-                <div className="text-left flex items-center space-x-2">
-                  <ChevronRight className="h-6 w-6 text-black"/>
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">The FinTrack Way</span>
-                </div>
-                {/* Top-Right */}
-                <div className="text-right flex items-center justify-end space-x-2">
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Budget & Track</span>
-                  <ChevronRight className="h-6 w-6 text-black"/>
-                </div>
-                {/* Bottom-Left */}
-                <div className="text-left flex items-center space-x-2">
-                   <ChevronLeft className="h-6 w-6 text-black"/>
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Achieve Your Goals</span>
-                </div>
-                {/* Bottom-Right */}
-                <div className="text-right flex items-center justify-end space-x-2">
-                   <span className="font-semibold text-black text-sm sm:text-base font-sans">Save & Invest</span>
-                   <ChevronLeft className="h-6 w-6 text-black"/>
-                </div>
-                 {/* Dashed line to form the track - simplified */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-full h-[70%] border-2 border-dashed border-black rounded-[45px] opacity-50"></div>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </section>
 
@@ -260,23 +230,101 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Playful Pricing Section */}
+        <section id="pricing" className="py-16 sm:py-24 bg-background">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-sans">Ready to Level Up Your Finances?</h2>
+            <p className="text-lg text-gray-600 max-w-xl mx-auto mb-12 font-sans">Pick your power-up! Simple plans, powerful results.</p>
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
+              {/* Free Plan */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex"
+              >
+                <Card className="retro-card border-2 border-dashed border-gray-300 p-8 flex flex-col justify-between hover:shadow-retro transition-shadow w-full">
+                  <div>
+                    <CardHeader className="text-left p-0 mb-6 !bg-transparent !border-0">
+                      <Sparkles className="h-10 w-10 text-yellow-500 mb-3" />
+                      <CardTitle className="text-2xl font-bold text-gray-800 font-sans">The Explorer</CardTitle>
+                      <CardDescription className="text-gray-600 font-sans">Perfect for getting started.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="text-left p-0 space-y-3 mb-8">
+                      <p className="text-4xl font-bold text-gray-800 font-sans">$0<span className="text-base font-normal text-gray-500">/mo</span></p>
+                      <ul className="space-y-2 text-gray-700">
+                        {["Core Budgeting Tools", "Expense Logging", "Basic Savings Goals", "Weekly AI Summary"].map(feature => (
+                          <li key={feature} className="flex items-center font-sans"><CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />{feature}</li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </div>
+                  <CardFooter className="p-0 !border-0">
+                    <Link href="/get-started" passHref className="w-full no-underline">
+                      <Button variant="outline" className="w-full retro-button border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black font-semibold py-3 text-base">Start Exploring</Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+
+              {/* Pro Plan */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex"
+              >
+                <Card className="retro-card border-2 border-yellow-500 p-8 shadow-[6px_6px_0px_hsl(var(--yellow-500)/0.6)] flex flex-col justify-between hover:shadow-[8px_8px_0px_hsl(var(--yellow-500)/0.7)] transition-shadow w-full relative overflow-visible">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                    <span className="bg-yellow-500 text-black text-xs font-bold uppercase px-4 py-1 rounded-full shadow-md font-sans">Best Value</span>
+                  </div>
+                  <div>
+                    <CardHeader className="text-left p-0 pt-6 mb-6 !bg-transparent !border-0">
+                      <Zap className="h-10 w-10 text-yellow-500 mb-3" />
+                      <CardTitle className="text-2xl font-bold text-gray-800 font-sans">The Optimizer</CardTitle>
+                      <CardDescription className="text-gray-600 font-sans">For serious finance mastery.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="text-left p-0 space-y-3 mb-8">
+                       <p className="text-4xl font-bold text-gray-800 font-sans">$9<span className="text-base font-normal text-gray-500">/mo</span></p>
+                      <ul className="space-y-2 text-gray-700">
+                        {["Everything in Explorer, plus:", "Advanced AI Advisor & Planning", "Investment Portfolio Tracking", "Full Tax Estimation Suite", "Priority Support"].map(feature => (
+                          <li key={feature} className="flex items-center font-sans"><CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />{feature}</li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </div>
+                  <CardFooter className="p-0 !border-0">
+                    <Link href="/get-started?plan=pro" passHref className="w-full no-underline">
+                       <Button className="w-full retro-button bg-yellow-500 text-black hover:bg-yellow-600 font-semibold py-3 text-base border-yellow-600 shadow-[2px_2px_0px_hsl(var(--foreground)/0.2)] hover:shadow-[3px_3px_0px_hsl(var(--foreground)/0.25)]">Become an Optimizer</Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            </div>
+            <p className="mt-10 text-sm text-gray-500 font-sans">
+              Need a custom plan for your business or team? <Link href="/contact" className="text-yellow-600 hover:underline font-semibold no-underline">Contact Us</Link>.
+            </p>
+          </div>
+        </section>
+
         {/* Potential Savings Section - Updated */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-            {/* Decorative Icons */}
-             <motion.div initial={{ opacity: 0, scale: 0.5, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
+             <motion.div initial={{ opacity: 0, scale: 0.5, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2, type: 'spring', stiffness: 120, damping: 10 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
                  <CircleDollarSign className="w-full h-full text-pink-400 opacity-70" />
              </motion.div>
-             <motion.div initial={{ opacity: 0, scale: 0.5, y: -20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute top-[10%] right-[12%] w-12 h-12 sm:w-16 sm:h-16 z-0">
+             <motion.div initial={{ opacity: 0, scale: 0.5, y: -20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3, type: 'spring', stiffness: 120, damping: 10 }} className="absolute top-[10%] right-[12%] w-12 h-12 sm:w-16 sm:h-16 z-0">
                  <GraduationCap className="w-full h-full text-blue-400 opacity-70" />
              </motion.div>
-             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="absolute top-[2%] right-[30%] w-10 h-10 sm:w-12 sm:h-12 z-0">
+             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.4, type: 'spring', stiffness: 120, damping: 10 }} className="absolute top-[2%] right-[30%] w-10 h-10 sm:w-12 sm:h-12 z-0">
                  <Cloud className="w-full h-full text-gray-400 opacity-60" />
              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.7, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }} className="absolute top-[20%] right-[5%] w-16 h-16 sm:w-20 sm:h-20 z-0">
+              <motion.div initial={{ opacity: 0, scale: 0.7, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5, type: 'spring', stiffness: 120, damping: 10 }} className="absolute top-[20%] right-[5%] w-16 h-16 sm:w-20 sm:h-20 z-0">
                  <PiggyBank className="w-full h-full text-pink-500 opacity-70" />
              </motion.div>
-             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.6 }} className="absolute top-[25%] left-[20%] w-12 h-12 sm:w-14 sm:h-14 z-0">
+             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.6, type: 'spring', stiffness: 120, damping: 10 }} className="absolute top-[25%] left-[20%] w-12 h-12 sm:w-14 sm:h-14 z-0">
                  <Landmark className="w-full h-full text-yellow-500 opacity-70" />
              </motion.div>
 
@@ -300,6 +348,58 @@ export default function LandingPage() {
             </motion.p>
           </div>
         </section>
+        
+        {/* Flow Diagram Section */}
+        <section className="py-16 sm:py-24 text-center">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
+              You Know All Those Financial Goals You Have?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
+              We want you to achieve them, with a clear plan, and see what works.
+            </p>
+            <motion.div
+              className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
+                 <Image
+                    src="https://placehold.co/128x64.png"
+                    alt="Animated character"
+                    width={128}
+                    height={64}
+                    className="object-contain"
+                    data-ai-hint="finance mascot walking"
+                  />
+              </div>
+
+              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
+                <div className="text-left flex items-center space-x-2">
+                  <ChevronRight className="h-6 w-6 text-black"/>
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">The Fin.Co Way</span>
+                </div>
+                <div className="text-right flex items-center justify-end space-x-2">
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Budget & Track</span>
+                  <ChevronRight className="h-6 w-6 text-black"/>
+                </div>
+                <div className="text-left flex items-center space-x-2">
+                   <ChevronLeft className="h-6 w-6 text-black"/>
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Achieve Your Goals</span>
+                </div>
+                <div className="text-right flex items-center justify-end space-x-2">
+                   <span className="font-semibold text-black text-sm sm:text-base font-sans">Save & Invest</span>
+                   <ChevronLeft className="h-6 w-6 text-black"/>
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-full h-[70%] border-2 border-dashed border-black rounded-[45px] opacity-50"></div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
 
         {/* Call to Action Section */}
         <section className="py-16 sm:py-24 bg-yellow-400 text-black">
@@ -320,7 +420,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-lg mb-8 font-sans opacity-90"
             >
-              Join thousands of users who are already achieving their financial goals with FinTrack Pro.
+              Join thousands of users who are already achieving their financial goals with Fin.Co.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -362,21 +462,21 @@ export default function LandingPage() {
              <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Help</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Help</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline">Marketplace</Link></li>
-                <li><Link href="/terms" className="hover:text-yellow-400 transition-colors no-underline">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-yellow-400 transition-colors no-underline">Privacy Policy</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline font-sans">Help</Link></li>
+                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline font-sans">Marketplace</Link></li>
+                <li><Link href="/terms" className="hover:text-yellow-400 transition-colors no-underline font-sans">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="hover:text-yellow-400 transition-colors no-underline font-sans">Privacy Policy</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Company</h4>
               <ul className="space-y-2">
-                <li><Link href="#services" className="hover:text-yellow-400 transition-colors no-underline">Features</Link></li>
-                <li><Link href="#pricing" className="hover:text-yellow-400 transition-colors no-underline">Pricing</Link></li>
-                <li><Link href="/about" className="hover:text-yellow-400 transition-colors no-underline">About</Link></li>
-                <li><Link href="/jobs" className="hover:text-yellow-400 transition-colors no-underline">Jobs</Link></li>
-                <li><Link href="/board-meetings" className="hover:text-yellow-400 transition-colors no-underline">Board meetings</Link></li>
+                <li><Link href="#services" className="hover:text-yellow-400 transition-colors no-underline font-sans">Features</Link></li>
+                <li><Link href="#pricing" className="hover:text-yellow-400 transition-colors no-underline font-sans">Pricing</Link></li>
+                <li><Link href="/about" className="hover:text-yellow-400 transition-colors no-underline font-sans">About</Link></li>
+                <li><Link href="/jobs" className="hover:text-yellow-400 transition-colors no-underline font-sans">Jobs</Link></li>
+                <li><Link href="/board-meetings" className="hover:text-yellow-400 transition-colors no-underline font-sans">Board meetings</Link></li>
               </ul>
             </div>
           </div>
@@ -384,7 +484,7 @@ export default function LandingPage() {
           <div className="border-t border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm">
             <div className="flex items-center mb-4 sm:mb-0">
                 <CircleDollarSign className="h-6 w-6 mr-2 text-yellow-400"/>
-                <span className="text-white font-semibold font-sans mr-2">FinTrack Pro</span>
+                <span className="text-white font-semibold font-sans mr-2">Fin.Co</span>
                 <span className="text-gray-400 font-sans">&copy; {new Date().getFullYear()}. All Rights Reserved.</span>
             </div>
             <div className="flex space-x-4">
@@ -407,6 +507,3 @@ const CheckCircle = ({className}: {className?: string}) => (
   </svg>
 );
     
-
-    
-
