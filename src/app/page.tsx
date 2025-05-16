@@ -46,6 +46,9 @@ import {
   Zap,
   Target,
   BarChartBig,
+  Award, // Added Award for Step 4
+  ChevronDown, // Added for flow
+  ChevronUp, // Added for flow
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
@@ -281,81 +284,108 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Flow Diagram Section (New 4-Step Plan) */}
+        {/* Your 4-Step Personalized Financial Plan Section */}
         <section className="py-16 sm:py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16 font-sans text-gray-800">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 font-sans text-gray-800">
               Your 4-Step Personalized Financial Plan
             </h2>
-            <div className="relative max-w-3xl mx-auto">
-              {/* Cards container */}
-              <div className="relative flex flex-col md:flex-row justify-between items-center md:items-start gap-8 md:gap-0">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-16 font-sans text-center">
+              Follow these simple steps to take control of your finances and achieve your dreams with Fin.Co.
+            </p>
+            <div className="relative max-w-4xl mx-auto">
+              {/* Background decorative circle */}
+              <div className="hidden md:block absolute inset-0 flex items-center justify-center -z-10 pointer-events-none">
+                <div className="w-[380px] h-[380px] sm:w-[480px] sm:h-[480px] md:w-[580px] md:h-[580px] border-[12px] border-yellow-100 rounded-full opacity-60"></div>
+              </div>
 
-                {/* Step 1 Card */}
+              {/* Grid for the cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 lg:gap-x-16 lg:gap-y-16 relative z-10">
+                {/* Step 1 Card: Top-Left */}
                 <motion.div
+                  id="step1-card"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="relative z-10 w-full md:w-1/3"
+                  className="md:justify-self-end md:transform md:-translate-x-8" // Adjust positioning
                 >
-                  <div className="bg-white p-6 rounded-xl border-2 border-orange-500 shadow-lg text-center h-full flex flex-col items-center justify-center">
-                    <Target className="h-12 w-12 text-orange-500 mb-3" />
-                    <h3 className="text-xl font-bold mb-1 font-sans text-gray-800">Set Your Goals</h3>
+                  <div className="bg-white p-6 rounded-xl border-2 border-orange-500 shadow-lg text-center h-full flex flex-col items-center justify-start hover:shadow-xl transition-shadow max-w-xs mx-auto md:mx-0">
+                    <div className="flex items-center justify-center bg-orange-100 rounded-full p-3 mb-4">
+                      <Target className="h-8 w-8 text-orange-500" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">Step 1: Set Your Goals</h3>
                     <p className="text-sm text-gray-600 font-sans">Define your financial objetives</p>
                   </div>
                 </motion.div>
 
-                {/* Placeholder for Arrow 1 (Orange) -> Simplified */}
-                <div className="hidden md:block absolute top-1/3 left-[30%] w-1/4 h-16 z-0">
-                   <ChevronRight className="h-16 w-16 text-orange-400 opacity-70 transform -translate-y-1/2" />
-                </div>
-
-
-                {/* Step 2 Card */}
-                 <motion.div
+                {/* Step 2 Card: Top-Right */}
+                <motion.div
+                  id="step2-card"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="relative z-10 w-full md:w-1/3 md:mt-16" // md:mt-16 to push it down slightly
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                   className="md:justify-self-start md:transform md:translate-x-8" // Adjust positioning
                 >
-                  <div className="bg-white p-6 rounded-xl border-2 border-blue-500 shadow-lg text-center h-full flex flex-col items-center justify-center">
-                    <BarChartBig className="h-12 w-12 text-blue-500 mb-3" />
-                    <h3 className="text-xl font-bold mb-1 font-sans text-gray-800">Get a Tailored Action Plan</h3>
+                  <div className="bg-white p-6 rounded-xl border-2 border-blue-500 shadow-lg text-center h-full flex flex-col items-center justify-start hover:shadow-xl transition-shadow max-w-xs mx-auto md:mx-0">
+                    <div className="flex items-center justify-center bg-blue-100 rounded-full p-3 mb-4">
+                      <BarChartBig className="h-8 w-8 text-blue-500" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">Step 2: Get a Tailored Action Plan</h3>
                     <p className="text-sm text-gray-600 font-sans">Receive a step-by-step plan</p>
                   </div>
                 </motion.div>
 
-                 {/* Placeholder for Arrow 2 (Blue) -> Simplified */}
-                 <div className="hidden md:block absolute top-2/3 right-[30%] w-1/4 h-16 z-0">
-                   <ChevronRight className="h-16 w-16 text-blue-400 opacity-70 transform -translate-y-1/2 rotate-90" />
-                </div>
-
-
-                {/* Step 3 Card */}
-                 <motion.div
+                {/* Step 4 Card: Bottom-Left - Ordered for correct grid placement */}
+                <motion.div
+                  id="step4-card"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  className="relative z-10 w-full md:w-1/3 md:self-end" // md:self-end
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="md:justify-self-end md:transform md:-translate-x-8" // Adjust positioning
                 >
-                  <div className="bg-white p-6 rounded-xl border-2 border-purple-500 shadow-lg text-center h-full flex flex-col items-center justify-center">
-                    <TrendingUp className="h-12 w-12 text-purple-500 mb-3" />
-                    <h3 className="text-xl font-bold mb-1 font-sans text-gray-800">Track What Works</h3>
+                  <div className="bg-white p-6 rounded-xl border-2 border-green-500 shadow-lg text-center h-full flex flex-col items-center justify-start hover:shadow-xl transition-shadow max-w-xs mx-auto md:mx-0">
+                    <div className="flex items-center justify-center bg-green-100 rounded-full p-3 mb-4">
+                      <Award className="h-8 w-8 text-green-500" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">Step 4: Achieve & Grow</h3>
+                    <p className="text-sm text-gray-600 font-sans">Celebrate milestones and continue building your financial future.</p>
+                  </div>
+                </motion.div>
+
+                {/* Step 3 Card: Bottom-Right */}
+                <motion.div
+                  id="step3-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="md:justify-self-start md:transform md:translate-x-8" // Adjust positioning
+                >
+                  <div className="bg-white p-6 rounded-xl border-2 border-purple-500 shadow-lg text-center h-full flex flex-col items-center justify-start hover:shadow-xl transition-shadow max-w-xs mx-auto md:mx-0">
+                    <div className="flex items-center justify-center bg-purple-100 rounded-full p-3 mb-4">
+                      <TrendingUp className="h-8 w-8 text-purple-500" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">Step 3: Track What Works</h3>
                     <p className="text-sm text-gray-600 font-sans">Adjust and optimize your plan</p>
                   </div>
                 </motion.div>
-                
-                {/* Placeholder for Arrow 3 (Purple) -> Simplified to complete the loop conceptually */}
-                 <div className="hidden md:block absolute bottom-0 left-1/2 w-16 h-1/4 z-0 transform -translate-x-1/2 translate-y-1/3">
-                    <ChevronLeft className="h-16 w-16 text-purple-400 opacity-70 transform rotate-[225deg]" />
-                </div>
               </div>
-              {/* Background circular path - very simplified with border for demo */}
-              <div className="hidden md:block absolute inset-0 flex items-center justify-center -z-1 pointer-events-none">
-                <div className="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] border-8 border-gray-200 rounded-full opacity-50"></div>
+
+              {/* Arrow Icons for Flow - Positioned in the gaps */}
+              <div className="hidden md:block absolute top-[22.5%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0">
+                <ChevronRight className="h-10 w-10 text-gray-400 opacity-70" />
+              </div>
+              <div className="hidden md:block absolute top-1/2 right-[22.5%] transform translate-x-1/2 -translate-y-1/2 z-0">
+                <ChevronDown className="h-10 w-10 text-gray-400 opacity-70" />
+              </div>
+              <div className="hidden md:block absolute bottom-[22.5%] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-0">
+                <ChevronLeft className="h-10 w-10 text-gray-400 opacity-70" />
+              </div>
+              <div className="hidden md:block absolute top-1/2 left-[22.5%] transform -translate-x-1/2 -translate-y-1/2 z-0">
+                <ChevronUp className="h-10 w-10 text-gray-400 opacity-70" />
               </div>
             </div>
           </div>
@@ -403,7 +433,7 @@ export default function LandingPage() {
                 src="https://storage.googleapis.com/idx-dev-fe-plugin-ai-test-assets/01J3Y6N12P55GSJBDY71G3P981.png"
                 alt="Cartoon illustration of people achieving financial goals: one running debt-free, one celebrating with money, one investing on a laptop"
                 width={900}
-                height={300}
+                height={300} 
                 className="rounded-lg shadow-xl mx-auto w-full max-w-[900px]"
                 data-ai-hint="financial success debt-free saving investing"
               />
@@ -585,3 +615,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
