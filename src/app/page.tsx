@@ -102,7 +102,7 @@ export default function LandingPage() {
                     </Button>
                   </Link>
                   <Link href="#services" passHref className="no-underline">
-                    <Button variant="outline" className="border-green-500 text-green-600 hover:bg-green-500 hover:text-white font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
+                    <Button variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black font-semibold py-3 px-6 text-base rounded-md shadow-md transition-transform hover:scale-105 retro-button">
                       Discover Features
                     </Button>
                   </Link>
@@ -136,7 +136,7 @@ export default function LandingPage() {
                   </CardHeader>
                   <CardContent className="p-0 text-xs !border-0 font-sans">
                     <p>Unlock reports and insights to maximize your financial health and achieve your goals faster.</p>
-                    <Link href="/ai-assistant" className="text-white mt-2 inline-block text-xs font-sans link-underline no-underline">Explore AI Features <ArrowRight className="inline h-3 w-3" /></Link>
+                    <Link href="/ai-assistant" className="text-white mt-2 inline-block text-xs font-sans link-underline no-underline hover:text-gray-200">Explore AI Features <ArrowRight className="inline h-3 w-3" /></Link>
                   </CardContent>
                 </motion.div>
                 <motion.div
@@ -168,7 +168,7 @@ export default function LandingPage() {
               <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
                 <Card className="retro-card border-2 border-black shadow-[4px_4px_0px_#000] h-full">
                   <CardHeader className="!bg-transparent !border-0 text-center">
-                    <ShieldAlert className="h-12 w-12 text-primary mx-auto mb-3" />
+                    <ShieldAlert className="h-12 w-12 text-yellow-500 mx-auto mb-3" />
                     <CardTitle className="font-sans !text-black">Secure & Private</CardTitle>
                   </CardHeader>
                   <CardContent className="!border-0 text-center">
@@ -234,7 +234,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
+        
         {/* Potential Savings Section - Full width background */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
@@ -359,14 +359,14 @@ export default function LandingPage() {
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
                     <Link href="/get-started" passHref className="w-full no-underline">
-                      <Button variant="outline" className="w-full retro-button border-primary text-primary hover:bg-primary hover:text-primary-foreground">Get Started</Button>
+                      <Button variant="outline" className="w-full retro-button border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">Get Started</Button>
                     </Link>
                   </CardFooter>
                 </Card>
               </motion.div>
               <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 300 }}>
-                <Card className="retro-card border-2 border-primary shadow-[4px_4px_0px_hsl(var(--primary))] p-6 flex flex-col h-full relative">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-3 py-1 text-xs font-semibold rounded-full font-sans">POPULAR</div>
+                <Card className="retro-card border-2 border-yellow-500 shadow-[4px_4px_0px_#ca8a04] p-6 flex flex-col h-full relative">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-black px-3 py-1 text-xs font-semibold rounded-full font-sans">POPULAR</div>
                   <CardHeader className="!bg-transparent !border-0 text-center pt-8">
                     <CardTitle className="text-2xl font-bold font-sans !text-black">Pro</CardTitle>
                     <CardDescription className="font-sans !text-gray-500">For serious finance trackers</CardDescription>
@@ -383,7 +383,7 @@ export default function LandingPage() {
                   </CardContent>
                   <CardFooter className="!border-0 !bg-transparent mt-4">
                      <Link href="/get-started?plan=pro" passHref className="w-full no-underline">
-                       <Button className="w-full retro-button bg-primary text-primary-foreground hover:bg-primary/90">Choose Pro</Button>
+                       <Button className="w-full retro-button bg-yellow-500 text-black hover:bg-yellow-600">Choose Pro</Button>
                     </Link>
                   </CardFooter>
                 </Card>
@@ -416,7 +416,7 @@ export default function LandingPage() {
 
 
         {/* Call to Action Section - Full width background */}
-        <section className="py-16 sm:py-24 bg-primary text-primary-foreground">
+        <section className="py-16 sm:py-24 bg-yellow-400 text-black">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -443,7 +443,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Link href="/get-started" passHref className="no-underline">
-                <Button size="lg" className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
+                <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -516,10 +516,8 @@ export default function LandingPage() {
 
 // Placeholder for CheckCircle icon if not already imported
 const CheckCircle = ({className}: {className?: string}) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className || "h-5 w-5"}>
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
   </svg>
 );
-
-
     
