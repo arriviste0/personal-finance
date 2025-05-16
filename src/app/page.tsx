@@ -6,7 +6,47 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, DollarSign, HandCoins, Lightbulb, ListChecks, Landmark, FileText, PiggyBank, Users, Youtube, Facebook, Twitter, Instagram, Briefcase, TrendingUp, BarChart2, Percent, Inbox, MessageCircle, ShieldAlert, Banknote, Package, Settings, Users2, CircleDollarSign, Euro, IndianRupee, Bitcoin, JapaneseYen, ChevronRight, ChevronLeft, GraduationCap, Cloud, ShieldCheck, BrainCircuit, Sparkles, Zap } from 'lucide-react';
+import {
+  ArrowRight,
+  DollarSign,
+  HandCoins,
+  Lightbulb,
+  ListChecks,
+  Landmark,
+  FileText,
+  PiggyBank,
+  Users,
+  Youtube,
+  Facebook,
+  Twitter,
+  Instagram,
+  Briefcase,
+  TrendingUp,
+  BarChart2,
+  Percent,
+  Inbox,
+  MessageCircle,
+  ShieldAlert,
+  Banknote,
+  Package,
+  Settings,
+  Users2,
+  CircleDollarSign,
+  Euro,
+  IndianRupee,
+  Bitcoin,
+  JapaneseYen,
+  ChevronRight,
+  ChevronLeft,
+  GraduationCap,
+  Cloud,
+  ShieldCheck,
+  BrainCircuit,
+  Sparkles,
+  Zap,
+  Target,
+  BarChartBig,
+} from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
 
@@ -34,7 +74,7 @@ const services = [
   {
     title: "AI Financial Advisor",
     description: "Get personalized insights, spending analysis, and proactive tips from our intelligent AI assistant to optimize your finances.",
-    icon: Lightbulb, // Changed from BrainCircuit to Lightbulb for variety
+    icon: Lightbulb,
     tags: ["smart insights", "spending analysis", "proactive tips"],
     bgColorClass: "bg-[#FFD166]", // Yellow
     iconColorClass: "text-black",
@@ -76,7 +116,6 @@ const services = [
 const partners = ['PayPal', 'Visa', 'Mastercard', 'Stripe', 'Wise', 'American Express', 'Google Pay'];
 
 
-// Placeholder for CheckCircle icon if not already imported
 const CheckCircle = ({className}: {className?: string}) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className || "h-5 w-5"}>
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
@@ -87,7 +126,6 @@ const CheckCircle = ({className}: {className?: string}) => (
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      {/* Main Content Area */}
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="bg-amber-50 text-gray-800">
@@ -243,10 +281,89 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Flow Diagram Section (New 4-Step Plan) */}
+        <section className="py-16 sm:py-24 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16 font-sans text-gray-800">
+              Your 4-Step Personalized Financial Plan
+            </h2>
+            <div className="relative max-w-3xl mx-auto">
+              {/* Cards container */}
+              <div className="relative flex flex-col md:flex-row justify-between items-center md:items-start gap-8 md:gap-0">
+
+                {/* Step 1 Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="relative z-10 w-full md:w-1/3"
+                >
+                  <div className="bg-white p-6 rounded-xl border-2 border-orange-500 shadow-lg text-center h-full flex flex-col items-center justify-center">
+                    <Target className="h-12 w-12 text-orange-500 mb-3" />
+                    <h3 className="text-xl font-bold mb-1 font-sans text-gray-800">Set Your Goals</h3>
+                    <p className="text-sm text-gray-600 font-sans">Define your financial objetives</p>
+                  </div>
+                </motion.div>
+
+                {/* Placeholder for Arrow 1 (Orange) -> Simplified */}
+                <div className="hidden md:block absolute top-1/3 left-[30%] w-1/4 h-16 z-0">
+                   <ChevronRight className="h-16 w-16 text-orange-400 opacity-70 transform -translate-y-1/2" />
+                </div>
+
+
+                {/* Step 2 Card */}
+                 <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="relative z-10 w-full md:w-1/3 md:mt-16" // md:mt-16 to push it down slightly
+                >
+                  <div className="bg-white p-6 rounded-xl border-2 border-blue-500 shadow-lg text-center h-full flex flex-col items-center justify-center">
+                    <BarChartBig className="h-12 w-12 text-blue-500 mb-3" />
+                    <h3 className="text-xl font-bold mb-1 font-sans text-gray-800">Get a Tailored Action Plan</h3>
+                    <p className="text-sm text-gray-600 font-sans">Receive a step-by-step plan</p>
+                  </div>
+                </motion.div>
+
+                 {/* Placeholder for Arrow 2 (Blue) -> Simplified */}
+                 <div className="hidden md:block absolute top-2/3 right-[30%] w-1/4 h-16 z-0">
+                   <ChevronRight className="h-16 w-16 text-blue-400 opacity-70 transform -translate-y-1/2 rotate-90" />
+                </div>
+
+
+                {/* Step 3 Card */}
+                 <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  className="relative z-10 w-full md:w-1/3 md:self-end" // md:self-end
+                >
+                  <div className="bg-white p-6 rounded-xl border-2 border-purple-500 shadow-lg text-center h-full flex flex-col items-center justify-center">
+                    <TrendingUp className="h-12 w-12 text-purple-500 mb-3" />
+                    <h3 className="text-xl font-bold mb-1 font-sans text-gray-800">Track What Works</h3>
+                    <p className="text-sm text-gray-600 font-sans">Adjust and optimize your plan</p>
+                  </div>
+                </motion.div>
+                
+                {/* Placeholder for Arrow 3 (Purple) -> Simplified to complete the loop conceptually */}
+                 <div className="hidden md:block absolute bottom-0 left-1/2 w-16 h-1/4 z-0 transform -translate-x-1/2 translate-y-1/3">
+                    <ChevronLeft className="h-16 w-16 text-purple-400 opacity-70 transform rotate-[225deg]" />
+                </div>
+              </div>
+              {/* Background circular path - very simplified with border for demo */}
+              <div className="hidden md:block absolute inset-0 flex items-center justify-center -z-1 pointer-events-none">
+                <div className="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] border-8 border-gray-200 rounded-full opacity-50"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Potential Savings Section */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-             {/* Decorative Floating Icons */}
               <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.1 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
                 <CircleDollarSign className="w-full h-full text-pink-400 opacity-70" />
               </motion.div>
@@ -294,66 +411,13 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Flow Diagram Section */}
-        <section className="py-16 sm:py-24 text-center">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
-              You Know All Those Financial Goals You Have?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
-              We want you to achieve them, with a clear plan, and see what works.
-            </p>
-            <motion.div
-              className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
-                 <Image
-                    src="https://placehold.co/128x64.png"
-                    alt="Animated character walking the financial path"
-                    width={128}
-                    height={64}
-                    className="object-contain"
-                    data-ai-hint="finance mascot walking path"
-                  />
-              </div>
-
-              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
-                <div className="text-left flex items-center space-x-2">
-                  <ChevronRight className="h-6 w-6 text-black"/>
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">The Fin.Co Way</span>
-                </div>
-                <div className="text-right flex items-center justify-end space-x-2">
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Budget & Track</span>
-                  <ChevronRight className="h-6 w-6 text-black"/>
-                </div>
-                <div className="text-left flex items-center space-x-2">
-                   <ChevronLeft className="h-6 w-6 text-black"/>
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Achieve Your Goals</span>
-                </div>
-                <div className="text-right flex items-center justify-end space-x-2">
-                   <span className="font-semibold text-black text-sm sm:text-base font-sans">Save & Invest</span>
-                   <ChevronLeft className="h-6 w-6 text-black"/>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-full h-[70%] border-2 border-dashed border-black rounded-[45px] opacity-50"></div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-
         {/* Pricing Section */}
         <section id="pricing" className="py-16 sm:py-24 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-sans">Ready to Level Up Your Finances?</h2>
-            <p className="text-lg text-gray-600 max-w-xl mx-auto mb-12 font-sans">Pick your power-up! Simple plans, powerful results.</p>
+             <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-sans">Ready to Level Up Your Finances?</h2>
+             <p className="text-lg text-gray-600 max-w-xl mx-auto mb-12 font-sans">Pick your power-up! Simple plans, powerful results.</p>
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
-              {/* Free Plan */}
+              {/* Explorer Plan */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -385,7 +449,7 @@ export default function LandingPage() {
                 </Card>
               </motion.div>
 
-              {/* Pro Plan */}
+              {/* Optimizer Plan */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -454,7 +518,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Link href="/get-started" passHref className="no-underline">
-                <Button size="lg" className="bg-white text-black hover:bg-yellow-500 hover:text-black font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
+                <Button size="lg" className="bg-white text-black hover:bg-yellow-400 font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -463,7 +527,6 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer */}
        <footer className="bg-gray-900 text-gray-300 py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 md:gap-12 mb-10">
@@ -522,4 +585,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
