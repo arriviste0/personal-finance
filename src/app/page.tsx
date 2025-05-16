@@ -34,7 +34,7 @@ const services = [
   {
     title: "AI Financial Advisor",
     description: "Get personalized insights, spending analysis, and proactive tips from our intelligent AI assistant to optimize your finances.",
-    icon: Lightbulb, // Changed from BrainCircuit to Lightbulb
+    icon: Lightbulb,
     tags: ["smart insights", "spending analysis", "proactive tips"],
     bgColorClass: "bg-[#FFD166]", // Yellow
     iconColorClass: "text-black",
@@ -187,12 +187,14 @@ export default function LandingPage() {
         <section className="py-12 sm:py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <p className="text-center text-sm text-gray-500 uppercase tracking-wider font-sans mb-6">Trusted by leading financial companies</p>
-            <div className="flex flex-wrap justify-center items-center gap-x-8 sm:gap-x-12 gap-y-4">
-              {['PayPal', 'Visa', 'Mastercard', 'Stripe', 'Wise'].map((partner) => (
-                <div key={partner} className="text-gray-400 hover:text-gray-600 transition-colors">
-                  <span className="text-lg sm:text-xl font-medium font-sans">{partner}</span>
-                </div>
-              ))}
+            <div className="overflow-x-auto py-4">
+              <div className="flex justify-center items-center gap-x-10 sm:gap-x-16 whitespace-nowrap">
+                {['PayPal', 'Visa', 'Mastercard', 'Stripe', 'Wise', 'American Express', 'Google Pay'].map((partner) => (
+                  <div key={partner} className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0">
+                    <span className="text-xl sm:text-2xl font-medium font-sans">{partner}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -230,7 +232,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Potential Savings Section - Updated */}
+         {/* Potential Savings Section - Updated */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
              <motion.div initial={{ opacity: 0, scale: 0.5, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2, type: 'spring', stiffness: 120, damping: 10 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
@@ -265,7 +267,7 @@ export default function LandingPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto mb-12 font-sans relative z-10"
             >
-              Potential annual savings our users achieve with FinTrack Pro!
+              Potential annual savings our users achieve with Fin.Co!
             </motion.p>
           </div>
         </section>
@@ -341,7 +343,7 @@ export default function LandingPage() {
                     <CardHeader className="text-left p-0 mb-6 !bg-transparent !border-0">
                       <Sparkles className="h-10 w-10 text-yellow-500 mb-3" />
                       <CardTitle className="text-2xl font-bold text-yellow-500 font-sans">The Explorer</CardTitle>
-                      <CardDescription className="text-yellow-500 font-sans">Perfect for getting started.</CardDescription>
+                      <CardDescription className="text-yellow-500 font-sans">For individuals getting started.</CardDescription>
                     </CardHeader>
                     <CardContent className="text-left p-0 space-y-3 mb-8">
                       <p className="text-4xl font-bold text-yellow-500 font-sans">$0<span className="text-base font-normal text-gray-500">/mo</span></p>
@@ -429,7 +431,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Link href="/get-started" passHref className="no-underline">
-                <Button size="lg" className="bg-white text-black hover:bg-yellow-500 font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
+                <Button size="lg" className="bg-white text-black hover:bg-yellow-400 font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -462,21 +464,19 @@ export default function LandingPage() {
              <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Help</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline font-sans">Help</Link></li>
-                <li><Link href="#" className="hover:text-yellow-400 transition-colors no-underline font-sans">Marketplace</Link></li>
-                <li><Link href="/terms" className="hover:text-yellow-400 transition-colors no-underline font-sans">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-yellow-400 transition-colors no-underline font-sans">Privacy Policy</Link></li>
+                <li><Link href="#" className="text-white hover:text-yellow-400 transition-colors no-underline font-sans">Help</Link></li>
+                <li><Link href="/terms" className="text-white hover:text-yellow-400 transition-colors no-underline font-sans">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="text-white hover:text-yellow-400 transition-colors no-underline font-sans">Privacy Policy</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-lg font-semibold text-white mb-4 font-sans">Company</h4>
               <ul className="space-y-2">
-                <li><Link href="#services" className="hover:text-yellow-400 transition-colors no-underline font-sans">Features</Link></li>
-                <li><Link href="#pricing" className="hover:text-yellow-400 transition-colors no-underline font-sans">Pricing</Link></li>
-                <li><Link href="/about" className="hover:text-yellow-400 transition-colors no-underline font-sans">About</Link></li>
-                <li><Link href="/jobs" className="hover:text-yellow-400 transition-colors no-underline font-sans">Jobs</Link></li>
-                <li><Link href="/board-meetings" className="hover:text-yellow-400 transition-colors no-underline font-sans">Board meetings</Link></li>
+                <li><Link href="#services" className="text-white hover:text-yellow-400 transition-colors no-underline font-sans">Features</Link></li>
+                <li><Link href="#pricing" className="text-white hover:text-yellow-400 transition-colors no-underline font-sans">Pricing</Link></li>
+                <li><Link href="/about" className="text-white hover:text-yellow-400 transition-colors no-underline font-sans">About</Link></li>
+                <li><Link href="/jobs" className="text-white hover:text-yellow-400 transition-colors no-underline font-sans">Jobs</Link></li>
               </ul>
             </div>
           </div>
@@ -506,5 +506,3 @@ const CheckCircle = ({className}: {className?: string}) => (
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
   </svg>
 );
-
-
