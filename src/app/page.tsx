@@ -16,7 +16,7 @@ const services = [
     description: "Take control of your spending with intuitive budgeting tools. Set limits, track progress, and achieve financial clarity.",
     icon: HandCoins,
     tags: ["monthly budget", "category tracking", "spending limits"],
-    bgColorClass: "bg-[#2EC4B6]",
+    bgColorClass: "bg-[#2EC4B6]", // Teal
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/budget"
@@ -26,7 +26,7 @@ const services = [
     description: "Define your financial goals, from vacations to down payments, and watch your savings grow with automated tracking.",
     icon: PiggyBank,
     tags: ["dream vacation", "new home", "education fund"],
-    bgColorClass: "bg-[#FF6B6B]",
+    bgColorClass: "bg-[#FF6B6B]", // Red
     iconColorClass: "text-white",
     textColorClass: "text-white",
     href: "/savings-goals"
@@ -36,7 +36,7 @@ const services = [
     description: "Get personalized insights, spending analysis, and proactive tips from our intelligent AI assistant to optimize your finances.",
     icon: Lightbulb,
     tags: ["smart insights", "spending analysis", "proactive tips"],
-    bgColorClass: "bg-[#FFD166]",
+    bgColorClass: "bg-[#FFD166]", // Yellow
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/ai-assistant"
@@ -46,7 +46,7 @@ const services = [
     description: "Log every penny with ease. Categorize expenses, view trends, and understand where your money goes.",
     icon: ListChecks,
     tags: ["receipt scan", "categorization", "spending reports"],
-    bgColorClass: "bg-[#F79F79]",
+    bgColorClass: "bg-[#F79F79]", // Orange
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/expenses"
@@ -56,7 +56,7 @@ const services = [
     description: "Estimate your tax liability, track deductions, and get ready for tax season with our helpful planning tools.",
     icon: FileText,
     tags: ["tax estimate", "deductions", "IRS forms"],
-    bgColorClass: "bg-[#A0C4FF]",
+    bgColorClass: "bg-[#A0C4FF]", // Light Blue
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/tax-planner"
@@ -66,7 +66,7 @@ const services = [
     description: "Monitor your stocks, mutual funds, crypto, and other investments all in one place. Make informed decisions.",
     icon: Landmark,
     tags: ["stocks", "crypto", "portfolio overview"],
-    bgColorClass: "bg-[#BDB2FF]",
+    bgColorClass: "bg-[#BDB2FF]", // Light Purple
     iconColorClass: "text-black",
     textColorClass: "text-black",
     href: "/investments"
@@ -156,64 +156,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Flow Diagram Section - Full width background possible, content centered */}
-        <section className="py-16 sm:py-24 text-center"> {/* Removed px, bg is default */}
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8"> {/* Centered content */}
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
-              You Know All Those Financial Goals You Have?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
-              We want you to achieve them, with a clear plan, and see what works.
-            </p>
-            <motion.div
-              className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
-                 <Image
-                    src="https://placehold.co/128x64/FFC107/000000.png?text=YOU"
-                    alt="Animated character"
-                    width={128}
-                    height={64}
-                    className="object-contain"
-                    data-ai-hint="finance mascot walking"
-                  />
-              </div>
-
-              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
-                {/* Top-Left */}
-                <div className="text-left flex items-center space-x-2">
-                  <ChevronRight className="h-6 w-6 text-black"/>
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">The FinTrack Way</span>
-                </div>
-                {/* Top-Right */}
-                <div className="text-right flex items-center justify-end space-x-2">
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Budget & Track</span>
-                  <ChevronRight className="h-6 w-6 text-black"/>
-                </div>
-                {/* Bottom-Left */}
-                <div className="text-left flex items-center space-x-2">
-                   <ChevronLeft className="h-6 w-6 text-black"/>
-                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Achieve Your Goals</span>
-                </div>
-                {/* Bottom-Right */}
-                <div className="text-right flex items-center justify-end space-x-2">
-                   <span className="font-semibold text-black text-sm sm:text-base font-sans">Save & Invest</span>
-                   <ChevronLeft className="h-6 w-6 text-black"/>
-                </div>
-                 {/* Dashed line to form the track - simplified */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-full h-[70%] border-2 border-dashed border-black rounded-[45px] opacity-50"></div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-
         {/* Why FinTrack Pro Section - Content centered */}
         <section id="why-fintrack" className="py-16 sm:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -298,23 +240,6 @@ export default function LandingPage() {
             >
               Potential annual savings our users achieve with FinTrack Pro!
             </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="relative z-10"
-            >
-              <Image
-                src="https://placehold.co/800x400.png"
-                alt="Illustration of people happily using FinTrack Pro to save money"
-                width={800}
-                height={400}
-                className="rounded-lg shadow-xl mx-auto"
-                data-ai-hint="people saving money finance app illustration"
-              />
-            </motion.div>
           </div>
         </section>
 
@@ -349,6 +274,63 @@ export default function LandingPage() {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        {/* Flow Diagram Section - Moved Here */}
+        <section className="py-16 sm:py-24 text-center">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 font-sans">
+              You Know All Those Financial Goals You Have?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 font-sans">
+              We want you to achieve them, with a clear plan, and see what works.
+            </p>
+            <motion.div
+              className="relative max-w-3xl mx-auto bg-yellow-300 p-8 sm:p-12 rounded-[60px] border-4 border-black shadow-retro"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-32 h-16">
+                 <Image
+                    src="https://placehold.co/128x64/FFC107/000000.png"
+                    alt="Animated character"
+                    width={128}
+                    height={64}
+                    className="object-contain"
+                    data-ai-hint="finance mascot walking"
+                  />
+              </div>
+
+              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:gap-y-24 items-center mt-12 relative">
+                {/* Top-Left */}
+                <div className="text-left flex items-center space-x-2">
+                  <ChevronRight className="h-6 w-6 text-black"/>
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">The FinTrack Way</span>
+                </div>
+                {/* Top-Right */}
+                <div className="text-right flex items-center justify-end space-x-2">
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Budget & Track</span>
+                  <ChevronRight className="h-6 w-6 text-black"/>
+                </div>
+                {/* Bottom-Left */}
+                <div className="text-left flex items-center space-x-2">
+                   <ChevronLeft className="h-6 w-6 text-black"/>
+                  <span className="font-semibold text-black text-sm sm:text-base font-sans">Achieve Your Goals</span>
+                </div>
+                {/* Bottom-Right */}
+                <div className="text-right flex items-center justify-end space-x-2">
+                   <span className="font-semibold text-black text-sm sm:text-base font-sans">Save & Invest</span>
+                   <ChevronLeft className="h-6 w-6 text-black"/>
+                </div>
+                 {/* Dashed line to form the track - simplified */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-full h-[70%] border-2 border-dashed border-black rounded-[45px] opacity-50"></div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -538,3 +520,6 @@ const CheckCircle = ({className}: {className?: string}) => (
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
   </svg>
 );
+
+
+    
