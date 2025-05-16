@@ -34,20 +34,22 @@ export default function Header() {
         : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground";
 
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
-        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Example active state for /about
+        // More robust active check: exact match or startsWith for sections
+        const isActive = pathname === href || (href.startsWith("/#") && pathname === href) || (href === "/about" && pathname.startsWith("/about"));
 
         if (isLandingPage && !isAuthenticated) {
             if (isMobile) {
-                 if (isActive && href === "/about") {
+                 if (isActive && (href === "/about" || href.startsWith("/#"))) {
                     return "bg-white text-black rounded-md py-2 px-3 block text-base font-medium transition-colors";
                  }
                  return "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md py-2 px-3 block text-base font-medium transition-colors";
             }
             // Desktop specific styling for landing unauthenticated
             let baseClasses = "inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium transition-colors duration-150 ease-in-out ";
-            if (isActive && href === "/about") {
+            if (isActive && (href === "/about" || href.startsWith("/#"))) {
                 return baseClasses + "bg-white text-black rounded-md";
             }
+            // Ensure hover effect for rounded corners, white background, and black text
             return baseClasses + "text-white hover:bg-white hover:text-black hover:rounded-md";
         }
 
@@ -67,13 +69,13 @@ export default function Header() {
 
   return (
      <header className={headerClasses}>
-      <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 relative">
+      <div className="container flex h-16 max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8 relative">
         <Link href="/" className="flex items-center space-x-2 no-underline">
            <CircleDollarSign className={cn("h-7 w-7", (isLandingPage && !isAuthenticated) ? "text-white" : "text-primary-foreground")} />
            <span className={cn("font-sans text-xl font-bold", (isLandingPage && !isAuthenticated) ? "text-white" : "text-primary-foreground")}>Fin.Co</span>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - Centered for landing unauthenticated */}
         {isLandingPage && !isAuthenticated && (
           <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <nav className="flex items-center gap-x-1 lg:gap-x-2 text-sm">
@@ -85,7 +87,8 @@ export default function Header() {
           </div>
         )}
 
-        <nav className={cn("hidden md:flex items-center", (isLandingPage && !isAuthenticated) ? "gap-x-2" : "gap-x-3 lg:gap-x-4 text-sm ml-auto")}>
+        <nav className={cn("hidden md:flex items-center ml-auto", // ml-auto to push auth buttons to right
+                           (isLandingPage && !isAuthenticated) ? "gap-x-2" : "gap-x-3 lg:gap-x-4 text-sm")}>
           {isAuthenticated && (
              <>
                  <Link href="/dashboard" className={navLinkClasses('/dashboard')}>Dashboard</Link>
@@ -104,7 +107,6 @@ export default function Header() {
            {!isAuthenticated && (
                <>
                   {isLandingPage ? (
-                    // This div will be on the right because the nav links are absolutely centered
                     <div className="flex items-center gap-x-2">
                         <Link
                             href="/login"
@@ -121,8 +123,7 @@ export default function Header() {
                         </Link>
                       </div>
                   ) : (
-                     // ml-auto is needed here if main nav links are not present
-                     <div className="flex items-center gap-x-2 ml-auto">
+                     <div className="flex items-center gap-x-2">
                         <Link href="/login" passHref>
                            <Button variant="outline" size="sm" className={cn("retro-button", "!border-primary-foreground !text-primary-foreground hover:!bg-primary-foreground/10")}>Login</Button>
                         </Link>
@@ -135,8 +136,8 @@ export default function Header() {
             )}
         </nav>
 
-        {/* Mobile Navigation Trigger - Ensure it's always on the right using ml-auto relative to other flex items */}
-        <div className="md:hidden ml-auto">
+        {/* Mobile Navigation Trigger */}
+        <div className="md:hidden ml-auto"> {/* ml-auto ensures it's to the right of other content (like centered nav) */}
           <Sheet>
             <SheetTrigger asChild>
               <Button
