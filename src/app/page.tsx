@@ -46,9 +46,9 @@ import {
   Zap,
   Target,
   BarChartBig,
-  Award, // Added Award for Step 4
-  ChevronDown, // Added for flow
-  ChevronUp, // Added for flow
+  Award,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
@@ -124,6 +124,45 @@ const CheckCircle = ({className}: {className?: string}) => (
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
   </svg>
 );
+
+const planSteps = [
+  {
+    step: 1,
+    title: "Step 1: Set Your Goals",
+    description: "Define your financial objetives",
+    icon: Target,
+    borderColor: "border-orange-500",
+    iconColor: "text-orange-500",
+    badgeBg: "bg-orange-500",
+  },
+  {
+    step: 2,
+    title: "Step 2: Get a Tailored Action Plan",
+    description: "Receive a step-by-step plan",
+    icon: BarChartBig,
+    borderColor: "border-blue-500",
+    iconColor: "text-blue-500",
+    badgeBg: "bg-blue-500",
+  },
+  {
+    step: 3,
+    title: "Step 3: Track What Works",
+    description: "Adjust and optimize your plan",
+    icon: TrendingUp,
+    borderColor: "border-purple-500",
+    iconColor: "text-purple-500",
+    badgeBg: "bg-purple-500",
+  },
+  {
+    step: 4,
+    title: "Step 4: Achieve & Grow",
+    description: "Celebrate milestones and continue building your financial future.",
+    icon: Award,
+    borderColor: "border-green-500",
+    iconColor: "text-green-500",
+    badgeBg: "bg-green-500",
+  },
+];
 
 
 export default function LandingPage() {
@@ -300,96 +339,49 @@ export default function LandingPage() {
               </div>
 
               {/* Grid for the cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 lg:gap-x-16 lg:gap-y-16 relative z-10">
-                {/* Step 1 Card: Top-Left */}
-                <motion.div
-                  id="step1-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="md:justify-self-end md:transform md:-translate-x-8" // Adjust positioning
-                >
-                  <div className="bg-white p-6 rounded-xl border-2 border-orange-500 shadow-lg text-center h-full flex flex-col items-center justify-start hover:shadow-xl transition-shadow max-w-xs mx-auto md:mx-0">
-                    <div className="flex items-center justify-center bg-orange-100 rounded-full p-3 mb-4">
-                      <Target className="h-8 w-8 text-orange-500" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">Step 1: Set Your Goals</h3>
-                    <p className="text-sm text-gray-600 font-sans">Define your financial objetives</p>
-                  </div>
-                </motion.div>
-
-                {/* Step 2 Card: Top-Right */}
-                <motion.div
-                  id="step2-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                   className="md:justify-self-start md:transform md:translate-x-8" // Adjust positioning
-                >
-                  <div className="bg-white p-6 rounded-xl border-2 border-blue-500 shadow-lg text-center h-full flex flex-col items-center justify-start hover:shadow-xl transition-shadow max-w-xs mx-auto md:mx-0">
-                    <div className="flex items-center justify-center bg-blue-100 rounded-full p-3 mb-4">
-                      <BarChartBig className="h-8 w-8 text-blue-500" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">Step 2: Get a Tailored Action Plan</h3>
-                    <p className="text-sm text-gray-600 font-sans">Receive a step-by-step plan</p>
-                  </div>
-                </motion.div>
-
-                {/* Step 4 Card: Bottom-Left - Ordered for correct grid placement */}
-                <motion.div
-                  id="step4-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="md:justify-self-end md:transform md:-translate-x-8" // Adjust positioning
-                >
-                  <div className="bg-white p-6 rounded-xl border-2 border-green-500 shadow-lg text-center h-full flex flex-col items-center justify-start hover:shadow-xl transition-shadow max-w-xs mx-auto md:mx-0">
-                    <div className="flex items-center justify-center bg-green-100 rounded-full p-3 mb-4">
-                      <Award className="h-8 w-8 text-green-500" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">Step 4: Achieve & Grow</h3>
-                    <p className="text-sm text-gray-600 font-sans">Celebrate milestones and continue building your financial future.</p>
-                  </div>
-                </motion.div>
-
-                {/* Step 3 Card: Bottom-Right */}
-                <motion.div
-                  id="step3-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="md:justify-self-start md:transform md:translate-x-8" // Adjust positioning
-                >
-                  <div className="bg-white p-6 rounded-xl border-2 border-purple-500 shadow-lg text-center h-full flex flex-col items-center justify-start hover:shadow-xl transition-shadow max-w-xs mx-auto md:mx-0">
-                    <div className="flex items-center justify-center bg-purple-100 rounded-full p-3 mb-4">
-                      <TrendingUp className="h-8 w-8 text-purple-500" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">Step 3: Track What Works</h3>
-                    <p className="text-sm text-gray-600 font-sans">Adjust and optimize your plan</p>
-                  </div>
-                </motion.div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 lg:gap-x-16 lg:gap-y-16 relative z-10 justify-items-center">
+                {/* Mapping steps to create cards. Order: Step 1, Step 2, Step 4, Step 3 for visual flow */}
+                {[planSteps[0], planSteps[1], planSteps[3], planSteps[2]].map((step, index) => {
+                  const StepIcon = step.icon;
+                  return (
+                    <motion.div
+                      key={step.step}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="w-full max-w-xs" // Ensure cards don't get too wide and cause wrapping issues
+                    >
+                      <div className={`bg-white p-6 rounded-xl border-2 ${step.borderColor} shadow-lg text-center flex flex-col items-center justify-start hover:shadow-xl transition-shadow h-full`}>
+                        <div className={`absolute -top-3 -left-3 h-8 w-8 rounded-full ${step.badgeBg} flex items-center justify-center text-white font-bold text-sm shadow-md`}>
+                          {step.step}
+                        </div>
+                        <StepIcon className={`h-10 w-10 ${step.iconColor} my-4`} /> {/* Increased margin for icon */}
+                        <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">{step.title.replace(`Step ${step.step}: `, '')}</h3>
+                        <p className="text-sm text-gray-600 font-sans flex-grow">{step.description}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
 
-              {/* Arrow Icons for Flow - Positioned in the gaps */}
-              <div className="hidden md:block absolute top-[22.5%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0">
-                <ChevronRight className="h-10 w-10 text-gray-400 opacity-70" />
-              </div>
-              <div className="hidden md:block absolute top-1/2 right-[22.5%] transform translate-x-1/2 -translate-y-1/2 z-0">
-                <ChevronDown className="h-10 w-10 text-gray-400 opacity-70" />
-              </div>
-              <div className="hidden md:block absolute bottom-[22.5%] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-0">
-                <ChevronLeft className="h-10 w-10 text-gray-400 opacity-70" />
-              </div>
-              <div className="hidden md:block absolute top-1/2 left-[22.5%] transform -translate-x-1/2 -translate-y-1/2 z-0">
-                <ChevronUp className="h-10 w-10 text-gray-400 opacity-70" />
-              </div>
+              {/* Arrow Icons for Flow - Adjusted for 2x2 grid */}
+                <div className="hidden md:block absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0">
+                    <ChevronRight className="h-10 w-10 text-gray-400 opacity-70" />
+                </div>
+                <div className="hidden md:block absolute top-1/2 right-[calc(25%-1.25rem)] transform translate-x-1/2 -translate-y-1/2 z-0"> {/* Adjusted for card width and gap */}
+                    <ChevronDown className="h-10 w-10 text-gray-400 opacity-70" />
+                </div>
+                <div className="hidden md:block absolute bottom-[25%] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-0">
+                    <ChevronLeft className="h-10 w-10 text-gray-400 opacity-70" />
+                </div>
+                <div className="hidden md:block absolute top-1/2 left-[calc(25%-1.25rem)] transform -translate-x-1/2 -translate-y-1/2 z-0"> {/* Adjusted for card width and gap */}
+                    <ChevronUp className="h-10 w-10 text-gray-400 opacity-70" />
+                </div>
             </div>
           </div>
         </section>
+
 
         {/* Potential Savings Section */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
@@ -428,7 +420,7 @@ export default function LandingPage() {
             >
               Potential annual savings our users achieve with Fin.Co!
             </motion.p>
-            <div className="mt-8">
+             <div className="mt-8">
               <Image
                 src="https://storage.googleapis.com/idx-dev-fe-plugin-ai-test-assets/01J3Y6N12P55GSJBDY71G3P981.png"
                 alt="Cartoon illustration of people achieving financial goals: one running debt-free, one celebrating with money, one investing on a laptop"
@@ -444,8 +436,8 @@ export default function LandingPage() {
         {/* Pricing Section */}
         <section id="pricing" className="py-16 sm:py-24 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-             <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-sans">Ready to Level Up Your Finances?</h2>
-             <p className="text-lg text-gray-600 max-w-xl mx-auto mb-12 font-sans">Pick your power-up! Simple plans, powerful results.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-sans">Ready to Level Up Your Finances?</h2>
+            <p className="text-lg text-gray-600 max-w-xl mx-auto mb-12 font-sans">Pick your power-up! Simple plans, powerful results.</p>
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
               {/* Explorer Plan */}
               <motion.div
@@ -548,7 +540,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Link href="/get-started" passHref className="no-underline">
-                <Button size="lg" className="bg-white text-black hover:bg-yellow-400 font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
+                 <Button size="lg" className="bg-white text-black hover:bg-yellow-400 font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -615,4 +607,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
