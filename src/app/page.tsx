@@ -118,7 +118,6 @@ const services = [
 
 const partners = ['PayPal', 'Visa', 'Mastercard', 'Stripe', 'Wise', 'American Express', 'Google Pay'];
 
-
 const CheckCircle = ({className}: {className?: string}) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className || "h-5 w-5"}>
     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.06-1.06l-3.894 3.893-1.7-1.7a.75.75 0 0 0-1.06 1.061l2.25 2.25a.75.75 0 0 0 1.06 0l4.5-4.5Z" clipRule="evenodd" />
@@ -128,7 +127,7 @@ const CheckCircle = ({className}: {className?: string}) => (
 const planSteps = [
   {
     step: 1,
-    title: "Step 1: Set Your Goals",
+    title: "Set Your Goals",
     description: "Define your financial objetives",
     icon: Target,
     borderColor: "border-orange-500",
@@ -137,7 +136,7 @@ const planSteps = [
   },
   {
     step: 2,
-    title: "Step 2: Get a Tailored Action Plan",
+    title: "Get a Tailored Action Plan",
     description: "Receive a step-by-step plan",
     icon: BarChartBig,
     borderColor: "border-blue-500",
@@ -146,7 +145,7 @@ const planSteps = [
   },
   {
     step: 3,
-    title: "Step 3: Track What Works",
+    title: "Track What Works",
     description: "Adjust and optimize your plan",
     icon: TrendingUp,
     borderColor: "border-purple-500",
@@ -155,7 +154,7 @@ const planSteps = [
   },
   {
     step: 4,
-    title: "Step 4: Achieve & Grow",
+    title: "Achieve & Grow",
     description: "Celebrate milestones and continue building your financial future.",
     icon: Award,
     borderColor: "border-green-500",
@@ -323,67 +322,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Your 4-Step Personalized Financial Plan Section */}
-        <section className="py-16 sm:py-24 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 font-sans text-gray-800">
-              Your 4-Step Personalized Financial Plan
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-16 font-sans text-center">
-              Follow these simple steps to take control of your finances and achieve your dreams with Fin.Co.
-            </p>
-            <div className="relative max-w-4xl mx-auto">
-              {/* Background decorative circle */}
-              <div className="hidden md:block absolute inset-0 flex items-center justify-center -z-10 pointer-events-none">
-                <div className="w-[380px] h-[380px] sm:w-[480px] sm:h-[480px] md:w-[580px] md:h-[580px] border-[12px] border-yellow-100 rounded-full opacity-60"></div>
-              </div>
-
-              {/* Grid for the cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 lg:gap-x-16 lg:gap-y-16 relative z-10 justify-items-center">
-                {/* Mapping steps to create cards. Order: Step 1, Step 2, Step 4, Step 3 for visual flow */}
-                {[planSteps[0], planSteps[1], planSteps[3], planSteps[2]].map((step, index) => {
-                  const StepIcon = step.icon;
-                  return (
-                    <motion.div
-                      key={step.step}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="w-full max-w-xs" // Ensure cards don't get too wide and cause wrapping issues
-                    >
-                      <div className={`bg-white p-6 rounded-xl border-2 ${step.borderColor} shadow-lg text-center flex flex-col items-center justify-start hover:shadow-xl transition-shadow h-full`}>
-                        <div className={`absolute -top-3 -left-3 h-8 w-8 rounded-full ${step.badgeBg} flex items-center justify-center text-white font-bold text-sm shadow-md`}>
-                          {step.step}
-                        </div>
-                        <StepIcon className={`h-10 w-10 ${step.iconColor} my-4`} /> {/* Increased margin for icon */}
-                        <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">{step.title.replace(`Step ${step.step}: `, '')}</h3>
-                        <p className="text-sm text-gray-600 font-sans flex-grow">{step.description}</p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Arrow Icons for Flow - Adjusted for 2x2 grid */}
-                <div className="hidden md:block absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0">
-                    <ChevronRight className="h-10 w-10 text-gray-400 opacity-70" />
-                </div>
-                <div className="hidden md:block absolute top-1/2 right-[calc(25%-1.25rem)] transform translate-x-1/2 -translate-y-1/2 z-0"> {/* Adjusted for card width and gap */}
-                    <ChevronDown className="h-10 w-10 text-gray-400 opacity-70" />
-                </div>
-                <div className="hidden md:block absolute bottom-[25%] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-0">
-                    <ChevronLeft className="h-10 w-10 text-gray-400 opacity-70" />
-                </div>
-                <div className="hidden md:block absolute top-1/2 left-[calc(25%-1.25rem)] transform -translate-x-1/2 -translate-y-1/2 z-0"> {/* Adjusted for card width and gap */}
-                    <ChevronUp className="h-10 w-10 text-gray-400 opacity-70" />
-                </div>
-            </div>
-          </div>
-        </section>
-
-
-        {/* Potential Savings Section */}
+         {/* Potential Savings Section */}
         <section className="py-16 sm:py-24 bg-amber-50 text-gray-800 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
               <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 0.1 }} className="absolute top-[5%] left-[10%] w-16 h-16 sm:w-20 sm:h-20 z-0">
@@ -432,83 +371,68 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        {/* Pricing Section */}
-        <section id="pricing" className="py-16 sm:py-24 bg-background">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-sans">Ready to Level Up Your Finances?</h2>
-            <p className="text-lg text-gray-600 max-w-xl mx-auto mb-12 font-sans">Pick your power-up! Simple plans, powerful results.</p>
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
-              {/* Explorer Plan */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex"
-              >
-                <Card className="retro-card border-2 border-dashed border-gray-300 p-8 flex flex-col justify-between hover:shadow-retro transition-shadow w-full hover:border-yellow-500">
-                  <div>
-                    <CardHeader className="text-left p-0 mb-6 !bg-transparent !border-0">
-                      <Sparkles className="h-10 w-10 text-yellow-500 mb-3" />
-                      <CardTitle className="text-2xl font-bold text-yellow-500 font-sans">The Explorer</CardTitle>
-                      <CardDescription className="text-yellow-500 font-sans">For individuals getting started.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-left p-0 space-y-3 mb-8">
-                      <p className="text-4xl font-bold text-yellow-500 font-sans">$0<span className="text-base font-normal text-gray-500">/mo</span></p>
-                      <ul className="space-y-2 text-gray-700">
-                        {["Core Budgeting Tools", "Expense Logging", "Basic Savings Goals", "Weekly AI Summary"].map(feature => (
-                          <li key={feature} className="flex items-center font-sans"><CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />{feature}</li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </div>
-                  <CardFooter className="p-0 !border-0">
-                    <Link href="/get-started" passHref className="w-full no-underline">
-                      <Button variant="outline" className="w-full retro-button border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black font-semibold py-3 text-base">Start Exploring</Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-
-              {/* Optimizer Plan */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="flex"
-              >
-                <Card className="retro-card border-2 border-yellow-500 p-8 shadow-[4px_4px_0px_hsl(var(--yellow-500)/0.4)] flex flex-col justify-between hover:shadow-[6px_6px_0px_hsl(var(--yellow-500)/0.5)] transition-shadow w-full relative overflow-visible">
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="bg-yellow-500 text-black text-xs font-bold uppercase px-4 py-1 rounded-full shadow-md font-sans">Best Value</span>
-                  </div>
-                  <div>
-                    <CardHeader className="text-left p-0 pt-6 mb-6 !bg-transparent !border-0">
-                      <Zap className="h-10 w-10 text-yellow-500 mb-3" />
-                      <CardTitle className="text-2xl font-bold text-gray-800 font-sans">The Optimizer</CardTitle>
-                      <CardDescription className="text-gray-600 font-sans">For serious finance mastery.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-left p-0 space-y-3 mb-8">
-                       <p className="text-4xl font-bold text-gray-800 font-sans">$9<span className="text-base font-normal text-gray-500">/mo</span></p>
-                      <ul className="space-y-2 text-gray-700">
-                        {["Everything in Explorer, plus:", "Advanced AI Advisor & Planning", "Investment Portfolio Tracking", "Full Tax Estimation Suite", "Priority Support"].map(feature => (
-                          <li key={feature} className="flex items-center font-sans"><CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />{feature}</li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </div>
-                  <CardFooter className="p-0 !border-0">
-                    <Link href="/get-started?plan=pro" passHref className="w-full no-underline">
-                       <Button className="w-full retro-button bg-yellow-500 text-black hover:bg-yellow-600 font-semibold py-3 text-base border-yellow-600 shadow-[2px_2px_0px_hsl(var(--foreground)/0.2)] hover:shadow-[3px_3px_0px_hsl(var(--foreground)/0.25)]">Become an Optimizer</Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            </div>
-            <p className="mt-10 text-sm text-gray-500 font-sans">
-              Need a custom plan for your business or team? <Link href="/contact" className="text-yellow-600 hover:underline font-semibold no-underline">Contact Us</Link>.
+        
+        {/* Your 4-Step Personalized Financial Plan Section */}
+        <section className="py-16 sm:py-24 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 font-sans text-gray-800">
+              Your 4-Step Personalized Financial Plan
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-16 font-sans text-center">
+              Follow these simple steps to take control of your finances and achieve your dreams with Fin.Co.
             </p>
+            <div className="relative max-w-4xl mx-auto">
+              {/* Background decorative circle */}
+              <div className="hidden md:block absolute inset-0 flex items-center justify-center -z-10 pointer-events-none">
+                <div className="w-[calc(100%-4rem)] h-[calc(100%-4rem)] sm:w-[520px] sm:h-[520px] border-[12px] border-yellow-100 rounded-full opacity-60"></div>
+              </div>
+
+              {/* Grid for the cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 lg:gap-x-16 lg:gap-y-16 relative z-10 justify-items-center">
+                 {/* Step 1: Top-Left, Step 2: Top-Right, Step 4: Bottom-Left, Step 3: Bottom-Right for clockwise flow */}
+                {[planSteps[0], planSteps[1], planSteps[3], planSteps[2]].map((step, index) => {
+                  const StepIcon = step.icon;
+                  // Determine correct card index for clockwise visual flow
+                  let cardOrderIndex = index; // Default for direct mapping
+                  if (index === 2) cardOrderIndex = 3; // Step 4 (data index 3) comes visually third
+                  else if (index === 3) cardOrderIndex = 2; // Step 3 (data index 2) comes visually fourth
+                  
+                  return (
+                    <motion.div
+                      key={step.step}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="w-full max-w-xs h-full" 
+                    >
+                      <div className={`relative bg-white p-6 rounded-xl border-2 ${step.borderColor} shadow-lg text-center flex flex-col items-center justify-start hover:shadow-xl transition-shadow h-full`}>
+                        <div className={`absolute -top-3 -left-3 h-8 w-8 rounded-full ${step.badgeBg} flex items-center justify-center text-black font-bold text-sm shadow-md`}>
+                          {step.step}
+                        </div>
+                        <StepIcon className={`h-10 w-10 ${step.iconColor} my-4`} />
+                        <h3 className="text-xl font-bold mb-2 font-sans text-gray-800">{step.title.replace(`Step ${step.step}: `, '')}</h3>
+                        <p className="text-sm text-gray-600 font-sans flex-grow">{step.description}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Arrow Icons for Flow - Adjusted for clockwise 2x2 grid */}
+                <div className="hidden md:block absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0">
+                    <ChevronRight className="h-10 w-10 text-gray-400 opacity-70" />
+                </div>
+                <div className="hidden md:block absolute top-1/2 right-[calc(25%-1.25rem)] transform translate-x-1/2 -translate-y-1/2 z-0 rotate-90"> 
+                    <ChevronRight className="h-10 w-10 text-gray-400 opacity-70" />
+                </div>
+                 <div className="hidden md:block absolute bottom-[25%] left-1/2 transform -translate-x-1/2 translate-y-1/2 z-0 rotate-180">
+                    <ChevronRight className="h-10 w-10 text-gray-400 opacity-70" />
+                </div>
+                 <div className="hidden md:block absolute top-1/2 left-[calc(25%-1.25rem)] transform -translate-x-1/2 -translate-y-1/2 z-0 -rotate-90"> 
+                    <ChevronRight className="h-10 w-10 text-gray-400 opacity-70" />
+                </div>
+            </div>
           </div>
         </section>
 
@@ -540,7 +464,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Link href="/get-started" passHref className="no-underline">
-                 <Button size="lg" className="bg-white text-black hover:bg-yellow-400 font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
+                 <Button size="lg" className="bg-white text-black hover:bg-yellow-500 font-semibold py-4 px-8 text-lg rounded-md shadow-lg transition-transform hover:scale-105 retro-button retro-button-lg">
                   Sign Up For Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -607,3 +531,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
