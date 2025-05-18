@@ -1,14 +1,9 @@
-<<<<<<< HEAD
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-=======
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@700&display=swap');
->>>>>>> deaed6c2b62230c74a89b23bbff50f9822168177
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); /* Added for retro theme */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 @layer base {
   :root {
@@ -54,29 +49,32 @@
     --font-sans: 'Inter', system-ui, sans-serif;
     --font-serif: 'Playfair Display', serif;
     --font-heading: 'Poppins', Arial, sans-serif;
-    --yellow: #ffe066;
-    --green: #1ecb6b;
-    --orange: #ff7f50;
-    --blue: #3b82f6;
-    --black: #181818;
-    --white: #fff;
-    --gray: #f5f5f5;
-  }
+    --font-pixel: 'Press Start 2P', cursive; /* Added for retro theme */
 
+
+    --yellow: 45 100% 70%; /* hsl(45, 100%, 70%) - A bright, energetic yellow */
+    --green: 145 63% 49%; /* hsl(145, 63%, 49%) - A vibrant green */
+    --orange: 28 100% 65%; /* hsl(28, 100%, 65%) - A rich orange */
+    --blue: 210 80% 55%; /* hsl(210, 80%, 55%) - Existing primary blue for contrast */
+    --black: 220 15% 10%; /* hsl(220, 15%, 10%) - A very dark blue-grey */
+    --white: 0 0% 100%;   /* hsl(0, 0%, 100%) - Pure white */
+    --gray: 210 20% 96%;  /* hsl(210, 20%, 96%) - A light, cool grey */
+  }
 }
+
 
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-[#fffbea] text-[#181818];
-    font-family: var(--font-sans), system-ui, sans-serif; /* Apply Inter font */
+    @apply bg-background text-foreground; /* Use CSS vars for base background and text */
+    font-family: var(--font-sans); /* Apply Inter font by default */
   }
-  /* Apply base font styling - Ensure headings use the sans font */
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight text-foreground;
-    font-family: var(--font-heading), Arial, sans-serif;
+    font-family: var(--font-heading); /* Poppins for headings */
     letter-spacing: -0.01em;
   }
 
@@ -84,21 +82,23 @@
   h2 { @apply text-xl sm:text-2xl md:text-3xl; }
   h3 { @apply text-lg sm:text-xl md:text-2xl; }
   h4 { @apply text-base sm:text-lg md:text-xl; }
+
   p, li, td, label, span, button, input, select, textarea, legend, div, a {
      @apply text-sm sm:text-base;
-     font-family: var(--font-sans), system-ui, sans-serif;
+     font-family: var(--font-sans);
   }
 
-  /* General Link Styling - Removed global underline */
   a {
-    @apply text-primary hover:text-primary/80;
+    @apply text-primary no-underline; /* Remove default underline */
   }
-  a.link-underline { /* Add this class if specific underline is needed */
+  a:hover {
+    @apply text-primary/80; /* Consistent hover for general links */
+  }
+  /* Specific link underline if needed */
+  a.link-underline {
     @apply underline underline-offset-4;
   }
 
-
-  /* Remove default focus outline, rely on ring */
   *:focus {
     outline: none;
   }
@@ -107,82 +107,64 @@
   }
 }
 
+/* Retro UI Components Styling */
 @layer components {
-   /* Retro Button Base Style */
+   /* Base for retro-style buttons */
    .retro-button {
       @apply inline-flex items-center justify-center px-4 py-2 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-base font-medium;
-      font-family: var(--font-sans), system-ui, sans-serif; /* Use Inter for buttons */
+      font-family: var(--font-sans);
+      @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/5 active:translate-y-px active:translate-x-px active:shadow-none;
+   }
+   /* Variants of retro buttons */
+   .retro-button-default { @apply hover:bg-foreground/5; }
+   .retro-button-primary { @apply bg-primary text-primary-foreground border-primary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-primary/90; }
+   .retro-button-secondary { @apply bg-secondary text-secondary-foreground border-secondary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-secondary/90; }
+   .retro-button-accent { @apply bg-accent text-accent-foreground border-accent-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-accent/90; }
+   .retro-button-destructive { @apply bg-destructive text-destructive-foreground border-destructive-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-destructive/90; }
+   .retro-button-outline { @apply hover:bg-foreground/5; }
+   .retro-button-ghost { @apply border-transparent bg-transparent shadow-none hover:bg-foreground/5 hover:text-foreground hover:translate-x-0 hover:translate-y-0; }
+   .retro-button-link { @apply border-transparent bg-transparent shadow-none text-primary hover:text-primary/80 h-auto p-0 text-base hover:translate-x-0 hover:translate-y-0; }
 
-        /* Hover Effects */
-        @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/5 active:translate-y-px active:translate-x-px active:shadow-none;
-   }
-   .retro-button-default { /* Default style is outline */
-       @apply hover:bg-foreground/5;
-   }
-   .retro-button-primary {
-      @apply bg-primary text-primary-foreground border-primary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-primary/90;
-   }
-   .retro-button-secondary {
-      @apply bg-secondary text-secondary-foreground border-secondary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-secondary/90;
-   }
-   .retro-button-accent {
-      @apply bg-accent text-accent-foreground border-accent-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-accent/90;
-   }
-    .retro-button-destructive {
-       @apply bg-destructive text-destructive-foreground border-destructive-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-destructive/90;
-    }
-    .retro-button-outline {
-        /* Explicit outline variant (same as default) */
-         @apply hover:bg-foreground/5;
-    }
-   .retro-button-ghost {
-      @apply border-transparent bg-transparent shadow-none hover:bg-foreground/5 hover:text-foreground hover:translate-x-0 hover:translate-y-0; /* No move on ghost */
-   }
-    .retro-button-link {
-        @apply border-transparent bg-transparent shadow-none text-primary hover:text-primary/80 h-auto p-0 text-base hover:translate-x-0 hover:translate-y-0; /* No move on link */
-    }
-    .retro-button-sm {
-        @apply px-3 py-1.5 text-sm shadow-retro-sm;
-    }
-     .retro-button-lg {
-        @apply px-6 py-3 text-lg shadow-retro;
-     }
-     .retro-button-icon {
-        @apply h-9 w-9 p-0;
-     }
+   /* Sizes for retro buttons */
+   .retro-button-sm { @apply px-3 py-1.5 text-sm shadow-retro-sm; }
+   .retro-button-lg { @apply px-6 py-3 text-lg shadow-retro; }
+   .retro-button-icon { @apply h-9 w-9 p-0; }
 
-   /* Retro Window Style */
-   .retro-window {
+
+   /* Retro Window/Card Style */
+   .retro-window, .retro-card {
       @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200;
-      @apply hover:shadow-[5px_5px_0px_0px_hsl(var(--primary)/0.3)];
+      /* @apply hover:shadow-[5px_5px_0px_0px_hsl(var(--primary)/0.3)]; Remove general hover shadow, apply specifically if needed */
    }
-   .retro-window-header {
+   .retro-window-header, .retro-card-header {
       @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
-      font-family: var(--font-sans), system-ui, sans-serif; /* Use Inter */
+      font-family: var(--font-sans);
    }
-   .retro-window-content {
-       @apply p-4 border-t-2 border-foreground;
+   .retro-window-content, .retro-card-content {
+       @apply p-4 border-t-2 border-foreground; /* Ensure content areas have top border if header is present */
    }
+    .retro-card-header + .retro-card-content {
+        @apply border-t-0; /* Remove top border from content if it directly follows a header */
+    }
+   .retro-card-footer {
+       @apply flex items-center p-4 border-t-2 border-foreground; /* Footer always has a top border */
+   }
+
    .retro-window-controls {
       @apply flex space-x-1.5 items-center;
    }
    .retro-window-controls span, .retro-window-controls button {
        @apply block h-3 w-3 border border-foreground bg-background transition-transform duration-100 hover:scale-110;
    }
-   /* Specific colors for controls in default retro window header */
-   .retro-window > .retro-window-header > .retro-window-controls span:first-child,
-   .retro-window > .retro-window-header > .retro-window-controls button:first-child {
-       @apply bg-yellow-400 border-yellow-600;
-   }
+   /* Default window control colors */
+   .retro-window > .retro-window-header > .retro-window-controls span:nth-child(1),
+   .retro-window > .retro-window-header > .retro-window-controls button:nth-child(1) { @apply bg-red-500 border-red-700; }
    .retro-window > .retro-window-header > .retro-window-controls span:nth-child(2),
-   .retro-window > .retro-window-header > .retro-window-controls button:nth-child(2) {
-       @apply bg-green-400 border-green-600;
-   }
-   .retro-window > .retro-window-header > .retro-window-controls span:last-child,
-   .retro-window > .retro-window-header > .retro-window-controls button:last-child {
-       @apply bg-red-500 border-red-700;
-   }
-    /* Controls with colored headers inherit header colors */
+   .retro-window > .retro-window-header > .retro-window-controls button:nth-child(2) { @apply bg-yellow-400 border-yellow-600; }
+   .retro-window > .retro-window-header > .retro-window-controls span:nth-child(3),
+   .retro-window > .retro-window-header > .retro-window-controls button:nth-child(3) { @apply bg-green-400 border-green-600; }
+
+    /* Controls with colored headers use header's foreground for border and bg for fill */
     .retro-window-header.bg-primary > .retro-window-controls span,
     .retro-window-header.bg-primary > .retro-window-controls button,
     .retro-window-header.bg-secondary > .retro-window-controls span,
@@ -193,218 +175,140 @@
     .retro-window-header.bg-destructive > .retro-window-controls button {
         @apply bg-inherit border-inherit opacity-80 hover:opacity-100;
     }
-
-    /* Retro Input */
-    .retro-input {
-        @apply flex h-10 w-full border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150;
-        @apply focus:border-primary focus:bg-background;
-        font-family: var(--font-sans), system-ui, sans-serif;
+     /* Specific close button for dialogs when using destructive header */
+    .retro-window-header.bg-destructive > .retro-window-controls > button {
+        @apply !bg-destructive-foreground !text-destructive hover:!bg-destructive-foreground/80;
     }
-     /* Retro Textarea */
-    .retro-textarea {
-      @apply flex min-h-[80px] w-full border-2 border-foreground bg-input p-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150;
+
+
+   /* Retro Input, Textarea, Select */
+   .retro-input, .retro-textarea, .retro-select-trigger {
+      @apply flex w-full border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150;
+      font-family: var(--font-sans);
       @apply focus:border-primary focus:bg-background;
-      font-family: var(--font-sans), system-ui, sans-serif;
-    }
+   }
+   .retro-input { @apply h-10; }
+   .retro-textarea { @apply min-h-[80px]; }
+   .retro-select-trigger { @apply h-10 items-center justify-between [&>span]:truncate; }
+   .retro-select-content { @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80; }
+   .retro-select-item {
+      @apply relative flex w-full cursor-pointer select-none items-center py-1.5 pl-8 pr-2 text-base outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100;
+      font-family: var(--font-sans);
+   }
 
-     /* Retro Select */
-    .retro-select-trigger {
-        @apply flex h-10 w-full items-center justify-between border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark [&>span]:truncate transition-colors duration-150;
-         @apply data-[state=open]:border-primary data-[state=open]:bg-background;
-         font-family: var(--font-sans), system-ui, sans-serif;
-    }
-    .retro-select-content {
-        @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80;
-    }
-     .retro-select-item {
-         @apply relative flex w-full cursor-pointer select-none items-center py-1.5 pl-8 pr-2 text-base outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100;
-          font-family: var(--font-sans), system-ui, sans-serif;
-     }
-     /* Retro Checkbox / Switch */
-    .retro-checkbox, [role="switch"] {
-         @apply h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150;
-        @apply hover:border-primary;
-    }
-    .retro-checkbox[data-state="checked"], [role="switch"][data-state="checked"] {
-        @apply animate-retro-check-pop;
-    }
-    /* Switch specific thumb */
-     [role="switch"] > span {
-         @apply pointer-events-none block h-3 w-3 rounded-full bg-foreground shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0 data-[state=checked]:bg-primary-foreground;
-     }
+   /* Retro Checkbox / Switch */
+   .retro-checkbox, [role="switch"] {
+      @apply h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150;
+      @apply hover:border-primary;
+   }
+   .retro-checkbox[data-state="checked"], [role="switch"][data-state="checked"] { @apply animate-retro-check-pop; }
+   [role="switch"] > span { @apply pointer-events-none block h-3 w-3 bg-foreground shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0 data-[state=checked]:bg-primary-foreground; }
 
-     /* Retro Progress */
-    .retro-progress {
-      @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted shadow-retro-inset;
-    }
-     .retro-progress-indicator {
-       @apply h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out;
-    }
+   /* Retro Progress */
+   .retro-progress { @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted shadow-retro-inset; }
+   .retro-progress-indicator { @apply h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out; }
 
-     /* Retro Alert */
-    .retro-alert {
+   /* Retro Alert */
+   .retro-alert {
       @apply relative w-full border-2 border-foreground p-4 bg-card [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-2px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground;
-       font-family: var(--font-sans), system-ui, sans-serif;
-    }
-    .retro-alert-destructive {
-       @apply border-destructive text-destructive bg-destructive/10 [&>svg]:text-destructive animate-retro-alert-pulse;
-    }
-     .retro-alert-accent {
-        @apply border-accent text-accent bg-accent/10 [&>svg]:text-accent;
-     }
+      font-family: var(--font-sans);
+   }
+   .retro-alert-destructive { @apply border-destructive text-destructive bg-destructive/10 [&>svg]:text-destructive animate-retro-alert-pulse; }
+   .retro-alert-accent { @apply border-accent text-accent bg-accent/10 [&>svg]:text-accent; }
 
-     /* Retro Card (using retro-window base) */
-    .retro-card {
-        @apply retro-window;
-    }
-    .retro-card-header {
-         @apply flex flex-col space-y-1.5 p-3 px-4 border-b-2 border-foreground;
-         /* Default header background (muted) */
-         @apply bg-muted;
-    }
-    .retro-card-content {
-       @apply p-4;
-    }
-     .retro-card-footer {
-        @apply flex items-center p-4 pt-0;
-     }
+   /* Retro Table */
+   .retro-table thead { @apply bg-muted border-b-2 border-foreground; }
+   .retro-table th {
+     @apply border border-border p-2 px-3 text-left text-foreground font-medium;
+     font-family: var(--font-sans);
+   }
+   .retro-table td {
+     @apply border border-border p-2 px-3;
+     font-family: var(--font-sans);
+   }
+   .retro-table tr:hover { @apply bg-foreground/5; }
+   .retro-table tr { @apply transition-colors duration-150; }
 
-     /* Retro Table */
-     .retro-table thead {
-        @apply bg-muted border-b-2 border-foreground;
-     }
-     .retro-table th {
-       @apply border border-border p-2 px-3 text-left text-foreground font-medium;
-       font-family: var(--font-sans), system-ui, sans-serif; /* Use Inter */
-     }
-      .retro-table td {
-        @apply border border-border p-2 px-3;
-         font-family: var(--font-sans), system-ui, sans-serif;
-      }
-     .retro-table tr:hover {
-        @apply bg-foreground/5;
-     }
-     .retro-table tr {
-         @apply transition-colors duration-150;
-     }
-
+   /* Retro Badge */
+    .retro-badge {
+        @apply inline-flex items-center border-2 border-foreground px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+        font-family: var(--font-sans);
+    }
+    .retro-badge.variant-default { @apply border-primary bg-primary text-primary-foreground; }
+    .retro-badge.variant-secondary { @apply border-secondary bg-secondary text-secondary-foreground; }
+    .retro-badge.variant-destructive { @apply border-destructive bg-destructive text-destructive-foreground; }
+    .retro-badge.variant-outline { @apply text-foreground; }
 }
 
 @layer utilities {
-  .text-shadow-retro {
-     text-shadow: 1px 1px 0px hsl(var(--foreground)/0.15);
-  }
-  .text-shadow-retro-primary {
-     text-shadow: 1px 1px 0px hsl(var(--primary)/0.3);
-  }
-  .font-serif {
-    font-family: var(--font-serif), serif !important;
-  }
-  .font-heading {
-    font-family: var(--font-heading), Arial, sans-serif !important;
-    font-weight: 700 !important;
-  }
-  .bg-yellow {
-    background-color: var(--yellow) !important;
-  }
-  .bg-green {
-    background-color: var(--green) !important;
-  }
-  .bg-orange {
-    background-color: var(--orange) !important;
-  }
-  .bg-blue {
-    background-color: var(--blue) !important;
-  }
-  .bg-black {
-    background-color: var(--black) !important;
-  }
-  .bg-gray {
-    background-color: var(--gray) !important;
-  }
-  .underline-strong {
+  .text-shadow-retro { text-shadow: 1px 1px 0px hsl(var(--foreground)/0.15); }
+  .text-shadow-retro-primary { text-shadow: 1px 1px 0px hsl(var(--primary)/0.3); }
+
+  /* Font utilities */
+  .font-heading { font-family: var(--font-heading) !important; font-weight: 700 !important; }
+  .font-pixel { font-family: var(--font-pixel) !important; } /* For retro/pixel text */
+
+  /* Specific color utilities if needed */
+  .bg-brand-yellow { background-color: hsl(var(--yellow)) !important; }
+  .text-brand-yellow { color: hsl(var(--yellow)) !important; }
+  .border-brand-yellow { border-color: hsl(var(--yellow)) !important; }
+  /* Add more for other brand colors like green, orange if direct utility is preferred */
+
+  .underline-strong-yellow {
     text-decoration: underline;
-    text-decoration-thickness: 4px;
-    text-underline-offset: 6px;
-    text-decoration-color: var(--yellow);
+    text-decoration-thickness: 3px; /* Slightly less thick */
+    text-underline-offset: 4px;   /* Slightly less offset */
+    text-decoration-color: hsl(var(--yellow));
   }
 }
-
 
 /* Retro-specific Animations */
 @keyframes retro-glow {
   0%, 100% { box-shadow: 0 0 4px 1px hsl(var(--primary)/0.6); }
   50% { box-shadow: 0 0 8px 3px hsl(var(--primary)/0.8); }
 }
-
 @keyframes retro-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
-
 @keyframes retro-check-pop {
   0% { transform: scale(0.8); opacity: 0.5; }
   80% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
-
 @keyframes retro-alert-pulse {
   0%, 100% { border-color: hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.4); }
   50% { border-color: hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); }
 }
 
 /* Override specific ShadCN styles that clash with retro */
-[data-radix-select-content-wrapper] {
-    box-shadow: none !important; /* Remove default select content shadow */
-}
-
-[data-radix-progress-root] {
-   border-radius: 0 !important;
-}
+[data-radix-select-content-wrapper] { box-shadow: none !important; }
+[data-radix-progress-root] { border-radius: 0 !important; }
 
 /* Ensure consistent font */
-.font-sans {
-  font-family: var(--font-sans), system-ui, sans-serif !important;
-}
+.font-sans { font-family: var(--font-sans) !important; }
 
 /* Ensure charts use sans font */
-.recharts-wrapper {
-    font-family: var(--font-sans), system-ui, sans-serif !important;
-}
-.recharts-text {
-     font-family: var(--font-sans), system-ui, sans-serif !important;
-}
+.recharts-wrapper, .recharts-text { font-family: var(--font-sans) !important; }
 
 /* Partner Slider Animations */
 .partner-slider-container {
   overflow: hidden;
   width: 100%;
-  position: relative; /* For potential pseudo-elements like fades */
+  position: relative;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 }
-
 .partner-slider-track {
   display: flex;
-  /* Calculate width: (number of original items * (width of item + gap)) * number of duplications for loop */
-  /* For this example, assuming each item is ~150px wide and there are 7 items, doubled for loop = 7 * 150 * 2 = 2100px */
-  /* Or more simply, use fit-content if the parent has a defined width and this element is allowed to overflow for animation */
-  width: fit-content; 
+  width: fit-content;
   animation: scrollPartners 40s linear infinite;
 }
-
-.partner-slider-track > div { /* Each partner item in the track */
+.partner-slider-track > div {
   flex-shrink: 0;
-  white-space: nowrap; /* Prevent text wrapping for partner names */
+  white-space: nowrap;
 }
-
 @keyframes scrollPartners {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    /* Scroll one full set of logos. If the track contains two sets, this is -50% of the track's total width. */
-    transform: translateX(-50%); 
-  }
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
 }
-
