@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); /* Added for retro theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,74 +6,68 @@
 
 @layer base {
   :root {
-    /* Light Theme - Adjusted for better contrast and finance feel */
+    /* Light Theme - Professional Finance Focus */
     --background: 0 0% 100%; /* White */
-    --foreground: 220 15% 20%; /* Dark Blue-Grey */
+    --foreground: 220 15% 25%; /* Darker Blue-Grey for stronger text */
 
-    --card: 210 20% 98%; /* Very Light Cool Grey */
-    --card-foreground: 220 15% 20%; /* Dark Blue-Grey */
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 220 15% 25%;
 
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 220 15% 20%; /* Dark Blue-Grey */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 25%;
 
-    --primary: 210 80% 55%; /* Slightly brighter Blue */
+    --primary: 210 70% 50%; /* Classic Blue - Trustworthy */
     --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 260 65% 60%; /* Clearer Purple */
+    --secondary: 145 60% 45%; /* Calming Green - Growth, Money */
     --secondary-foreground: 0 0% 100%; /* White */
 
-    --muted: 210 25% 95%; /* Light Grey */
-    --muted-foreground: 215 15% 45%; /* Medium Grey - Darker */
+    --muted: 210 30% 96%; /* Lighter Cool Grey */
+    --muted-foreground: 215 20% 50%; /* Medium Grey */
 
-    --accent: 340 75% 60%; /* Brighter Pink/Rose */
-    --accent-foreground: 0 0% 100%; /* White */
+    --accent: 35 85% 58%; /* Warm Orange/Gold - Action, Value */
+    --accent-foreground: 220 15% 15%; /* Dark text on accent for contrast */
 
-    --destructive: 0 75% 55%; /* Clearer Red */
-    --destructive-foreground: 0 0% 100%; /* White */
+    --destructive: 0 70% 50%; /* Clear Red - Alerts */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 210 15% 85%; /* Light Grey Border - Slightly darker */
-    --input: 210 15% 85%;   /* Light Grey Input Background */
-    --ring: 210 70% 65%; /* Lighter Blue for focus rings */
+    --border: 210 20% 88%; /* Softer Grey Border */
+    --input: 210 30% 94%;   /* Lighter Grey Input Background */
+    --ring: 210 70% 55%; /* Blue for focus rings */
 
-    /* Chart Colors - Adjusted Light theme with better contrast */
-    --chart-1: 210 80% 55%; /* Brighter Blue */
-    --chart-2: 260 65% 60%; /* Clearer Purple */
-    --chart-3: 340 75% 60%; /* Brighter Pink/Rose */
-    --chart-4: 160 65% 45%; /* Clearer Teal/Green */
-    --chart-5: 35 85% 55%; /* Brighter Orange */
-    --chart-6: 190 70% 50%; /* Added cyan for flexibility */
+    /* Chart Colors - Professional & Clear */
+    --chart-1: 210 70% 50%; /* Primary Blue */
+    --chart-2: 145 60% 45%; /* Secondary Green */
+    --chart-3: 35 85% 58%;  /* Accent Orange/Gold */
+    --chart-4: 260 60% 65%; /* Complementary Purple */
+    --chart-5: 190 65% 55%; /* Teal */
+    --chart-6: 0 0% 60%;    /* Neutral Grey */
 
-
-    --radius: 0rem; /* No border radius for retro */
+    --radius: 0.3rem; /* Slightly softer radius for a modern touch */
     --font-sans: 'Inter', system-ui, sans-serif;
-    --font-serif: 'Playfair Display', serif;
-    --font-heading: 'Poppins', Arial, sans-serif;
-    --font-pixel: 'Press Start 2P', cursive; /* Added for retro theme */
+    --font-heading: 'Poppins', system-ui, sans-serif; /* Poppins for headings */
 
-
-    --yellow: 45 100% 70%; /* hsl(45, 100%, 70%) - A bright, energetic yellow */
-    --green: 145 63% 49%; /* hsl(145, 63%, 49%) - A vibrant green */
-    --orange: 28 100% 65%; /* hsl(28, 100%, 65%) - A rich orange */
-    --blue: 210 80% 55%; /* hsl(210, 80%, 55%) - Existing primary blue for contrast */
-    --black: 220 15% 10%; /* hsl(220, 15%, 10%) - A very dark blue-grey */
-    --white: 0 0% 100%;   /* hsl(0, 0%, 100%) - Pure white */
-    --gray: 210 20% 96%;  /* hsl(210, 20%, 96%) - A light, cool grey */
+    /* Additional palette for FinTrack Pro */
+    --brand-yellow: 45 90% 55%; /* Bright, optimistic yellow */
+    --brand-green: 145 63% 42%; /* Deep, trustworthy green */
+    --brand-orange: 25 95% 60%; /* Engaging orange */
+    --brand-blue: 210 75% 55%; /* Primary brand blue */
+    --brand-dark: 220 20% 15%; /* Very dark blue/grey for text */
+    --brand-light-gray: 210 30% 97%; /* Light background tint */
   }
 }
-
 
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground; /* Use CSS vars for base background and text */
-    font-family: var(--font-sans); /* Apply Inter font by default */
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight text-foreground;
-    font-family: var(--font-heading); /* Poppins for headings */
+    @apply font-heading font-semibold tracking-tight text-brand-dark; /* Use Poppins and brand dark */
     letter-spacing: -0.01em;
   }
 
@@ -85,16 +78,15 @@
 
   p, li, td, label, span, button, input, select, textarea, legend, div, a {
      @apply text-sm sm:text-base;
-     font-family: var(--font-sans);
+     font-family: var(--font-sans); /* Ensure Inter for body text */
   }
 
   a {
-    @apply text-primary no-underline; /* Remove default underline */
+    @apply text-primary no-underline;
   }
   a:hover {
-    @apply text-primary/80; /* Consistent hover for general links */
+    @apply text-primary/80;
   }
-  /* Specific link underline if needed */
   a.link-underline {
     @apply underline underline-offset-4;
   }
@@ -107,15 +99,13 @@
   }
 }
 
-/* Retro UI Components Styling */
+/* Retro UI Components Styling - Kept as per user preference */
 @layer components {
-   /* Base for retro-style buttons */
    .retro-button {
       @apply inline-flex items-center justify-center px-4 py-2 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-base font-medium;
       font-family: var(--font-sans);
       @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/5 active:translate-y-px active:translate-x-px active:shadow-none;
    }
-   /* Variants of retro buttons */
    .retro-button-default { @apply hover:bg-foreground/5; }
    .retro-button-primary { @apply bg-primary text-primary-foreground border-primary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-primary/90; }
    .retro-button-secondary { @apply bg-secondary text-secondary-foreground border-secondary-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground)/0.3)] hover:bg-secondary/90; }
@@ -125,46 +115,43 @@
    .retro-button-ghost { @apply border-transparent bg-transparent shadow-none hover:bg-foreground/5 hover:text-foreground hover:translate-x-0 hover:translate-y-0; }
    .retro-button-link { @apply border-transparent bg-transparent shadow-none text-primary hover:text-primary/80 h-auto p-0 text-base hover:translate-x-0 hover:translate-y-0; }
 
-   /* Sizes for retro buttons */
    .retro-button-sm { @apply px-3 py-1.5 text-sm shadow-retro-sm; }
    .retro-button-lg { @apply px-6 py-3 text-lg shadow-retro; }
    .retro-button-icon { @apply h-9 w-9 p-0; }
 
 
-   /* Retro Window/Card Style */
-   .retro-window, .retro-card {
-      @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200;
-      /* @apply hover:shadow-[5px_5px_0px_0px_hsl(var(--primary)/0.3)]; Remove general hover shadow, apply specifically if needed */
+   .retro-card {
+      @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200 rounded-[var(--radius)]; /* Apply radius */
    }
-   .retro-window-header, .retro-card-header {
+   .retro-card-header {
       @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
       font-family: var(--font-sans);
    }
-   .retro-window-content, .retro-card-content {
-       @apply p-4 border-t-2 border-foreground; /* Ensure content areas have top border if header is present */
+   .retro-card-content {
+       @apply p-4;
    }
     .retro-card-header + .retro-card-content {
-        @apply border-t-0; /* Remove top border from content if it directly follows a header */
+        @apply border-t-0;
     }
    .retro-card-footer {
-       @apply flex items-center p-4 border-t-2 border-foreground; /* Footer always has a top border */
+       @apply flex items-center p-4 border-t-2 border-foreground;
    }
 
-   .retro-window-controls {
-      @apply flex space-x-1.5 items-center;
+   .retro-window {
+      @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200 rounded-[var(--radius)];
    }
-   .retro-window-controls span, .retro-window-controls button {
+   .retro-window-header {
+      @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
+      font-family: var(--font-sans);
+   }
+    .retro-window-header > .retro-window-controls {
+        @apply flex space-x-1.5 items-center;
+    }
+    .retro-window-header > .retro-window-controls span,
+    .retro-window-header > .retro-window-controls button {
        @apply block h-3 w-3 border border-foreground bg-background transition-transform duration-100 hover:scale-110;
-   }
-   /* Default window control colors */
-   .retro-window > .retro-window-header > .retro-window-controls span:nth-child(1),
-   .retro-window > .retro-window-header > .retro-window-controls button:nth-child(1) { @apply bg-red-500 border-red-700; }
-   .retro-window > .retro-window-header > .retro-window-controls span:nth-child(2),
-   .retro-window > .retro-window-header > .retro-window-controls button:nth-child(2) { @apply bg-yellow-400 border-yellow-600; }
-   .retro-window > .retro-window-header > .retro-window-controls span:nth-child(3),
-   .retro-window > .retro-window-header > .retro-window-controls button:nth-child(3) { @apply bg-green-400 border-green-600; }
+    }
 
-    /* Controls with colored headers use header's foreground for border and bg for fill */
     .retro-window-header.bg-primary > .retro-window-controls span,
     .retro-window-header.bg-primary > .retro-window-controls button,
     .retro-window-header.bg-secondary > .retro-window-controls span,
@@ -175,48 +162,48 @@
     .retro-window-header.bg-destructive > .retro-window-controls button {
         @apply bg-inherit border-inherit opacity-80 hover:opacity-100;
     }
-     /* Specific close button for dialogs when using destructive header */
-    .retro-window-header.bg-destructive > .retro-window-controls > button {
+     .retro-window-header.bg-destructive > .retro-window-controls > button {
         @apply !bg-destructive-foreground !text-destructive hover:!bg-destructive-foreground/80;
+    }
+   .retro-window-content {
+       @apply p-4 border-t-2 border-foreground;
+   }
+    .retro-window-header + .retro-window-content {
+        @apply border-t-0;
     }
 
 
-   /* Retro Input, Textarea, Select */
    .retro-input, .retro-textarea, .retro-select-trigger {
-      @apply flex w-full border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150;
+      @apply flex w-full border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150 rounded-[var(--radius)];
       font-family: var(--font-sans);
       @apply focus:border-primary focus:bg-background;
    }
    .retro-input { @apply h-10; }
    .retro-textarea { @apply min-h-[80px]; }
    .retro-select-trigger { @apply h-10 items-center justify-between [&>span]:truncate; }
-   .retro-select-content { @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80; }
+   .retro-select-content { @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80 rounded-[var(--radius)]; }
    .retro-select-item {
       @apply relative flex w-full cursor-pointer select-none items-center py-1.5 pl-8 pr-2 text-base outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100;
       font-family: var(--font-sans);
    }
 
-   /* Retro Checkbox / Switch */
    .retro-checkbox, [role="switch"] {
-      @apply h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150;
+      @apply h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150 rounded-sm; /* Added rounded-sm */
       @apply hover:border-primary;
    }
    .retro-checkbox[data-state="checked"], [role="switch"][data-state="checked"] { @apply animate-retro-check-pop; }
-   [role="switch"] > span { @apply pointer-events-none block h-3 w-3 bg-foreground shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0 data-[state=checked]:bg-primary-foreground; }
+   [role="switch"] > span { @apply pointer-events-none block h-3 w-3 bg-foreground shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0 data-[state=checked]:bg-primary-foreground rounded-full; } /* Rounded thumb */
 
-   /* Retro Progress */
-   .retro-progress { @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted shadow-retro-inset; }
+   .retro-progress { @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted shadow-retro-inset rounded-full; } /* Rounded progress bar */
    .retro-progress-indicator { @apply h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out; }
 
-   /* Retro Alert */
    .retro-alert {
-      @apply relative w-full border-2 border-foreground p-4 bg-card [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-2px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground;
+      @apply relative w-full border-2 border-foreground p-4 bg-card [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-2px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground rounded-[var(--radius)];
       font-family: var(--font-sans);
    }
    .retro-alert-destructive { @apply border-destructive text-destructive bg-destructive/10 [&>svg]:text-destructive animate-retro-alert-pulse; }
    .retro-alert-accent { @apply border-accent text-accent bg-accent/10 [&>svg]:text-accent; }
 
-   /* Retro Table */
    .retro-table thead { @apply bg-muted border-b-2 border-foreground; }
    .retro-table th {
      @apply border border-border p-2 px-3 text-left text-foreground font-medium;
@@ -229,9 +216,8 @@
    .retro-table tr:hover { @apply bg-foreground/5; }
    .retro-table tr { @apply transition-colors duration-150; }
 
-   /* Retro Badge */
     .retro-badge {
-        @apply inline-flex items-center border-2 border-foreground px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+        @apply inline-flex items-center border-2 border-foreground px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm; /* Added rounded-sm */
         font-family: var(--font-sans);
     }
     .retro-badge.variant-default { @apply border-primary bg-primary text-primary-foreground; }
@@ -244,32 +230,27 @@
   .text-shadow-retro { text-shadow: 1px 1px 0px hsl(var(--foreground)/0.15); }
   .text-shadow-retro-primary { text-shadow: 1px 1px 0px hsl(var(--primary)/0.3); }
 
-  /* Font utilities */
-  .font-heading { font-family: var(--font-heading) !important; font-weight: 700 !important; }
-  .font-pixel { font-family: var(--font-pixel) !important; } /* For retro/pixel text */
+  .font-heading { font-family: var(--font-heading) !important; font-weight: 600 !important; } /* Adjusted weight */
 
-  /* Specific color utilities if needed */
-  .bg-brand-yellow { background-color: hsl(var(--yellow)) !important; }
-  .text-brand-yellow { color: hsl(var(--yellow)) !important; }
-  .border-brand-yellow { border-color: hsl(var(--yellow)) !important; }
-  /* Add more for other brand colors like green, orange if direct utility is preferred */
+  .bg-brand-yellow { background-color: hsl(var(--brand-yellow)) !important; }
+  .text-brand-yellow { color: hsl(var(--brand-yellow)) !important; }
+  .border-brand-yellow { border-color: hsl(var(--brand-yellow)) !important; }
 
   .underline-strong-yellow {
     text-decoration: underline;
-    text-decoration-thickness: 3px; /* Slightly less thick */
-    text-underline-offset: 4px;   /* Slightly less offset */
-    text-decoration-color: hsl(var(--yellow));
+    text-decoration-thickness: 2px; /* Standard thickness */
+    text-underline-offset: 3px;   /* Standard offset */
+    text-decoration-color: hsl(var(--brand-yellow));
   }
 }
 
-/* Retro-specific Animations */
 @keyframes retro-glow {
-  0%, 100% { box-shadow: 0 0 4px 1px hsl(var(--primary)/0.6); }
-  50% { box-shadow: 0 0 8px 3px hsl(var(--primary)/0.8); }
+  0%, 100% { box-shadow: 0 0 3px 0.5px hsl(var(--primary)/0.5); }
+  50% { box-shadow: 0 0 6px 2px hsl(var(--primary)/0.7); }
 }
 @keyframes retro-blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.6; }
 }
 @keyframes retro-check-pop {
   0% { transform: scale(0.8); opacity: 0.5; }
@@ -277,21 +258,16 @@
   100% { transform: scale(1); opacity: 1; }
 }
 @keyframes retro-alert-pulse {
-  0%, 100% { border-color: hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.4); }
-  50% { border-color: hsl(var(--destructive)); box-shadow: 0 0 0 3px hsl(var(--destructive)/0.1); }
+  0%, 100% { border-color: hsl(var(--destructive)/0.7); box-shadow: 0 0 0 0 hsl(var(--destructive)/0.3); }
+  50% { border-color: hsl(var(--destructive)); box-shadow: 0 0 0 2.5px hsl(var(--destructive)/0.05); }
 }
 
-/* Override specific ShadCN styles that clash with retro */
 [data-radix-select-content-wrapper] { box-shadow: none !important; }
-[data-radix-progress-root] { border-radius: 0 !important; }
+[data-radix-progress-root] { border-radius: var(--radius) !important; } /* Use CSS var for radius */
 
-/* Ensure consistent font */
 .font-sans { font-family: var(--font-sans) !important; }
-
-/* Ensure charts use sans font */
 .recharts-wrapper, .recharts-text { font-family: var(--font-sans) !important; }
 
-/* Partner Slider Animations */
 .partner-slider-container {
   overflow: hidden;
   width: 100%;

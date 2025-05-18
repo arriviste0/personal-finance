@@ -10,8 +10,8 @@ export default {
   theme: {
   	extend: {
        fontFamily: {
-         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'], // Correctly use CSS variable
-         heading: ['var(--font-sans)', 'system-ui', 'sans-serif'], // Correctly use CSS variable
+         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+         heading: ['var(--font-heading)', 'system-ui', 'sans-serif'], // Use Poppins for headings
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -53,15 +53,23 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))',
-          '6': 'hsl(var(--chart-6))' // Added chart color
+          '6': 'hsl(var(--chart-6))'
   			},
+        // Brand specific colors from globals.css for easier Tailwind usage if needed
+        'brand-yellow': 'hsl(var(--brand-yellow))',
+        'brand-green': 'hsl(var(--brand-green))',
+        'brand-orange': 'hsl(var(--brand-orange))',
+        'brand-blue': 'hsl(var(--brand-blue))',
+        'brand-dark': 'hsl(var(--brand-dark))',
+        'brand-light-gray': 'hsl(var(--brand-light-gray))',
   		},
   		borderRadius: {
         none: '0',
-        sm: '0', // No radius for retro
-        DEFAULT: '0', // No radius for retro
-        md: '0', // No radius for retro
-        lg: '0', // No radius for retro
+        sm: 'calc(var(--radius) - 2px)', // Consistent with CSS var minus border
+        DEFAULT: 'var(--radius)',
+        md: 'var(--radius)',
+        lg: 'calc(var(--radius) + 2px)',
+        xl: 'calc(var(--radius) + 4px)',
         full: '9999px',
       },
   		keyframes: {
@@ -74,21 +82,21 @@ export default {
           to: { height: '0' },
         },
         'retro-glow': {
-          '0%, 100%': { 'box-shadow': '0 0 4px 1px hsl(var(--primary)/0.6)' },
-          '50%': { 'box-shadow': '0 0 8px 3px hsl(var(--primary)/0.8)' },
+          '0%, 100%': { 'box-shadow': '0 0 3px 0.5px hsl(var(--primary)/0.5)' },
+          '50%': { 'box-shadow': '0 0 6px 2px hsl(var(--primary)/0.7)' },
         },
         'retro-blink': {
             '0%, 100%': { opacity: '1' },
-            '50%': { opacity: '0.5' },
+            '50%': { opacity: '0.6' },
         },
          'retro-check-pop': {
-           '0%': { transform: 'scale(0.8)', opacity: '0.5' }, // Wrapped transform in quotes
-           '80%': { transform: 'scale(1.1)', opacity: '1' }, // Wrapped transform in quotes
-           '100%': { transform: 'scale(1)', opacity: '1' }, // Wrapped transform in quotes
+           '0%': { transform: 'scale(0.8)', opacity: '0.5' },
+           '80%': { transform: 'scale(1.1)', opacity: '1' },
+           '100%': { transform: 'scale(1)', opacity: '1' },
          },
          'retro-alert-pulse': {
-            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7)', boxShadow: '0 0 0 0 hsl(var(--destructive)/0.4)' }, // Wrapped box-shadow in quotes
-            '50%': { borderColor: 'hsl(var(--destructive))', boxShadow: '0 0 0 3px hsl(var(--destructive)/0.1)' }, // Wrapped box-shadow in quotes
+            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7)', boxShadow: '0 0 0 0 hsl(var(--destructive)/0.3)' },
+            '50%': { borderColor: 'hsl(var(--destructive))', boxShadow: '0 0 0 2.5px hsl(var(--destructive)/0.05)' },
          }
       },
       animation: {
@@ -100,13 +108,12 @@ export default {
          'retro-alert-pulse': 'retro-alert-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       boxShadow: {
-         'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.15)', // Slightly reduced shadow
-         'retro-sm': '2px 2px 0px 0px hsl(var(--foreground)/0.15)',
-         'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.15)', // Adjusted inset shadow
-         'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.1)',
+         'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.10)', // Softer shadow
+         'retro-sm': '2px 2px 0px 0px hsl(var(--foreground)/0.10)',
+         'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.10)',
+         'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.08)',
       },
   	}
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
-

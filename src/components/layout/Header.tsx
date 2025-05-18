@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from "next/link";
@@ -16,9 +15,10 @@ export default function Header() {
     const pathname = usePathname();
 
     const handleLinkAccount = () => {
+        // In a real app, this would trigger the modal on the dashboard or a dedicated page
         toast({
             title: "Bank Account Linking (Placeholder)",
-            description: "This would normally launch a secure bank linking process.",
+            description: "Navigate to the dashboard to link your bank account.",
         });
     };
 
@@ -30,38 +30,36 @@ export default function Header() {
     const isAuthenticated = status === 'authenticated';
 
     const headerClasses = isLandingPage && !isAuthenticated
-        ? "sticky top-0 z-50 w-full bg-black text-white shadow-md"
-        : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground";
+        ? "sticky top-0 z-50 w-full bg-black text-white shadow-md" // Landing page unauthenticated: Black bg
+        : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground"; // App pages or authenticated landing: Blue bg
 
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
-        // More robust active check: exact match or startsWith for sections
         const isActive = pathname === href || (href.startsWith("/#") && pathname === href) || (href === "/about" && pathname.startsWith("/about"));
 
-        if (isLandingPage && !isAuthenticated) {
-            if (isMobile) {
+        if (isLandingPage && !isAuthenticated) { // Styles for Unauthenticated Landing Page
+            if (isMobile) { // Mobile specific for unauth landing
                  if (isActive && (href === "/about" || href.startsWith("/#"))) {
                     return "bg-white text-black rounded-md py-2 px-3 block text-base font-medium transition-colors";
                  }
                  return "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md py-2 px-3 block text-base font-medium transition-colors";
             }
-            // Desktop specific styling for landing unauthenticated
-            let baseClasses = "inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium transition-colors duration-150 ease-in-out ";
-            if (isActive && (href === "/about" || href.startsWith("/#"))) {
+            // Desktop specific for unauth landing
+            let baseClasses = "inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium transition-colors duration-150 ease-in-out no-underline ";
+            if (isActive && (href === "/about" || href.startsWith("/#"))) { // Active link style (e.g., About)
                 return baseClasses + "bg-white text-black rounded-md";
             }
-            // Ensure hover effect for rounded corners, white background, and black text
-            return baseClasses + "text-white hover:bg-white hover:text-black hover:rounded-md";
+            return baseClasses + "text-white hover:bg-white hover:text-black hover:rounded-md"; // Default links
         }
 
         // Default app links styling (authenticated or non-landing pages)
         if (isMobile) {
             return cn(
-                "text-foreground hover:underline hover:text-primary underline-offset-2 py-1.5 block font-sans",
+                "text-foreground hover:underline hover:text-primary underline-offset-2 py-1.5 block font-sans no-underline",
                 isActive && "text-primary underline font-semibold"
             );
         }
         return cn(
-            "font-medium text-primary-foreground/80 hover:text-primary-foreground hover:underline underline-offset-2 font-sans",
+            "font-medium text-primary-foreground/80 hover:text-primary-foreground hover:underline underline-offset-2 font-sans no-underline",
             isActive && "text-primary-foreground underline font-semibold"
         );
     };
@@ -87,7 +85,7 @@ export default function Header() {
           </div>
         )}
 
-        <nav className={cn("hidden md:flex items-center ml-auto", // ml-auto to push auth buttons to right
+        <nav className={cn("hidden md:flex items-center ml-auto",
                            (isLandingPage && !isAuthenticated) ? "gap-x-2" : "gap-x-3 lg:gap-x-4 text-sm")}>
           {isAuthenticated && (
              <>
@@ -110,11 +108,11 @@ export default function Header() {
                     <div className="flex items-center gap-x-2">
                         <Link
                             href="/login"
-                            className="inline-flex items-center justify-center text-white border border-white rounded-md px-3 py-1.5 text-sm font-medium transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                            className="inline-flex items-center justify-center text-white border border-white rounded-md px-3 py-1.5 text-sm font-medium transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black no-underline"
                         >
                            Log in
                         </Link>
-                        <Link href="/get-started" passHref>
+                        <Link href="/get-started" passHref className="no-underline">
                            <Button
                              className="bg-pink-500 hover:bg-pink-600 text-white rounded-md px-4 py-1.5 text-sm font-semibold border-0 shadow-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                            >
@@ -124,10 +122,10 @@ export default function Header() {
                       </div>
                   ) : (
                      <div className="flex items-center gap-x-2">
-                        <Link href="/login" passHref>
+                        <Link href="/login" passHref className="no-underline">
                            <Button variant="outline" size="sm" className={cn("retro-button", "!border-primary-foreground !text-primary-foreground hover:!bg-primary-foreground/10")}>Login</Button>
                         </Link>
-                        <Link href="/get-started" passHref>
+                        <Link href="/get-started" passHref className="no-underline">
                            <Button variant="secondary" size="sm" className={cn("retro-button")}>Register</Button>
                         </Link>
                      </div>
@@ -137,7 +135,7 @@ export default function Header() {
         </nav>
 
         {/* Mobile Navigation Trigger */}
-        <div className="md:hidden ml-auto"> {/* ml-auto ensures it's to the right of other content (like centered nav) */}
+        <div className="md:hidden ml-auto">
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -194,13 +192,9 @@ export default function Header() {
                         <SheetClose asChild><Link href="/emergency-fund" className={navLinkClasses('/emergency-fund', true)}>Emergency Fund</Link></SheetClose>
                         <SheetClose asChild><Link href="/tax-planner" className={navLinkClasses('/tax-planner', true)}>Tax Planner</Link></SheetClose>
                         <SheetClose asChild><Link href="/ai-assistant" className={cn(navLinkClasses('/ai-assistant', true), (isLandingPage && !isAuthenticated) ? "text-pink-400 hover:text-pink-300" : "text-yellow-600 hover:text-yellow-500")}>AI Assistant</Link></SheetClose>
+                        
                         <SheetClose asChild>
-                            <Button variant="outline" className="w-full retro-button border-green-500 text-green-600 mt-4" onClick={handleLinkAccount}>
-                                 <Banknote className="mr-2 h-4 w-4"/> Link Bank Account
-                            </Button>
-                        </SheetClose>
-                         <SheetClose asChild>
-                            <Button variant="destructive" size="sm" className="retro-button mt-2" onClick={handleSignOut}>
+                            <Button variant="destructive" size="sm" className="retro-button mt-4" onClick={handleSignOut}>
                                  <LogOut className="mr-2 h-4 w-4"/> Sign Out
                             </Button>
                          </SheetClose>
@@ -217,13 +211,13 @@ export default function Header() {
                                 <SheetClose asChild>
                                 <Link
                                     href="/login"
-                                    className="inline-flex items-center justify-center text-white border border-white rounded-md py-2 px-3 block text-base font-medium transition-colors hover:bg-white hover:text-black"
+                                    className="inline-flex items-center justify-center text-white border border-white rounded-md py-2 px-3 block text-base font-medium transition-colors hover:bg-white hover:text-black no-underline"
                                 >
                                     Log in
                                 </Link>
                                 </SheetClose>
                                 <SheetClose asChild>
-                                 <Link href="/get-started" passHref>
+                                 <Link href="/get-started" passHref className="no-underline">
                                     <Button className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-md py-2 text-base font-semibold border-0 shadow-none">
                                         Get Started
                                     </Button>
@@ -234,12 +228,12 @@ export default function Header() {
                          ) : (
                             <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-border">
                                 <SheetClose asChild>
-                                <Link href="/login" passHref>
+                                <Link href="/login" passHref className="no-underline">
                                     <Button variant="outline" className="w-full retro-button">Login</Button>
                                 </Link>
                                 </SheetClose>
                                 <SheetClose asChild>
-                                 <Link href="/get-started" passHref>
+                                 <Link href="/get-started" passHref className="no-underline">
                                     <Button variant="default" className="w-full retro-button">Register</Button>
                                 </Link>
                                 </SheetClose>
