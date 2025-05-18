@@ -26,40 +26,52 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" }
       },
        async authorize(credentials, req): Promise<UserAuthResponse | null> {
-         // console.log("[NextAuth] Authorize attempt for email:", credentials?.email);
-         if (!credentials?.email || !credentials.password) {
-           console.error("[NextAuth] Missing email or password in credentials.");
-           throw new Error('Please provide email and password.');
+         try {
+           console.log("[NextAuth] Authorize attempt for email:", credentials?.email);
+           if (!credentials?.email || !credentials.password) {
+             console.error("[NextAuth] Missing email or password in credentials.");
+             throw new Error('Please provide email and password.');
+           }
+
+          const client: MongoClient = await clientPromise;
+          const db = client.db();
+          const usersCollection = db.collection('users');
+
+          const user = await usersCollection.findOne({ email: credentials.email });
+
+          if (!user) {
+            console.warn("[NextAuth] User not found with email:", credentials.email);
+             throw new Error('No user found with this email.');
+          }
+
+          console.log("[NextAuth] User found in DB:", { id: user._id, email: user.email });
+
+          // Ensure user.password exists and is a string
+          if (typeof user.password !== 'string' || !user.password) {
+              console.error("[NextAuth] User password is not a string or is missing for email:", credentials.email);
+              throw new Error('User account is not configured correctly for password authentication.');
+          }
+
+          const isValidPassword = await compare(credentials.password, user.password);
+
+          if (!isValidPassword) {
+             console.warn("[NextAuth] Invalid password attempt for email:", credentials.email);
+             throw new Error('Incorrect password.');
+          }
+
+           console.log("[NextAuth] Authentication successful for:", user.email);
+
+           return {
+             id: user._id.toString(),
+             name: user.name,
+             email: user.email,
+             image: user.image,
+           };
+         } catch (error: any) {
+           console.error("[NextAuth] Error in authorize function:", error.message, error.stack);
+           // Re-throw to ensure NextAuth handles it as an authentication failure
+           throw new Error(error.message || 'Authentication process failed');
          }
-
-        const client: MongoClient = await clientPromise;
-        const db = client.db(); 
-        const usersCollection = db.collection('users');
-
-        const user = await usersCollection.findOne({ email: credentials.email });
-
-        if (!user) {
-          console.warn("[NextAuth] User not found with email:", credentials.email);
-           throw new Error('No user found with this email.');
-        }
-        
-        // console.log("[NextAuth] User found in DB:", { id: user._id, email: user.email });
-
-        const isValidPassword = await compare(credentials.password, user.password);
-
-        if (!isValidPassword) {
-           console.warn("[NextAuth] Invalid password attempt for email:", credentials.email);
-           throw new Error('Incorrect password.');
-        }
-
-         // console.log("[NextAuth] Authentication successful for:", user.email);
-
-         return {
-           id: user._id.toString(), 
-           name: user.name,
-           email: user.email,
-           image: user.image, 
-         };
        }
     })
   ],
@@ -94,3 +106,4 @@ export const authOptions: AuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+
