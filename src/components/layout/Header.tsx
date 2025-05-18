@@ -2,17 +2,14 @@
 'use client';
 
 import Link from "next/link";
-import { CircleDollarSign, Menu, X, LogOut, Wallet, Lock, Activity } from "lucide-react"; // Added Wallet, Lock, Activity
+import { CircleDollarSign, Menu, X, LogOut, Wallet, Lock, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-
-// Mock data for wallet - in a real app, this would come from context/state
-const walletBalance = 12500.75;
-const lockedInGoals = 5750.00;
+import { useWallet } from '@/contexts/WalletContext'; // Import useWallet
 
 const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -22,36 +19,38 @@ export default function Header() {
     const { toast } = useToast();
     const { data: session, status } = useSession();
     const pathname = usePathname();
+    const { walletBalance, totalLockedFunds } = useWallet(); // Get wallet data from context
 
     const handleSignOut = async () => {
         await signOut({ redirect: true, callbackUrl: '/' });
     };
 
     const isLandingPage = pathname === '/';
-    const isAuthenticated = status === 'authenticated'; // Or true if middleware is disabled
+    const isAuthenticated = status === 'authenticated';
 
     const headerClasses = isLandingPage && !isAuthenticated
         ? "sticky top-0 z-50 w-full bg-black text-white shadow-md"
         : "sticky top-0 z-50 w-full border-b-2 border-foreground bg-primary text-primary-foreground";
 
     const navLinkClasses = (href: string, isMobile: boolean = false) => {
-        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about"));
+        const isActive = pathname === href || (href === "/about" && pathname.startsWith("/about")); // Example for active 'About'
 
         if (isLandingPage && !isAuthenticated) {
             if (isMobile) {
-                 if (isActive && (href === "/about")) {
+                 if (isActive && (href === "/about")) { // Active mobile landing link
                     return "bg-white text-black rounded-md py-2 px-3 block text-base font-medium transition-colors no-underline";
                  }
                  return "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md py-2 px-3 block text-base font-medium transition-colors no-underline";
             }
+            // Desktop landing links
             let baseClasses = "inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium transition-colors duration-150 ease-in-out no-underline ";
-            if (isActive && (href === "/about")) {
+            if (isActive && (href === "/about")) { // Active desktop landing link
                 return baseClasses + "bg-white text-black rounded-md";
             }
             return baseClasses + "text-white hover:bg-white hover:text-black hover:rounded-md";
         }
 
-        // Default app links styling
+        // Default app links styling (authenticated or not on landing)
         if (isMobile) {
             return cn(
                 "text-foreground hover:underline hover:text-primary underline-offset-2 py-1.5 block font-sans no-underline",
@@ -74,14 +73,14 @@ export default function Header() {
 
         {/* Wallet Info - Show if not landing page OR if authenticated on landing */}
         {(!isLandingPage || isAuthenticated) && (
-          <div className="hidden md:flex items-center gap-4 border-r border-foreground/20 pr-4 mr-4">
+          <div className="hidden md:flex items-center gap-4 border-r border-primary-foreground/20 pr-4 mr-4">
             <div className="flex items-center gap-1.5 text-xs">
               <Wallet className="h-4 w-4 opacity-80"/>
               <span>{formatCurrency(walletBalance)}</span>
             </div>
             <div className="flex items-center gap-1.5 text-xs">
               <Lock className="h-4 w-4 opacity-80"/>
-              <span>{formatCurrency(lockedInGoals)}</span>
+              <span>{formatCurrency(totalLockedFunds)}</span>
             </div>
           </div>
         )}
@@ -99,7 +98,7 @@ export default function Header() {
         )}
 
         <nav className={cn("hidden md:flex items-center", (isLandingPage && !isAuthenticated) ? "ml-auto gap-x-2" : "gap-x-3 lg:gap-x-4")}>
-          {(!isLandingPage || isAuthenticated) && ( // Show app nav if not landing OR if authenticated on landing
+          {(!isLandingPage || isAuthenticated) && (
              <>
                  <Link href="/dashboard" className={navLinkClasses('/dashboard')}>Dashboard</Link>
                  <Link href="/budget" className={navLinkClasses('/budget')}>Budget</Link>
@@ -111,7 +110,7 @@ export default function Header() {
                  <Link href="/ai-assistant" className={cn(navLinkClasses('/ai-assistant'), "text-yellow-300 hover:text-yellow-200")}>AI</Link>
              </>
           )}
-           {!isAuthenticated && ( // Always show auth buttons if not authenticated
+           {!isAuthenticated && (
                <>
                   {isLandingPage ? (
                     <div className="flex items-center gap-x-2">
@@ -129,7 +128,7 @@ export default function Header() {
                            </Button>
                         </Link>
                       </div>
-                  ) : ( // Auth buttons for non-landing pages when unauthenticated
+                  ) : (
                      <div className="flex items-center gap-x-2 ml-auto">
                         <Link href="/login" passHref className="no-underline">
                            <Button variant="outline" size="sm" className={cn("retro-button", "!border-primary-foreground !text-primary-foreground hover:!bg-primary-foreground/10")}>Login</Button>
@@ -141,7 +140,7 @@ export default function Header() {
                   )}
                </>
             )}
-             {isAuthenticated && ( // Sign out button for authenticated users
+             {isAuthenticated && (
                  <Button variant={"secondary"} size="sm" className={cn("retro-button ml-auto", headerClasses.includes("bg-primary") && "!border-primary-foreground !text-primary-foreground hover:!bg-primary-foreground/10")} onClick={handleSignOut}>
                      <LogOut className="mr-1 h-4 w-4"/> Sign Out
                  </Button>
@@ -160,7 +159,7 @@ export default function Header() {
                     (isLandingPage && !isAuthenticated) ? "border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md" : "border-primary-foreground text-primary-foreground hover:bg-primary/80"
                  )}
                >
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5" /> {/* Adjusted size for consistency */}
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
@@ -172,7 +171,7 @@ export default function Header() {
                 )}
             >
                 <div className={cn(
-                    "retro-window-header p-3 flex items-center justify-between", // Ensure flex and justify-between
+                    "retro-window-header p-3 flex items-center justify-between",
                     (isLandingPage && !isAuthenticated) ? "!bg-gray-800 !text-white !border-gray-700" : "!bg-muted !text-foreground !border-foreground"
                  )}>
                    <SheetTitle>
@@ -198,14 +197,14 @@ export default function Header() {
                 )}>
                  {(!isLandingPage || isAuthenticated) && (
                     <>
-                        <div className="space-y-1 pb-3 mb-3 border-b border-border">
+                        <div className="space-y-1 pb-3 mb-3 border-b border-primary-foreground/20">
                              <div className="flex items-center gap-2 px-3 py-1.5 text-sm">
                                <Wallet className="h-4 w-4 text-muted-foreground"/>
                                <span>Wallet: {formatCurrency(walletBalance)}</span>
                              </div>
                              <div className="flex items-center gap-2 px-3 py-1.5 text-sm">
                                <Lock className="h-4 w-4 text-muted-foreground"/>
-                               <span>Locked: {formatCurrency(lockedInGoals)}</span>
+                               <span>Locked: {formatCurrency(totalLockedFunds)}</span>
                              </div>
                         </div>
                         <SheetClose asChild><Link href="/dashboard" className={navLinkClasses('/dashboard', true)}>Dashboard</Link></SheetClose>
@@ -225,7 +224,7 @@ export default function Header() {
                              <LogOut className="mr-2 h-4 w-4"/> Sign Out
                         </Button>
                      </SheetClose>
-                 ) : ( // Unauthenticated specific links
+                 ) : (
                      <>
                          {isLandingPage ? (
                             <>
@@ -251,7 +250,7 @@ export default function Header() {
                                 </SheetClose>
                               </div>
                             </>
-                         ) : ( // Unauthenticated, but not on landing page
+                         ) : (
                             <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-border">
                                 <SheetClose asChild>
                                 <Link href="/login" passHref className="no-underline">

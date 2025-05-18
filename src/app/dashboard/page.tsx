@@ -2,11 +2,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+// import { useSession, signOut } from 'next-auth/react'; // Session-based logic commented out
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ChartConfig } from "@/components/ui/chart"; // Removed unused ChartContainer, ChartTooltip, ChartTooltipContent
+import { ChartConfig } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend } from "recharts";
 import {
     DollarSign,
@@ -20,19 +20,13 @@ import {
     Lightbulb,
     LogOut,
     Loader2,
-    // Users, // Removed unused icon
-    // FileText, // Removed unused icon
-    // Settings, // Removed unused icon
-    // Bell, // Removed unused icon
-    // Briefcase, // Removed unused icon
     Target as TargetIcon,
     BarChart2,
-    PieChart as PieChartIcon, // Added PieChartIcon
     ListChecks,
-    Wallet, // Added Wallet icon
-    Lock,   // Added Lock icon
-    AlertTriangle, // For emergency fund emphasis
-    ArrowRight, // For links
+    Wallet,
+    Lock,
+    AlertTriangle,
+    ArrowRight,
     X
 } from "lucide-react";
 import Link from "next/link";
@@ -50,22 +44,22 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { cn } from '@/lib/utils';
+import { useWallet } from '@/contexts/WalletContext'; // Import useWallet
 
-// Mock data - this should ideally come from a backend or state management
-const walletBalance = 12500.75;
-const lockedInGoals = 5750.00;
+// Mock data - some will be replaced by WalletContext
+// const walletBalance = 12500.75; // From context
+// const lockedInGoals = 5750.00; // From context
 const monthlyBudgetTotal = 2000;
 const monthlyExpensesTotal = 1650.50;
-const netWorth = walletBalance + lockedInGoals + 18200; // Example calculation
 const financialHealthScore = 78; // Out of 100
 
-const emergencyFund = { current: 4500, target: 15000, idealMonths: 6 };
-const investmentTotal = 18200;
+const emergencyFundData = { current: 4500, target: 15000, idealMonths: 6 }; // Part of this 'current' will come from context
+const investmentTotal = 18200; // This would ideally come from investment tracking system
 
 const goalsData = [
-  { name: "Dream Vacation", current: 750, target: 2000, icon: <PiggyBank className="h-5 w-5 text-brand-orange" /> },
-  { name: "New Laptop", current: 300, target: 1200, icon: <TargetIcon className="h-5 w-5 text-brand-blue" /> },
-  { name: "Emergency Top-up", current: 500, target: 1000, icon: <ShieldAlert className="h-5 w-5 text-red-500" /> },
+  { id: "1", name: "Dream Vacation", current: 750, target: 2000, icon: <PiggyBank className="h-5 w-5 text-brand-orange" /> },
+  { id: "2", name: "New Laptop", current: 300, target: 1200, icon: <TargetIcon className="h-5 w-5 text-brand-blue" /> },
+  // Emergency fund goal will be handled by the emergency fund section primarily
 ];
 
 const cashFlowData = [
@@ -97,41 +91,33 @@ const aiInsights = [
 ];
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession(); // Commented out
   const router = useRouter();
   const { toast } = useToast();
   const [isLinkBankModalOpen, setIsLinkBankModalOpen] = useState(false);
+  const { walletBalance, totalLockedFunds, allocations } = useWallet();
 
-  // React.useEffect(() => {
-  //   if (status === 'unauthenticated') {
-  //     router.push('/login');
-  //   }
-  // }, [status, router]);
+  const netWorth = walletBalance + totalLockedFunds + investmentTotal; // Example calculation using wallet context
 
-  // if (status === 'loading') {
-  //   return (
-  //     <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
-  //       <Loader2 className="h-12 w-12 animate-spin text-primary" />
-  //       <p className="ml-4 text-muted-foreground">Loading dashboard...</p>
-  //     </div>
-  //   );
-  // }
+  const emergencyFundCurrent = allocations['emergencyFund']?.amount || 0;
+  const emergencyFundTarget = allocations['emergencyFund']?.target || emergencyFundData.target;
+
 
   const formatCurrency = (amount: number, showSign = false) => {
     const sign = amount < 0 ? "-" : (showSign ? "+" : "");
     return `${sign}$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
-  const handleSignOut = async () => {
-    await signOut({ redirect: true, callbackUrl: '/' });
-  };
+  // const handleSignOut = async () => { // Commented out
+  //   await signOut({ redirect: true, callbackUrl: '/' });
+  // };
 
   const handleLinkBankAccount = () => {
     setIsLinkBankModalOpen(false);
     toast({
       title: "Bank Linking Initiated (Demo)",
       description: "In a real app, this would start the Plaid Link flow.",
-      variant: "default", // Use default for info toasts
+      variant: "default",
     });
   };
 
@@ -142,17 +128,17 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold text-brand-dark">Dashboard Overview</h1>
           <p className="text-muted-foreground">Welcome to FinTrack Pro! Your financial command center.</p>
         </div>
-        {session ? (
+        {/* {session ? ( // Commented out session-based button
             <Button variant="destructive" size="sm" className="retro-button" onClick={handleSignOut}>
                 <LogOut className="mr-2 h-4 w-4" /> Sign Out
             </Button>
-        ) : (
+        ) : ( */}
             <Link href="/login" passHref className="no-underline">
                  <Button variant="primary" size="sm" className="retro-button">
                     Log In
                  </Button>
             </Link>
-        )}
+        {/* )} */}
       </div>
 
       {/* Key Metrics Grid */}
@@ -173,7 +159,7 @@ export default function DashboardPage() {
             <PiggyBank className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent className="retro-card-content pt-2">
-            <div className="text-3xl font-bold text-brand-orange">{formatCurrency(lockedInGoals)}</div>
+            <div className="text-3xl font-bold text-brand-orange">{formatCurrency(totalLockedFunds)}</div>
             <p className="text-xs text-muted-foreground">Allocated to savings goals.</p>
           </CardContent>
         </Card>
@@ -208,7 +194,6 @@ export default function DashboardPage() {
           <Card className="retro-card">
             <CardHeader className="retro-card-header !bg-transparent flex-row items-center justify-between">
               <CardTitle className="flex items-center text-lg"><BarChart2 className="mr-2 h-5 w-5 text-primary" />Monthly Cash Flow</CardTitle>
-              {/* Add date range filter for chart later */}
             </CardHeader>
             <CardContent className="retro-card-content h-[300px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
@@ -258,7 +243,7 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        {/* Right Column (takes 1/3 width on large screens) */}
+        {/* Right Column */}
         <div className="lg:col-span-1 space-y-6">
           <Card className="retro-card">
             <CardHeader className="retro-card-header !bg-transparent flex-row items-center justify-between">
@@ -266,15 +251,17 @@ export default function DashboardPage() {
               <Link href="/savings-goals" className="text-xs text-primary hover:underline flex items-center gap-1 no-underline">Manage <ArrowRight className="h-3 w-3"/></Link>
             </CardHeader>
             <CardContent className="retro-card-content space-y-4 pt-4">
-              {goalsData.map((goal) => (
+              {goalsData.map((goal) => {
+                const allocatedAmount = allocations[goal.id]?.amount || 0;
+                return (
                 <div key={goal.name} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2 font-medium">{goal.icon} {goal.name}</div>
-                    <span className="text-xs text-muted-foreground">{formatCurrency(goal.current)} / {formatCurrency(goal.target)}</span>
+                    <span className="text-xs text-muted-foreground">{formatCurrency(allocatedAmount)} / {formatCurrency(goal.target)}</span>
                   </div>
-                  <Progress value={(goal.current / goal.target) * 100} className="h-2.5 retro-progress" indicatorClassName={cn(goal.current >= goal.target ? "!bg-brand-green" : "!bg-primary")} />
+                  <Progress value={(allocatedAmount / goal.target) * 100} className="h-2.5 retro-progress" indicatorClassName={cn(allocatedAmount >= goal.target ? "!bg-brand-green" : "!bg-primary")} />
                 </div>
-              ))}
+              )})}
               {goalsData.length === 0 && <p className="text-sm text-muted-foreground text-center">No savings goals set yet.</p>}
             </CardContent>
           </Card>
@@ -286,11 +273,11 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent className="retro-card-content pt-4">
               <div className="text-center mb-2">
-                <p className="text-2xl font-bold">{formatCurrency(emergencyFund.current)}</p>
-                <p className="text-xs text-muted-foreground">Target: {formatCurrency(emergencyFund.target)} ({emergencyFund.idealMonths} months coverage)</p>
+                <p className="text-2xl font-bold">{formatCurrency(emergencyFundCurrent)}</p>
+                <p className="text-xs text-muted-foreground">Target: {formatCurrency(emergencyFundTarget)} ({emergencyFundData.idealMonths} months coverage)</p>
               </div>
-              <Progress value={(emergencyFund.current / emergencyFund.target) * 100} className="h-3 retro-progress" indicatorClassName="!bg-brand-orange" />
-              {emergencyFund.current < emergencyFund.target && (
+              <Progress value={(emergencyFundCurrent / emergencyFundTarget) * 100} className="h-3 retro-progress" indicatorClassName="!bg-brand-orange" />
+              {emergencyFundCurrent < emergencyFundTarget && (
                 <div className="text-xs text-center mt-2 text-red-500 flex items-center justify-center gap-1">
                     <AlertTriangle className="h-3 w-3"/>
                     <span>Needs attention! Your fund is below target.</span>

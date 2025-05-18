@@ -1,15 +1,23 @@
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google'; // Import Poppins
 import './globals.css';
 import { cn } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
 import SessionProvider from '@/providers/SessionProvider';
-import { Toaster } from "@/components/ui/toaster"; // Moved Toaster here for global access
+import { Toaster } from "@/components/ui/toaster";
+import { WalletProvider } from '@/contexts/WalletContext'; // Import WalletProvider
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
+});
+
+// Initialize Poppins
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'], // Specify weights you need
+  variable: '--font-heading',
 });
 
 export const metadata: Metadata = {
@@ -28,12 +36,15 @@ export default function RootLayout({
       <body
         className={cn(
           'min-h-screen bg-background text-foreground font-sans antialiased',
-          inter.variable
+          inter.variable,
+          poppins.variable // Add Poppins variable
         )}
       >
          <SessionProvider>
+           <WalletProvider> {/* Wrap AppLayout with WalletProvider */}
             <AppLayout>{children}</AppLayout>
-            <Toaster /> {/* Toaster at the root level */}
+            <Toaster />
+           </WalletProvider>
          </SessionProvider>
       </body>
     </html>
