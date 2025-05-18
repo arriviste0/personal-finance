@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -93,24 +94,26 @@ export default function DashboardPage() {
   const { toast } = useToast();
   const [isLinkBankModalOpen, setIsLinkBankModalOpen] = useState(false);
 
-  React.useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
-    }
-  }, [status, router]);
+  // React.useEffect(() => {
+  //   if (status === 'unauthenticated') {
+  //     router.push('/login');
+  //   }
+  // }, [status, router]);
 
-  if (status === 'loading') {
-    return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-        <p className="ml-4 text-muted-foreground">Loading dashboard...</p>
-      </div>
-    );
-  }
+  // if (status === 'loading') {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
+  //       <Loader2 className="h-12 w-12 animate-spin text-primary" />
+  //       <p className="ml-4 text-muted-foreground">Loading dashboard...</p>
+  //     </div>
+  //   );
+  // }
 
-  if (!session) {
-    return null;
-  }
+  // if (!session) {
+  //   // This will prevent rendering if not authenticated, useful for normal operation
+  //   // For temporary bypass, you can comment this out or provide a default experience
+  //   // return null; 
+  // }
 
   const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -133,12 +136,21 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-brand-dark">Welcome back, {session?.user?.name || 'User'}!</h1>
+          <h1 className="text-2xl font-bold text-brand-dark">Welcome to FinTrack Pro!</h1>
           <p className="text-muted-foreground">Here's your financial overview for today.</p>
         </div>
-        <Button variant="destructive" size="sm" className="retro-button" onClick={handleSignOut}>
-          <LogOut className="mr-2 h-4 w-4" /> Sign Out
-        </Button>
+        {session && (
+            <Button variant="destructive" size="sm" className="retro-button" onClick={handleSignOut}>
+                <LogOut className="mr-2 h-4 w-4" /> Sign Out
+            </Button>
+        )}
+         {!session && (
+            <Link href="/login" passHref>
+                 <Button variant="primary" size="sm" className="retro-button">
+                    Log In
+                 </Button>
+            </Link>
+        )}
       </div>
 
       {/* Summary Cards Grid */}
@@ -364,3 +376,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
