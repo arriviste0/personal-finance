@@ -27,7 +27,8 @@ import {
     Lock,
     AlertTriangle,
     ArrowRight,
-    X
+    X,
+    Star // Added Star icon
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
@@ -309,6 +310,9 @@ export default function DashboardPage() {
                 <Button variant="outline" size="sm" className="retro-button w-full" onClick={() => router.push('/budget')}><CreditCard className="mr-1.5 h-4 w-4" />Budgeting</Button>
                 <Button variant="outline" size="sm" className="retro-button w-full" onClick={() => router.push('/savings-goals')}><PiggyBank className="mr-1.5 h-4 w-4" />New Goal</Button>
                 <Button variant="outline" size="sm" className="retro-button w-full" onClick={() => setIsLinkBankModalOpen(true)}><Landmark className="mr-1.5 h-4 w-4" />Link Bank</Button>
+                <Button variant="outline" size="sm" className="retro-button w-full col-span-2 border-accent text-accent hover:border-accent hover:bg-accent/10">
+                    <Star className="mr-1.5 h-4 w-4" />Upgrade to Premium
+                </Button>
             </CardContent>
           </Card>
         </div>
@@ -352,3 +356,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
