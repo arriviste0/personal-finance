@@ -28,7 +28,8 @@ import {
     Target as TargetIcon, // Renamed to avoid conflict with savings target
     BarChart2,
     PieChart as PieChartIcon,
-    ListChecks
+    ListChecks,
+    X // Added X icon
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
@@ -112,7 +113,7 @@ export default function DashboardPage() {
   // if (!session) {
   //   // This will prevent rendering if not authenticated, useful for normal operation
   //   // For temporary bypass, you can comment this out or provide a default experience
-  //   // return null; 
+  //   // return null;
   // }
 
   const formatCurrency = (amount: number) => {
@@ -145,7 +146,7 @@ export default function DashboardPage() {
             </Button>
         )}
          {!session && (
-            <Link href="/login" passHref>
+            <Link href="/login" passHref className="no-underline">
                  <Button variant="primary" size="sm" className="retro-button">
                     Log In
                  </Button>
@@ -303,7 +304,7 @@ export default function DashboardPage() {
               <Progress value={(emergencyFund.current / emergencyFund.target) * 100} className="h-3 retro-progress" indicatorClassName="!bg-brand-orange" />
             </CardContent>
           </Card>
-          
+
           <Card className="retro-card">
             <CardHeader className="retro-card-header !bg-transparent">
               <CardTitle className="flex items-center"><Lightbulb className="mr-2 h-5 w-5 text-accent" />AI Assistant Insights</CardTitle>
