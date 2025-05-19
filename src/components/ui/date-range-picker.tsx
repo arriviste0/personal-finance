@@ -1,9 +1,10 @@
+
 "use client"
 
 import * as React from "react"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
-import { DateRange } from "react-day-picker"
+import { type DateRange } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -28,16 +29,16 @@ export function DatePickerWithRange({
   buttonClassName
 }: DatePickerWithRangeProps) {
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn(className)}> {/* Changed from "grid gap-2" */}
       <Popover>
         <PopoverTrigger asChild>
            <Button
             id="date"
             variant={"outline"}
              className={cn(
-              "retro-button w-full justify-start text-left font-normal", // Base retro style
+              "w-full justify-start text-left font-normal", // Base styles for this button instance
               !date && "text-muted-foreground",
-              buttonClassName // Allow overriding button style
+              buttonClassName // User-provided classes from expenses/page.tsx for height etc.
              )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -63,13 +64,7 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
-            className="border-0 shadow-none" // Remove default calendar border/shadow inside popover
-             classNames={{
-                 // Optional: Style calendar elements if needed
-                 // day_selected: "bg-primary text-primary-foreground hover:bg-primary/90 focus:bg-primary/90",
-                 // day_today: "bg-accent text-accent-foreground",
-                 // ...
-             }}
+            className="border-0 shadow-none"
           />
         </PopoverContent>
       </Popover>

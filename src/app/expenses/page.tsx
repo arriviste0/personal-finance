@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { PlusCircle, Filter, ListChecks, Trash2 } from "lucide-react";
-import { DateRange } from "react-day-picker";
+import { PlusCircle, Filter, ListChecks, Trash2, X } from "lucide-react";
+import { type DateRange } from "react-day-picker";
 import { addDays, format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -118,7 +118,7 @@ export default function ExpensesPage() {
     return `${sign}$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
-  const formatDateDisplay = (dateString: string) => { // Renamed to avoid conflict with date-fns format
+  const formatDateDisplay = (dateString: string) => { 
     try {
         return format(parseISO(dateString), 'MMM dd, yyyy');
     } catch (error) {
@@ -148,7 +148,7 @@ export default function ExpensesPage() {
                        <span className="!bg-primary !border-primary-foreground"></span>
                         <DialogClose asChild>
                             <Button type="button" variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
-                                <Trash2 className="h-3 w-3"/>
+                                <X className="h-3 w-3"/>
                                 <span className="sr-only">Close</span>
                             </Button>
                         </DialogClose>
@@ -201,11 +201,11 @@ export default function ExpensesPage() {
             </CardTitle>
              <div className="retro-window-controls"><span></span><span></span><span></span></div>
          </CardHeader>
-         <CardContent className="retro-card-content !border-t-0 !pt-4 flex flex-col sm:flex-row items-end gap-4">
-             <div className="flex-1 w-full sm:w-auto space-y-1">
+         <CardContent className="retro-card-content !border-t-0 !pt-4 grid grid-cols-1 sm:grid-cols-2 items-end gap-4">
+             <div className="space-y-1"> {/* Category Filter Container */}
                <Label htmlFor="category-filter" className="text-xs">Filter by Category</Label>
                 <Select value={filteredCategory} onValueChange={setFilteredCategory}>
-                    <SelectTrigger id="category-filter" className="retro-select-trigger h-9">
+                    <SelectTrigger id="category-filter" className="retro-select-trigger h-9 w-full"> {/* Ensure w-full */}
                         <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent className="retro-select-content">
@@ -216,9 +216,13 @@ export default function ExpensesPage() {
                     </SelectContent>
                 </Select>
              </div>
-             <div className="flex-1 w-full sm:w-auto space-y-1">
+             <div className="space-y-1"> {/* Date Range Filter Container */}
                <Label className="text-xs block mb-1">Filter by Date Range</Label>
-                <DatePickerWithRange date={dateRange} setDate={setDateRange} className="retro-button h-9 !w-full justify-start text-left font-normal [&>span]:text-muted-foreground" />
+                <DatePickerWithRange
+                    date={dateRange}
+                    setDate={setDateRange}
+                    buttonClassName="h-9 [&>span]:text-muted-foreground" // Simplified: retro-button is applied by variant, w-full by internal Button
+                />
              </div>
          </CardContent>
        </Card>
