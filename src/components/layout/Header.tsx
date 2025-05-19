@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from "next/link";
@@ -19,13 +18,13 @@ import {
   Lightbulb,
   Settings,
   Users,
-  User, // Keep User if used, remove if not
-  DollarSign, // Keep if used for other things
-  PiggyBank, // Added back as it was in the original navLinks
+  User,
+  DollarSign,
+  PiggyBank,
   X,
   CreditCard,
   Home,
-  PieChart as IconPieChart, // Aliased to avoid conflict if PieChart component is used
+  PieChart as IconPieChart,
   HelpCircle,
   Info,
   AtSign,
@@ -49,7 +48,7 @@ import {
   Search,
   Bell,
   MessageCircleMore,
-  ArrowRight, // Ensure ArrowRight is imported if used
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -66,39 +65,6 @@ import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { useWallet } from '@/contexts/WalletContext';
 
-// Helper function to get icon components by name string
-const iconMap: { [key: string]: React.ElementType } = {
-  LayoutGrid,
-  Wallet,
-  Landmark,
-  PiggyBank,
-  TrendingUp,
-  ShieldAlert,
-  FileText,
-  Lightbulb,
-  Settings,
-  Twitter,
-  Facebook,
-  Instagram,
-  X,
-  LogOut,
-  CreditCard, // Added from ServiceCard
-  Home, // Added from ServiceCard
-  IconPieChart, // Added from ServiceCard
-  HelpCircle, // Added from ServiceCard
-  Info, // Added from ServiceCard
-  AtSign, // Added from ServiceCard
-  User, // Added from ServiceCard
-  DollarSign, // Keep, might be used
-};
-
-const getIcon = (iconName?: string): React.ElementType | null => {
-  if (!iconName) return null;
-  const IconComponent = iconMap[iconName];
-  return IconComponent || DollarSign; // Default icon if not found
-};
-
-
 export default function Header() {
   const { toast } = useToast();
   const { data: session, status } = useSession();
@@ -106,6 +72,19 @@ export default function Header() {
   const { walletBalance, totalLockedFunds } = useWallet();
 
   const isAuthenticated = status === 'authenticated';
+
+  // Moved inside the component to avoid initialization issues
+  const iconMap: { [key: string]: React.ElementType } = {
+    LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert,
+    FileText, Lightbulb, Settings, Twitter, Facebook, Instagram, X, LogOut,
+    CreditCard, Home, IconPieChart, HelpCircle, Info, AtSign, User, DollarSign
+  };
+
+  const getIcon = (iconName?: string): React.ElementType | null => {
+    if (!iconName) return null;
+    const IconComponent = iconMap[iconName];
+    return IconComponent || CircleDollarSign; // Default icon
+  };
 
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
@@ -139,7 +118,7 @@ export default function Header() {
   return (
     <header className="w-full">
       {/* Top Row */}
-      <div className="bg-header-top text-header-top-fg">
+      <div className="bg-header-top">
         <div className="container mx-auto flex h-12 items-center justify-between px-4 md:px-6 border-b border-header-top-border">
           {/* Left side: Logo + Wallet Info (if authenticated) */}
           <div className="flex items-center space-x-3">
@@ -162,41 +141,27 @@ export default function Header() {
           </div>
 
           {/* Right side: Auth + Mobile Menu */}
-          <div className="flex items-stretch h-full text-sm"> {/* Ensures children can stretch */}
-            {isAuthenticated ? (
-              <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                <Button
-                  onClick={handleSignOut}
-                  variant="ghost"
-                  className="flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150 text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
-                >
-                  <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
-                </Button>
-              </div>
-            ) : (
+          <div className="flex items-stretch h-full text-sm">
+            {!isAuthenticated ? (
               <>
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                   <Link
                     href="/login"
                     className={cn(
                       "flex w-full h-full items-center justify-center px-4 no-underline transition-colors duration-150 whitespace-nowrap",
-                      "text-sm font-medium text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
+                      "text-xs font-medium text-header-top-fg hover:bg-white hover:text-blue-700 hover:rounded-md" // Updated hover to match Get Started
                     )}
                   >
                     Log In
                   </Link>
                 </div>
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                  <Button
-                    asChild
-                    variant="ghost"
-                    className="p-0 w-full h-full rounded-none"
-                  >
+                  <Button asChild variant="ghost" className="p-0 w-full h-full rounded-none">
                     <Link
                       href="/get-started"
                       className={cn(
                         "flex w-full h-full items-center justify-center text-xs font-semibold no-underline transition-colors duration-150 whitespace-nowrap",
-                        "bg-white text-header-top-bg rounded-md hover:bg-gray-100 px-3 py-1.5"
+                        "bg-white text-blue-700 rounded-md hover:bg-blue-700 hover:text-white px-3 py-1.5" // Blue text on white, blue bg on hover
                       )}
                     >
                       Get Started
@@ -204,24 +169,26 @@ export default function Header() {
                   </Button>
                 </div>
               </>
+            ) : (
+              <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                <Button
+                  onClick={handleSignOut}
+                  variant="ghost"
+                  className="flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150 text-header-top-fg hover:bg-white hover:text-blue-700 hover:rounded-md whitespace-nowrap"
+                >
+                  <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
+                </Button>
+              </div>
             )}
-             {/* Mobile Menu Trigger - always part of the flex layout */}
             <div className="flex items-center justify-center border-l border-header-top-border md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-header-top-fg hover:bg-header-top-fg/10 h-full w-10 rounded-none px-2"
-                  >
+                  <Button variant="ghost" size="icon" className="text-header-top-fg hover:bg-header-top-fg/10 h-full w-10 rounded-none px-2">
                     <Menu className="h-5 w-5" />
                     <span className="sr-only">Toggle Menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent
-                  side="left"
-                  className="w-[280px] bg-header-bottom p-0 border-r border-header-bottom-border"
-                >
+                <SheetContent side="left" className="w-[280px] bg-header-bottom p-0 border-r border-header-bottom-border">
                   <SheetHeader className="p-4 border-b border-header-bottom-border bg-header-top">
                     <SheetTitle className="flex items-center gap-2">
                       <CircleDollarSign className="h-6 w-6 text-header-top-fg" />
@@ -293,7 +260,7 @@ export default function Header() {
                             <Link href="/get-started" passHref className="no-underline">
                               <Button
                                 variant="default"
-                                className="w-full bg-white text-header-top-bg hover:bg-gray-100 rounded-md py-2 text-xs font-semibold !border-transparent !shadow-none whitespace-nowrap"
+                                className="w-full bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-md py-2 text-xs font-semibold !border-transparent !shadow-none whitespace-nowrap"
                               >
                                 Get Started
                               </Button>
@@ -313,38 +280,32 @@ export default function Header() {
       {/* Bottom Row - Boxed Sticky Navigation (Desktop Only) */}
       <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
         <div className="container mx-auto flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
-          {/* Main Navigation Links */}
           <nav className="flex flex-grow items-stretch h-full">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
-              // const IconComponent = getIcon(link.iconName); // Icons removed from bottom bar
-
               return (
-                <div // This parent div is mainly for the border-r separator and flex-1
+                <div
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-center justify-center", // flex-1 makes each cell take equal width
-                    index < navLinks.length -1 ? "border-r border-header-bottom-border" : ""
+                    "h-full flex flex-1 items-center justify-center",
+                    index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
                     href={link.href}
                     className={cn(
-                      "flex w-full h-full items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom whitespace-nowrap", // Base styles, padding, and focus on the Link
+                      "flex w-full h-full items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom whitespace-nowrap",
                       isActive
-                        ? "bg-white text-primary rounded-md shadow-sm font-semibold" // Active state: white bg, primary text, rounded, shadow
-                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm" // Default and Hover state
+                        ? "bg-white text-primary rounded-md shadow-sm font-semibold"
+                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
                     )}
                   >
-                    {/* {IconComponent && <IconComponent className="mr-2 h-4 w-4" />} */}
                     {link.label}
                   </Link>
                 </div>
               );
             })}
           </nav>
-
-          {/* Social Media Icons */}
           <div className="flex items-center space-x-5 px-8 py-3 border-l border-header-bottom-border h-full">
             {socialMediaLinks.map((link) => {
               const SocialIcon = getIcon(link.iconName);
@@ -360,4 +321,3 @@ export default function Header() {
     </header>
   );
 }
-
