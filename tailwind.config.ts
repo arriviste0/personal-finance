@@ -11,7 +11,7 @@ export default {
   	extend: {
        fontFamily: {
          sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-         heading: ['var(--font-heading)', 'system-ui', 'sans-serif'], // Use Poppins for headings
+         heading: ['var(--font-heading)', 'system-ui', 'sans-serif'],
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -55,7 +55,6 @@ export default {
   				'5': 'hsl(var(--chart-5))',
           '6': 'hsl(var(--chart-6))'
   			},
-        // Brand specific colors from globals.css for easier Tailwind usage if needed
         'brand-yellow': 'hsl(var(--brand-yellow))',
         'brand-green': 'hsl(var(--brand-green))',
         'brand-orange': 'hsl(var(--brand-orange))',
@@ -63,7 +62,6 @@ export default {
         'brand-dark': 'hsl(var(--brand-dark))',
         'brand-light-gray': 'hsl(var(--brand-light-gray))',
 
-        // Dashboard Header Colors
         'dashboard-pink-header': {
           DEFAULT: 'hsl(var(--dashboard-pink-header-bg))',
           foreground: 'hsl(var(--dashboard-pink-header-fg))',
@@ -76,10 +74,31 @@ export default {
           DEFAULT: 'hsl(var(--dashboard-blue-header-bg))',
           foreground: 'hsl(var(--dashboard-blue-header-fg))',
         },
+        // New Header Theme Colors
+        'header-top': {
+          DEFAULT: 'hsl(var(--header-top-bg))',
+          foreground: 'hsl(var(--header-top-fg))',
+          border: 'hsl(var(--header-top-border))',
+        },
+        'header-bottom': {
+          DEFAULT: 'hsl(var(--header-bottom-bg))',
+          foreground: 'hsl(var(--header-bottom-fg))',
+          border: 'hsl(var(--header-bottom-border))',
+        },
+        // Chorke Theme Colors
+        'chorke-dark-bg': 'hsl(var(--chorke-bg-dark))',
+        'chorke-text-primary': 'hsl(var(--chorke-text-primary))',
+        'chorke-text-secondary': 'hsl(var(--chorke-text-secondary))',
+        'chorke-accent-yellow': 'hsl(var(--chorke-accent-yellow))',
+        'chorke-accent-green': 'hsl(var(--chorke-accent-green))',
+        'chorke-accent-pink': 'hsl(var(--chorke-accent-pink))',
+        'chorke-accent-blue': 'hsl(var(--chorke-accent-blue))',
+        'chorke-card-border': 'hsl(var(--chorke-card-border))',
+        'chorke-dark-card': 'hsl(var(--chorke-dark))',
   		},
   		borderRadius: {
         none: '0',
-        sm: 'calc(var(--radius) - 2px)', // Consistent with CSS var minus border
+        sm: 'calc(var(--radius) - 2px)',
         DEFAULT: 'var(--radius)',
         md: 'var(--radius)',
         lg: 'calc(var(--radius) + 2px)',
@@ -127,7 +146,7 @@ export default {
          'scroll-partners': 'scrollPartners 40s linear infinite',
       },
       boxShadow: {
-         'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.10)', // Softer shadow
+         'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.10)',
          'retro-sm': '2px 2px 0px 0px hsl(var(--foreground)/0.10)',
          'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.10)',
          'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.08)',

@@ -43,11 +43,11 @@
     --chart-5: 190 65% 55%; /* Teal */
     --chart-6: 0 0% 60%;    /* Neutral Grey */
 
-    --radius: 0.3rem; /* Slightly softer radius for a modern touch */
+    --radius: 0.5rem; /* Slightly softer radius for a modern touch */
     --font-sans: 'Inter', system-ui, sans-serif;
     --font-heading: 'Poppins', system-ui, sans-serif; /* Poppins for headings */
 
-    /* Additional palette for FinTrack Pro */
+    /* Additional palette for FinCo (Updated from FinTrack Pro) */
     --brand-yellow: 45 90% 55%; /* Bright, optimistic yellow */
     --brand-green: 145 63% 42%; /* Deep, trustworthy green */
     --brand-orange: 25 95% 60%; /* Engaging orange */
@@ -56,14 +56,32 @@
     --brand-light-gray: 210 30% 97%; /* Light background tint */
 
     /* Dashboard Header Colors */
-    --dashboard-pink-header-bg: 330 80% 60%; /* A vibrant pink */
+    --dashboard-pink-header-bg: 330 80% 60%;
     --dashboard-pink-header-fg: 0 0% 100%;
-
-    --dashboard-purple-header-bg: 270 60% 65%; /* A rich purple */
+    --dashboard-purple-header-bg: 270 60% 65%;
     --dashboard-purple-header-fg: 0 0% 100%;
-
-    --dashboard-blue-header-bg: 205 75% 55%; /* A strong blue */
+    --dashboard-blue-header-bg: 205 75% 55%;
     --dashboard-blue-header-fg: 0 0% 100%;
+
+    /* New Header Theme Colors (Podportal-inspired) */
+    --header-top-bg: 250 60% 90%; /* Light Purple */
+    --header-top-fg: 250 25% 30%; /* Dark Purple/Gray for text on light purple */
+    --header-top-border: 250 50% 80%; /* Slightly darker purple for border */
+    --header-bottom-bg: 40 30% 96%; /* Light Beige/Off-white */
+    --header-bottom-fg: 220 15% 25%; /* Dark text for bottom bar */
+    --header-bottom-border: 210 20% 88%; /* Standard border color */
+
+
+    /* Chorke-inspired theme colors */
+    --chorke-bg-dark: 230 20% 12%; /* Very dark blue/purple */
+    --chorke-text-primary: 0 0% 100%; /* White */
+    --chorke-text-secondary: 230 15% 70%; /* Light gray/blue */
+    --chorke-accent-yellow: 45 100% 50%;
+    --chorke-accent-green: 150 70% 50%;
+    --chorke-accent-pink: 320 80% 85%;
+    --chorke-accent-blue: 200 80% 90%;
+    --chorke-card-border: 230 15% 30%;
+    --chorke-dark: 230 25% 18%; /* Darker card background or accent */
   }
 }
 
@@ -77,7 +95,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-semibold tracking-tight text-brand-dark; /* Use Poppins and brand dark */
+    @apply font-heading font-semibold tracking-tight text-brand-dark;
     letter-spacing: -0.01em;
   }
 
@@ -88,7 +106,7 @@
 
   p, li, td, label, span, button, input, select, textarea, legend, div, a {
      @apply text-sm sm:text-base;
-     font-family: var(--font-sans); /* Ensure Inter for body text */
+     font-family: var(--font-sans);
   }
 
   a {
@@ -204,13 +222,13 @@
    }
 
    .retro-checkbox, [role="switch"] {
-      @apply h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150 rounded-sm; /* Added rounded-sm */
+      @apply h-4 w-4 shrink-0 border-2 border-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary-foreground bg-input cursor-pointer transition-all duration-150 rounded-sm;
       @apply hover:border-primary;
    }
    .retro-checkbox[data-state="checked"], [role="switch"][data-state="checked"] { @apply animate-retro-check-pop; }
-   [role="switch"] > span { @apply pointer-events-none block h-3 w-3 bg-foreground shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0 data-[state=checked]:bg-primary-foreground rounded-full; } /* Rounded thumb */
+   [role="switch"] > span { @apply pointer-events-none block h-3 w-3 bg-foreground shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0 data-[state=checked]:bg-primary-foreground rounded-full; }
 
-   .retro-progress { @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted shadow-retro-inset rounded-full; } /* Rounded progress bar */
+   .retro-progress { @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted shadow-retro-inset rounded-full; }
    .retro-progress-indicator { @apply h-full w-full flex-1 bg-primary transition-all duration-500 ease-in-out; }
 
    .retro-alert {
@@ -233,7 +251,7 @@
    .retro-table tr { @apply transition-colors duration-150; }
 
     .retro-badge {
-        @apply inline-flex items-center border-2 border-foreground px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm; /* Added rounded-sm */
+        @apply inline-flex items-center border-2 border-foreground px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm;
         font-family: var(--font-sans);
     }
     .retro-badge.variant-default { @apply border-primary bg-primary text-primary-foreground; }
@@ -246,7 +264,7 @@
   .text-shadow-retro { text-shadow: 1px 1px 0px hsl(var(--foreground)/0.15); }
   .text-shadow-retro-primary { text-shadow: 1px 1px 0px hsl(var(--primary)/0.3); }
 
-  .font-heading { font-family: var(--font-heading) !important; font-weight: 600 !important; } /* Adjusted weight */
+  .font-heading { font-family: var(--font-heading) !important; font-weight: 600 !important; }
 
   .bg-brand-yellow { background-color: hsl(var(--brand-yellow)) !important; }
   .text-brand-yellow { color: hsl(var(--brand-yellow)) !important; }
@@ -254,10 +272,34 @@
 
   .underline-strong-yellow {
     text-decoration: underline;
-    text-decoration-thickness: 2px; /* Standard thickness */
-    text-underline-offset: 3px;   /* Standard offset */
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
     text-decoration-color: hsl(var(--brand-yellow));
   }
+
+  .bg-header-top { background-color: hsl(var(--header-top-bg)); }
+  .text-header-top-fg { color: hsl(var(--header-top-fg)); }
+  .border-header-top-border { border-color: hsl(var(--header-top-border)); }
+  .bg-header-bottom { background-color: hsl(var(--header-bottom-bg)); }
+  .text-header-bottom-fg { color: hsl(var(--header-bottom-fg)); }
+  .border-header-bottom-border { border-color: hsl(var(--header-bottom-border)); }
+
+
+  /* Chorke theme specific utilities */
+  .bg-chorke-dark-bg { background-color: hsl(var(--chorke-bg-dark)); }
+  .text-chorke-primary { color: hsl(var(--chorke-text-primary)); }
+  .text-chorke-secondary { color: hsl(var(--chorke-text-secondary)); }
+  .bg-chorke-yellow { background-color: hsl(var(--chorke-accent-yellow)); }
+  .text-chorke-yellow { color: hsl(var(--chorke-accent-yellow)); }
+  .border-chorke-yellow { border-color: hsl(var(--chorke-accent-yellow)); }
+  .bg-chorke-green { background-color: hsl(var(--chorke-accent-green)); }
+  .text-chorke-green { color: hsl(var(--chorke-accent-green)); }
+  .bg-chorke-pink { background-color: hsl(var(--chorke-accent-pink)); }
+  .text-chorke-pink { color: hsl(var(--chorke-accent-pink)); }
+  .bg-chorke-blue { background-color: hsl(var(--chorke-accent-blue)); }
+  .text-chorke-blue { color: hsl(var(--chorke-accent-blue)); }
+  .border-chorke-card { border-color: hsl(var(--chorke-card-border)); }
+  .bg-chorke-dark-card { background-color: hsl(var(--chorke-dark)); }
 }
 
 @keyframes retro-glow {
@@ -280,11 +322,11 @@
 
 @keyframes scrollPartners {
   0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); } /* Scroll one full width of the original track */
+  100% { transform: translateX(-50%); }
 }
 
 [data-radix-select-content-wrapper] { box-shadow: none !important; }
-[data-radix-progress-root] { border-radius: var(--radius) !important; } /* Use CSS var for radius */
+[data-radix-progress-root] { border-radius: var(--radius) !important; }
 
 .font-sans { font-family: var(--font-sans) !important; }
 .recharts-wrapper, .recharts-text { font-family: var(--font-sans) !important; }
@@ -298,10 +340,10 @@
 }
 .partner-slider-track {
   display: flex;
-  width: fit-content; /* Adjust to fit content (original + duplicate) */
+  width: fit-content;
   animation: scrollPartners 40s linear infinite;
 }
-.partner-slider-track > div { /* Target the immediate children which are the logo containers */
+.partner-slider-track > div {
   flex-shrink: 0;
   white-space: nowrap;
 }
