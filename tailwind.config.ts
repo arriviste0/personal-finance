@@ -62,6 +62,20 @@ export default {
         'brand-blue': 'hsl(var(--brand-blue))',
         'brand-dark': 'hsl(var(--brand-dark))',
         'brand-light-gray': 'hsl(var(--brand-light-gray))',
+
+        // Dashboard Header Colors
+        'dashboard-pink-header': {
+          DEFAULT: 'hsl(var(--dashboard-pink-header-bg))',
+          foreground: 'hsl(var(--dashboard-pink-header-fg))',
+        },
+        'dashboard-purple-header': {
+          DEFAULT: 'hsl(var(--dashboard-purple-header-bg))',
+          foreground: 'hsl(var(--dashboard-purple-header-fg))',
+        },
+        'dashboard-blue-header': {
+          DEFAULT: 'hsl(var(--dashboard-blue-header-bg))',
+          foreground: 'hsl(var(--dashboard-blue-header-fg))',
+        },
   		},
   		borderRadius: {
         none: '0',
@@ -97,7 +111,11 @@ export default {
          'retro-alert-pulse': {
             '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7)', boxShadow: '0 0 0 0 hsl(var(--destructive)/0.3)' },
             '50%': { borderColor: 'hsl(var(--destructive))', boxShadow: '0 0 0 2.5px hsl(var(--destructive)/0.05)' },
-         }
+         },
+         scrollPartners: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -106,6 +124,7 @@ export default {
         'retro-blink': 'retro-blink 1s step-end infinite',
          'retro-check-pop': 'retro-check-pop 0.3s ease-out',
          'retro-alert-pulse': 'retro-alert-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+         'scroll-partners': 'scrollPartners 40s linear infinite',
       },
       boxShadow: {
          'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.10)', // Softer shadow

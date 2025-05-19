@@ -54,6 +54,16 @@
     --brand-blue: 210 75% 55%; /* Primary brand blue */
     --brand-dark: 220 20% 15%; /* Very dark blue/grey for text */
     --brand-light-gray: 210 30% 97%; /* Light background tint */
+
+    /* Dashboard Header Colors */
+    --dashboard-pink-header-bg: 330 80% 60%; /* A vibrant pink */
+    --dashboard-pink-header-fg: 0 0% 100%;
+
+    --dashboard-purple-header-bg: 270 60% 65%; /* A rich purple */
+    --dashboard-purple-header-fg: 0 0% 100%;
+
+    --dashboard-blue-header-bg: 205 75% 55%; /* A strong blue */
+    --dashboard-blue-header-fg: 0 0% 100%;
   }
 }
 
@@ -159,7 +169,13 @@
     .retro-window-header.bg-accent > .retro-window-controls span,
     .retro-window-header.bg-accent > .retro-window-controls button,
     .retro-window-header.bg-destructive > .retro-window-controls span,
-    .retro-window-header.bg-destructive > .retro-window-controls button {
+    .retro-window-header.bg-destructive > .retro-window-controls button,
+    .retro-window-header.bg-dashboard-pink-header > .retro-window-controls span,
+    .retro-window-header.bg-dashboard-pink-header > .retro-window-controls button,
+    .retro-window-header.bg-dashboard-purple-header > .retro-window-controls span,
+    .retro-window-header.bg-dashboard-purple-header > .retro-window-controls button,
+    .retro-window-header.bg-dashboard-blue-header > .retro-window-controls span,
+    .retro-window-header.bg-dashboard-blue-header > .retro-window-controls button {
         @apply bg-inherit border-inherit opacity-80 hover:opacity-100;
     }
      .retro-window-header.bg-destructive > .retro-window-controls > button {
@@ -262,6 +278,11 @@
   50% { border-color: hsl(var(--destructive)); box-shadow: 0 0 0 2.5px hsl(var(--destructive)/0.05); }
 }
 
+@keyframes scrollPartners {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); } /* Scroll one full width of the original track */
+}
+
 [data-radix-select-content-wrapper] { box-shadow: none !important; }
 [data-radix-progress-root] { border-radius: var(--radius) !important; } /* Use CSS var for radius */
 
@@ -277,14 +298,10 @@
 }
 .partner-slider-track {
   display: flex;
-  width: fit-content;
+  width: fit-content; /* Adjust to fit content (original + duplicate) */
   animation: scrollPartners 40s linear infinite;
 }
-.partner-slider-track > div {
+.partner-slider-track > div { /* Target the immediate children which are the logo containers */
   flex-shrink: 0;
   white-space: nowrap;
-}
-@keyframes scrollPartners {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
 }
