@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -7,11 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DatePickerWithRange } from "@/components/ui/date-range-picker"; // Assuming this component exists or will be created
+import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { PlusCircle, Filter, ListChecks, Trash2 } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { addDays, format } from 'date-fns';
-import { Badge } from '@/components/ui/badge'; // Import Badge
+import { addDays, format, parseISO } from 'date-fns';
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -31,16 +32,16 @@ interface Transaction {
   amount: number; // Negative for expenses, positive for income (though focusing on expenses here)
 }
 
-// Initial Mock data
+// Updated Mock data with dates around April/May 2025
 const initialTransactions: Transaction[] = [
-  { id: "t1", date: "2024-05-02", description: "Grocery Store Run", category: "Food", amount: -75.50 },
-  { id: "t2", date: "2024-05-01", description: "Morning Coffee", category: "Food", amount: -5.25 },
-  { id: "t3", date: "2024-04-30", description: "Gas Fill-up", category: "Transport", amount: -42.10 },
-  { id: "t4", date: "2024-04-29", description: "Movie Night Tickets", category: "Fun Money", amount: -30.00 },
-  { id: "t5", date: "2024-04-28", description: "Online Tech Gadget", category: "Shopping", amount: -120.99 },
-  { id: "t6", date: "2024-04-25", description: "Dinner with Friends", category: "Food", amount: -65.00 },
-  { id: "t7", date: "2024-04-20", description: "Monthly Subscription", category: "Utilities", amount: -15.00 },
-  { id: "t8", date: "2024-04-15", description: "Train Ticket", category: "Transport", amount: -22.50 },
+  { id: "t1", date: "2025-05-02", description: "Grocery Store Run", category: "Food", amount: -75.50 },
+  { id: "t2", date: "2025-05-01", description: "Morning Coffee", category: "Food", amount: -5.25 },
+  { id: "t3", date: "2025-04-30", description: "Gas Fill-up", category: "Transport", amount: -42.10 },
+  { id: "t4", date: "2025-04-29", description: "Movie Night Tickets", category: "Fun Money", amount: -30.00 },
+  { id: "t5", date: "2025-04-20", description: "Online Tech Gadget", category: "Shopping", amount: -120.99 },
+  { id: "t6", date: "2025-04-15", description: "Dinner with Friends (Before Range)", category: "Food", amount: -65.00 },
+  { id: "t7", date: "2025-05-20", description: "Monthly Subscription (After Range)", category: "Utilities", amount: -15.00 },
+  { id: "t8", date: "2025-04-25", description: "Train Ticket", category: "Transport", amount: -22.50 },
 ];
 
 const categories = ["Food", "Transport", "Fun Money", "Shopping", "Utilities", "Rent/Mortgage", "Other"];
@@ -48,9 +49,10 @@ const categories = ["Food", "Transport", "Fun Money", "Shopping", "Utilities", "
 export default function ExpensesPage() {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [filteredCategory, setFilteredCategory] = useState<string>("all");
+  // Set default date range to Apr 19, 2025 - May 19, 2025
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: addDays(new Date(), -30),
-    to: new Date(),
+    from: new Date(2025, 3, 19), // Month is 0-indexed, so April is 3
+    to: new Date(2025, 4, 19),   // May is 4
   });
    const [isAddExpenseOpen, setIsAddExpenseOpen] = useState(false);
    const [newExpense, setNewExpense] = useState({ description: '', category: categories[0], amount: '', date: format(new Date(), 'yyyy-MM-dd') });
@@ -59,15 +61,16 @@ export default function ExpensesPage() {
   const filteredTransactions = useMemo(() => {
     return transactions
       .filter(tx => {
-        const txDate = new Date(tx.date);
+        const txDate = parseISO(tx.date); // Use parseISO for reliable date parsing
         const categoryMatch = filteredCategory === 'all' || tx.category === filteredCategory;
         const dateMatch = !dateRange || (
           (!dateRange.from || txDate >= dateRange.from) &&
-          (!dateRange.to || txDate <= addDays(dateRange.to, 1)) // Include the end date
+          // For 'to' date, ensure it includes the full day
+          (!dateRange.to || txDate <= addDays(dateRange.to, 0)) // addDays(dateRange.to, 0) to ensure end of day is considered for 'to' date
         );
         return categoryMatch && dateMatch;
       })
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort descending by date
+      .sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime()); // Sort descending by date
   }, [transactions, filteredCategory, dateRange]);
 
    const handleAddExpenseInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,12 +114,17 @@ export default function ExpensesPage() {
 
   const formatCurrency = (amount: number) => {
     const value = Math.abs(amount);
-    const sign = amount < 0 ? '-' : '+'; // Show sign explicitly maybe? Or rely on color?
+    const sign = amount < 0 ? '-' : '+';
     return `${sign}$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'MMM dd, yyyy');
+  const formatDateDisplay = (dateString: string) => { // Renamed to avoid conflict with date-fns format
+    try {
+        return format(parseISO(dateString), 'MMM dd, yyyy');
+    } catch (error) {
+        console.error("Error formatting date:", dateString, error);
+        return "Invalid Date";
+    }
   }
 
   return (
@@ -139,7 +147,10 @@ export default function ExpensesPage() {
                        <span className="!bg-primary !border-primary-foreground"></span>
                        <span className="!bg-primary !border-primary-foreground"></span>
                         <DialogClose asChild>
-                           <span className="!bg-destructive !border-destructive-foreground cursor-pointer"></span>
+                            <Button type="button" variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
+                                <Trash2 className="h-3 w-3"/>
+                                <span className="sr-only">Close</span>
+                            </Button>
                         </DialogClose>
                    </div>
                  </DialogHeader>
@@ -190,8 +201,8 @@ export default function ExpensesPage() {
             </CardTitle>
              <div className="retro-window-controls"><span></span><span></span><span></span></div>
          </CardHeader>
-         <CardContent className="retro-card-content !border-t-0 !pt-4 flex flex-col sm:flex-row gap-4">
-             <div className="flex-1 space-y-1">
+         <CardContent className="retro-card-content !border-t-0 !pt-4 flex flex-col sm:flex-row items-end gap-4">
+             <div className="flex-1 w-full sm:w-auto space-y-1">
                <Label htmlFor="category-filter" className="text-xs">Filter by Category</Label>
                 <Select value={filteredCategory} onValueChange={setFilteredCategory}>
                     <SelectTrigger id="category-filter" className="retro-select-trigger h-9">
@@ -205,7 +216,7 @@ export default function ExpensesPage() {
                     </SelectContent>
                 </Select>
              </div>
-             <div className="flex-1 space-y-1">
+             <div className="flex-1 w-full sm:w-auto space-y-1">
                <Label className="text-xs block mb-1">Filter by Date Range</Label>
                 <DatePickerWithRange date={dateRange} setDate={setDateRange} className="retro-button h-9 !w-full justify-start text-left font-normal [&>span]:text-muted-foreground" />
              </div>
@@ -233,7 +244,7 @@ export default function ExpensesPage() {
                 <TableBody>
                   {filteredTransactions.length > 0 ? filteredTransactions.map((tx) => (
                       <TableRow key={tx.id}>
-                         <TableCell className="text-sm">{formatDate(tx.date)}</TableCell>
+                         <TableCell className="text-sm">{formatDateDisplay(tx.date)}</TableCell>
                          <TableCell className="font-medium">{tx.description}</TableCell>
                          <TableCell><Badge variant="secondary" className="retro-badge">{tx.category}</Badge></TableCell>
                          <TableCell className={`text-right font-medium ${tx.amount < 0 ? 'text-destructive' : 'text-green-600'}`}>
@@ -271,62 +282,3 @@ export default function ExpensesPage() {
     </div>
   );
 }
-
-// Placeholder for Date Range Picker (to be created in components/ui)
-// Example: components/ui/date-range-picker.tsx
-// import React from 'react';
-// import { Button } from './button';
-// import { Popover, PopoverContent, PopoverTrigger } from './popover';
-// import { Calendar } from './calendar';
-// import { CalendarIcon } from 'lucide-react';
-// import { DateRange } from 'react-day-picker';
-// import { cn } from '@/lib/utils';
-// import { format } from 'date-fns';
-
-// interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
-//   date: DateRange | undefined;
-//   setDate: (date: DateRange | undefined) => void;
-// }
-
-// export function DatePickerWithRange({ className, date, setDate }: DatePickerWithRangeProps) {
-//   return (
-//     <div className={cn("grid gap-2", className)}>
-//       <Popover>
-//         <PopoverTrigger asChild>
-//           <Button
-//             id="date"
-//             variant={"outline"}
-//             className={cn(
-//               "w-[300px] justify-start text-left font-normal",
-//               !date && "text-muted-foreground"
-//             )}
-//           >
-//             <CalendarIcon className="mr-2 h-4 w-4" />
-//             {date?.from ? (
-//               date.to ? (
-//                 <>
-//                   {format(date.from, "LLL dd, y")} -{" "}
-//                   {format(date.to, "LLL dd, y")}
-//                 </>
-//               ) : (
-//                 format(date.from, "LLL dd, y")
-//               )
-//             ) : (
-//               <span>Pick a date range</span>
-//             )}
-//           </Button>
-//         </PopoverTrigger>
-//         <PopoverContent className="w-auto p-0" align="start">
-//           <Calendar
-//             initialFocus
-//             mode="range"
-//             defaultMonth={date?.from}
-//             selected={date}
-//             onSelect={setDate}
-//             numberOfMonths={2}
-//           />
-//         </PopoverContent>
-//       </Popover>
-//     </div>
-//   );
-// }
