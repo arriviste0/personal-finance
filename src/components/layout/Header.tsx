@@ -18,7 +18,7 @@ import {
   ShieldAlert,
   FileText,
   Lightbulb,
-  PiggyBank, // Ensured PiggyBank is imported
+  PiggyBank, // Still imported for getIcon if needed elsewhere, though not for navLinks
   Settings,
   Users,
   Mail,
@@ -46,24 +46,25 @@ export default function Header() {
 
     const isAuthenticated = status === 'authenticated';
 
+    // Icon mapping for social media or other uses
     const iconMap: { [key: string]: React.ElementType } = {
       LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight
     };
 
     const getIcon = (iconName?: string): React.ElementType | null => {
         if (!iconName) return null;
-        return iconMap[iconName] || DollarSign; // Default to DollarSign if not found, or null if preferred
+        return iconMap[iconName] || DollarSign;
     };
 
     const navLinks = [
-      { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
-      { href: "/budget", label: "Budget", iconName: "Wallet" },
-      { href: "/expenses", label: "Expenses", iconName: "Landmark" },
-      { href: "/savings-goals", label: "Savings Goals", iconName: "PiggyBank" },
-      { href: "/investments", label: "Investments", iconName: "TrendingUp" },
-      { href: "/emergency-fund", label: "Emergency Fund", iconName: "ShieldAlert" },
-      { href: "/tax-planner", label: "Tax Planner", iconName: "FileText" },
-      { href: "/ai-assistant", label: "AI Assistant", iconName: "Lightbulb" },
+      { href: "/dashboard", label: "Dashboard" },
+      { href: "/budget", label: "Budget" },
+      { href: "/expenses", label: "Expenses" },
+      { href: "/savings-goals", label: "Goals" },
+      { href: "/investments", label: "Invest" },
+      { href: "/emergency-fund", label: "Safety" },
+      { href: "/tax-planner", label: "Taxes" },
+      { href: "/ai-assistant", label: "AI" },
     ];
 
     const socialMediaLinks = [
@@ -71,6 +72,14 @@ export default function Header() {
         { href: "#", label: "Facebook", iconName: "Facebook" },
         { href: "#", label: "Instagram", iconName: "Instagram" },
     ];
+
+    const handleSignOut = async () => {
+        await signOut({ redirect: true, callbackUrl: '/login' });
+        toast({
+            title: "Signed Out",
+            description: "You have been successfully signed out.",
+        });
+    };
 
   return (
      <header className="w-full">
@@ -98,7 +107,7 @@ export default function Header() {
 
           <div className="flex items-center space-x-2">
              {isAuthenticated ? (
-               <Button variant="ghost" size="sm" className="text-header-top-fg hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm" onClick={handleSignOut}>
+               <Button variant="ghost" size="sm" className="text-header-top-fg hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm font-medium rounded-md" onClick={handleSignOut}>
                    <LogOut className="mr-1.5 h-4 w-4"/> Sign Out
                </Button>
              ) : (
@@ -153,7 +162,6 @@ export default function Header() {
                          </div>
                        )}
                        {navLinks.map(link => {
-                          const Icon = getIcon(link.iconName);
                           const isActive = pathname === link.href;
                           return (
                             <SheetClose key={`${link.href}-mobile`} asChild>
@@ -166,7 +174,6 @@ export default function Header() {
                                       : "text-header-bottom-fg/90 hover:bg-white/70 hover:text-header-bottom-fg"
                                   )}
                                 >
-                                  {Icon && <Icon className="mr-3 h-5 w-5 inline-block" />}
                                   {link.label}
                                 </Link>
                             </SheetClose>
@@ -219,7 +226,6 @@ export default function Header() {
               <nav className="flex items-stretch h-full">
                 {navLinks.map((link, index) => {
                   const isActive = pathname === link.href;
-                  const Icon = getIcon(link.iconName);
                   return (
                     <div // Parent div for border and to ensure Link stretches
                       key={link.href}
@@ -231,13 +237,12 @@ export default function Header() {
                       <Link
                         href={link.href}
                         className={cn(
-                          "flex items-center px-3 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
+                          "flex items-center px-3 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom", // Base styles, padding, and focus on the Link
                           isActive
-                            ? "bg-white text-primary rounded-md shadow-sm font-semibold"
-                            : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
+                            ? "bg-white text-primary rounded-md shadow-sm font-semibold" // Active state: white bg, primary text, rounded, shadow
+                            : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm" // Default and Hover state
                         )}
                       >
-                        {Icon && <Icon className="mr-1.5 h-4 w-4" />}
                         {link.label}
                       </Link>
                     </div>
@@ -260,4 +265,3 @@ export default function Header() {
     </header>
   );
 }
-
