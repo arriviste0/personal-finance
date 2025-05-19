@@ -25,7 +25,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription, SheetHeader } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetHeader, SheetDescription } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
@@ -61,19 +61,15 @@ export default function Header() {
         { href: "#", label: "Instagram", icon: Instagram },
     ];
     
-    // Helper to get icon component by name string
     const iconMap: { [key: string]: React.ElementType } = {
-      LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign
+      LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram
     };
 
     const getIcon = (iconName?: string): React.ElementType | null => {
-        if (!iconName) return CircleDollarSign;
+        if (!iconName) return CircleDollarSign; // Default icon
         return iconMap[iconName] || CircleDollarSign;
     };
 
-
-    const topBarLinkClasses = "text-sm font-medium text-header-top-fg hover:text-header-top-fg/80 transition-colors";
-    
     const bottomBarLinkClasses = (href: string) => {
       const isActive = pathname === href;
       return cn(
@@ -86,7 +82,7 @@ export default function Header() {
     const mobileNavLinkClasses = (href: string) => {
       const isActive = pathname === href;
       return cn(
-        "block px-3 py-2 rounded-md text-base font-medium transition-colors",
+        "flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors",
         isActive
           ? "bg-primary/10 text-primary font-semibold"
           : "text-header-bottom-fg/90 hover:bg-header-bottom-fg/5"
@@ -103,11 +99,11 @@ export default function Header() {
       {/* Top Row */}
       <div className="bg-header-top">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-12 items-center justify-between border-b border-header-top-border">
-          {/* Col 1: Logo & Wallet Info (if auth) */}
+          {/* Left: Logo & Wallet Info (if auth) */}
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2 no-underline shrink-0">
                <CircleDollarSign className="h-7 w-7 text-header-top-fg" />
-               <span className="font-heading text-xl font-bold text-header-top-fg">FinCo</span>
+               <span className="font-heading text-xl font-bold text-header-top-fg">Fin.Co</span>
             </Link>
             {isAuthenticated && (
                <div className="hidden sm:flex items-center space-x-3 text-xs text-header-top-fg/80">
@@ -123,7 +119,7 @@ export default function Header() {
              )}
           </div>
 
-          {/* Col 3 & 4: Auth buttons / Sign Out */}
+          {/* Right: Auth buttons / Sign Out & Mobile Menu Trigger */}
           <div className="flex items-center space-x-2">
              {isAuthenticated ? (
                <>
@@ -134,7 +130,7 @@ export default function Header() {
              ) : (
                <>
                  <Link href="/login" passHref className="no-underline">
-                    <Button variant="ghost" size="sm" className={cn(topBarLinkClasses, "hover:bg-header-top-fg/10 px-2 py-1.5")}>Log In</Button>
+                   <Button variant="link" size="sm" className="text-header-top-fg hover:text-header-top-fg/80 px-3 py-1.5 text-sm font-medium">Log In</Button>
                  </Link>
                  <Link href="/get-started" passHref className="no-underline">
                     <Button variant="default" size="sm" className="bg-white text-header-top-bg hover:bg-white/90 rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent">Get Started</Button>
@@ -161,7 +157,7 @@ export default function Header() {
                      <SheetHeader className="p-4 border-b border-header-bottom-border bg-header-top">
                          <SheetTitle className="flex items-center gap-2">
                               <CircleDollarSign className="h-6 w-6 text-header-top-fg" />
-                              <span className="text-lg font-heading font-semibold text-header-top-fg">FinCo</span>
+                              <span className="text-lg font-heading font-semibold text-header-top-fg">Fin.Co</span>
                          </SheetTitle>
                          <SheetClose asChild>
                            <Button variant="ghost" size="icon" className="absolute right-4 top-3.5 h-7 w-7 p-0 text-header-top-fg/80 hover:bg-header-top-fg/10">
@@ -207,7 +203,7 @@ export default function Header() {
                           </div>
                           {isAuthenticated ? (
                               <SheetClose asChild>
-                                  <Button variant="outline" className="w-full btn-outline text-destructive hover:bg-destructive/10 border-destructive/50">
+                                  <Button variant="outline" className="w-full btn-outline text-destructive hover:bg-destructive/10 border-destructive/50" onClick={handleSignOut}>
                                        <LogOut className="mr-2 h-4 w-4"/> Sign Out
                                   </Button>
                               </SheetClose>
@@ -263,4 +259,3 @@ export default function Header() {
     </header>
   );
 }
-
