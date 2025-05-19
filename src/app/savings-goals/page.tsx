@@ -28,7 +28,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger, // Added AlertDialogTrigger
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
   Select,
@@ -146,14 +146,14 @@ export default function SavingsGoalsPage() {
         const absAmount = Math.abs(amount);
         const currentAllocation = allocations[fundsGoalId];
         if (!currentAllocation || currentAllocation.amount < absAmount) {
-             toast({title: "Withdrawal Failed", description: `Insufficient funds in "${goalDef.name}" or goal not found.`, variant: "destructive"});
+             toast({title: "Withdrawal Failed", description: `Insufficient funds in "${goalDef.name}" to withdraw. Available: ${formatCurrency(currentAllocation?.amount || 0)}.`, variant: "destructive"});
              return;
         }
         // Prevent withdrawal from incomplete goals
         if (currentAllocation.amount < goalDef.target) {
             toast({
                 title: "Withdrawal Restricted",
-                description: `Cannot withdraw from "${goalDef.name}" as the goal is not yet complete. Complete the goal to unlock funds or adjust the goal target.`,
+                description: `Cannot withdraw from "${goalDef.name}" as the goal is not yet complete. Complete the goal or adjust target to withdraw.`,
                 variant: "destructive",
                 duration: 7000,
             });
@@ -344,13 +344,13 @@ export default function SavingsGoalsPage() {
                  <Input 
                     id={`modify-amount-${fundsGoalId}`} 
                     type="number" 
-                    placeholder="e.g., 50 or -20" 
+                    placeholder="e.g., 50 (deposit) or -20 (withdraw)" 
                     className="col-span-3 retro-input" 
                     value={transactionAmount}
                     onChange={(e) => setTransactionAmount(e.target.value)}
                   />
                </div>
-                <p className="text-xs text-muted-foreground text-center px-4">Enter a positive value to add funds (deposit), or a negative value to remove funds (withdraw). Withdrawal from incomplete goals is restricted.</p>
+                <p className="text-xs text-muted-foreground text-center px-4">Enter a positive value to add funds, or a negative value to withdraw. Withdrawal from incomplete goals is restricted.</p>
              </div>
              <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                <DialogClose asChild>

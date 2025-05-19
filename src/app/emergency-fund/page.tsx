@@ -208,6 +208,7 @@ export default function EmergencyFundPage() {
                         className="col-span-3 retro-input" 
                      />
                    </div>
+                   <p className="col-start-2 col-span-3 text-xs text-muted-foreground -mt-2 pl-2">Enter a positive value to deposit, or a negative value to withdraw.</p>
                     <div className="grid grid-cols-4 items-start gap-3">
                      <Label htmlFor="transactionNotes" className="text-right text-sm pt-2">Notes <span className="text-xs text-muted-foreground">(Opt.)</span></Label>
                       <Textarea 
@@ -353,3 +354,4 @@ export default function EmergencyFundPage() {
     </div>
   );
 }
+
