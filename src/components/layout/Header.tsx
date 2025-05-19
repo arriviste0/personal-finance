@@ -21,7 +21,6 @@ import {
   User,
   DollarSign,
   PiggyBank,
-  X,
   CreditCard,
   Home,
   PieChart as IconPieChart,
@@ -49,6 +48,18 @@ import {
   Bell,
   MessageCircleMore,
   ArrowRight,
+  X,
+  Package,
+  BrainCircuit,
+  ShieldCheck,
+  Zap,
+  Target,
+  BarChartBig,
+  Award,
+  ChevronDown,
+  ChevronUp,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -73,19 +84,6 @@ export default function Header() {
 
   const isAuthenticated = status === 'authenticated';
 
-  // Moved inside the component to avoid initialization issues
-  const iconMap: { [key: string]: React.ElementType } = {
-    LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert,
-    FileText, Lightbulb, Settings, Twitter, Facebook, Instagram, X, LogOut,
-    CreditCard, Home, IconPieChart, HelpCircle, Info, AtSign, User, DollarSign
-  };
-
-  const getIcon = (iconName?: string): React.ElementType | null => {
-    if (!iconName) return null;
-    const IconComponent = iconMap[iconName];
-    return IconComponent || CircleDollarSign; // Default icon
-  };
-
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
     { href: "/budget", label: "Budget", iconName: "Wallet" },
@@ -102,6 +100,24 @@ export default function Header() {
     { href: "#", label: "Facebook", iconName: "Facebook" },
     { href: "#", label: "Instagram", iconName: "Instagram" },
   ];
+
+  // Helper to get icon component by name
+  const iconMap: { [key: string]: React.ElementType } = {
+    LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings,
+    Twitter, Facebook, Instagram, LogOut, CircleDollarSign, X,
+    User, DollarSign, CreditCard, Home, IconPieChart, HelpCircle, Info, AtSign, KeyRound, MailIcon, LockIcon, UserPlus,
+    ShoppingBag, BookOpen, BarChart3, BriefcaseIcon, Receipt, Settings2, Percent, MessageSquare, LifeBuoy, Newspaper,
+    InfoIcon, Phone, UserCircle2, Search, Bell, MessageCircleMore, ArrowRight,
+    Package, BrainCircuit, ShieldCheck, Zap, Target, BarChartBig, Award,
+    ChevronDown, ChevronUp, ChevronRight, ChevronLeft,
+  };
+
+  const getIcon = (iconName?: string): React.ElementType | null => {
+    if (!iconName) return null;
+    const IconComponent = iconMap[iconName];
+    return IconComponent || CircleDollarSign; // Default icon
+  };
+
 
   const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -148,8 +164,7 @@ export default function Header() {
                   <Link
                     href="/login"
                     className={cn(
-                      "flex w-full h-full items-center justify-center px-4 no-underline transition-colors duration-150 whitespace-nowrap",
-                      "text-xs font-medium text-header-top-fg hover:bg-white hover:text-blue-700 hover:rounded-md" // Updated hover to match Get Started
+                      "w-full h-full flex items-center justify-center px-4 text-header-top-fg text-sm font-medium hover:bg-white hover:text-header-top-bg hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150"
                     )}
                   >
                     Log In
@@ -160,8 +175,7 @@ export default function Header() {
                     <Link
                       href="/get-started"
                       className={cn(
-                        "flex w-full h-full items-center justify-center text-xs font-semibold no-underline transition-colors duration-150 whitespace-nowrap",
-                        "bg-white text-blue-700 rounded-md hover:bg-blue-700 hover:text-white px-3 py-1.5" // Blue text on white, blue bg on hover
+                        "w-full h-full flex items-center justify-center text-sm font-medium bg-white text-header-top-bg rounded-md hover:bg-gray-100 px-4 py-1.5 !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150"
                       )}
                     >
                       Get Started
@@ -170,11 +184,11 @@ export default function Header() {
                 </div>
               </>
             ) : (
-              <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+               <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                 <Button
                   onClick={handleSignOut}
                   variant="ghost"
-                  className="flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150 text-header-top-fg hover:bg-white hover:text-blue-700 hover:rounded-md whitespace-nowrap"
+                  className="w-full h-full flex items-center justify-center px-4 text-header-top-fg text-sm font-medium hover:bg-white/20 hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150"
                 >
                   <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
                 </Button>
@@ -221,7 +235,7 @@ export default function Header() {
                           <Link
                             href={link.href}
                             className={cn(
-                              "flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap",
+                              "flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap no-underline",
                               isActive
                                 ? "bg-white text-primary font-semibold shadow-sm"
                                 : "text-header-bottom-fg/90 hover:bg-white/70 hover:text-header-bottom-fg"
@@ -243,30 +257,30 @@ export default function Header() {
                           );
                         })}
                       </div>
-                      {isAuthenticated ? (
-                        <SheetClose asChild>
-                           <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50 whitespace-nowrap" onClick={handleSignOut}>
-                            <LogOut className="mr-2 h-4 w-4" /> Sign Out
-                          </Button>
-                        </SheetClose>
-                      ) : (
+                      {!isAuthenticated ? (
                         <>
                           <SheetClose asChild>
                             <Link href="/login" passHref className="no-underline">
-                              <Button variant="outline" className="w-full text-header-bottom-fg border-header-bottom-fg/50 hover:bg-header-bottom-fg/5 py-2 text-xs whitespace-nowrap">Log In</Button>
+                              <Button variant="outline" className="w-full text-header-bottom-fg border-header-bottom-fg/50 hover:bg-header-bottom-fg/5 py-2 text-sm font-medium whitespace-nowrap">Log In</Button>
                             </Link>
                           </SheetClose>
                           <SheetClose asChild>
                             <Link href="/get-started" passHref className="no-underline">
                               <Button
                                 variant="default"
-                                className="w-full bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-md py-2 text-xs font-semibold !border-transparent !shadow-none whitespace-nowrap"
+                                className="w-full bg-white text-header-top-bg hover:bg-blue-700 hover:text-white rounded-md py-2 text-sm font-medium !border-transparent !shadow-none whitespace-nowrap"
                               >
                                 Get Started
                               </Button>
                             </Link>
                           </SheetClose>
                         </>
+                      ) : (
+                        <SheetClose asChild>
+                           <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50 whitespace-nowrap" onClick={handleSignOut}>
+                            <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                          </Button>
+                        </SheetClose>
                       )}
                     </div>
                   </nav>
@@ -283,23 +297,26 @@ export default function Header() {
           <nav className="flex flex-grow items-stretch h-full">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
+              // const IconComponent = getIcon(link.iconName); Removed icon from here
+
               return (
                 <div
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-center justify-center",
+                    "h-full flex flex-1 items-center justify-center", // Cell takes equal width
                     index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
                     href={link.href}
                     className={cn(
-                      "flex w-full h-full items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom whitespace-nowrap",
+                      "w-full h-full flex items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
                       isActive
                         ? "bg-white text-primary rounded-md shadow-sm font-semibold"
                         : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
                     )}
                   >
+                    {/* {IconComponent && <IconComponent className="mr-2 h-4 w-4" />} Removed icon from here */}
                     {link.label}
                   </Link>
                 </div>
