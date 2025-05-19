@@ -39,13 +39,28 @@ import {
   Zap,
   Target,
   Home,
-  CreditCard,
-  PieChart,
+  CreditCard, // Keep existing imports
+  PieChart as IconPieChart, // Alias if 'PieChart' is used for Recharts
   HelpCircle,
   Info,
   AtSign,
   User,
   KeyRound,
+  MailIcon,
+  LockIcon,
+  UserPlus,
+  ShoppingBag,
+  BookOpen,
+  BarChart3,
+  BriefcaseIcon,
+  Receipt,
+  Settings2,
+  Percent,
+  MessageSquare,
+  LifeBuoy,
+  Newspaper,
+  InfoIcon,
+  Phone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -56,6 +71,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
@@ -63,7 +79,7 @@ import { usePathname } from 'next/navigation';
 import { useWallet } from '@/contexts/WalletContext';
 
 const iconMap: { [key: string]: React.ElementType } = {
-  LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight, Users2, Package, BarChartBig, Award, ChevronRight, ChevronDown, ChevronLeft, ChevronUp, BrainCircuit, ShieldCheck, Sparkles, Zap, Target, CreditCard, Home, PieChart, HelpCircle, Info, AtSign, User, KeyRound
+  LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight, Users2, Package, BarChartBig, Award, ChevronRight, ChevronDown, ChevronLeft, ChevronUp, BrainCircuit, ShieldCheck, Sparkles, Zap, Target, CreditCard, Home, IconPieChart, HelpCircle, Info, AtSign, User, KeyRound, MailIcon, LockIcon, UserPlus, ShoppingBag, BookOpen, BarChart3, BriefcaseIcon, Receipt, Settings2, Percent, MessageSquare, LifeBuoy, Newspaper, InfoIcon, Phone
 };
 
 const getIcon = (iconName?: string): React.ElementType | null => {
@@ -81,15 +97,10 @@ export default function Header() {
 
   const isAuthenticated = status === 'authenticated';
 
-  const formatCurrency = (amount: number) => {
-    return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  };
-
-  // Moved inside the component to ensure icons are initialized
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
     { href: "/budget", label: "Budget", iconName: "Wallet" },
-    { href: "/expenses", label: "Expenses", iconName: "Landmark" }, // Consider Receipt icon
+    { href: "/expenses", label: "Expenses", iconName: "Landmark" },
     { href: "/savings-goals", label: "Goals", iconName: "PiggyBank" },
     { href: "/investments", label: "Invest", iconName: "TrendingUp" },
     { href: "/emergency-fund", label: "Safety", iconName: "ShieldAlert" },
@@ -103,6 +114,9 @@ export default function Header() {
     { href: "#", label: "Instagram", iconName: "Instagram" },
   ];
 
+  const formatCurrency = (amount: number) => {
+    return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
 
   const handleSignOut = async () => {
     await signOut({ redirect: true, callbackUrl: '/login' });
@@ -117,6 +131,7 @@ export default function Header() {
       {/* Top Row */}
       <div className="bg-header-top text-header-top-fg">
         <div className="container mx-auto flex h-12 items-center justify-between px-4 md:px-6 border-b border-header-top-border">
+          {/* Left side: Logo + Wallet Info (if authenticated) */}
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2 no-underline shrink-0">
               <CircleDollarSign className="h-7 w-7 text-header-top-fg" />
@@ -136,22 +151,57 @@ export default function Header() {
             )}
           </div>
 
-          <div className="flex items-center space-x-2">
-            {isAuthenticated ? (
-              <Button variant="ghost" size="sm" className="text-header-top-fg hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm font-medium rounded-md" onClick={handleSignOut}>
-                <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
-              </Button>
+          {/* Right side: Auth + Mobile Menu */}
+          <div className="flex items-center">
+            {status === 'authenticated' ? (
+              // Authenticated: Sign Out
+              <div className="hidden md:flex items-stretch h-full text-sm">
+                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                    <Button
+                        onClick={handleSignOut}
+                        variant="ghost"
+                        className="flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150 text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
+                    >
+                        <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
+                    </Button>
+                 </div>
+              </div>
             ) : (
-              <>
-                <Link href="/login" passHref className="no-underline">
-                  <Button variant="outline" className="text-header-top-fg border-header-top-fg/50 hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm font-medium rounded-md">Log In</Button>
-                </Link>
-                <Link href="/get-started" passHref className="no-underline">
-                  <Button variant="default" className="bg-white text-header-top-bg hover:bg-white/90 rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent">Get Started</Button>
-                </Link>
-              </>
+              // Unauthenticated: Log In + Get Started
+              <div className="hidden md:flex items-stretch h-full text-sm">
+                <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                  <Link
+                    href="/login"
+                    className={cn(
+                      "flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150",
+                      "text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
+                    )}
+                  >
+                    Log In
+                  </Link>
+                </div>
+                <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                  <Button
+                    asChild
+                    variant="ghost" 
+                    className="p-0 w-full h-full rounded-none" // Button wrapper fills cell
+                  >
+                    <Link
+                      href="/get-started"
+                      className={cn(
+                        "flex w-full h-full items-center justify-center px-4 font-semibold no-underline transition-colors duration-150",
+                        "bg-white text-header-top-bg rounded-md hover:bg-gray-100" 
+                      )}
+                    >
+                      Get Started
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             )}
-            <div className="md:hidden flex items-center">
+
+            {/* Mobile Menu Trigger - always visible but styled by md:hidden on its parent for desktop auth buttons */}
+            <div className="md:hidden flex items-center ml-2"> {/* Ensure it's always on the right */}
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
@@ -194,7 +244,6 @@ export default function Header() {
                     )}
                     {navLinks.map(link => {
                       const isActive = pathname === link.href;
-                      const IconComponent = getIcon(link.iconName);
                       return (
                         <SheetClose key={`${link.href}-mobile`} asChild>
                           <Link
@@ -206,7 +255,6 @@ export default function Header() {
                                 : "text-header-bottom-fg/90 hover:bg-white/70 hover:text-header-bottom-fg"
                             )}
                           >
-                            {/* {IconComponent && <IconComponent className="mr-3 h-5 w-5" />} */}
                             {link.label}
                           </Link>
                         </SheetClose>
@@ -225,7 +273,7 @@ export default function Header() {
                       </div>
                       {isAuthenticated ? (
                         <SheetClose asChild>
-                          <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50" onClick={handleSignOut}>
+                           <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50" onClick={handleSignOut}>
                             <LogOut className="mr-2 h-4 w-4" /> Sign Out
                           </Button>
                         </SheetClose>
@@ -248,37 +296,35 @@ export default function Header() {
                 </SheetContent>
               </Sheet>
             </div>
+
           </div>
         </div>
       </div>
 
       {/* Bottom Row - Boxed Sticky Navigation (Desktop Only) */}
       <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
-        <div className="container mx-auto flex items-center justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
+        <div className="container mx-auto flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
           {/* Main Navigation Links */}
           <nav className="flex flex-grow items-stretch h-full">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
-              // const IconComponent = getIcon(link.iconName);
               return (
-                <div
+                <div 
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-center justify-center", // Cell takes equal width & centers link
-                    index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
+                    "h-full flex flex-1 items-stretch", // Cell takes equal width
+                    index < navLinks.length -1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
                     href={link.href}
                     className={cn(
-                      "flex items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 h-full w-full", // Link fills cell, centers text
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
+                      "flex w-full h-full items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
                       isActive
                         ? "bg-white text-primary rounded-md shadow-sm font-semibold"
                         : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
                     )}
                   >
-                    {/* {IconComponent && <IconComponent className="mr-2 h-4 w-4" />} */}
                     {link.label}
                   </Link>
                 </div>
