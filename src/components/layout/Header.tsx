@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -18,19 +19,16 @@ import {
   Lightbulb,
   Settings,
   Users,
-  Mail,
-  Briefcase,
-  DollarSign,
-  ArrowRight,
-  PiggyBank, // Added based on previous error
-  X, // Added for SheetClose
+  User, // Keep User if used, remove if not
+  DollarSign, // Keep if used for other things
+  PiggyBank, // Added back as it was in the original navLinks
+  X,
   CreditCard,
   Home,
-  PieChart as IconPieChart,
+  PieChart as IconPieChart, // Aliased to avoid conflict if PieChart component is used
   HelpCircle,
   Info,
   AtSign,
-  User,
   KeyRound,
   MailIcon,
   LockIcon,
@@ -51,6 +49,7 @@ import {
   Search,
   Bell,
   MessageCircleMore,
+  ArrowRight, // Ensure ArrowRight is imported if used
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,21 +60,42 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { useWallet } from '@/contexts/WalletContext';
 
+// Helper function to get icon components by name string
 const iconMap: { [key: string]: React.ElementType } = {
-  LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight, UserCircle2, Search, Bell, MessageCircleMore, CreditCard, Home, IconPieChart, HelpCircle, Info, AtSign, User, KeyRound, MailIcon, LockIcon, UserPlus, ShoppingBag, BookOpen, BarChart3, BriefcaseIcon, Receipt, Settings2, Percent, MessageSquare, LifeBuoy, Newspaper, InfoIcon, Phone
+  LayoutGrid,
+  Wallet,
+  Landmark,
+  PiggyBank,
+  TrendingUp,
+  ShieldAlert,
+  FileText,
+  Lightbulb,
+  Settings,
+  Twitter,
+  Facebook,
+  Instagram,
+  X,
+  LogOut,
+  CreditCard, // Added from ServiceCard
+  Home, // Added from ServiceCard
+  IconPieChart, // Added from ServiceCard
+  HelpCircle, // Added from ServiceCard
+  Info, // Added from ServiceCard
+  AtSign, // Added from ServiceCard
+  User, // Added from ServiceCard
+  DollarSign, // Keep, might be used
 };
 
 const getIcon = (iconName?: string): React.ElementType | null => {
   if (!iconName) return null;
   const IconComponent = iconMap[iconName];
-  return IconComponent || DollarSign; // Default to DollarSign if icon not found
+  return IconComponent || DollarSign; // Default icon if not found
 };
 
 
@@ -142,28 +162,25 @@ export default function Header() {
           </div>
 
           {/* Right side: Auth + Mobile Menu */}
-          <div className="flex items-center h-full"> {/* Ensure parent takes full height if needed */}
+          <div className="flex items-stretch h-full text-sm"> {/* Ensures children can stretch */}
             {isAuthenticated ? (
-              <div className="hidden md:flex items-stretch h-full text-sm">
-                <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                  <Button
-                    onClick={handleSignOut}
-                    variant="ghost"
-                    className="flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150 text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
-                  >
-                    <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
-                  </Button>
-                </div>
+              <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                <Button
+                  onClick={handleSignOut}
+                  variant="ghost"
+                  className="flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150 text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
+                >
+                  <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
+                </Button>
               </div>
             ) : (
-              <div className="hidden md:flex items-stretch h-full text-sm">
+              <>
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                   <Link
                     href="/login"
                     className={cn(
-                      "flex w-full h-full items-center justify-center px-4 no-underline transition-colors duration-150",
-                      "text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md",
-                      "text-sm font-medium"
+                      "flex w-full h-full items-center justify-center px-4 no-underline transition-colors duration-150 whitespace-nowrap",
+                      "text-sm font-medium text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
                     )}
                   >
                     Log In
@@ -172,32 +189,30 @@ export default function Header() {
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                   <Button
                     asChild
-                    variant="ghost" // Use ghost to remove base variant styles easily
-                    className="p-0 w-full h-full rounded-none" // Button fills cell
+                    variant="ghost"
+                    className="p-0 w-full h-full rounded-none"
                   >
                     <Link
                       href="/get-started"
                       className={cn(
-                        "flex w-full h-full items-center justify-center px-4 font-semibold no-underline transition-colors duration-150",
-                        "bg-white text-header-top-bg rounded-md hover:bg-gray-100",
-                        "text-xs" // Decreased font size
+                        "flex w-full h-full items-center justify-center text-xs font-semibold no-underline transition-colors duration-150 whitespace-nowrap",
+                        "bg-white text-header-top-bg rounded-md hover:bg-gray-100 px-3 py-1.5"
                       )}
                     >
                       Get Started
                     </Link>
                   </Button>
                 </div>
-              </div>
+              </>
             )}
-
-            {/* Mobile Menu Trigger */}
-            <div className="md:hidden flex items-center ml-2">
+             {/* Mobile Menu Trigger - always part of the flex layout */}
+            <div className="flex items-center justify-center border-l border-header-top-border md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-header-top-fg hover:bg-header-top-fg/10 h-8 w-8"
+                    className="text-header-top-fg hover:bg-header-top-fg/10 h-full w-10 rounded-none px-2"
                   >
                     <Menu className="h-5 w-5" />
                     <span className="sr-only">Toggle Menu</span>
@@ -239,7 +254,7 @@ export default function Header() {
                           <Link
                             href={link.href}
                             className={cn(
-                              "flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors", // Using text-sm for mobile links too
+                              "flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap",
                               isActive
                                 ? "bg-white text-primary font-semibold shadow-sm"
                                 : "text-header-bottom-fg/90 hover:bg-white/70 hover:text-header-bottom-fg"
@@ -263,7 +278,7 @@ export default function Header() {
                       </div>
                       {isAuthenticated ? (
                         <SheetClose asChild>
-                           <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50" onClick={handleSignOut}>
+                           <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50 whitespace-nowrap" onClick={handleSignOut}>
                             <LogOut className="mr-2 h-4 w-4" /> Sign Out
                           </Button>
                         </SheetClose>
@@ -271,14 +286,14 @@ export default function Header() {
                         <>
                           <SheetClose asChild>
                             <Link href="/login" passHref className="no-underline">
-                              <Button variant="outline" className="w-full text-header-bottom-fg border-header-bottom-fg/50 hover:bg-header-bottom-fg/5 py-2 text-xs">Log In</Button>
+                              <Button variant="outline" className="w-full text-header-bottom-fg border-header-bottom-fg/50 hover:bg-header-bottom-fg/5 py-2 text-xs whitespace-nowrap">Log In</Button>
                             </Link>
                           </SheetClose>
                           <SheetClose asChild>
                             <Link href="/get-started" passHref className="no-underline">
                               <Button
-                                variant="default" // Use default to avoid retro button styles
-                                className="w-full bg-white text-header-top-bg hover:bg-gray-100 rounded-md py-2 text-xs font-semibold !border-transparent !shadow-none"
+                                variant="default"
+                                className="w-full bg-white text-header-top-bg hover:bg-gray-100 rounded-md py-2 text-xs font-semibold !border-transparent !shadow-none whitespace-nowrap"
                               >
                                 Get Started
                               </Button>
@@ -291,7 +306,6 @@ export default function Header() {
                 </SheetContent>
               </Sheet>
             </div>
-
           </div>
         </div>
       </div>
@@ -304,21 +318,22 @@ export default function Header() {
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
               // const IconComponent = getIcon(link.iconName); // Icons removed from bottom bar
+
               return (
-                <div
+                <div // This parent div is mainly for the border-r separator and flex-1
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-stretch",
-                    index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
+                    "h-full flex flex-1 items-center justify-center", // flex-1 makes each cell take equal width
+                    index < navLinks.length -1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
                     href={link.href}
                     className={cn(
-                      "flex w-full h-full items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
+                      "flex w-full h-full items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom whitespace-nowrap", // Base styles, padding, and focus on the Link
                       isActive
-                        ? "bg-white text-primary rounded-md shadow-sm font-semibold"
-                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
+                        ? "bg-white text-primary rounded-md shadow-sm font-semibold" // Active state: white bg, primary text, rounded, shadow
+                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm" // Default and Hover state
                     )}
                   >
                     {/* {IconComponent && <IconComponent className="mr-2 h-4 w-4" />} */}
@@ -345,3 +360,4 @@ export default function Header() {
     </header>
   );
 }
+
