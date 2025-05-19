@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from "next/link";
@@ -23,24 +22,11 @@ import {
   Briefcase,
   DollarSign,
   ArrowRight,
-  PiggyBank,
-  X,
-  Users2,
-  Package,
-  BarChartBig,
-  Award,
-  ChevronRight,
-  ChevronDown,
-  ChevronLeft,
-  ChevronUp,
-  BrainCircuit,
-  ShieldCheck,
-  Sparkles,
-  Zap,
-  Target,
+  PiggyBank, // Added based on previous error
+  X, // Added for SheetClose
+  CreditCard,
   Home,
-  CreditCard, // Keep existing imports
-  PieChart as IconPieChart, // Alias if 'PieChart' is used for Recharts
+  PieChart as IconPieChart,
   HelpCircle,
   Info,
   AtSign,
@@ -61,6 +47,10 @@ import {
   Newspaper,
   InfoIcon,
   Phone,
+  UserCircle2,
+  Search,
+  Bell,
+  MessageCircleMore,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -79,7 +69,7 @@ import { usePathname } from 'next/navigation';
 import { useWallet } from '@/contexts/WalletContext';
 
 const iconMap: { [key: string]: React.ElementType } = {
-  LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight, Users2, Package, BarChartBig, Award, ChevronRight, ChevronDown, ChevronLeft, ChevronUp, BrainCircuit, ShieldCheck, Sparkles, Zap, Target, CreditCard, Home, IconPieChart, HelpCircle, Info, AtSign, User, KeyRound, MailIcon, LockIcon, UserPlus, ShoppingBag, BookOpen, BarChart3, BriefcaseIcon, Receipt, Settings2, Percent, MessageSquare, LifeBuoy, Newspaper, InfoIcon, Phone
+  LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight, UserCircle2, Search, Bell, MessageCircleMore, CreditCard, Home, IconPieChart, HelpCircle, Info, AtSign, User, KeyRound, MailIcon, LockIcon, UserPlus, ShoppingBag, BookOpen, BarChart3, BriefcaseIcon, Receipt, Settings2, Percent, MessageSquare, LifeBuoy, Newspaper, InfoIcon, Phone
 };
 
 const getIcon = (iconName?: string): React.ElementType | null => {
@@ -152,29 +142,28 @@ export default function Header() {
           </div>
 
           {/* Right side: Auth + Mobile Menu */}
-          <div className="flex items-center">
-            {status === 'authenticated' ? (
-              // Authenticated: Sign Out
+          <div className="flex items-center h-full"> {/* Ensure parent takes full height if needed */}
+            {isAuthenticated ? (
               <div className="hidden md:flex items-stretch h-full text-sm">
-                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                    <Button
-                        onClick={handleSignOut}
-                        variant="ghost"
-                        className="flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150 text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
-                    >
-                        <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
-                    </Button>
-                 </div>
+                <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                  <Button
+                    onClick={handleSignOut}
+                    variant="ghost"
+                    className="flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150 text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
+                  >
+                    <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
+                  </Button>
+                </div>
               </div>
             ) : (
-              // Unauthenticated: Log In + Get Started
               <div className="hidden md:flex items-stretch h-full text-sm">
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                   <Link
                     href="/login"
                     className={cn(
-                      "flex w-full h-full items-center justify-center px-4 font-medium no-underline transition-colors duration-150",
-                      "text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md"
+                      "flex w-full h-full items-center justify-center px-4 no-underline transition-colors duration-150",
+                      "text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md",
+                      "text-sm font-medium"
                     )}
                   >
                     Log In
@@ -183,14 +172,15 @@ export default function Header() {
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                   <Button
                     asChild
-                    variant="ghost" 
-                    className="p-0 w-full h-full rounded-none" // Button wrapper fills cell
+                    variant="ghost" // Use ghost to remove base variant styles easily
+                    className="p-0 w-full h-full rounded-none" // Button fills cell
                   >
                     <Link
                       href="/get-started"
                       className={cn(
                         "flex w-full h-full items-center justify-center px-4 font-semibold no-underline transition-colors duration-150",
-                        "bg-white text-header-top-bg rounded-md hover:bg-gray-100" 
+                        "bg-white text-header-top-bg rounded-md hover:bg-gray-100",
+                        "text-xs" // Decreased font size
                       )}
                     >
                       Get Started
@@ -200,8 +190,8 @@ export default function Header() {
               </div>
             )}
 
-            {/* Mobile Menu Trigger - always visible but styled by md:hidden on its parent for desktop auth buttons */}
-            <div className="md:hidden flex items-center ml-2"> {/* Ensure it's always on the right */}
+            {/* Mobile Menu Trigger */}
+            <div className="md:hidden flex items-center ml-2">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
@@ -249,7 +239,7 @@ export default function Header() {
                           <Link
                             href={link.href}
                             className={cn(
-                              "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors",
+                              "flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors", // Using text-sm for mobile links too
                               isActive
                                 ? "bg-white text-primary font-semibold shadow-sm"
                                 : "text-header-bottom-fg/90 hover:bg-white/70 hover:text-header-bottom-fg"
@@ -281,12 +271,17 @@ export default function Header() {
                         <>
                           <SheetClose asChild>
                             <Link href="/login" passHref className="no-underline">
-                              <Button variant="outline" className="w-full retro-button text-header-bottom-fg">Log In</Button>
+                              <Button variant="outline" className="w-full text-header-bottom-fg border-header-bottom-fg/50 hover:bg-header-bottom-fg/5 py-2 text-xs">Log In</Button>
                             </Link>
                           </SheetClose>
                           <SheetClose asChild>
                             <Link href="/get-started" passHref className="no-underline">
-                              <Button variant="primary" className="w-full retro-button">Get Started</Button>
+                              <Button
+                                variant="default" // Use default to avoid retro button styles
+                                className="w-full bg-white text-header-top-bg hover:bg-gray-100 rounded-md py-2 text-xs font-semibold !border-transparent !shadow-none"
+                              >
+                                Get Started
+                              </Button>
                             </Link>
                           </SheetClose>
                         </>
@@ -308,12 +303,13 @@ export default function Header() {
           <nav className="flex flex-grow items-stretch h-full">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
+              // const IconComponent = getIcon(link.iconName); // Icons removed from bottom bar
               return (
-                <div 
+                <div
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-stretch", // Cell takes equal width
-                    index < navLinks.length -1 ? "border-r border-header-bottom-border" : ""
+                    "h-full flex flex-1 items-stretch",
+                    index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
@@ -325,6 +321,7 @@ export default function Header() {
                         : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
                     )}
                   >
+                    {/* {IconComponent && <IconComponent className="mr-2 h-4 w-4" />} */}
                     {link.label}
                   </Link>
                 </div>
