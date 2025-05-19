@@ -18,14 +18,16 @@ import {
   ShieldAlert,
   FileText,
   Lightbulb,
-  PiggyBank,
+  PiggyBank, // Ensured PiggyBank is imported
   Settings,
   Users,
   Mail,
   Briefcase,
+  DollarSign,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
@@ -44,6 +46,15 @@ export default function Header() {
 
     const isAuthenticated = status === 'authenticated';
 
+    const iconMap: { [key: string]: React.ElementType } = {
+      LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight
+    };
+
+    const getIcon = (iconName?: string): React.ElementType | null => {
+        if (!iconName) return null;
+        return iconMap[iconName] || DollarSign; // Default to DollarSign if not found, or null if preferred
+    };
+
     const navLinks = [
       { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
       { href: "/budget", label: "Budget", iconName: "Wallet" },
@@ -56,51 +67,17 @@ export default function Header() {
     ];
 
     const socialMediaLinks = [
-        { href: "#", label: "Twitter", icon: Twitter },
-        { href: "#", label: "Facebook", icon: Facebook },
-        { href: "#", label: "Instagram", icon: Instagram },
+        { href: "#", label: "Twitter", iconName: "Twitter" },
+        { href: "#", label: "Facebook", iconName: "Facebook" },
+        { href: "#", label: "Instagram", iconName: "Instagram" },
     ];
-    
-    const iconMap: { [key: string]: React.ElementType } = {
-      LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram
-    };
-
-    const getIcon = (iconName?: string): React.ElementType | null => {
-        if (!iconName) return CircleDollarSign; // Default icon
-        return iconMap[iconName] || CircleDollarSign;
-    };
-
-    const bottomBarLinkClasses = (href: string) => {
-      const isActive = pathname === href;
-      return cn(
-        "text-sm font-medium text-header-bottom-fg/80 hover:text-primary transition-colors px-3 py-2",
-        isActive && "bg-white text-header-bottom-fg rounded-md shadow-sm font-semibold",
-        !isActive && "hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
-      );
-    };
-
-    const mobileNavLinkClasses = (href: string) => {
-      const isActive = pathname === href;
-      return cn(
-        "flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors",
-        isActive
-          ? "bg-primary/10 text-primary font-semibold"
-          : "text-header-bottom-fg/90 hover:bg-header-bottom-fg/5"
-      );
-    }
-
-    const handleSignOut = async () => {
-        await signOut({ redirect: true, callbackUrl: '/' });
-        toast({ title: "Signed Out", description: "You have been successfully signed out." });
-    };
 
   return (
      <header className="w-full">
       {/* Top Row */}
       <div className="bg-header-top">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-12 items-center justify-between border-b border-header-top-border">
-          {/* Left: Logo & Wallet Info (if auth) */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2 no-underline shrink-0">
                <CircleDollarSign className="h-7 w-7 text-header-top-fg" />
                <span className="font-heading text-xl font-bold text-header-top-fg">Fin.Co</span>
@@ -119,14 +96,11 @@ export default function Header() {
              )}
           </div>
 
-          {/* Right: Auth buttons / Sign Out & Mobile Menu Trigger */}
           <div className="flex items-center space-x-2">
              {isAuthenticated ? (
-               <>
-                 <Button variant="ghost" size="sm" className="text-header-top-fg hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm" onClick={handleSignOut}>
-                     <LogOut className="mr-1.5 h-4 w-4"/> Sign Out
-                 </Button>
-               </>
+               <Button variant="ghost" size="sm" className="text-header-top-fg hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm" onClick={handleSignOut}>
+                   <LogOut className="mr-1.5 h-4 w-4"/> Sign Out
+               </Button>
              ) : (
                <>
                  <Link href="/login" passHref className="no-underline">
@@ -137,7 +111,6 @@ export default function Header() {
                  </Link>
                </>
              )}
-              {/* Mobile Navigation Trigger */}
               <div className="md:hidden flex items-center">
                 <Sheet>
                   <SheetTrigger asChild>
@@ -166,9 +139,9 @@ export default function Header() {
                            </Button>
                          </SheetClose>
                       </SheetHeader>
-                     <nav className="grid gap-2 text-base font-medium p-4">
+                     <nav className="grid gap-1 text-base font-medium p-3">
                        {isAuthenticated && (
-                         <div className="mb-4 p-2 border-b border-dashed border-header-bottom-fg/20">
+                         <div className="mb-3 p-2 border-b border-dashed border-header-bottom-fg/20">
                            <div className="flex items-center space-x-2 text-sm text-header-bottom-fg/90">
                               <Wallet className="h-4 w-4" />
                               <span>Wallet: {formatCurrency(walletBalance)}</span>
@@ -181,10 +154,19 @@ export default function Header() {
                        )}
                        {navLinks.map(link => {
                           const Icon = getIcon(link.iconName);
+                          const isActive = pathname === link.href;
                           return (
-                            <SheetClose key={link.href} asChild>
-                                <Link href={link.href} className={mobileNavLinkClasses(link.href)}>
-                                  {Icon && <Icon className="mr-2 h-4 w-4 inline-block" />}
+                            <SheetClose key={`${link.href}-mobile`} asChild>
+                                <Link
+                                  href={link.href}
+                                  className={cn(
+                                    "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors",
+                                    isActive
+                                      ? "bg-white text-primary font-semibold shadow-sm"
+                                      : "text-header-bottom-fg/90 hover:bg-white/70 hover:text-header-bottom-fg"
+                                  )}
+                                >
+                                  {Icon && <Icon className="mr-3 h-5 w-5 inline-block" />}
                                   {link.label}
                                 </Link>
                             </SheetClose>
@@ -193,17 +175,17 @@ export default function Header() {
                        <div className="border-t border-header-bottom-border mt-4 pt-4 space-y-3">
                           <div className="flex justify-center space-x-4 mb-3">
                               {socialMediaLinks.map((link) => {
-                                const SocialIcon = link.icon;
+                                const SocialIcon = getIcon(link.iconName);
                                 return (
                                   <Link key={link.label} href={link.href} aria-label={link.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
-                                      <SocialIcon className="h-5 w-5"/>
+                                      {SocialIcon && <SocialIcon className="h-5 w-5"/>}
                                   </Link>
                                 );
                               })}
                           </div>
                           {isAuthenticated ? (
                               <SheetClose asChild>
-                                  <Button variant="outline" className="w-full btn-outline text-destructive hover:bg-destructive/10 border-destructive/50" onClick={handleSignOut}>
+                                  <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50" onClick={handleSignOut}>
                                        <LogOut className="mr-2 h-4 w-4"/> Sign Out
                                   </Button>
                               </SheetClose>
@@ -211,12 +193,12 @@ export default function Header() {
                               <>
                                   <SheetClose asChild>
                                    <Link href="/login" passHref className="no-underline">
-                                      <Button variant="outline" className="w-full btn-outline text-header-bottom-fg">Log In</Button>
+                                      <Button variant="outline" className="w-full retro-button text-header-bottom-fg">Log In</Button>
                                    </Link>
                                   </SheetClose>
                                   <SheetClose asChild>
                                    <Link href="/get-started" passHref className="no-underline">
-                                      <Button variant="primary" className="w-full btn-primary bg-primary text-primary-foreground">Get Started</Button>
+                                      <Button variant="primary" className="w-full retro-button">Get Started</Button>
                                    </Link>
                                   </SheetClose>
                               </>
@@ -233,22 +215,41 @@ export default function Header() {
         {/* Bottom Row - Boxed Sticky Navigation (Desktop Only) */}
         <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
-              <nav className="flex items-center h-full">
-                {navLinks.map((link, index) => (
-                  <div key={link.href} className={cn("h-full flex items-center", index < navLinks.length ? "border-r border-header-bottom-border" : "")}>
-                    <Link href={link.href} className={bottomBarLinkClasses(link.href)}>
-                      {link.label}
-                    </Link>
-                  </div>
-                ))}
+            <div className="flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
+              <nav className="flex items-stretch h-full">
+                {navLinks.map((link, index) => {
+                  const isActive = pathname === link.href;
+                  const Icon = getIcon(link.iconName);
+                  return (
+                    <div // Parent div for border and to ensure Link stretches
+                      key={link.href}
+                      className={cn(
+                        "h-full flex items-stretch", // items-stretch is key
+                        index < navLinks.length -1 ? "border-r border-header-bottom-border" : ""
+                      )}
+                    >
+                      <Link
+                        href={link.href}
+                        className={cn(
+                          "flex items-center px-3 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
+                          isActive
+                            ? "bg-white text-primary rounded-md shadow-sm font-semibold"
+                            : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
+                        )}
+                      >
+                        {Icon && <Icon className="mr-1.5 h-4 w-4" />}
+                        {link.label}
+                      </Link>
+                    </div>
+                  );
+                })}
               </nav>
               <div className="flex items-center space-x-3 px-4 h-full border-l border-header-bottom-border">
                  {socialMediaLinks.map((link) => {
-                    const SocialIcon = link.icon;
+                    const SocialIcon = getIcon(link.iconName);
                     return (
                       <Link key={link.label} href={link.href} aria-label={link.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
-                          <SocialIcon className="h-5 w-5"/>
+                          {SocialIcon && <SocialIcon className="h-5 w-5"/>}
                       </Link>
                     );
                   })}
@@ -259,3 +260,4 @@ export default function Header() {
     </header>
   );
 }
+
