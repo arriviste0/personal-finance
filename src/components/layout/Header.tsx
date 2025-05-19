@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -17,14 +18,14 @@ import {
   ShieldAlert,
   FileText,
   Lightbulb,
-  PiggyBank, // Ensure this is imported
-  Settings, // For the /settings route icon
-  Users, // For the /about route icon (placeholder)
-  Mail, // For the /contact route icon (placeholder)
-  Briefcase, // For the /careers route icon (placeholder)
+  PiggyBank,
+  Settings,
+  Users,
+  Mail,
+  Briefcase,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription, SheetHeader } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
@@ -43,36 +44,14 @@ export default function Header() {
 
     const isAuthenticated = status === 'authenticated';
 
-    // Icon mapping for nav links
-    const iconMap: { [key: string]: React.ElementType } = {
-        LayoutGrid,
-        Wallet,
-        Landmark,
-        PiggyBank,
-        TrendingUp,
-        ShieldAlert,
-        FileText,
-        Lightbulb,
-        Settings,
-        Users,
-        Mail,
-        Briefcase,
-    };
-
-    const getIcon = (iconName: string | undefined): React.ElementType | null => {
-        if (!iconName) return CircleDollarSign; // Default FinCo icon
-        return iconMap[iconName] || CircleDollarSign;
-    };
-
-
-    const mainNavLinks = [
+    const navLinks = [
       { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
       { href: "/budget", label: "Budget", iconName: "Wallet" },
       { href: "/expenses", label: "Expenses", iconName: "Landmark" },
       { href: "/savings-goals", label: "Savings Goals", iconName: "PiggyBank" },
       { href: "/investments", label: "Investments", iconName: "TrendingUp" },
-      { href: "/emergency-fund", label: "Emergency", iconName: "ShieldAlert" },
-      { href: "/tax-planner", label: "Tax", iconName: "FileText" },
+      { href: "/emergency-fund", label: "Emergency Fund", iconName: "ShieldAlert" },
+      { href: "/tax-planner", label: "Tax Planner", iconName: "FileText" },
       { href: "/ai-assistant", label: "AI Assistant", iconName: "Lightbulb" },
     ];
 
@@ -81,13 +60,26 @@ export default function Header() {
         { href: "#", label: "Facebook", icon: Facebook },
         { href: "#", label: "Instagram", icon: Instagram },
     ];
+    
+    // Helper to get icon component by name string
+    const iconMap: { [key: string]: React.ElementType } = {
+      LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign
+    };
+
+    const getIcon = (iconName?: string): React.ElementType | null => {
+        if (!iconName) return CircleDollarSign;
+        return iconMap[iconName] || CircleDollarSign;
+    };
+
 
     const topBarLinkClasses = "text-sm font-medium text-header-top-fg hover:text-header-top-fg/80 transition-colors";
+    
     const bottomBarLinkClasses = (href: string) => {
       const isActive = pathname === href;
       return cn(
-        "text-sm font-medium text-header-bottom-fg/80 hover:text-primary transition-colors",
-        isActive && "text-primary font-semibold"
+        "text-sm font-medium text-header-bottom-fg/80 hover:text-primary transition-colors px-3 py-2",
+        isActive && "text-primary font-semibold bg-white rounded-md shadow-sm",
+        !isActive && "hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
       );
     };
 
@@ -107,10 +99,10 @@ export default function Header() {
     };
 
   return (
-     <header className="w-full bg-header-top text-header-top-fg">
+     <header className="w-full">
       {/* Top Row */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-12 items-center justify-between border-b border-header-top-border">
+      <div className="bg-header-top">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-12 items-center justify-between border-b border-header-top-border">
           {/* Col 1: Logo & Wallet Info (if auth) */}
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2 no-underline shrink-0">
@@ -132,7 +124,7 @@ export default function Header() {
           </div>
 
           {/* Col 3 & 4: Auth buttons / Sign Out */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
              {isAuthenticated ? (
                <>
                  <Button variant="ghost" size="sm" className="text-header-top-fg hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm" onClick={handleSignOut}>
@@ -142,15 +134,15 @@ export default function Header() {
              ) : (
                <>
                  <Link href="/login" passHref className="no-underline">
-                    <Button variant="ghost" size="sm" className={cn(topBarLinkClasses, "hover:bg-header-top-fg/10 px-3 py-1.5")}>Log In</Button>
+                    <Button variant="ghost" size="sm" className={cn(topBarLinkClasses, "hover:bg-header-top-fg/10 px-2 py-1.5")}>Log In</Button>
                  </Link>
                  <Link href="/get-started" passHref className="no-underline">
-                    <Button variant="ghost" size="sm" className="bg-white text-header-top-bg hover:bg-white/90 rounded-md px-3 py-1.5 text-sm font-semibold">Get Started</Button>
+                    <Button variant="default" size="sm" className="bg-white text-header-top-bg hover:bg-white/90 rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent">Get Started</Button>
                  </Link>
                </>
              )}
               {/* Mobile Navigation Trigger */}
-              <div className="md:hidden ml-2 flex items-center">
+              <div className="md:hidden flex items-center">
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button
@@ -166,18 +158,18 @@ export default function Header() {
                      side="left"
                      className="w-[280px] bg-header-bottom p-0 border-r border-header-bottom-border"
                   >
-                      <div className="flex items-center justify-between p-4 border-b border-header-bottom-border bg-header-top">
+                     <SheetHeader className="p-4 border-b border-header-bottom-border bg-header-top">
                          <SheetTitle className="flex items-center gap-2">
                               <CircleDollarSign className="h-6 w-6 text-header-top-fg" />
                               <span className="text-lg font-heading font-semibold text-header-top-fg">FinCo</span>
                          </SheetTitle>
                          <SheetClose asChild>
-                           <Button variant="ghost" size="icon" className="h-7 w-7 p-0 text-header-top-fg/80 hover:bg-header-top-fg/10">
+                           <Button variant="ghost" size="icon" className="absolute right-4 top-3.5 h-7 w-7 p-0 text-header-top-fg/80 hover:bg-header-top-fg/10">
                               <X className="h-4 w-4"/>
                               <span className="sr-only">Close</span>
                            </Button>
                          </SheetClose>
-                      </div>
+                      </SheetHeader>
                      <nav className="grid gap-2 text-base font-medium p-4">
                        {isAuthenticated && (
                          <div className="mb-4 p-2 border-b border-dashed border-header-bottom-fg/20">
@@ -191,7 +183,7 @@ export default function Header() {
                            </div>
                          </div>
                        )}
-                       {mainNavLinks.map(link => {
+                       {navLinks.map(link => {
                           const Icon = getIcon(link.iconName);
                           return (
                             <SheetClose key={link.href} asChild>
@@ -215,7 +207,7 @@ export default function Header() {
                           </div>
                           {isAuthenticated ? (
                               <SheetClose asChild>
-                                  <Button variant="outline" className="w-full btn-outline text-destructive hover:bg-destructive/10 border-destructive/50" onClick={handleSignOut}>
+                                  <Button variant="outline" className="w-full btn-outline text-destructive hover:bg-destructive/10 border-destructive/50">
                                        <LogOut className="mr-2 h-4 w-4"/> Sign Out
                                   </Button>
                               </SheetClose>
@@ -243,22 +235,17 @@ export default function Header() {
       </div>
 
         {/* Bottom Row - Boxed Sticky Navigation (Desktop Only) */}
-        <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-md">
+        <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
               <nav className="flex items-center h-full">
-                {mainNavLinks.map((link, index) => {
-                    const Icon = getIcon(link.iconName); // For potential future use if icons are added here
-                    return (
-                      <Link key={link.href} href={link.href} className={cn(
-                        bottomBarLinkClasses(link.href),
-                        "px-4 h-full flex items-center",
-                        index < mainNavLinks.length -1 && "border-r border-header-bottom-border"
-                      )}>
-                        {link.label}
-                      </Link>
-                    );
-                })}
+                {navLinks.map((link, index) => (
+                  <div key={link.href} className={cn("h-full flex items-center", index < navLinks.length ? "border-r border-header-bottom-border" : "")}>
+                    <Link href={link.href} className={bottomBarLinkClasses(link.href)}>
+                      {link.label}
+                    </Link>
+                  </div>
+                ))}
               </nav>
               <div className="flex items-center space-x-3 px-4 h-full border-l border-header-bottom-border">
                  {socialMediaLinks.map((link) => {
@@ -276,3 +263,4 @@ export default function Header() {
     </header>
   );
 }
+
