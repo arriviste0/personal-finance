@@ -28,8 +28,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog"; // AlertDialogTrigger is not needed here if DialogTrigger is used
 import {
   Select,
   SelectContent,
@@ -38,24 +37,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from '@/lib/utils';
-import { useWallet } from '@/contexts/WalletContext'; // Import useWallet
+import { useWallet } from '@/contexts/WalletContext';
 import { useToast } from '@/hooks/use-toast';
 
 
-interface SavingsGoalData { // Renamed to avoid conflict if SavingsGoal type is defined elsewhere
+interface SavingsGoalData {
   id: string;
   name: string;
-  // current: number; // This will now come from WalletContext
   target: number;
-  iconName: string;
+  iconName: string; // Store icon name for dynamic rendering
   description: string;
 }
 
-// Mock data for goal definitions
 const initialGoalDefinitions: SavingsGoalData[] = [
   { id: "1", name: "Dream Vacation Fund", target: 2000, iconName: "PiggyBank", description: "Sun, sand, and relaxation in Hawaii next summer!" },
   { id: "3", name: "Next-Gen Gaming Setup", target: 800, iconName: "Target", description: "Saving up for the latest console and accessories." },
-  // Emergency Fund is handled separately and in its own page using WalletContext
 ];
 
 const iconMap: { [key: string]: React.ElementType } = {
@@ -67,7 +63,7 @@ const iconMap: { [key: string]: React.ElementType } = {
 };
 
 const getIcon = (iconName: string, className?: string) => {
-  const IconComponent = iconMap[iconName] || DollarSign;
+  const IconComponent = iconMap[iconName] || DollarSign; // Default to DollarSign
   return <IconComponent className={cn("h-6 w-6", className)} />;
 };
 
@@ -79,8 +75,10 @@ export default function SavingsGoalsPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingGoalDef, setEditingGoalDef] = useState<SavingsGoalData | null>(null);
+  
   const [isAddFundsDialogOpen, setIsAddFundsDialogOpen] = useState(false);
   const [fundsGoalId, setFundsGoalId] = useState<string | null>(null);
+  const [transactionAmount, setTransactionAmount] = useState('');
 
 
   const handleCreateGoal = (newGoalData: Omit<SavingsGoalData, 'id'>) => {
@@ -89,8 +87,7 @@ export default function SavingsGoalsPage() {
       id: Date.now().toString(),
     };
     setGoalDefinitions([...goalDefinitions, newGoalDef]);
-    // Optionally, make a small initial deposit to activate the allocation in WalletContext
-    // depositToAllocation(newGoalDef.id, newGoalDef.name, 0, newGoalDef.target);
+    // No initial deposit here, user has to do it via "Manage Funds"
     setIsCreateDialogOpen(false);
     toast({ title: "Goal Created!", description: `"${newGoalDef.name}" has been added.`});
   };
@@ -98,10 +95,11 @@ export default function SavingsGoalsPage() {
   const handleEditGoal = (updatedGoalData: SavingsGoalData) => {
      if (!editingGoalDef) return;
     setGoalDefinitions(goalDefinitions.map(g => g.id === updatedGoalData.id ? updatedGoalData : g));
-    // If target or name changed, update in allocations
     const currentAllocation = allocations[updatedGoalData.id];
     if(currentAllocation) {
-        depositToAllocation(updatedGoalData.id, updatedGoalData.name, 0, updatedGoalData.target); // This updates name/target without changing amount
+        // Update target/name in allocation without changing amount directly here
+        // This is a bit simplistic, ideally target changes might trigger AI review or prompts
+        depositToAllocation(updatedGoalData.id, updatedGoalData.name, 0, updatedGoalData.target); 
     }
     setIsEditDialogOpen(false);
     setEditingGoalDef(null);
@@ -109,30 +107,52 @@ export default function SavingsGoalsPage() {
   };
 
   const handleDeleteGoal = (goalId: string) => {
-    // Note: This only deletes the goal definition. Funds remain in the wallet system for now.
-    // A more complete solution would offer to return funds to main wallet or reallocate.
+    const goalToReturnFundsFrom = allocations[goalId];
+    if (goalToReturnFundsFrom && goalToReturnFundsFrom.amount > 0) {
+        withdrawFromAllocation(goalId, goalToReturnFundsFrom.amount); // Return all funds to wallet
+        toast({ title: "Funds Returned", description: `Funds from "${goalToReturnFundsFrom.name}" returned to main wallet.`});
+    }
     setGoalDefinitions(goalDefinitions.filter(g => g.id !== goalId));
-    // Consider if you want to remove the allocation from WalletContext or prompt user
-    toast({ title: "Goal Deleted", variant: "destructive" });
+    // Also remove from allocations in WalletContext if necessary (or WalletContext handles it)
+    // For now, withdrawing all funds effectively "deletes" its balance tracking there.
+    toast({ title: "Goal Deleted", description: "The savings goal has been removed.", variant: "destructive" });
   };
 
-   const handleModifyFunds = (goalId: string, transactionAmount: number) => {
-     const goal = goalDefinitions.find(g => g.id === goalId);
-     if (!goal) return;
+   const handleModifyFundsSubmit = () => {
+     const amount = parseFloat(transactionAmount);
+     if (!fundsGoalId || isNaN(amount) || amount === 0) {
+         toast({ title: "Invalid Input", description: "Please select a goal and enter a valid amount.", variant: "destructive"});
+         return;
+     }
+     const goalDef = goalDefinitions.find(g => g.id === fundsGoalId);
+     if(!goalDef) return;
 
      let success = false;
-     if (transactionAmount > 0) { // Deposit
-        success = depositToAllocation(goal.id, goal.name, transactionAmount, goal.target);
-        if (success) toast({title: "Funds Added", description: `$${transactionAmount} added to "${goal.name}".`});
-        else toast({title: "Deposit Failed", description: "Check wallet balance or amount.", variant: "destructive"});
-     } else if (transactionAmount < 0) { // Withdraw
-        success = withdrawFromAllocation(goal.id, Math.abs(transactionAmount));
-        if (success) toast({title: "Funds Withdrawn", description: `$${Math.abs(transactionAmount)} withdrawn from "${goal.name}".`});
-        else toast({title: "Withdrawal Failed", description: "Check locked funds or amount.", variant: "destructive"});
+     if (amount > 0) { // Deposit
+        success = depositToAllocation(fundsGoalId, goalDef.name, amount, goalDef.target);
+        if (success) toast({title: "Funds Added", description: `$${amount.toLocaleString()} added to "${goalDef.name}".`});
+     } else { // Withdraw
+        const currentAllocation = allocations[fundsGoalId];
+        if (currentAllocation && currentAllocation.amount >= Math.abs(amount)) {
+            if(currentAllocation.amount < goalDef.target) {
+                 toast({
+                    title: "Withdrawal Restricted",
+                    description: `Cannot withdraw from "${goalDef.name}" as the goal is not yet complete. Complete the goal to unlock funds or adjust the goal target.`,
+                    variant: "destructive",
+                    duration: 7000,
+                });
+                return; // Prevent withdrawal from incomplete goals
+            }
+            success = withdrawFromAllocation(fundsGoalId, Math.abs(amount));
+            if (success) toast({title: "Funds Withdrawn", description: `$${Math.abs(amount).toLocaleString()} withdrawn from "${goalDef.name}".`});
+        } else {
+             toast({title: "Withdrawal Failed", description: "Insufficient funds in this goal or goal not found.", variant: "destructive"});
+        }
      }
      if (success) {
         setIsAddFundsDialogOpen(false);
         setFundsGoalId(null);
+        setTransactionAmount('');
      }
    };
 
@@ -152,7 +172,7 @@ export default function SavingsGoalsPage() {
   return (
     <div className="space-y-6">
        <div className="flex items-center justify-between mb-6">
-         <h1 className="text-3xl font-semibold">Your Savings Goals</h1>
+         <h1 className="text-3xl font-semibold font-heading">Your Savings Goals</h1>
          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
                 <Button variant="primary" className="retro-button">
@@ -174,8 +194,8 @@ export default function SavingsGoalsPage() {
             const currentAllocation = allocations[goalDef.id];
             const currentAmount = currentAllocation?.amount || 0;
             const targetAmount = goalDef.target;
-            const percentage = targetAmount > 0 ? Math.round((currentAmount / targetAmount) * 100) : 0;
-            const isComplete = percentage >= 100;
+            const percentage = targetAmount > 0 ? Math.min(Math.round((currentAmount / targetAmount) * 100), 100) : 0;
+            const isComplete = currentAmount >= targetAmount && targetAmount > 0;
             const iconColor = isComplete ? 'text-green-500' : (goalDef.iconName === 'HandCoins' ? 'text-secondary' : goalDef.iconName === 'Target' ? 'text-blue-500' : 'text-primary');
             const IconComponent = getIcon(isComplete ? 'CheckCircle' : goalDef.iconName, cn("h-8 w-8", iconColor));
 
@@ -211,7 +231,7 @@ export default function SavingsGoalsPage() {
                               <div className="retro-window-controls"><span></span><span></span></div>
                          </AlertDialogHeader>
                          <AlertDialogDescription className="retro-window-content !border-t-0 pt-2">
-                              This action cannot be undone. This will permanently delete the "{goalDef.name}" savings goal.
+                              This action cannot be undone. This will permanently delete the "{goalDef.name}" savings goal. Any funds allocated will be returned to your main wallet.
                          </AlertDialogDescription>
                          <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
                            <AlertDialogCancel asChild><Button variant="secondary" className="retro-button">Cancel</Button></AlertDialogCancel>
@@ -223,7 +243,7 @@ export default function SavingsGoalsPage() {
                   <CardHeader className="retro-card-header flex-row items-center gap-4 pb-2">
                    {IconComponent}
                    <div className="flex-1">
-                     <CardTitle className="text-base font-semibold">{goalDef.name}</CardTitle>
+                     <CardTitle className="text-base font-semibold font-heading">{goalDef.name}</CardTitle>
                       <CardDescription className="text-sm leading-tight !text-primary-foreground/80">{goalDef.description}</CardDescription>
                    </div>
                     <div className="retro-window-controls">
@@ -242,9 +262,8 @@ export default function SavingsGoalsPage() {
                 <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                    <Button
                      variant="primary"
-                     className="retro-button w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                     className="retro-button w-full"
                      onClick={() => openAddFundsDialog(goalDef.id)}
-                     disabled={isComplete}
                     >
                      <DollarSign className="mr-2 h-4 w-4"/> Manage Funds
                    </Button>
@@ -253,11 +272,11 @@ export default function SavingsGoalsPage() {
             )
         })}
 
-         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}> {/*This might be redundant if the main button is already a trigger, review if needed */}
             <DialogTrigger asChild>
                  <button className="retro-card flex flex-col items-center justify-center p-6 min-h-[240px] text-center group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:shadow-[4px_4px_0px_0px_hsl(var(--ring))] transition-shadow duration-200 hover:shadow-[6px_6px_0px_0px_hsl(var(--primary))]">
                     <div className="retro-card-header w-full !bg-muted">
-                       <CardTitle className="text-base font-semibold">New Goal</CardTitle>
+                       <CardTitle className="text-base font-semibold font-heading">New Goal</CardTitle>
                        <div className="retro-window-controls">
                             <span></span><span></span><span></span>
                        </div>
@@ -270,7 +289,7 @@ export default function SavingsGoalsPage() {
                  </button>
             </DialogTrigger>
             <GoalFormDialog
-              key="create-new-goal-dialog"
+              key="create-new-goal-dialog-from-card"
               title="Create New Savings Goal"
               description="Define your new financial target."
               onSave={handleCreateGoal}
@@ -279,13 +298,13 @@ export default function SavingsGoalsPage() {
           </Dialog>
       </div>
 
-       {/* Add Funds Dialog */}
-       <Dialog open={isAddFundsDialogOpen} onOpenChange={setIsAddFundsDialogOpen}>
+       {/* Add/Withdraw Funds Dialog */}
+       <Dialog open={isAddFundsDialogOpen} onOpenChange={(open) => { if(!open) {setFundsGoalId(null); setTransactionAmount('');} setIsAddFundsDialogOpen(open);}}>
           <DialogContent className="retro-window sm:max-w-[425px]">
              <DialogHeader className="retro-window-header !bg-accent !text-accent-foreground">
                <DialogTitle>Manage Funds: {currentFundsGoalDef?.name}</DialogTitle>
                <DialogDescription className="!text-accent-foreground/90">
-                 Current: ${currentFundsGoalAllocation?.amount.toLocaleString()} / Target: ${currentFundsGoalDef?.target.toLocaleString()}
+                 Current: ${currentFundsGoalAllocation?.amount.toLocaleString() || '0.00'} / Target: ${currentFundsGoalDef?.target.toLocaleString() || '0.00'}
                  <br/>
                  Available in Wallet: ${walletBalance.toLocaleString()}
                </DialogDescription>
@@ -305,21 +324,22 @@ export default function SavingsGoalsPage() {
                  <Label htmlFor={`modify-amount-${fundsGoalId}`} className="text-right">
                    Amount ($)
                  </Label>
-                 <Input id={`modify-amount-${fundsGoalId}`} type="number" defaultValue="50" className="col-span-3 retro-input" />
+                 <Input 
+                    id={`modify-amount-${fundsGoalId}`} 
+                    type="number" 
+                    placeholder="e.g., 50 or -20" 
+                    className="col-span-3 retro-input" 
+                    value={transactionAmount}
+                    onChange={(e) => setTransactionAmount(e.target.value)}
+                  />
                </div>
-                <p className="text-xs text-muted-foreground text-center px-4">Enter a positive value to add funds (deposit), or a negative value to remove funds (withdraw).</p>
+                <p className="text-xs text-muted-foreground text-center px-4">Enter a positive value to add funds (deposit), or a negative value to remove funds (withdraw). Withdrawal from incomplete goals is restricted.</p>
              </div>
              <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                <DialogClose asChild>
                     <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
                </DialogClose>
-               <Button type="submit" variant="accent" className="retro-button" onClick={() => {
-                   const amountInput = document.getElementById(`modify-amount-${fundsGoalId}`) as HTMLInputElement;
-                   const amount = parseFloat(amountInput?.value || '0');
-                   if (fundsGoalId && !isNaN(amount)) {
-                      handleModifyFunds(fundsGoalId, amount);
-                   }
-               }}>
+               <Button type="submit" variant="accent" className="retro-button" onClick={handleModifyFundsSubmit}>
                  Update Funds
                </Button>
              </DialogFooter>
@@ -332,7 +352,7 @@ export default function SavingsGoalsPage() {
 interface GoalFormDialogProps {
   title: string;
   description: string;
-  goal?: SavingsGoalData; // Use SavingsGoalData
+  goal?: SavingsGoalData; 
   onSave: (data: any) => void;
   onClose: () => void;
 }
@@ -382,7 +402,7 @@ function GoalFormDialog({ title, description, goal, onSave, onClose }: GoalFormD
   return (
     <DialogContent className="retro-window sm:max-w-[450px]">
       <DialogHeader className="retro-window-header">
-        <DialogTitle>{title}</DialogTitle>
+        <DialogTitle className="font-heading">{title}</DialogTitle>
          <DialogDescription className="!text-primary-foreground/80">{description}</DialogDescription>
         <div className="retro-window-controls">
             <span></span><span></span>

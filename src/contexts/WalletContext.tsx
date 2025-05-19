@@ -2,6 +2,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
+import { useToast } from '@/hooks/use-toast'; // Import useToast
 
 interface Allocation {
   id: string;
@@ -22,53 +23,43 @@ interface WalletContextType {
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
 // Initial mock data - this would ideally come from a backend or user setup
-const initialWalletBalance = 25000; // Example total liquid cash
 const initialAllocationsData: Record<string, Allocation> = {
-  // These IDs should match goal IDs from your pages
-  "1": { id: "1", name: "Dream Vacation Fund", amount: 750, target: 2000 },
-  "emergencyFund": { id: "emergencyFund", name: "Emergency Safety Net", amount: 3000, target: 5000 },
-  "2": { id: "2", name: "Next-Gen Gaming Setup", amount: 200, target: 800 },
-   // Example for budget page (this is more complex, as budgets are usually not "locked" funds from wallet)
-  // "budget-food": { id: "budget-food", name: "Food Budget (Spent)", amount: 450, target: 600 },
+  "1": { id: "1", name: "Dream Vacation Fund", amount: 0, target: 2000 }, // Start with 0 for demo
+  "emergencyFund": { id: "emergencyFund", name: "Emergency Safety Net", amount: 0, target: 5000 }, // Start with 0
+  "3": { id: "3", name: "Next-Gen Gaming Setup", amount: 0, target: 800 }, // Start with 0
 };
 
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const [walletBalance, setWalletBalance] = useState<number>(initialWalletBalance);
+  const [walletBalance, setWalletBalance] = useState<number>(0); // Start with 0, to be set by "bank link"
   const [allocations, setAllocations] = useState<Record<string, Allocation>>(initialAllocationsData);
+  const { toast } = useToast();
 
   const totalLockedFunds = React.useMemo(() => {
-    return Object.values(allocations).reduce((sum, alloc) => {
-       // Only count funds truly locked for goals/emergency, not general budget spending trackers
-       if (alloc.id !== "budget-food") { // Example: exclude budget items if they are different
-         return sum + alloc.amount;
-       }
-       return sum;
-    }, 0);
+    return Object.values(allocations).reduce((sum, alloc) => sum + alloc.amount, 0);
   }, [allocations]);
 
-  // Adjust wallet balance if initial locked funds exceed it
-  useEffect(() => {
-    if (totalLockedFunds > walletBalance) {
-      // This scenario ideally shouldn't happen with proper initial setup or bank sync
-      // For now, let's assume walletBalance is the source of truth for available cash
-      console.warn("Initial locked funds exceed wallet balance. This indicates an issue with initial data setup.");
-    }
-  }, [totalLockedFunds, walletBalance]);
-
-
   const setInitialWalletBalance = useCallback((amount: number) => {
+    if (amount < 0) {
+        toast({ title: "Error", description: "Initial balance cannot be negative.", variant: "destructive"});
+        return;
+    }
     setWalletBalance(amount);
-  }, []);
+    // Recalculate allocations if needed or simply set the balance
+    // For now, this just sets the main wallet balance.
+    // Existing locked funds are not automatically 'unlocked' or 're-funded' here.
+    // This assumes the user is setting their *current available cash* after any existing allocations.
+    // A more complex system might reconcile this with existing locked funds.
+    toast({ title: "Wallet Updated", description: `Wallet balance set to $${amount.toLocaleString()}.`});
+  }, [toast]);
 
   const depositToAllocation = useCallback((allocationId: string, name: string, amount: number, target?: number): boolean => {
     if (amount <= 0) {
-        console.error("Deposit amount must be positive.");
+        toast({ title: "Invalid Amount", description: "Deposit amount must be positive.", variant: "destructive"});
         return false;
     }
     if (walletBalance < amount) {
-      console.error("Insufficient funds in wallet for this deposit.");
-      // Here you might want to use a toast notification for the user
+      toast({ title: "Insufficient Funds", description: "Not enough funds in your main wallet for this deposit.", variant: "destructive"});
       return false;
     }
 
@@ -82,22 +73,21 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
           id: allocationId,
           name: existingAllocation?.name || name,
           amount: newAmount,
-          target: existingAllocation?.target || target,
+          target: target !== undefined ? target : existingAllocation?.target, // Update target if provided
         },
       };
     });
     return true;
-  }, [walletBalance]);
+  }, [walletBalance, toast]);
 
   const withdrawFromAllocation = useCallback((allocationId: string, amount: number): boolean => {
     if (amount <= 0) {
-        console.error("Withdrawal amount must be positive.");
+        toast({ title: "Invalid Amount", description: "Withdrawal amount must be positive.", variant: "destructive"});
         return false;
     }
     const allocation = allocations[allocationId];
     if (!allocation || allocation.amount < amount) {
-      console.error("Insufficient funds in allocation or allocation not found.");
-      // Toast notification for user
+      toast({ title: "Insufficient Funds", description: `Not enough funds in "${allocation?.name || 'this allocation'}" to withdraw $${amount.toLocaleString()}.`, variant: "destructive"});
       return false;
     }
 
@@ -110,7 +100,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       },
     }));
     return true;
-  }, [allocations]);
+  }, [allocations, toast]);
 
 
   return (

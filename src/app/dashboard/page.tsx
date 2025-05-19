@@ -4,8 +4,10 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts"; // Removed Legend as it's not used here
 import {
     DollarSign,
     CreditCard,
@@ -16,24 +18,23 @@ import {
     TrendingUp,
     PiggyBank,
     Lightbulb,
-    LogOut,
     Settings,
     Target as TargetIcon,
-    BarChart2,
     ListChecks,
-    Wallet,
     Lock,
     AlertTriangle,
     ArrowRight,
-    Briefcase, // For investment portfolio
-    Zap, // For AI Savings Helper
+    Briefcase, 
+    Zap, 
     Star,
-    X
+    X,
+    BarChart3, // For Cash Flow
+    Receipt, // For Recent Transactions
+    Users // For placeholder
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // Kept, might be used later
 import { useToast } from "@/hooks/use-toast";
-import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -48,10 +49,10 @@ import { cn } from '@/lib/utils';
 import { useWallet } from '@/contexts/WalletContext';
 
 const investmentPieData = [
-    { name: 'Stocks', value: 400, fill: 'hsl(var(--chart-1))' },
-    { name: 'ETFs', value: 300, fill: 'hsl(var(--chart-2))' },
-    { name: 'Crypto', value: 200, fill: 'hsl(var(--chart-3))' },
-    { name: 'Bonds', value: 100, fill: 'hsl(var(--chart-5))' },
+    { name: 'Stocks', value: 4000, fill: 'hsl(var(--chart-1))' },
+    { name: 'ETFs', value: 3000, fill: 'hsl(var(--chart-2))' },
+    { name: 'Crypto', value: 2000, fill: 'hsl(var(--chart-3))' },
+    { name: 'Bonds', value: 1000, fill: 'hsl(var(--chart-5))' },
 ];
 
 const budgetSnapshotData = [
@@ -59,7 +60,6 @@ const budgetSnapshotData = [
     { category: 'Transportation', spent: 150, budget: 200, color: 'bg-blue-500' },
     { category: 'Entertainment', spent: 280, budget: 300, color: 'bg-yellow-500' },
     { category: 'Utilities', spent: 180, budget: 200, color: 'bg-purple-500' },
-    { category: 'Shopping', spent: 350, budget: 400, color: 'bg-pink-500' },
 ];
 
 
@@ -74,30 +74,94 @@ export default function DashboardPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isLinkBankModalOpen, setIsLinkBankModalOpen] = useState(false);
-  const { walletBalance, totalLockedFunds, allocations } = useWallet();
+  const { walletBalance, totalLockedFunds, allocations, setInitialWalletBalance } = useWallet(); // Added setInitialWalletBalance
+  const [mockBankBalance, setMockBankBalance] = useState('');
 
-  const investmentTotal = 12000; // Mock
+
+  const investmentTotal = 12000; // Mock, this should ideally come from a calculation based on actual investments
   const netWorth = walletBalance + totalLockedFunds + investmentTotal;
-  const emergencyFundCurrent = allocations['emergencyFund']?.amount || 0;
-  const emergencyFundTarget = allocations['emergencyFund']?.target || 5000;
+  const emergencyFundAllocation = allocations['emergencyFund'];
+  const emergencyFundCurrent = emergencyFundAllocation?.amount || 0;
+  const emergencyFundTarget = emergencyFundAllocation?.target || 5000; // Default target if not set
 
   const formatCurrency = (amount: number, showSign = false) => {
-    const sign = amount < 0 ? "-" : (showSign ? "+" : "");
+    const sign = amount < 0 ? "-" : (showSign && amount > 0 ? "+" : "");
     return `${sign}$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   const handleLinkBankAccount = () => {
+    const balance = parseFloat(mockBankBalance);
+    if (isNaN(balance) || balance < 0) {
+        toast({
+            title: "Invalid Balance",
+            description: "Please enter a valid, non-negative bank balance.",
+            variant: "destructive",
+        });
+        return;
+    }
+    setInitialWalletBalance(balance);
     setIsLinkBankModalOpen(false);
+    setMockBankBalance(''); // Reset input
     toast({
-      title: "Bank Linking Initiated (Demo)",
-      description: "In a real app, this would start the Plaid Link flow.",
+      title: "Bank Balance Synced (Demo)",
+      description: `Your wallet balance has been updated to ${formatCurrency(balance)}.`,
       variant: "default",
     });
   };
 
+  // Example data for cash flow chart (replace with actual data)
+  const cashFlowData = [
+    { month: 'Jan', income: 4000, expenses: 2200 },
+    { month: 'Feb', income: 4200, expenses: 2500 },
+    { month: 'Mar', income: 3800, expenses: 2300 },
+    { month: 'Apr', income: 4500, expenses: 2800 },
+  ];
+
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-brand-dark">Dashboard</h1>
+
+      {/* Key Metrics Grid */}
+       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="retro-card">
+            <CardHeader className="retro-card-header">
+                <CardTitle className="text-sm text-muted-foreground">Current Wallet</CardTitle>
+                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
+            </CardHeader>
+            <CardContent className="retro-card-content pt-2">
+                <p className="text-2xl font-bold text-foreground">{formatCurrency(walletBalance)}</p>
+            </CardContent>
+        </Card>
+         <Card className="retro-card">
+            <CardHeader className="retro-card-header">
+                <CardTitle className="text-sm text-muted-foreground">Funds Locked</CardTitle>
+                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
+            </CardHeader>
+            <CardContent className="retro-card-content pt-2">
+                <p className="text-2xl font-bold text-foreground">{formatCurrency(totalLockedFunds)}</p>
+            </CardContent>
+        </Card>
+        <Card className="retro-card">
+            <CardHeader className="retro-card-header">
+                <CardTitle className="text-sm text-muted-foreground">Net Worth (Est.)</CardTitle>
+                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
+            </CardHeader>
+            <CardContent className="retro-card-content pt-2">
+                <p className="text-2xl font-bold text-foreground">{formatCurrency(netWorth)}</p>
+            </CardContent>
+        </Card>
+         <Card className="retro-card">
+            <CardHeader className="retro-card-header">
+                <CardTitle className="text-sm text-muted-foreground">Financial Health</CardTitle>
+                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
+            </CardHeader>
+            <CardContent className="retro-card-content pt-2">
+                <p className="text-2xl font-bold text-green-500">Good</p> {/* Placeholder */}
+                 <Progress value={75} className="h-1.5 mt-1 retro-progress" indicatorClassName="!bg-green-500" />
+            </CardContent>
+        </Card>
+      </div>
 
       {/* Main Grid for Dashboard Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -117,16 +181,17 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4">
-            <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/expenses')}><PlusCircle className="mr-2 h-4 w-4" />Log Expense</Button>
+            <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/expenses')}><Receipt className="mr-2 h-4 w-4" />Log Expense</Button>
             <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/budget')}><CreditCard className="mr-2 h-4 w-4" />View/Edit Budget</Button>
             <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/savings-goals')}><TargetIcon className="mr-2 h-4 w-4" />Set New Goal</Button>
             <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/investments')}><Briefcase className="mr-2 h-4 w-4" />Manage Investments</Button>
-          </CardContent>
-          <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-            <Button variant="outline" className="w-full retro-button" onClick={() => setIsLinkBankModalOpen(true)}>
+            <Button variant="outline" className="w-full retro-button justify-start col-span-2" onClick={() => setIsLinkBankModalOpen(true)}>
               <Landmark className="mr-2 h-4 w-4" /> Link Bank Account
             </Button>
-          </CardFooter>
+             <Button variant="primary" className="w-full retro-button justify-start col-span-2 !bg-brand-yellow !text-black hover:!bg-brand-yellow/90">
+              <Star className="mr-2 h-4 w-4" /> Upgrade to Premium
+            </Button>
+          </CardContent>
         </Card>
 
         {/* Savings Goals Card */}
@@ -144,7 +209,7 @@ export default function DashboardPage() {
                 </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4">
+          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 max-h-[250px] overflow-y-auto">
             {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0,3).map((goal) => (
               <div key={goal.id} className="space-y-1">
                 <div className="flex justify-between items-center text-sm">
@@ -181,8 +246,8 @@ export default function DashboardPage() {
           <CardContent className="retro-card-content !border-t-0 text-center pt-4">
             <p className="text-3xl font-bold text-foreground">{formatCurrency(emergencyFundCurrent)}</p>
             <p className="text-xs text-muted-foreground mb-2">Target: {formatCurrency(emergencyFundTarget)}</p>
-            <Progress value={(emergencyFundCurrent / emergencyFundTarget) * 100} className="h-3.5 retro-progress" indicatorClassName="!bg-blue-500" />
-             {emergencyFundCurrent < emergencyFundTarget && (
+            <Progress value={emergencyFundTarget > 0 ? (emergencyFundCurrent / emergencyFundTarget) * 100 : 0} className="h-3.5 retro-progress" indicatorClassName="!bg-blue-500" />
+             {emergencyFundTarget > 0 && emergencyFundCurrent < emergencyFundTarget && (
                 <div className="text-xs text-center mt-2 text-destructive flex items-center justify-center gap-1">
                     <AlertTriangle className="h-3 w-3"/>
                     <span>Needs attention!</span>
@@ -240,7 +305,7 @@ export default function DashboardPage() {
           <CardHeader className="retro-card-header">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <ListChecks className="h-5 w-5 text-primary" />
+                    <Receipt className="h-5 w-5 text-primary" />
                     <CardTitle className="text-foreground">Recent Transactions</CardTitle>
                 </div>
                  <div className="retro-window-controls"><span></span><span></span><span></span></div>
@@ -254,7 +319,7 @@ export default function DashboardPage() {
                         <p className="font-medium text-sm">{tx.description}</p>
                         <p className="text-xs text-muted-foreground">{tx.category} &bull; {tx.date}</p>
                     </div>
-                    <span className={cn("text-sm font-semibold", tx.amount > 0 ? 'text-brand-green' : 'text-destructive')}>
+                    <span className={cn("text-sm font-semibold", tx.amount >= 0 ? 'text-brand-green' : 'text-destructive')}>
                         {formatCurrency(tx.amount, true)}
                     </span>
                   </div>
@@ -349,18 +414,29 @@ export default function DashboardPage() {
                 </DialogClose>
             </div>
           </DialogHeader>
-          <DialogDescription className="p-4 retro-window-content !border-t-0 space-y-3">
+          <div className="p-4 retro-window-content !border-t-0 space-y-3">
               <p className="text-muted-foreground text-sm">
               Securely connect your bank to automatically import transactions and balances.
               FinTrack Pro uses industry-standard encryption and partners with trusted aggregators.
             </p>
+            <div className="space-y-2">
+                <Label htmlFor="mock-balance" className="text-sm">Enter Mock Bank Balance ($)</Label>
+                <Input 
+                    id="mock-balance" 
+                    type="number" 
+                    placeholder="e.g., 50000" 
+                    className="retro-input"
+                    value={mockBankBalance}
+                    onChange={(e) => setMockBankBalance(e.target.value)}
+                />
+            </div>
             <p className="text-xs text-muted-foreground/80">
-              (This is a placeholder. In a real application, a service like Plaid or Yodlee would handle this.)
+              (This is a demo. No real bank connection will be made.)
             </p>
-          </DialogDescription>
+          </div>
           <DialogFooter className="retro-window-content !border-t-2 !pt-3 !pb-3 flex-col sm:flex-row sm:justify-between gap-2">
             <Button className="w-full sm:w-auto retro-button" variant="primary" onClick={handleLinkBankAccount}>
-              <PlusCircle className="mr-2 h-4 w-4" /> Connect (Demo)
+              <PlusCircle className="mr-2 h-4 w-4" /> Connect & Sync (Demo)
             </Button>
             <DialogClose asChild>
               <Button variant="secondary" className="w-full sm:w-auto retro-button">Cancel</Button>
