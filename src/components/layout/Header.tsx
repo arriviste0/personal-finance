@@ -23,7 +23,7 @@ import {
   Briefcase,
   DollarSign,
   ArrowRight,
-  PiggyBank, // Keep for iconMap if needed, but not in current navLinks
+  PiggyBank,
   X,
   Users2,
   Package,
@@ -44,6 +44,8 @@ import {
   HelpCircle,
   Info,
   AtSign,
+  User,
+  KeyRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -60,17 +62,14 @@ import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { useWallet } from '@/contexts/WalletContext';
 
-const formatCurrency = (amount: number) => {
-  return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-};
-
 const iconMap: { [key: string]: React.ElementType } = {
-  LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight, Users2, Package, BarChartBig, Award, ChevronRight, ChevronDown, ChevronLeft, ChevronUp, BrainCircuit, ShieldCheck, Sparkles, Zap, Target, CreditCard, Home, PieChart, HelpCircle, Info, AtSign,
+  LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings, Users, Mail, Briefcase, CircleDollarSign, LogOut, Menu, X, Lock, Twitter, Facebook, Instagram, DollarSign, ArrowRight, Users2, Package, BarChartBig, Award, ChevronRight, ChevronDown, ChevronLeft, ChevronUp, BrainCircuit, ShieldCheck, Sparkles, Zap, Target, CreditCard, Home, PieChart, HelpCircle, Info, AtSign, User, KeyRound
 };
 
 const getIcon = (iconName?: string): React.ElementType | null => {
   if (!iconName) return null;
-  return iconMap[iconName] || DollarSign;
+  const IconComponent = iconMap[iconName];
+  return IconComponent || DollarSign; // Default to DollarSign if icon not found
 };
 
 
@@ -82,15 +81,20 @@ export default function Header() {
 
   const isAuthenticated = status === 'authenticated';
 
+  const formatCurrency = (amount: number) => {
+    return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
+
+  // Moved inside the component to ensure icons are initialized
   const navLinks = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/budget", label: "Budget" },
-    { href: "/expenses", label: "Expenses" },
-    { href: "/savings-goals", label: "Goals" },
-    { href: "/investments", label: "Invest" },
-    { href: "/emergency-fund", label: "Safety" },
-    { href: "/tax-planner", label: "Taxes" },
-    { href: "/ai-assistant", label: "AI" },
+    { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
+    { href: "/budget", label: "Budget", iconName: "Wallet" },
+    { href: "/expenses", label: "Expenses", iconName: "Landmark" }, // Consider Receipt icon
+    { href: "/savings-goals", label: "Goals", iconName: "PiggyBank" },
+    { href: "/investments", label: "Invest", iconName: "TrendingUp" },
+    { href: "/emergency-fund", label: "Safety", iconName: "ShieldAlert" },
+    { href: "/tax-planner", label: "Taxes", iconName: "FileText" },
+    { href: "/ai-assistant", label: "AI", iconName: "Lightbulb" },
   ];
 
   const socialMediaLinks = [
@@ -112,7 +116,7 @@ export default function Header() {
     <header className="w-full">
       {/* Top Row */}
       <div className="bg-header-top text-header-top-fg">
-        <div className="container mx-auto flex h-12 items-center justify-between border-b border-header-top-border px-4 md:px-6">
+        <div className="container mx-auto flex h-12 items-center justify-between px-4 md:px-6 border-b border-header-top-border">
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2 no-underline shrink-0">
               <CircleDollarSign className="h-7 w-7 text-header-top-fg" />
@@ -140,10 +144,10 @@ export default function Header() {
             ) : (
               <>
                 <Link href="/login" passHref className="no-underline">
-                  <Button variant="outline" size="sm" className="text-header-top-fg border-header-top-fg/50 hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm font-medium rounded-md">Log In</Button>
+                  <Button variant="outline" className="text-header-top-fg border-header-top-fg/50 hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm font-medium rounded-md">Log In</Button>
                 </Link>
                 <Link href="/get-started" passHref className="no-underline">
-                  <Button variant="default" size="sm" className="bg-white text-header-top-bg hover:bg-white/90 rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent">Get Started</Button>
+                  <Button variant="default" className="bg-white text-header-top-bg hover:bg-white/90 rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent">Get Started</Button>
                 </Link>
               </>
             )}
@@ -190,6 +194,7 @@ export default function Header() {
                     )}
                     {navLinks.map(link => {
                       const isActive = pathname === link.href;
+                      const IconComponent = getIcon(link.iconName);
                       return (
                         <SheetClose key={`${link.href}-mobile`} asChild>
                           <Link
@@ -201,6 +206,7 @@ export default function Header() {
                                 : "text-header-bottom-fg/90 hover:bg-white/70 hover:text-header-bottom-fg"
                             )}
                           >
+                            {/* {IconComponent && <IconComponent className="mr-3 h-5 w-5" />} */}
                             {link.label}
                           </Link>
                         </SheetClose>
@@ -212,7 +218,7 @@ export default function Header() {
                           const SocialIcon = getIcon(link.iconName);
                           return (
                             <Link key={link.label} href={link.href} aria-label={link.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
-                              {SocialIcon && <SocialIcon className="h-5 w-5" />}
+                              {SocialIcon && <SocialIcon className="h-6 w-6" />}
                             </Link>
                           );
                         })}
@@ -248,40 +254,45 @@ export default function Header() {
 
       {/* Bottom Row - Boxed Sticky Navigation (Desktop Only) */}
       <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
-        <div className="container mx-auto flex items-center h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
+        <div className="container mx-auto flex items-center justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
+          {/* Main Navigation Links */}
           <nav className="flex flex-grow items-stretch h-full">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
+              // const IconComponent = getIcon(link.iconName);
               return (
                 <div
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-center justify-center", // Cell takes equal width and centers its content (the Link)
+                    "h-full flex flex-1 items-center justify-center", // Cell takes equal width & centers link
                     index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
                     href={link.href}
                     className={cn(
-                      "flex items-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 h-full w-full justify-center", // Link takes full width/height of cell and centers text
+                      "flex items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 h-full w-full", // Link fills cell, centers text
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
                       isActive
                         ? "bg-white text-primary rounded-md shadow-sm font-semibold"
-                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom"
+                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
                     )}
                   >
+                    {/* {IconComponent && <IconComponent className="mr-2 h-4 w-4" />} */}
                     {link.label}
                   </Link>
                 </div>
               );
             })}
           </nav>
-          <div className="flex items-center space-x-3 pl-4 border-l border-header-bottom-border h-full py-3">
+
+          {/* Social Media Icons */}
+          <div className="flex items-center space-x-5 px-8 py-3 border-l border-header-bottom-border h-full">
             {socialMediaLinks.map((link) => {
               const SocialIcon = getIcon(link.iconName);
               return (
                 <Link key={link.label} href={link.href} aria-label={link.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
-                  {SocialIcon && <SocialIcon className="h-5 w-5" />}
+                  {SocialIcon && <SocialIcon className="h-6 w-6" />}
                 </Link>
               );
             })}
@@ -291,4 +302,3 @@ export default function Header() {
     </header>
   );
 }
-
