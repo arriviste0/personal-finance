@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ShieldAlert, DollarSign, ListChecks, Trash2, Edit, X, Check } from "lucide-react";
+import { ShieldAlert, DollarSign, ListChecks, Trash2, Edit, X, Check, PlusCircle, MinusCircle } from "lucide-react"; // Added PlusCircle, MinusCircle
 import {
   Dialog,
   DialogContent,
@@ -24,11 +24,11 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from "@/hooks/use-toast";
-import { useWallet } from '@/contexts/WalletContext'; 
+import { useWallet } from '@/contexts/WalletContext';
 
 const EMERGENCY_FUND_ALLOCATION_ID = "emergencyFund";
 
-interface EmergencyFundTransaction { 
+interface EmergencyFundTransaction {
     id: string;
     date: string;
     type: 'deposit' | 'withdrawal';
@@ -49,14 +49,13 @@ export default function EmergencyFundPage() {
 
   const emergencyFundAllocation = allocations[EMERGENCY_FUND_ALLOCATION_ID];
   const currentFundAmount = emergencyFundAllocation?.amount || 0;
-  // Target amount for the emergency fund definition itself
   const [definedTargetAmount, setDefinedTargetAmount] = useState<number>(emergencyFundAllocation?.target || initialEmergencyFundTarget);
 
   const [transactions, setTransactions] = useState<EmergencyFundTransaction[]>(initialTransactions);
   const [isModifyFundOpen, setIsModifyFundOpen] = useState(false);
-  const [transactionAmount, setTransactionAmount] = useState<string>(''); // Stores input for deposit/withdrawal
+  const [transactionAmountInput, setTransactionAmountInput] = useState<string>('');
   const [transactionNotes, setTransactionNotes] = useState<string>('');
-  
+
   const [editingTargetInput, setEditingTargetInput] = useState<string>(definedTargetAmount.toString());
   const [isEditingTarget, setIsEditingTarget] = useState(false);
 
@@ -69,7 +68,7 @@ export default function EmergencyFundPage() {
   }, [currentFundAmount, definedTargetAmount]);
 
   const monthsOfExpensesCovered = useMemo(() => {
-      const averageMonthlyExpenses = 3000; 
+      const averageMonthlyExpenses = 3000;
       return currentFundAmount > 0 ? (currentFundAmount / averageMonthlyExpenses).toFixed(1) : '0.0';
   }, [currentFundAmount]);
 
@@ -81,15 +80,14 @@ export default function EmergencyFundPage() {
        const newTarget = parseFloat(editingTargetInput);
        if (!isNaN(newTarget) && newTarget >= 0) {
            setDefinedTargetAmount(newTarget);
-           // Update target in WalletContext's allocation
-           depositToAllocation(EMERGENCY_FUND_ALLOCATION_ID, "Emergency Fund", 0, newTarget); // 0 amount to only update target/name
+           depositToAllocation(EMERGENCY_FUND_ALLOCATION_ID, "Emergency Fund", 0, newTarget);
            setIsEditingTarget(false);
             toast({
                 title: "Target Updated",
                 description: `Emergency fund target set to ${formatCurrency(newTarget)}.`,
             });
        } else {
-           setEditingTargetInput(definedTargetAmount.toString()); // Revert to old value
+           setEditingTargetInput(definedTargetAmount.toString());
            toast({
                title: "Error",
                description: "Invalid target amount. Please enter a valid number.",
@@ -98,29 +96,27 @@ export default function EmergencyFundPage() {
        }
    };
 
-  const handleModifyFundSubmit = () => {
-      const amount = parseFloat(transactionAmount);
-      if (isNaN(amount) || amount === 0) { // Amount can be negative for withdrawal
-           toast({ title: "Error", description: "Please enter a valid, non-zero amount.", variant: "destructive" });
+  const handleTransaction = (type: 'deposit' | 'withdrawal') => {
+      const amount = Math.abs(parseFloat(transactionAmountInput));
+      if (isNaN(amount) || amount <= 0) {
+           toast({ title: "Invalid Amount", description: "Please enter a valid, positive amount.", variant: "destructive" });
            return;
       }
 
       let success = false;
-      const type = amount > 0 ? 'deposit' : 'withdrawal';
-      const absAmount = Math.abs(amount);
 
       if (type === 'deposit') {
-          if (walletBalance < absAmount) {
-            toast({ title: "Insufficient Wallet Balance", description: `Cannot deposit ${formatCurrency(absAmount)}. Available: ${formatCurrency(walletBalance)}.`, variant: "destructive"});
+          if (walletBalance < amount) {
+            toast({ title: "Insufficient Wallet Balance", description: `Cannot deposit ${formatCurrency(amount)}. Available: ${formatCurrency(walletBalance)}.`, variant: "destructive"});
             return;
           }
-          success = depositToAllocation(EMERGENCY_FUND_ALLOCATION_ID, "Emergency Fund", absAmount, definedTargetAmount);
+          success = depositToAllocation(EMERGENCY_FUND_ALLOCATION_ID, "Emergency Fund", amount, definedTargetAmount);
       } else { // Withdrawal
-          if (!allocations[EMERGENCY_FUND_ALLOCATION_ID] || allocations[EMERGENCY_FUND_ALLOCATION_ID].amount < absAmount) {
-             toast({ title: "Insufficient Emergency Funds", description: `Cannot withdraw ${formatCurrency(absAmount)}. Available in fund: ${formatCurrency(currentFundAmount)}.`, variant: "destructive"});
+          if (!allocations[EMERGENCY_FUND_ALLOCATION_ID] || allocations[EMERGENCY_FUND_ALLOCATION_ID].amount < amount) {
+             toast({ title: "Insufficient Emergency Funds", description: `Cannot withdraw ${formatCurrency(amount)}. Available in fund: ${formatCurrency(currentFundAmount)}.`, variant: "destructive"});
              return;
           }
-          success = withdrawFromAllocation(EMERGENCY_FUND_ALLOCATION_ID, absAmount);
+          success = withdrawFromAllocation(EMERGENCY_FUND_ALLOCATION_ID, amount);
       }
 
       if (success) {
@@ -128,23 +124,21 @@ export default function EmergencyFundPage() {
               id: Date.now().toString(),
               date: new Date().toISOString().split('T')[0],
               type: type,
-              amount: absAmount,
+              amount: amount,
               notes: transactionNotes.trim() || undefined,
           };
           setTransactions(prev => [newTransaction, ...prev]);
           setIsModifyFundOpen(false);
-          setTransactionAmount('');
+          setTransactionAmountInput('');
           setTransactionNotes('');
           toast({
                title: `Funds ${type === 'deposit' ? 'Added' : 'Withdrawn'}`,
-               description: `${formatCurrency(absAmount)} ${type === 'deposit' ? 'added to' : 'withdrawn from'} emergency fund.`,
+               description: `${formatCurrency(amount)} ${type === 'deposit' ? 'added to' : 'withdrawn from'} emergency fund.`,
            });
-      } 
-      // Error toasts are handled within depositToAllocation/withdrawFromAllocation or above checks
+      }
   };
 
     const handleDeleteTransaction = (id: string) => {
-        // This only removes from local history; does not affect WalletContext balance
         setTransactions(prev => prev.filter(tx => tx.id !== id));
         toast({
             title: "Transaction Removed",
@@ -175,14 +169,14 @@ export default function EmergencyFundPage() {
            <Dialog open={isModifyFundOpen} onOpenChange={setIsModifyFundOpen}>
              <DialogTrigger asChild>
                  <Button variant="primary" className="retro-button">
-                    <DollarSign className="mr-2 h-4 w-4" /> Add/Remove Funds
+                    <DollarSign className="mr-2 h-4 w-4" /> Modify Funds
                  </Button>
              </DialogTrigger>
               <DialogContent className="retro-window sm:max-w-[480px]">
                   <DialogHeader className="retro-window-header !bg-primary !text-primary-foreground">
                    <DialogTitle className="font-heading">Modify Emergency Fund</DialogTitle>
                     <DialogDescription className="!text-primary-foreground/80">
-                        Record a deposit or withdrawal. Current Wallet: {formatCurrency(walletBalance)}
+                        Current Wallet: {formatCurrency(walletBalance)}
                     </DialogDescription>
                     <div className="retro-window-controls">
                        <span className="!bg-primary !border-primary-foreground"></span>
@@ -197,26 +191,25 @@ export default function EmergencyFundPage() {
                  </DialogHeader>
                  <div className="space-y-4 p-4 retro-window-content !border-t-0">
                    <div className="grid grid-cols-4 items-center gap-3">
-                     <Label htmlFor="transactionAmount" className="text-right text-sm">Amount ($)</Label>
-                     <Input 
-                        id="transactionAmount" 
-                        type="number" 
-                        step="0.01" 
-                        value={transactionAmount} 
-                        onChange={(e) => setTransactionAmount(e.target.value)} 
-                        placeholder="e.g., 500 (deposit) or -200 (withdraw)" 
-                        className="col-span-3 retro-input" 
+                     <Label htmlFor="transactionAmountInput" className="text-right text-sm">Amount ($)</Label>
+                     <Input
+                        id="transactionAmountInput"
+                        type="number"
+                        step="0.01"
+                        value={transactionAmountInput}
+                        onChange={(e) => setTransactionAmountInput(e.target.value)}
+                        placeholder="e.g., 200"
+                        className="col-span-3 retro-input"
                      />
                    </div>
-                   <p className="col-start-2 col-span-3 text-xs text-muted-foreground -mt-2 pl-2">Enter a positive value to deposit, or a negative value to withdraw.</p>
                     <div className="grid grid-cols-4 items-start gap-3">
                      <Label htmlFor="transactionNotes" className="text-right text-sm pt-2">Notes <span className="text-xs text-muted-foreground">(Opt.)</span></Label>
-                      <Textarea 
-                        id="transactionNotes" 
-                        value={transactionNotes} 
-                        onChange={(e) => setTransactionNotes(e.target.value)} 
-                        placeholder="Reason for transaction..." 
-                        className="col-span-3 retro-textarea h-20" 
+                      <Textarea
+                        id="transactionNotes"
+                        value={transactionNotes}
+                        onChange={(e) => setTransactionNotes(e.target.value)}
+                        placeholder="Reason for transaction..."
+                        className="col-span-3 retro-textarea h-20"
                        />
                    </div>
                  </div>
@@ -224,8 +217,11 @@ export default function EmergencyFundPage() {
                      <DialogClose asChild>
                         <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
                      </DialogClose>
-                    <Button type="submit" variant="primary" className="retro-button" onClick={handleModifyFundSubmit}>
-                      Record Transaction
+                    <Button variant="outline" className="retro-button" onClick={() => handleTransaction('withdrawal')}>
+                      <MinusCircle className="mr-2 h-4 w-4"/> Withdraw
+                    </Button>
+                     <Button variant="primary" className="retro-button" onClick={() => handleTransaction('deposit')}>
+                      <PlusCircle className="mr-2 h-4 w-4"/> Deposit
                     </Button>
                  </DialogFooter>
                </DialogContent>
@@ -354,4 +350,3 @@ export default function EmergencyFundPage() {
     </div>
   );
 }
-

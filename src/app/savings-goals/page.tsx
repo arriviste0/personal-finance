@@ -46,7 +46,7 @@ interface SavingsGoalData {
   id: string;
   name: string;
   target: number;
-  iconName: string; // Store icon name for dynamic rendering
+  iconName: string;
   description: string;
 }
 
@@ -64,7 +64,7 @@ const iconMap: { [key: string]: React.ElementType } = {
 };
 
 const getIcon = (iconName: string, className?: string) => {
-  const IconComponent = iconMap[iconName] || DollarSign; // Default to DollarSign
+  const IconComponent = iconMap[iconName] || DollarSign;
   return <IconComponent className={cn("h-6 w-6", className)} />;
 };
 
@@ -76,7 +76,7 @@ export default function SavingsGoalsPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingGoalDef, setEditingGoalDef] = useState<SavingsGoalData | null>(null);
-  
+
   const [isAddFundsDialogOpen, setIsAddFundsDialogOpen] = useState(false);
   const [fundsGoalId, setFundsGoalId] = useState<string | null>(null);
   const [transactionAmount, setTransactionAmount] = useState('');
@@ -88,10 +88,7 @@ export default function SavingsGoalsPage() {
       id: Date.now().toString(),
     };
     setGoalDefinitions([...goalDefinitions, newGoalDef]);
-    // No initial deposit here, user has to do it via "Manage Funds"
-    // Ensure the allocation is initialized in the context when a new goal is created
-    // Deposit 0 to initialize it with the target and name
-    depositToAllocation(newGoalDef.id, newGoalDef.name, 0, newGoalDef.target); 
+    depositToAllocation(newGoalDef.id, newGoalDef.name, 0, newGoalDef.target);
     setIsCreateDialogOpen(false);
     toast({ title: "Goal Created!", description: `"${newGoalDef.name}" has been added.`});
   };
@@ -100,10 +97,8 @@ export default function SavingsGoalsPage() {
      if (!editingGoalDef) return;
     setGoalDefinitions(goalDefinitions.map(g => g.id === updatedGoalData.id ? updatedGoalData : g));
     const currentAllocation = allocations[updatedGoalData.id];
-    // Update target/name in allocation without changing amount directly here
-    // This is a bit simplistic, ideally target changes might trigger AI review or prompts
-    depositToAllocation(updatedGoalData.id, updatedGoalData.name, 0, updatedGoalData.target); 
-    
+    depositToAllocation(updatedGoalData.id, updatedGoalData.name, 0, updatedGoalData.target);
+
     setIsEditDialogOpen(false);
     setEditingGoalDef(null);
     toast({ title: "Goal Updated!", description: `"${updatedGoalData.name}" has been updated.`});
@@ -113,18 +108,16 @@ export default function SavingsGoalsPage() {
     const goalDefToDelete = goalDefinitions.find(g => g.id === goalId);
     const goalToReturnFundsFrom = allocations[goalId];
     if (goalToReturnFundsFrom && goalToReturnFundsFrom.amount > 0) {
-        withdrawFromAllocation(goalId, goalToReturnFundsFrom.amount); // Return all funds to wallet
+        withdrawFromAllocation(goalId, goalToReturnFundsFrom.amount);
         toast({ title: "Funds Returned", description: `Funds from "${goalToReturnFundsFrom.name}" returned to main wallet.`});
     }
     setGoalDefinitions(goalDefinitions.filter(g => g.id !== goalId));
-    // Optionally, explicitly remove from allocations in WalletContext if not handled by 0 amount withdrawal
-    // For now, withdrawing all funds effectively "deletes" its balance tracking there.
     toast({ title: "Goal Deleted", description: `"${goalDefToDelete?.name || 'The goal'}" has been removed.`, variant: "default" });
   };
 
    const handleModifyFundsSubmit = () => {
-     const amount = parseFloat(transactionAmount);
-     if (!fundsGoalId || isNaN(amount) || amount === 0) {
+     const amountFloat = parseFloat(transactionAmount);
+     if (!fundsGoalId || isNaN(amountFloat) || amountFloat === 0) {
          toast({ title: "Invalid Input", description: "Please select a goal and enter a valid, non-zero amount.", variant: "destructive"});
          return;
      }
@@ -135,21 +128,21 @@ export default function SavingsGoalsPage() {
      }
 
      let success = false;
-     if (amount > 0) { // Deposit
-        if (walletBalance < amount) {
-            toast({ title: "Insufficient Wallet Balance", description: `Cannot deposit ${formatCurrency(amount)}. Available: ${formatCurrency(walletBalance)}.`, variant: "destructive"});
+     const absAmount = Math.abs(amountFloat);
+
+     if (amountFloat > 0) { // Deposit
+        if (walletBalance < absAmount) {
+            toast({ title: "Insufficient Wallet Balance", description: `Cannot deposit ${formatCurrency(absAmount)}. Available: ${formatCurrency(walletBalance)}.`, variant: "destructive"});
             return;
         }
-        success = depositToAllocation(fundsGoalId, goalDef.name, amount, goalDef.target);
-        if (success) toast({title: "Funds Added", description: `${formatCurrency(amount)} added to "${goalDef.name}".`});
+        success = depositToAllocation(fundsGoalId, goalDef.name, absAmount, goalDef.target);
+        if (success) toast({title: "Funds Added", description: `${formatCurrency(absAmount)} added to "${goalDef.name}".`});
      } else { // Withdraw
-        const absAmount = Math.abs(amount);
         const currentAllocation = allocations[fundsGoalId];
         if (!currentAllocation || currentAllocation.amount < absAmount) {
              toast({title: "Withdrawal Failed", description: `Insufficient funds in "${goalDef.name}" to withdraw. Available: ${formatCurrency(currentAllocation?.amount || 0)}.`, variant: "destructive"});
              return;
         }
-        // Prevent withdrawal from incomplete goals
         if (currentAllocation.amount < goalDef.target) {
             toast({
                 title: "Withdrawal Restricted",
@@ -178,7 +171,7 @@ export default function SavingsGoalsPage() {
      setFundsGoalId(goalId);
      setIsAddFundsDialogOpen(true);
    };
-   
+
    const formatCurrency = (amount: number) => {
     return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
@@ -289,7 +282,7 @@ export default function SavingsGoalsPage() {
             )
         })}
 
-         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}> {/*This might be redundant if the main button is already a trigger, review if needed */}
+         <Dialog open={isCreateDialogOpen && !editingGoalDef} onOpenChange={(open) => { if(!open) setIsCreateDialogOpen(false); else setIsCreateDialogOpen(true);}}>
             <DialogTrigger asChild>
                  <button className="retro-card flex flex-col items-center justify-center p-6 min-h-[240px] text-center group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:shadow-[4px_4px_0px_0px_hsl(var(--ring))] transition-shadow duration-200 hover:shadow-[6px_6px_0px_0px_hsl(var(--primary))]">
                     <div className="retro-card-header w-full !bg-muted">
@@ -341,16 +334,16 @@ export default function SavingsGoalsPage() {
                  <Label htmlFor={`modify-amount-${fundsGoalId}`} className="text-right">
                    Amount ($)
                  </Label>
-                 <Input 
-                    id={`modify-amount-${fundsGoalId}`} 
-                    type="number" 
-                    placeholder="e.g., 50 (deposit) or -20 (withdraw)" 
-                    className="col-span-3 retro-input" 
+                 <Input
+                    id={`modify-amount-${fundsGoalId}`}
+                    type="number"
+                    placeholder="e.g., 50 (deposit) or -20 (withdraw from completed goal)"
+                    className="col-span-3 retro-input"
                     value={transactionAmount}
                     onChange={(e) => setTransactionAmount(e.target.value)}
                   />
                </div>
-                <p className="text-xs text-muted-foreground text-center px-4">Enter a positive value to add funds, or a negative value to withdraw. Withdrawal from incomplete goals is restricted.</p>
+                <p className="text-xs text-muted-foreground text-center px-4">Enter a positive value to add funds. To withdraw funds (only from a completed goal), enter a negative value (e.g., -20).</p>
              </div>
              <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                <DialogClose asChild>
@@ -369,7 +362,7 @@ export default function SavingsGoalsPage() {
 interface GoalFormDialogProps {
   title: string;
   description: string;
-  goal?: SavingsGoalData; 
+  goal?: SavingsGoalData;
   onSave: (data: any) => void;
   onClose: () => void;
 }
@@ -406,9 +399,9 @@ function GoalFormDialog({ title, description, goal, onSave, onClose }: GoalFormD
 
   const handleSave = () => {
     if (validateForm()) {
-        if (goal) { // Editing existing goal definition
+        if (goal) {
             onSave({ ...goal, ...formData });
-        } else { // Creating new goal definition
+        } else {
             onSave(formData);
         }
     }
@@ -472,6 +465,3 @@ function GoalFormDialog({ title, description, goal, onSave, onClose }: GoalFormD
     </DialogContent>
   );
 }
-
-
-    
