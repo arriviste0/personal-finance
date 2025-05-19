@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ShieldAlert, DollarSign, ListChecks, Trash2, Edit, X, Check, PlusCircle, MinusCircle } from "lucide-react"; // Added PlusCircle, MinusCircle
+import { ShieldAlert, DollarSign, ListChecks, Trash2, Edit, Check, X, PlusCircle, MinusCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +19,17 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { format, parseISO } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
@@ -80,7 +91,8 @@ export default function EmergencyFundPage() {
        const newTarget = parseFloat(editingTargetInput);
        if (!isNaN(newTarget) && newTarget >= 0) {
            setDefinedTargetAmount(newTarget);
-           depositToAllocation(EMERGENCY_FUND_ALLOCATION_ID, "Emergency Fund", 0, newTarget);
+           // Update target in context if it exists, otherwise create new allocation context entry
+           depositToAllocation(EMERGENCY_FUND_ALLOCATION_ID, "Emergency Fund", 0, newTarget); // Using 0 amount to just update target
            setIsEditingTarget(false);
             toast({
                 title: "Target Updated",
@@ -97,7 +109,7 @@ export default function EmergencyFundPage() {
    };
 
   const handleTransaction = (type: 'deposit' | 'withdrawal') => {
-      const amount = Math.abs(parseFloat(transactionAmountInput));
+      const amount = Math.abs(parseFloat(transactionAmountInput)); // Always use positive amount for logic
       if (isNaN(amount) || amount <= 0) {
            toast({ title: "Invalid Amount", description: "Please enter a valid, positive amount.", variant: "destructive" });
            return;
@@ -139,6 +151,7 @@ export default function EmergencyFundPage() {
   };
 
     const handleDeleteTransaction = (id: string) => {
+        // Note: This only deletes from local log. For full functionality, this would also adjust balances.
         setTransactions(prev => prev.filter(tx => tx.id !== id));
         toast({
             title: "Transaction Removed",
@@ -196,6 +209,7 @@ export default function EmergencyFundPage() {
                         id="transactionAmountInput"
                         type="number"
                         step="0.01"
+                        min="0"
                         value={transactionAmountInput}
                         onChange={(e) => setTransactionAmountInput(e.target.value)}
                         placeholder="e.g., 200"
@@ -217,9 +231,28 @@ export default function EmergencyFundPage() {
                      <DialogClose asChild>
                         <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
                      </DialogClose>
-                    <Button variant="outline" className="retro-button" onClick={() => handleTransaction('withdrawal')}>
-                      <MinusCircle className="mr-2 h-4 w-4"/> Withdraw
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                         <Button variant="outline" className="retro-button">
+                           <MinusCircle className="mr-2 h-4 w-4"/> Withdraw
+                         </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="retro-window">
+                        <AlertDialogHeader className="retro-window-header !bg-destructive !text-destructive-foreground">
+                          <AlertDialogTitle>Confirm Withdrawal</AlertDialogTitle>
+                           <div className="retro-window-controls"><span></span><span></span></div>
+                        </AlertDialogHeader>
+                        <AlertDialogDescription className="retro-window-content !border-t-0 pt-2">
+                           Are you sure you want to withdraw {formatCurrency(parseFloat(transactionAmountInput) || 0)} from your emergency fund?
+                        </AlertDialogDescription>
+                        <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
+                          <AlertDialogCancel asChild><Button variant="secondary" className="retro-button">Cancel</Button></AlertDialogCancel>
+                          <AlertDialogAction asChild>
+                            <Button variant="destructive" className="retro-button" onClick={() => handleTransaction('withdrawal')}>Yes, Withdraw</Button>
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                      <Button variant="primary" className="retro-button" onClick={() => handleTransaction('deposit')}>
                       <PlusCircle className="mr-2 h-4 w-4"/> Deposit
                     </Button>
