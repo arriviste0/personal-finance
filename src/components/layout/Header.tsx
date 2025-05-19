@@ -25,7 +25,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetHeader, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
@@ -74,7 +74,7 @@ export default function Header() {
       const isActive = pathname === href;
       return cn(
         "text-sm font-medium text-header-bottom-fg/80 hover:text-primary transition-colors px-3 py-2",
-        isActive && "text-primary font-semibold bg-white rounded-md shadow-sm",
+        isActive && "bg-white text-header-bottom-fg rounded-md shadow-sm font-semibold",
         !isActive && "hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
       );
     };
@@ -130,7 +130,7 @@ export default function Header() {
              ) : (
                <>
                  <Link href="/login" passHref className="no-underline">
-                   <Button variant="link" size="sm" className="text-header-top-fg hover:text-header-top-fg/80 px-3 py-1.5 text-sm font-medium">Log In</Button>
+                   <Button variant="outline" size="sm" className="text-header-top-fg border-header-top-fg/50 hover:bg-header-top-fg/10 hover:text-header-top-fg px-3 py-1.5 text-sm font-medium rounded-md">Log In</Button>
                  </Link>
                  <Link href="/get-started" passHref className="no-underline">
                     <Button variant="default" size="sm" className="bg-white text-header-top-bg hover:bg-white/90 rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent">Get Started</Button>
