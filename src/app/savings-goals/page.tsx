@@ -28,7 +28,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"; // AlertDialogTrigger is not needed here if DialogTrigger is used
+  AlertDialogTrigger, // Added AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 import {
   Select,
   SelectContent,
@@ -88,6 +89,9 @@ export default function SavingsGoalsPage() {
     };
     setGoalDefinitions([...goalDefinitions, newGoalDef]);
     // No initial deposit here, user has to do it via "Manage Funds"
+    // Ensure the allocation is initialized in the context when a new goal is created
+    // Deposit 0 to initialize it with the target and name
+    depositToAllocation(newGoalDef.id, newGoalDef.name, 0, newGoalDef.target); 
     setIsCreateDialogOpen(false);
     toast({ title: "Goal Created!", description: `"${newGoalDef.name}" has been added.`});
   };
@@ -96,58 +100,67 @@ export default function SavingsGoalsPage() {
      if (!editingGoalDef) return;
     setGoalDefinitions(goalDefinitions.map(g => g.id === updatedGoalData.id ? updatedGoalData : g));
     const currentAllocation = allocations[updatedGoalData.id];
-    if(currentAllocation) {
-        // Update target/name in allocation without changing amount directly here
-        // This is a bit simplistic, ideally target changes might trigger AI review or prompts
-        depositToAllocation(updatedGoalData.id, updatedGoalData.name, 0, updatedGoalData.target); 
-    }
+    // Update target/name in allocation without changing amount directly here
+    // This is a bit simplistic, ideally target changes might trigger AI review or prompts
+    depositToAllocation(updatedGoalData.id, updatedGoalData.name, 0, updatedGoalData.target); 
+    
     setIsEditDialogOpen(false);
     setEditingGoalDef(null);
     toast({ title: "Goal Updated!", description: `"${updatedGoalData.name}" has been updated.`});
   };
 
   const handleDeleteGoal = (goalId: string) => {
+    const goalDefToDelete = goalDefinitions.find(g => g.id === goalId);
     const goalToReturnFundsFrom = allocations[goalId];
     if (goalToReturnFundsFrom && goalToReturnFundsFrom.amount > 0) {
         withdrawFromAllocation(goalId, goalToReturnFundsFrom.amount); // Return all funds to wallet
         toast({ title: "Funds Returned", description: `Funds from "${goalToReturnFundsFrom.name}" returned to main wallet.`});
     }
     setGoalDefinitions(goalDefinitions.filter(g => g.id !== goalId));
-    // Also remove from allocations in WalletContext if necessary (or WalletContext handles it)
+    // Optionally, explicitly remove from allocations in WalletContext if not handled by 0 amount withdrawal
     // For now, withdrawing all funds effectively "deletes" its balance tracking there.
-    toast({ title: "Goal Deleted", description: "The savings goal has been removed.", variant: "destructive" });
+    toast({ title: "Goal Deleted", description: `"${goalDefToDelete?.name || 'The goal'}" has been removed.`, variant: "default" });
   };
 
    const handleModifyFundsSubmit = () => {
      const amount = parseFloat(transactionAmount);
      if (!fundsGoalId || isNaN(amount) || amount === 0) {
-         toast({ title: "Invalid Input", description: "Please select a goal and enter a valid amount.", variant: "destructive"});
+         toast({ title: "Invalid Input", description: "Please select a goal and enter a valid, non-zero amount.", variant: "destructive"});
          return;
      }
      const goalDef = goalDefinitions.find(g => g.id === fundsGoalId);
-     if(!goalDef) return;
+     if(!goalDef) {
+         toast({ title: "Error", description: "Goal definition not found.", variant: "destructive"});
+         return;
+     }
 
      let success = false;
      if (amount > 0) { // Deposit
-        success = depositToAllocation(fundsGoalId, goalDef.name, amount, goalDef.target);
-        if (success) toast({title: "Funds Added", description: `$${amount.toLocaleString()} added to "${goalDef.name}".`});
-     } else { // Withdraw
-        const currentAllocation = allocations[fundsGoalId];
-        if (currentAllocation && currentAllocation.amount >= Math.abs(amount)) {
-            if(currentAllocation.amount < goalDef.target) {
-                 toast({
-                    title: "Withdrawal Restricted",
-                    description: `Cannot withdraw from "${goalDef.name}" as the goal is not yet complete. Complete the goal to unlock funds or adjust the goal target.`,
-                    variant: "destructive",
-                    duration: 7000,
-                });
-                return; // Prevent withdrawal from incomplete goals
-            }
-            success = withdrawFromAllocation(fundsGoalId, Math.abs(amount));
-            if (success) toast({title: "Funds Withdrawn", description: `$${Math.abs(amount).toLocaleString()} withdrawn from "${goalDef.name}".`});
-        } else {
-             toast({title: "Withdrawal Failed", description: "Insufficient funds in this goal or goal not found.", variant: "destructive"});
+        if (walletBalance < amount) {
+            toast({ title: "Insufficient Wallet Balance", description: `Cannot deposit ${formatCurrency(amount)}. Available: ${formatCurrency(walletBalance)}.`, variant: "destructive"});
+            return;
         }
+        success = depositToAllocation(fundsGoalId, goalDef.name, amount, goalDef.target);
+        if (success) toast({title: "Funds Added", description: `${formatCurrency(amount)} added to "${goalDef.name}".`});
+     } else { // Withdraw
+        const absAmount = Math.abs(amount);
+        const currentAllocation = allocations[fundsGoalId];
+        if (!currentAllocation || currentAllocation.amount < absAmount) {
+             toast({title: "Withdrawal Failed", description: `Insufficient funds in "${goalDef.name}" or goal not found.`, variant: "destructive"});
+             return;
+        }
+        // Prevent withdrawal from incomplete goals
+        if (currentAllocation.amount < goalDef.target) {
+            toast({
+                title: "Withdrawal Restricted",
+                description: `Cannot withdraw from "${goalDef.name}" as the goal is not yet complete. Complete the goal to unlock funds or adjust the goal target.`,
+                variant: "destructive",
+                duration: 7000,
+            });
+            return;
+        }
+        success = withdrawFromAllocation(fundsGoalId, absAmount);
+        if (success) toast({title: "Funds Withdrawn", description: `${formatCurrency(absAmount)} withdrawn from "${goalDef.name}".`});
      }
      if (success) {
         setIsAddFundsDialogOpen(false);
@@ -165,6 +178,10 @@ export default function SavingsGoalsPage() {
      setFundsGoalId(goalId);
      setIsAddFundsDialogOpen(true);
    };
+   
+   const formatCurrency = (amount: number) => {
+    return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
 
    const currentFundsGoalDef = goalDefinitions.find(g => g.id === fundsGoalId);
    const currentFundsGoalAllocation = fundsGoalId ? allocations[fundsGoalId] : null;
@@ -304,9 +321,9 @@ export default function SavingsGoalsPage() {
              <DialogHeader className="retro-window-header !bg-accent !text-accent-foreground">
                <DialogTitle>Manage Funds: {currentFundsGoalDef?.name}</DialogTitle>
                <DialogDescription className="!text-accent-foreground/90">
-                 Current: ${currentFundsGoalAllocation?.amount.toLocaleString() || '0.00'} / Target: ${currentFundsGoalDef?.target.toLocaleString() || '0.00'}
+                 Current: {currentFundsGoalAllocation ? formatCurrency(currentFundsGoalAllocation.amount) : '$0.00'} / Target: {currentFundsGoalDef ? formatCurrency(currentFundsGoalDef.target) : '$0.00'}
                  <br/>
-                 Available in Wallet: ${walletBalance.toLocaleString()}
+                 Available in Wallet: {formatCurrency(walletBalance)}
                </DialogDescription>
                <div className="retro-window-controls">
                    <span className="!bg-accent !border-accent-foreground"></span>
@@ -455,3 +472,6 @@ function GoalFormDialog({ title, description, goal, onSave, onClose }: GoalFormD
     </DialogContent>
   );
 }
+
+
+    
