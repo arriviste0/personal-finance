@@ -8,103 +8,82 @@
 
 @layer base {
   :root {
-    /* FinCo - Modern & Clean Theme (Inspired by Chorke Visuals) */
-    --background: 0 0% 100%; /* White / Very Light Gray */
-    --foreground: 220 15% 20%; /* Dark Blue-Gray for text */
+    /* FinCo - Modern & Clean Theme */
+    --background: 0 0% 98%; /* Very light gray / Off-white for a clean, modern feel */
+    --foreground: 220 15% 20%; /* Dark Blue-Gray for text, slightly softer than pure black */
 
-    --card: 0 0% 100%;
+    --card: 0 0% 100%; /* White cards */
     --card-foreground: 220 15% 20%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 20%;
 
-    /* Primary Accent - Can be a professional blue or green, or black for buttons */
-    --primary: 210 70% 55%; /* Defaulting to a trustworthy blue */
-    --primary-foreground: 0 0% 100%;
+    /* Primary Accent - A trustworthy and modern blue */
+    --primary: 210 70% 55%;
+    --primary-foreground: 0 0% 100%; /* White text on primary */
 
     /* Secondary can be used for subtle accents or alternative button states */
-    --secondary: 210 30% 94%; /* Light Cool Gray */
-    --secondary-foreground: 220 15% 25%;
+    --secondary: 145 60% 45%; /* A calm, professional green */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 30% 97%; /* Very Light Gray - for muted backgrounds/borders */
-    --muted-foreground: 215 20% 55%; /* Medium Gray */
+    --muted: 210 30% 96%; /* Very Light Cool Gray - for muted backgrounds/borders */
+    --muted-foreground: 215 20% 50%; /* Medium Gray */
 
-    /* Accent for CTAs or highlights - Chorke uses bright yellow */
-    --accent: 45 100% 50%; /* Bright Yellow */
-    --accent-foreground: 220 15% 10%; /* Dark text on yellow */
+    /* Accent for CTAs or highlights - A warm, inviting yellow/gold */
+    --accent: 40 90% 55%;
+    --accent-foreground: 220 15% 10%; /* Dark text on accent */
 
     --destructive: 0 70% 55%; /* Clear Red */
     --destructive-foreground: 0 0% 100%;
 
     --border: 210 20% 88%; /* Softer Grey Border for cards and inputs */
-    --input: 210 30% 96%;   /* Lighter Grey Input Background */
-    --ring: 210 70% 55%; /* Blue for focus rings */
+    --input: 210 30% 97%;   /* Lighter Grey Input Background */
+    --ring: hsl(var(--primary)); /* Ring color matches primary */
 
     /* Chart Colors - Professional & Clear */
     --chart-1: hsl(var(--primary));
-    --chart-2: 145 60% 45%;
+    --chart-2: hsl(var(--secondary));
     --chart-3: hsl(var(--accent));
-    --chart-4: 260 60% 65%;
-    --chart-5: 190 65% 55%;
-    --chart-6: 0 0% 60%;
+    --chart-4: 260 60% 65%; /* A complementary purple */
+    --chart-5: 190 65% 55%; /* A teal/cyan */
+    --chart-6: 0 0% 60%; /* Neutral gray for other chart elements */
 
-    --radius: 0.75rem; /* Slightly larger radius for softer corners */
+    --radius: 0rem; /* Changed from 0.75rem to 0rem for sharp corners on elements using this */
+
     --font-sans: 'Inter', system-ui, sans-serif;
     --font-heading: 'Poppins', system-ui, sans-serif;
-    --font-pixel: 'Press Start 2P', cursive; /* Chorke-inspired pixel font */
+    --font-pixel: 'Press Start 2P', cursive;
 
-
-    /* Specific theme colors inspired by Chorke (can be used for section backgrounds) */
-    --chorke-bg-dark: 230 25% 12%; /* Dark background for the page */
-    --chorke-text-primary: 0 0% 95%; /* Off-white for primary text on dark bg */
-    --chorke-text-secondary: 230 15% 75%; /* Lighter gray for secondary text */
-
-    --chorke-accent-yellow: 45 100% 50%;
-    --chorke-accent-green: 150 70% 50%; /* A vibrant green/teal */
-    --chorke-accent-pink: 320 80% 85%;  /* Light pink/lavender */
-    --chorke-accent-blue: 200 80% 90%;  /* Light blue/gray */
-    --chorke-card-border: 230 15% 35%; /* Slightly lighter border for cards on dark bg */
-    --chorke-card-bg: 230 20% 18%;     /* Card background slightly lighter than page bg */
-
-    /* Pastel backgrounds for sections (if not using the dark theme for the whole page) */
-    --pastel-pink: 340 80% 96%;
-    --pastel-blue: 200 70% 95%;
-    --pastel-green: 140 50% 95%;
-    --pastel-purple: 270 60% 96%;
-    --pastel-yellow: 50 100% 92%;
-
-
-    /* FinCo Professional Light Theme */
-    --background-light: 0 0% 98%; /* Very light gray / Off-white */
-    --foreground-light: 220 15% 15%; /* Very dark blue for high contrast text */
-
-    --card-light: 0 0% 100%; /* White cards */
-    --card-foreground-light: 220 15% 15%;
-
-    --primary-light: 210 70% 55%; /* Classic Blue - Trustworthy */
-    --primary-foreground-light: 0 0% 100%; /* White */
-
-    --secondary-light: 145 60% 45%; /* Calming Green - Growth, Money */
-    --secondary-foreground-light: 0 0% 100%; /* White */
-
-    --accent-light: 35 85% 58%; /* Warm Orange/Gold - Action, Value */
-    --accent-foreground-light: 220 15% 15%;
-
-    --border-light: 210 25% 90%; /* Softer Grey Border */
-    --input-light: 0 0% 100%;   /* White Input Background with border */
-    --ring-light: hsl(var(--primary-light));
-
-    /* Header specific (Podportal inspired) */
-    --header-top-bg: 210 70% 55%;       /* Blue */
+    /* Header specific colors (Podportal inspired) */
+    --header-top-bg: 210 70% 55%; /* Blue */
     --header-top-fg: 0 0% 100%;         /* White */
     --header-top-border: 210 70% 45%;   /* Darker Blue */
 
     --header-bottom-bg: 0 0% 97%; /* Very Light Gray/Off-white */
     --header-bottom-fg: 220 15% 25%; /* Dark text for bottom bar */
     --header-bottom-border: 210 20% 88%; /* Standard border color */
+
+    /* Dashboard specific card header colors */
+    --dashboard-pink-header-bg: 330 80% 96%; /* Light Pink */
+    --dashboard-pink-header-fg: 330 50% 30%; /* Darker Pink for text */
+    --dashboard-purple-header-bg: 270 70% 95%; /* Light Purple/Lavender */
+    --dashboard-purple-header-fg: 270 40% 28%; /* Darker Purple for text */
+    --dashboard-blue-header-bg: 200 80% 94%;  /* Light Blue */
+    --dashboard-blue-header-fg: 200 50% 25%;  /* Darker Blue for text */
+
+     /* Chorke-inspired theme colors (kept for reference or specific components) */
+    --chorke-bg-dark: 230 25% 12%;
+    --chorke-text-primary: 0 0% 95%;
+    --chorke-text-secondary: 230 15% 75%;
+    --chorke-accent-yellow: 45 100% 50%; /* Bright Yellow */
+    --chorke-accent-green: 150 70% 45%;  /* Vibrant Green/Teal */
+    --chorke-accent-pink: 320 80% 88%;   /* Light Pink/Lavender */
+    --chorke-accent-blue: 200 80% 92%;   /* Light Blue/Gray */
+    --chorke-card-border: 230 15% 35%;
+    --chorke-card-bg: 230 20% 18%;
+    --chorke-dark-text: 230 25% 12%; /* For text on light Chorke accent backgrounds */
   }
 
-  /* Apply Chorke dark theme if .dark class is on html/body */
   .dark {
     --background: var(--chorke-bg-dark);
     --foreground: var(--chorke-text-primary);
@@ -114,33 +93,41 @@
     --popover-foreground: var(--chorke-text-primary);
 
     --primary: var(--chorke-accent-yellow);
-    --primary-foreground: var(--chorke-bg-dark); /* Dark text on yellow */
+    --primary-foreground: var(--chorke-dark-text);
 
     --secondary: var(--chorke-accent-green);
-    --secondary-foreground: var(--chorke-bg-dark); /* Dark text on green */
+    --secondary-foreground: var(--chorke-dark-text);
 
-    --muted: 230 15% 25%; /* Darker muted background */
-    --muted-foreground: var(--chorke-text-secondary); /* Lighter text for muted */
+    --muted: 230 15% 25%;
+    --muted-foreground: var(--chorke-text-secondary);
 
     --accent: var(--chorke-accent-pink);
-    --accent-foreground: var(--chorke-bg-dark); /* Dark text on pink */
+    --accent-foreground: var(--chorke-dark-text);
 
-    --destructive: 0 60% 50%; /* Slightly adjusted destructive for dark mode */
+    --destructive: 0 60% 50%;
     --destructive-foreground: var(--chorke-text-primary);
 
     --border: var(--chorke-card-border);
-    --input: 230 15% 22%; /* Darker input background */
-    --input-border: var(--chorke-card-border); /* Use card border for inputs */
-    --ring: var(--chorke-accent-yellow); /* Ring color matches primary accent */
+    --input: 230 15% 22%;
+    --input-border: var(--chorke-card-border);
+    --ring: var(--chorke-accent-yellow);
 
-    /* Override header colors for dark mode if needed, or they can inherit */
-    --header-top-bg: 230 20% 15%; /* Slightly darker than card for top header */
+    /* Override header colors for dark mode if needed */
+    --header-top-bg: 230 20% 15%;
     --header-top-fg: var(--chorke-text-primary);
     --header-top-border: var(--chorke-card-border);
 
-    --header-bottom-bg: var(--chorke-card-bg); /* Card bg for bottom nav */
+    --header-bottom-bg: var(--chorke-card-bg);
     --header-bottom-fg: var(--chorke-text-primary);
     --header-bottom-border: var(--chorke-card-border);
+
+    /* Update dashboard card header colors for dark mode */
+    --dashboard-pink-header-bg: var(--chorke-accent-pink);
+    --dashboard-pink-header-fg: var(--chorke-dark-text);
+    --dashboard-purple-header-bg: 270 30% 25%; /* Darker purple for dark mode */
+    --dashboard-purple-header-fg: var(--chorke-text-primary);
+    --dashboard-blue-header-bg: var(--chorke-accent-blue);
+    --dashboard-blue-header-fg: var(--chorke-dark-text);
   }
 }
 
@@ -155,7 +142,6 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-semibold tracking-tight text-foreground;
-    /* In dark mode, this will correctly use --chorke-text-primary */
   }
 
   h1 { @apply text-3xl sm:text-4xl md:text-5xl; }
@@ -163,15 +149,13 @@
   h3 { @apply text-xl sm:text-2xl md:text-3xl; }
   h4 { @apply text-lg sm:text-xl md:text-2xl; }
 
-  p, li, td, label, span, div, a { /* Removed button, input, select, textarea, legend from here to allow component-specific font styling */
+  p, li, td, label, span, div {
      @apply text-sm sm:text-base;
      font-family: var(--font-sans);
   }
-  /* Ensure form elements and buttons use sans font by default if not overridden by component styles */
   button, input, select, textarea, legend {
     font-family: var(--font-sans);
   }
-
 
   a {
     @apply text-primary no-underline;
@@ -183,23 +167,22 @@
     @apply underline underline-offset-4;
   }
 
-  /* Focus visible styles for better accessibility */
   *:focus-visible {
      @apply ring-2 ring-ring ring-offset-2 ring-offset-background outline-none;
   }
 }
 
-/* FinCo/Chorke UI Components Styling */
+/* FinCo Modern UI Components Styling */
 @layer components {
-  /* Pill-shaped buttons (FinCo Modern Style) */
+  /* Pill-shaped buttons */
   .btn {
     @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed;
     @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
-  .btn-primary { /* Black button with white text */
+  .btn-primary { /* Black button with white text for strong CTAs */
     @apply bg-foreground text-background shadow-md hover:bg-foreground/90 active:scale-95;
   }
-  .btn-secondary { /* Accent color button (yellow in Chorke, or a theme secondary) */
+  .btn-secondary { /* Accent color button (e.g., yellow or green) */
     @apply bg-accent text-accent-foreground shadow-md hover:bg-accent/90 active:scale-95;
   }
   .btn-outline-primary {
@@ -212,9 +195,9 @@
   .btn-lg { @apply px-8 py-3 text-base; }
   .btn-icon { @apply p-2.5; }
 
-  /* Modern Cards with fine borders and curved corners (FinCo Modern Style) */
+  /* Modern Cards with fine borders and slightly curved corners (or sharp if --radius is 0) */
   .finco-card {
-    @apply bg-card border border-border rounded-xl shadow-lg transition-all duration-200 hover:shadow-xl;
+    @apply bg-card border border-border rounded-[var(--radius)] shadow-lg transition-all duration-200 hover:shadow-xl;
   }
   .finco-card-header { @apply p-5 border-b border-border; }
   .finco-card-title { @apply text-lg font-semibold font-heading text-card-foreground; }
@@ -222,12 +205,12 @@
   .finco-card-content { @apply p-5; }
   .finco-card-footer { @apply p-5 border-t border-border flex items-center; }
 
-  /* Inputs with modern styling (FinCo Modern Style) */
+  /* Inputs with modern styling */
   .finco-input {
-    @apply flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply flex h-10 w-full rounded-[var(--radius)] border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
-  /* Chorke specific card styling (if dark theme is primary or for specific sections) */
+  /* Chorke-inspired specific card styling (if dark theme is primary or for specific sections) */
   .chorke-card {
     @apply bg-chorke-card-bg border border-chorke-card-border rounded-xl p-6 transition-all duration-300 hover:shadow-2xl hover:border-chorke-accent-yellow;
   }
@@ -238,22 +221,35 @@
     @apply text-chorke-text-secondary mb-4;
   }
   .chorke-button-outline {
-    @apply font-sans inline-flex items-center justify-center rounded-full border-2 border-chorke-accent-yellow px-6 py-2.5 text-sm font-medium text-chorke-accent-yellow transition-colors hover:bg-chorke-accent-yellow hover:text-chorke-bg-dark;
+    @apply font-sans inline-flex items-center justify-center rounded-full border-2 border-chorke-accent-yellow px-6 py-2.5 text-sm font-medium text-chorke-accent-yellow transition-colors hover:bg-chorke-accent-yellow hover:text-chorke-dark-text;
   }
   .chorke-button-solid {
-    @apply font-sans inline-flex items-center justify-center rounded-full bg-chorke-accent-yellow px-6 py-2.5 text-sm font-medium text-chorke-bg-dark transition-colors hover:bg-yellow-300;
+    @apply font-sans inline-flex items-center justify-center rounded-full bg-chorke-accent-yellow px-6 py-2.5 text-sm font-medium text-chorke-dark-text transition-colors hover:bg-yellow-300;
   }
 
-  /* Retro UI Components (Base ShadCN styles are mostly retro-compatible, but we customize further) */
+  /* Retro UI Components (adapted for FinCo's modern-retro feel) */
    .retro-button {
       @apply inline-flex items-center justify-center px-4 py-2 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-base font-medium;
       font-family: var(--font-sans);
       @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/5 active:translate-y-px active:translate-x-px active:shadow-none;
+      border-radius: var(--radius); /* Use global radius, will be 0 if --radius is 0 */
    }
-   /* ... other retro button variants for primary, secondary etc. if needed ... */
+
+    .retro-button-primary { @apply bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:border-primary/90; }
+    .retro-button-secondary { @apply bg-secondary text-secondary-foreground border-secondary hover:bg-secondary/90 hover:border-secondary/90; }
+    .retro-button-accent { @apply bg-accent text-accent-foreground border-accent hover:bg-accent/90 hover:border-accent/90; }
+    .retro-button-destructive { @apply bg-destructive text-destructive-foreground border-destructive hover:bg-destructive/90 hover:border-destructive/90; }
+    .retro-button-ghost { @apply border-transparent shadow-none hover:bg-foreground/5 active:shadow-none active:translate-x-0 active:translate-y-0; }
+    .retro-button-link { @apply border-transparent shadow-none text-primary underline-offset-4 hover:underline active:shadow-none active:translate-x-0 active:translate-y-0; }
+    .retro-button-outline { @apply border-foreground bg-transparent text-foreground hover:bg-foreground/5; }
+
+    .retro-button-sm { @apply px-3 py-1.5 text-sm h-9; }
+    .retro-button-lg { @apply px-6 py-3 text-lg h-12; }
+    .retro-button-icon { @apply h-10 w-10 p-0; }
+
 
    .retro-card {
-      @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200 rounded-[var(--radius)];
+      @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200 rounded-none; /* Changed to rounded-none */
    }
    .retro-card-header {
       @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
@@ -262,14 +258,14 @@
     .retro-card-content {
        @apply p-4;
    }
-    .retro-card-header + .retro-card-content { /* If content directly follows header */
+    .retro-card-header + .retro-card-content {
         @apply border-t-0;
     }
    .retro-card-footer {
        @apply flex items-center p-4 border-t-2 border-foreground;
    }
 
-   .retro-window { /* For dialogs, sheets */
+   .retro-window {
       @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200 rounded-[var(--radius)];
    }
    .retro-window-header {
@@ -294,13 +290,13 @@
     .retro-window-header.bg-destructive > .retro-window-controls button {
         @apply bg-inherit border-inherit opacity-80 hover:opacity-100;
     }
-     .retro-window-header.bg-destructive > .retro-window-controls > button { /* Specific for destructive header close button */
+     .retro-window-header.bg-destructive > .retro-window-controls > button {
         @apply !bg-destructive-foreground !text-destructive hover:!bg-destructive-foreground/80;
     }
    .retro-window-content {
        @apply p-4 border-t-2 border-foreground;
    }
-    .retro-window-header + .retro-window-content { /* If content directly follows header */
+    .retro-window-header + .retro-window-content {
         @apply border-t-0;
     }
 
@@ -321,26 +317,45 @@
         @apply inline-flex items-center border-2 border-foreground px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm;
         font-family: var(--font-sans);
     }
+    .retro-progress {
+      @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted;
+    }
+    .retro-progress-indicator {
+      @apply h-full w-full flex-1 bg-primary transition-all;
+    }
 }
 
 @layer utilities {
   /* FinCo Modern Theme Utilities */
   .section-padding { @apply py-12 md:py-16 lg:py-20; }
-  .container-narrow { @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8; }
-  .container-default { @apply container mx-auto px-4 sm:px-6 lg:px-8; }
+  .container-default { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; } /* Changed from container mx-auto */
   .text-balance { text-wrap: balance; }
 
   /* General utilities */
   .font-heading { font-family: var(--font-heading) !important; font-weight: 600 !important; }
   .font-pixel { font-family: var(--font-pixel) !important; }
 
-  /* Utilities for the Podportal header theme */
+  /* Header specific utilities */
   .bg-header-top { background-color: hsl(var(--header-top-bg)); }
   .text-header-top-fg { color: hsl(var(--header-top-fg)); }
   .border-header-top-border { border-color: hsl(var(--header-top-border)); }
   .bg-header-bottom { background-color: hsl(var(--header-bottom-bg)); }
   .text-header-bottom-fg { color: hsl(var(--header-bottom-fg)); }
   .border-header-bottom-border { border-color: hsl(var(--header-bottom-border)); }
+
+  /* Dashboard header colors */
+  .bg-dashboard-pink-header { background-color: hsl(var(--dashboard-pink-header-bg)); }
+  .text-dashboard-pink-foreground { color: hsl(var(--dashboard-pink-header-fg)); }
+  .border-dashboard-pink-foreground { border-color: hsl(var(--dashboard-pink-header-fg)); }
+
+  .bg-dashboard-purple-header { background-color: hsl(var(--dashboard-purple-header-bg)); }
+  .text-dashboard-purple-foreground { color: hsl(var(--dashboard-purple-header-fg)); }
+  .border-dashboard-purple-foreground { border-color: hsl(var(--dashboard-purple-header-fg)); }
+
+  .bg-dashboard-blue-header { background-color: hsl(var(--dashboard-blue-header-bg)); }
+  .text-dashboard-blue-foreground { color: hsl(var(--dashboard-blue-header-fg)); }
+  .border-dashboard-blue-foreground { border-color: hsl(var(--dashboard-blue-header-fg)); }
+
 
   /* Chorke theme specific utilities */
   .bg-chorke-dark-bg { background-color: hsl(var(--chorke-bg-dark)); }
@@ -357,14 +372,7 @@
   .text-chorke-blue { color: hsl(var(--chorke-accent-blue)); }
   .border-chorke-card { border-color: hsl(var(--chorke-card-border)); }
   .bg-chorke-card-bg { background-color: hsl(var(--chorke-card-bg)); }
-  .text-chorke-dark { color: hsl(var(--chorke-bg-dark)); } /* For text on light accent backgrounds */
-
-  /* Section specific pastel backgrounds (if not using full dark theme) */
-  .bg-pastel-pink { background-color: hsl(var(--pastel-pink)); }
-  .bg-pastel-blue { background-color: hsl(var(--pastel-blue)); }
-  .bg-pastel-green { background-color: hsl(var(--pastel-green)); }
-  .bg-pastel-purple { background-color: hsl(var(--pastel-purple)); }
-  .bg-pastel-yellow { background-color: hsl(var(--pastel-yellow)); }
+  .text-chorke-dark-text { color: hsl(var(--chorke-dark-text)); }
 }
 
 @keyframes scrollPartners {
@@ -372,15 +380,15 @@
   100% { transform: translateX(-50%); }
 }
 
-/* Radix UI Overrides (can be kept or adjusted) */
+/* Radix UI Overrides */
 [data-radix-select-content-wrapper] { box-shadow: none !important; }
-[data-radix-progress-root] { border-radius: var(--radius) !important; }
+[data-radix-progress-root] { border-radius: var(--radius) !important; } /* Will be 0 if --radius is 0 */
 
-/* Recharts Font Override (can be kept) */
-.font-sans { font-family: var(--font-sans) !important; }
+/* Recharts Font Override */
+.font-sans { font-family: var(--font-sans) !important; } /* Ensures recharts respects the sans font */
 .recharts-wrapper, .recharts-text { font-family: var(--font-sans) !important; }
 
-/* Partner Slider (can be kept or adjusted for new theme) */
+/* Partner Slider */
 .partner-slider-container {
   overflow: hidden;
   width: 100%;
@@ -388,7 +396,7 @@
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 }
-.dark .partner-slider-container { /* Adjust mask for dark theme if needed */
+.dark .partner-slider-container {
   -webkit-mask-image: linear-gradient(to right, transparent 0%, white 5%, white 95%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, white 5%, white 95%, transparent 100%);
 }
