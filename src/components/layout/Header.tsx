@@ -59,7 +59,7 @@ import {
   ChevronUp,
   ChevronRight,
   ChevronLeft,
-  PiggyBank,
+  PiggyBank, // Added PiggyBank
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -142,7 +142,7 @@ export default function Header() {
               <span className="font-heading text-xl font-bold text-header-top-fg">Fin.Co</span>
             </Link>
             {isAuthenticated && (
-              <div className="hidden sm:flex items-center space-x-3 text-xs text-header-top-fg/80">
+              <div className="hidden sm:flex items-center space-x-3 text-xs text-header-top-fg/90">
                 <div className="flex items-center space-x-1">
                   <Wallet className="h-3.5 w-3.5" />
                   <span>{formatCurrency(walletBalance)}</span>
@@ -163,7 +163,7 @@ export default function Header() {
                   <Link
                     href="/login"
                     className={cn(
-                      "w-full h-full flex items-center justify-center px-4 text-header-top-fg text-sm font-medium hover:bg-white hover:text-header-top-bg hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
+                      "w-full h-full flex items-center justify-center px-4 text-sm font-medium text-header-top-fg hover:bg-white hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top no-underline transition-colors duration-150 whitespace-nowrap"
                     )}
                   >
                     Log In
@@ -174,7 +174,7 @@ export default function Header() {
                     <Link
                       href="/get-started"
                       className={cn(
-                        "w-full h-full flex items-center justify-center text-xs font-medium bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-md px-4 py-1.5 !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
+                        "w-full h-full flex items-center justify-center bg-white text-blue-700 hover:bg-blue-500 hover:text-white rounded-md px-4 py-1.5 text-sm font-semibold !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                       )}
                     >
                       Get Started
@@ -247,7 +247,7 @@ export default function Header() {
                       );
                     })}
                     <div className="border-t border-header-bottom-border mt-4 pt-4 space-y-3">
-                      <div className="flex justify-center space-x-4 mb-3">
+                       <div className="flex justify-center space-x-4 mb-3">
                         {socialMediaLinks.map((sLink) => {
                           const SocialIcon = getIcon(sLink.iconName);
                           return (
@@ -261,14 +261,14 @@ export default function Header() {
                         <>
                           <SheetClose asChild>
                             <Link href="/login" passHref className="no-underline">
-                              <Button variant="outline" className="w-full text-header-bottom-fg border-header-bottom-fg/50 hover:bg-header-bottom-fg/5 py-2 text-sm font-medium whitespace-nowrap">Log In</Button>
+                              <Button variant="outline" className="w-full text-header-bottom-fg border-header-bottom-fg/50 hover:bg-white hover:text-blue-700 py-2 text-sm font-medium whitespace-nowrap">Log In</Button>
                             </Link>
                           </SheetClose>
                           <SheetClose asChild>
                             <Link href="/get-started" passHref className="no-underline">
                               <Button
                                 variant="default"
-                                className="w-full bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-md py-2 text-xs font-medium !border-transparent !shadow-none whitespace-nowrap"
+                                className="w-full bg-white text-blue-700 hover:bg-blue-500 hover:text-white rounded-md py-2 text-sm font-semibold !border-transparent !shadow-none whitespace-nowrap"
                               >
                                 Get Started
                               </Button>
@@ -308,10 +308,10 @@ export default function Header() {
                   <Link
                     href={link.href}
                     className={cn(
-                      "flex items-center justify-center w-full h-full px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
+                      "flex items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom w-full h-full",
                       isActive
-                        ? "bg-white text-primary shadow-sm font-semibold" // Remove rounded-md from active
-                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:shadow-sm" // Remove hover:rounded-md
+                        ? "bg-white text-primary font-semibold shadow-sm"
+                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:shadow-sm"
                     )}
                   >
                     {link.label}
@@ -335,4 +335,3 @@ export default function Header() {
     </header>
   );
 }
-
