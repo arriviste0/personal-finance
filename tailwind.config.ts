@@ -12,6 +12,7 @@ export default {
        fontFamily: {
          sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
          heading: ['var(--font-heading)', 'system-ui', 'sans-serif'],
+         pixel: ['var(--font-pixel)', 'cursive'],
        },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -55,13 +56,6 @@ export default {
   				'5': 'hsl(var(--chart-5))',
           '6': 'hsl(var(--chart-6))'
   			},
-        'brand-yellow': 'hsl(var(--brand-yellow))',
-        'brand-green': 'hsl(var(--brand-green))',
-        'brand-orange': 'hsl(var(--brand-orange))',
-        'brand-blue': 'hsl(var(--brand-blue))',
-        'brand-dark': 'hsl(var(--brand-dark))',
-        'brand-light-gray': 'hsl(var(--brand-light-gray))',
-
         'dashboard-pink-header': {
           DEFAULT: 'hsl(var(--dashboard-pink-header-bg))',
           foreground: 'hsl(var(--dashboard-pink-header-fg))',
@@ -74,7 +68,6 @@ export default {
           DEFAULT: 'hsl(var(--dashboard-blue-header-bg))',
           foreground: 'hsl(var(--dashboard-blue-header-fg))',
         },
-        // New Header Theme Colors
         'header-top': {
           DEFAULT: 'hsl(var(--header-top-bg))',
           foreground: 'hsl(var(--header-top-fg))',
@@ -85,24 +78,21 @@ export default {
           foreground: 'hsl(var(--header-bottom-fg))',
           border: 'hsl(var(--header-bottom-border))',
         },
-        // Chorke Theme Colors
-        'chorke-dark-bg': 'hsl(var(--chorke-bg-dark))',
-        'chorke-text-primary': 'hsl(var(--chorke-text-primary))',
-        'chorke-text-secondary': 'hsl(var(--chorke-text-secondary))',
-        'chorke-accent-yellow': 'hsl(var(--chorke-accent-yellow))',
-        'chorke-accent-green': 'hsl(var(--chorke-accent-green))',
-        'chorke-accent-pink': 'hsl(var(--chorke-accent-pink))',
-        'chorke-accent-blue': 'hsl(var(--chorke-accent-blue))',
-        'chorke-card-border': 'hsl(var(--chorke-card-border))',
-        'chorke-dark-card': 'hsl(var(--chorke-dark))',
+        // NFT Market Theme Colors
+        'nft-pink': 'hsl(var(--nft-pink))',
+        'nft-yellow': 'hsl(var(--nft-yellow))',
+        'nft-teal': 'hsl(var(--nft-teal))',
+        'nft-dark': 'hsl(var(--nft-dark))',
+        'nft-light-bg': 'hsl(var(--nft-light-bg))',
+        'nft-gray-text': 'hsl(var(--nft-gray-text))',
   		},
   		borderRadius: {
         none: '0',
-        sm: 'calc(var(--radius) - 2px)',
-        DEFAULT: 'var(--radius)',
+        sm: 'calc(var(--radius) - 4px)', // Adjusted for slightly more noticeable difference
+        DEFAULT: 'var(--radius)', // e.g., 0.75rem for NFT theme
         md: 'var(--radius)',
-        lg: 'calc(var(--radius) + 2px)',
-        xl: 'calc(var(--radius) + 4px)',
+        lg: 'calc(var(--radius) + 4px)',
+        xl: 'calc(var(--radius) + 8px)',
         full: '9999px',
       },
   		keyframes: {
@@ -143,7 +133,7 @@ export default {
         'retro-blink': 'retro-blink 1s step-end infinite',
          'retro-check-pop': 'retro-check-pop 0.3s ease-out',
          'retro-alert-pulse': 'retro-alert-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-         'scroll-partners': 'scrollPartners 40s linear infinite',
+         'scroll-partners': 'scrollPartners 60s linear infinite', // Slower animation
       },
       boxShadow: {
          'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.10)',
