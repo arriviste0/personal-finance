@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -17,10 +18,8 @@ import {
   FileText,
   Lightbulb,
   Settings,
-  Users,
   User,
   DollarSign,
-  PiggyBank,
   CreditCard,
   Home,
   PieChart as IconPieChart,
@@ -60,6 +59,7 @@ import {
   ChevronUp,
   ChevronRight,
   ChevronLeft,
+  PiggyBank,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -83,6 +83,7 @@ export default function Header() {
   const { walletBalance, totalLockedFunds } = useWallet();
 
   const isAuthenticated = status === 'authenticated';
+  const isLoadingSession = status === 'loading';
 
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
@@ -101,7 +102,6 @@ export default function Header() {
     { href: "#", label: "Instagram", iconName: "Instagram" },
   ];
 
-  // Helper to get icon component by name
   const iconMap: { [key: string]: React.ElementType } = {
     LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings,
     Twitter, Facebook, Instagram, LogOut, CircleDollarSign, X,
@@ -117,7 +117,6 @@ export default function Header() {
     const IconComponent = iconMap[iconName];
     return IconComponent || CircleDollarSign; // Default icon
   };
-
 
   const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -158,13 +157,13 @@ export default function Header() {
 
           {/* Right side: Auth + Mobile Menu */}
           <div className="flex items-stretch h-full text-sm">
-            {!isAuthenticated ? (
+            {!isAuthenticated && !isLoadingSession && (
               <>
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                   <Link
                     href="/login"
                     className={cn(
-                      "w-full h-full flex items-center justify-center px-4 text-header-top-fg text-sm font-medium hover:bg-white hover:text-header-top-bg hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150"
+                      "w-full h-full flex items-center justify-center px-4 text-header-top-fg text-sm font-medium hover:bg-white hover:text-header-top-bg hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                     )}
                   >
                     Log In
@@ -175,7 +174,7 @@ export default function Header() {
                     <Link
                       href="/get-started"
                       className={cn(
-                        "w-full h-full flex items-center justify-center text-sm font-medium bg-white text-header-top-bg rounded-md hover:bg-gray-100 px-4 py-1.5 !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150"
+                        "w-full h-full flex items-center justify-center text-xs font-medium bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-md px-4 py-1.5 !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                       )}
                     >
                       Get Started
@@ -183,12 +182,13 @@ export default function Header() {
                   </Button>
                 </div>
               </>
-            ) : (
+            )}
+            {isAuthenticated && (
                <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                 <Button
                   onClick={handleSignOut}
                   variant="ghost"
-                  className="w-full h-full flex items-center justify-center px-4 text-header-top-fg text-sm font-medium hover:bg-white/20 hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150"
+                  className="w-full h-full flex items-center justify-center px-4 text-header-top-fg text-sm font-medium hover:bg-white/20 hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                 >
                   <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
                 </Button>
@@ -248,16 +248,16 @@ export default function Header() {
                     })}
                     <div className="border-t border-header-bottom-border mt-4 pt-4 space-y-3">
                       <div className="flex justify-center space-x-4 mb-3">
-                        {socialMediaLinks.map((link) => {
-                          const SocialIcon = getIcon(link.iconName);
+                        {socialMediaLinks.map((sLink) => {
+                          const SocialIcon = getIcon(sLink.iconName);
                           return (
-                            <Link key={link.label} href={link.href} aria-label={link.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
+                            <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
                               {SocialIcon && <SocialIcon className="h-6 w-6" />}
                             </Link>
                           );
                         })}
                       </div>
-                      {!isAuthenticated ? (
+                      {!isAuthenticated && !isLoadingSession ? (
                         <>
                           <SheetClose asChild>
                             <Link href="/login" passHref className="no-underline">
@@ -268,14 +268,14 @@ export default function Header() {
                             <Link href="/get-started" passHref className="no-underline">
                               <Button
                                 variant="default"
-                                className="w-full bg-white text-header-top-bg hover:bg-blue-700 hover:text-white rounded-md py-2 text-sm font-medium !border-transparent !shadow-none whitespace-nowrap"
+                                className="w-full bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-md py-2 text-xs font-medium !border-transparent !shadow-none whitespace-nowrap"
                               >
                                 Get Started
                               </Button>
                             </Link>
                           </SheetClose>
                         </>
-                      ) : (
+                      ) : isAuthenticated && (
                         <SheetClose asChild>
                            <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50 whitespace-nowrap" onClick={handleSignOut}>
                             <LogOut className="mr-2 h-4 w-4" /> Sign Out
@@ -297,26 +297,23 @@ export default function Header() {
           <nav className="flex flex-grow items-stretch h-full">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
-              // const IconComponent = getIcon(link.iconName); Removed icon from here
-
               return (
                 <div
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-center justify-center", // Cell takes equal width
-                    index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
+                    "h-full flex flex-1 items-center justify-center",
+                    index < navLinks.length -1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
                     href={link.href}
                     className={cn(
-                      "w-full h-full flex items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
+                      "flex items-center justify-center w-full h-full px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
                       isActive
-                        ? "bg-white text-primary rounded-md shadow-sm font-semibold"
-                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
+                        ? "bg-white text-primary shadow-sm font-semibold" // Remove rounded-md from active
+                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:shadow-sm" // Remove hover:rounded-md
                     )}
                   >
-                    {/* {IconComponent && <IconComponent className="mr-2 h-4 w-4" />} Removed icon from here */}
                     {link.label}
                   </Link>
                 </div>
@@ -324,10 +321,10 @@ export default function Header() {
             })}
           </nav>
           <div className="flex items-center space-x-5 px-8 py-3 border-l border-header-bottom-border h-full">
-            {socialMediaLinks.map((link) => {
-              const SocialIcon = getIcon(link.iconName);
+            {socialMediaLinks.map((sLink) => {
+              const SocialIcon = getIcon(sLink.iconName);
               return (
-                <Link key={link.label} href={link.href} aria-label={link.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
+                <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
                   {SocialIcon && <SocialIcon className="h-6 w-6" />}
                 </Link>
               );
@@ -338,3 +335,4 @@ export default function Header() {
     </header>
   );
 }
+
