@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts"; // Removed Legend as it's not used here
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
 import {
     DollarSign,
     CreditCard,
@@ -28,12 +28,12 @@ import {
     Zap, 
     Star,
     X,
-    BarChart3, // For Cash Flow
-    Receipt, // For Recent Transactions
-    Users // For placeholder
+    BarChart3, 
+    Receipt, 
+    Users 
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'; // Kept, might be used later
+import { useRouter } from 'next/navigation';
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -74,15 +74,15 @@ export default function DashboardPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isLinkBankModalOpen, setIsLinkBankModalOpen] = useState(false);
-  const { walletBalance, totalLockedFunds, allocations, setInitialWalletBalance } = useWallet(); // Added setInitialWalletBalance
+  const { walletBalance, totalLockedFunds, allocations, setInitialWalletBalance } = useWallet();
   const [mockBankBalance, setMockBankBalance] = useState('');
 
 
-  const investmentTotal = 12000; // Mock, this should ideally come from a calculation based on actual investments
+  const investmentTotal = 12000; 
   const netWorth = walletBalance + totalLockedFunds + investmentTotal;
   const emergencyFundAllocation = allocations['emergencyFund'];
   const emergencyFundCurrent = emergencyFundAllocation?.amount || 0;
-  const emergencyFundTarget = emergencyFundAllocation?.target || 5000; // Default target if not set
+  const emergencyFundTarget = emergencyFundAllocation?.target || 5000;
 
   const formatCurrency = (amount: number, showSign = false) => {
     const sign = amount < 0 ? "-" : (showSign && amount > 0 ? "+" : "");
@@ -101,7 +101,7 @@ export default function DashboardPage() {
     }
     setInitialWalletBalance(balance);
     setIsLinkBankModalOpen(false);
-    setMockBankBalance(''); // Reset input
+    setMockBankBalance(''); 
     toast({
       title: "Bank Balance Synced (Demo)",
       description: `Your wallet balance has been updated to ${formatCurrency(balance)}.`,
@@ -109,64 +109,52 @@ export default function DashboardPage() {
     });
   };
 
-  // Example data for cash flow chart (replace with actual data)
-  const cashFlowData = [
-    { month: 'Jan', income: 4000, expenses: 2200 },
-    { month: 'Feb', income: 4200, expenses: 2500 },
-    { month: 'Mar', income: 3800, expenses: 2300 },
-    { month: 'Apr', income: 4500, expenses: 2800 },
-  ];
-
-
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-brand-dark">Dashboard</h1>
 
-      {/* Key Metrics Grid */}
        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="retro-card">
+        <Card className="retro-card flex flex-col">
             <CardHeader className="retro-card-header">
                 <CardTitle className="text-sm text-muted-foreground">Current Wallet</CardTitle>
                  <div className="retro-window-controls"><span></span><span></span><span></span></div>
             </CardHeader>
-            <CardContent className="retro-card-content pt-2">
+            <CardContent className="retro-card-content pt-2 flex-1">
                 <p className="text-2xl font-bold text-foreground">{formatCurrency(walletBalance)}</p>
             </CardContent>
         </Card>
-         <Card className="retro-card">
+         <Card className="retro-card flex flex-col">
             <CardHeader className="retro-card-header">
                 <CardTitle className="text-sm text-muted-foreground">Funds Locked</CardTitle>
                  <div className="retro-window-controls"><span></span><span></span><span></span></div>
             </CardHeader>
-            <CardContent className="retro-card-content pt-2">
+            <CardContent className="retro-card-content pt-2 flex-1">
                 <p className="text-2xl font-bold text-foreground">{formatCurrency(totalLockedFunds)}</p>
             </CardContent>
         </Card>
-        <Card className="retro-card">
+        <Card className="retro-card flex flex-col">
             <CardHeader className="retro-card-header">
                 <CardTitle className="text-sm text-muted-foreground">Net Worth (Est.)</CardTitle>
                  <div className="retro-window-controls"><span></span><span></span><span></span></div>
             </CardHeader>
-            <CardContent className="retro-card-content pt-2">
+            <CardContent className="retro-card-content pt-2 flex-1">
                 <p className="text-2xl font-bold text-foreground">{formatCurrency(netWorth)}</p>
             </CardContent>
         </Card>
-         <Card className="retro-card">
+         <Card className="retro-card flex flex-col">
             <CardHeader className="retro-card-header">
                 <CardTitle className="text-sm text-muted-foreground">Financial Health</CardTitle>
                  <div className="retro-window-controls"><span></span><span></span><span></span></div>
             </CardHeader>
-            <CardContent className="retro-card-content pt-2">
-                <p className="text-2xl font-bold text-green-500">Good</p> {/* Placeholder */}
+            <CardContent className="retro-card-content pt-2 flex-1">
+                <p className="text-2xl font-bold text-green-500">Good</p> 
                  <Progress value={75} className="h-1.5 mt-1 retro-progress" indicatorClassName="!bg-green-500" />
             </CardContent>
         </Card>
       </div>
 
-      {/* Main Grid for Dashboard Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {/* Quick Actions Card */}
-        <Card className="retro-card xl:col-span-1 md:col-span-2">
+        <Card className="retro-card xl:col-span-1 md:col-span-2 flex flex-col">
           <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -180,22 +168,21 @@ export default function DashboardPage() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4">
+          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1">
             <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/expenses')}><Receipt className="mr-2 h-4 w-4" />Log Expense</Button>
             <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/budget')}><CreditCard className="mr-2 h-4 w-4" />View/Edit Budget</Button>
             <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/savings-goals')}><TargetIcon className="mr-2 h-4 w-4" />Set New Goal</Button>
             <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/investments')}><Briefcase className="mr-2 h-4 w-4" />Manage Investments</Button>
-            <Button variant="outline" className="w-full retro-button justify-start col-span-2" onClick={() => setIsLinkBankModalOpen(true)}>
+            <Button variant="outline" className="w-full retro-button justify-start" onClick={() => setIsLinkBankModalOpen(true)}>
               <Landmark className="mr-2 h-4 w-4" /> Link Bank Account
             </Button>
-             <Button variant="primary" className="w-full retro-button justify-start col-span-2 !bg-brand-yellow !text-black hover:!bg-brand-yellow/90">
+             <Button variant="primary" className="w-full retro-button justify-start !bg-brand-yellow !text-black hover:!bg-brand-yellow/90">
               <Star className="mr-2 h-4 w-4" /> Upgrade to Premium
             </Button>
           </CardContent>
         </Card>
 
-        {/* Savings Goals Card */}
-        <Card className="retro-card">
+        <Card className="retro-card flex flex-col">
           <CardHeader className="retro-card-header !bg-dashboard-purple-header !text-dashboard-purple-foreground">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -209,7 +196,7 @@ export default function DashboardPage() {
                 </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 max-h-[250px] overflow-y-auto">
+          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 max-h-[250px] overflow-y-auto flex-1">
             {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0,3).map((goal) => (
               <div key={goal.id} className="space-y-1">
                 <div className="flex justify-between items-center text-sm">
@@ -228,8 +215,7 @@ export default function DashboardPage() {
           </CardFooter>
         </Card>
 
-        {/* Emergency Fund Card */}
-        <Card className="retro-card">
+        <Card className="retro-card flex flex-col">
           <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -243,7 +229,7 @@ export default function DashboardPage() {
                 </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 text-center pt-4">
+          <CardContent className="retro-card-content !border-t-0 text-center pt-4 flex-1">
             <p className="text-3xl font-bold text-foreground">{formatCurrency(emergencyFundCurrent)}</p>
             <p className="text-xs text-muted-foreground mb-2">Target: {formatCurrency(emergencyFundTarget)}</p>
             <Progress value={emergencyFundTarget > 0 ? (emergencyFundCurrent / emergencyFundTarget) * 100 : 0} className="h-3.5 retro-progress" indicatorClassName="!bg-blue-500" />
@@ -261,8 +247,7 @@ export default function DashboardPage() {
           </CardFooter>
         </Card>
 
-        {/* Budget Snapshot Card */}
-        <Card className="retro-card md:col-span-2 xl:col-span-1">
+        <Card className="retro-card md:col-span-2 xl:col-span-1 flex flex-col">
             <CardHeader className="retro-card-header !bg-dashboard-purple-header !text-dashboard-purple-foreground">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -276,7 +261,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4">
+            <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1">
                 {budgetSnapshotData.slice(0, 4).map(item => (
                     <div key={item.category}>
                         <div className="flex justify-between text-xs mb-0.5">
@@ -300,8 +285,7 @@ export default function DashboardPage() {
         </Card>
 
 
-        {/* Recent Transactions Card */}
-        <Card className="retro-card md:col-span-2">
+        <Card className="retro-card md:col-span-2 flex flex-col">
           <CardHeader className="retro-card-header">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -311,8 +295,8 @@ export default function DashboardPage() {
                  <div className="retro-window-controls"><span></span><span></span><span></span></div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 p-0 max-h-[300px] overflow-y-auto">
-             <div className="space-y-0">
+          <CardContent className="retro-card-content !border-t-0 p-0 flex-1">
+             <div className="space-y-0 max-h-[300px] overflow-y-auto">
                 {recentTransactions.map((tx) => (
                   <div key={tx.id} className="flex items-center justify-between p-3 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
                     <div>
@@ -334,8 +318,7 @@ export default function DashboardPage() {
             </CardFooter>
         </Card>
 
-        {/* Investment Portfolio Card */}
-        <Card className="retro-card">
+        <Card className="retro-card flex flex-col">
           <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -349,7 +332,7 @@ export default function DashboardPage() {
                 </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 pt-4 h-[200px]">
+          <CardContent className="retro-card-content !border-t-0 pt-4 h-[200px] flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie data={investmentPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={60} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
@@ -368,8 +351,7 @@ export default function DashboardPage() {
             </CardFooter>
         </Card>
 
-        {/* AI Savings Helper Card */}
-        <Card className="retro-card md:col-span-2 xl:col-span-3">
+        <Card className="retro-card md:col-span-2 xl:col-span-3 flex flex-col">
             <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -383,7 +365,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 pt-4">
+            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1">
                 <p className="text-sm text-foreground/90">
                     Unlock personalized insights to boost your savings. Our AI analyzes your spending patterns and goals to provide actionable recommendations.
                 </p>
@@ -398,7 +380,6 @@ export default function DashboardPage() {
 
       </div>
 
-      {/* Link Bank Account Modal Placeholder */}
       <Dialog open={isLinkBankModalOpen} onOpenChange={setIsLinkBankModalOpen}>
         <DialogContent className="retro-window sm:max-w-md">
           <DialogHeader className="retro-window-header !bg-primary !text-primary-foreground">
@@ -447,3 +428,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
