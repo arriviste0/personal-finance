@@ -1,6 +1,7 @@
+
 /* Import Press Start 2P font */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,24 +9,34 @@
 
 @layer base {
   :root {
-    /* FinCo - Modern & Clean Theme (Default for internal app pages) */
-    --background: 0 0% 98%; /* Very light gray / Off-white */
-    --foreground: 220 15% 20%; /* Dark Blue-Gray for text */
+    /* Neo-Brutalism Theme Variables */
+    --nb-yellow: 54 93% 58%; /* #f5e61a - Adjusted for better readability with black text */
+    --nb-pink: 320 100% 60%; /* #FF33E6 */
+    --nb-green: 140 100% 45%; /* #00E65C */
+    --nb-cyan: 180 100% 50%; /* #00FFFF */
+    --nb-purple: 260 100% 60%; /* #7F33FF */
+    --nb-orange: 25 100% 55%; /* #FF8C1A */
+    --nb-black: 0 0% 4%; /* #0a0a0a - Near Black for text, borders, shadows */
+    --nb-white: 0 0% 100%; /* #FFFFFF */
 
-    --card: 0 0% 100%; /* White cards */
-    --card-foreground: 220 15% 20%;
+    /* FinCo - Modern & Clean Theme (Default for internal app pages - kept for reference) */
+    --background: 0 0% 98%; /* Lightest Gray - Default for internal app pages */
+    --foreground: 224 71.4% 4.1%; /* Dark blue-gray for text on light backgrounds */
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 20%;
+    --popover-foreground: 224 71.4% 4.1%;
 
-    --primary: 210 70% 55%; /* Trustworthy blue for internal app pages */
+    --primary: 220 70% 50%; /* Trustworthy blue for internal app pages */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 145 60% 45%; /* Calm green for internal app pages */
+    --secondary: 145 65% 45%; /* Calm green for internal app pages */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 30% 96%; /* Very Light Cool Gray */
-    --muted-foreground: 215 20% 50%; /* Medium Gray */
+    --muted: 220 14.3% 95.9%; /* Light Cool Gray */
+    --muted-foreground: 220 8.9% 46.1%; /* Medium Gray */
 
     --accent: 40 90% 55%; /* Warm yellow/gold for general accents */
     --accent-foreground: 220 15% 10%;
@@ -33,28 +44,20 @@
     --destructive: 0 70% 55%; /* Clear Red */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 88%; /* Softer Grey Border */
-    --input: 210 30% 97%;
-    --ring: hsl(var(--primary));
+    --border: 220 13% 91%; /* Softer Grey Border */
+    --input: 220 13% 94%;
+    --ring: hsl(var(--primary)); /* Ring color for focus states */
 
-    --radius: 0.5rem; /* Default slightly rounded corners (e.g., for ShadCN components) */
-
-    /* NFT Market Theme Inspired Colors (Primarily for Landing Page) */
-    --nft-pink: 330 100% 70%;    /* Vibrant Pink */
-    --nft-yellow: 45 100% 65%;   /* Vibrant Yellow */
-    --nft-teal: 175 70% 50%;    /* Vibrant Teal/Cyan */
-    --nft-dark: 220 15% 15%;    /* Very dark gray/almost black (for text on light NFT bg) */
-    --nft-light-bg: 0 0% 98%;   /* Off-white page background for NFT landing */
-    --nft-gray-text: 220 10% 40%; /* For subtitles on NFT landing */
+    --radius: 0rem; /* Default to 0 for Neo-Brutalism sharp edges */
 
     /* Header specific colors (Podportal inspired - for internal app pages) */
-    --header-top-bg: 210 70% 55%; /* Blue */
-    --header-top-fg: 0 0% 100%;         /* White */
-    --header-top-border: 210 70% 45%;   /* Darker Blue */
+    --header-top-bg: 210 70% 55%; /* Blue for internal header */
+    --header-top-fg: 0 0% 100%;
+    --header-top-border: 210 70% 45%;
 
-    --header-bottom-bg: 0 0% 97%; /* Very Light Gray/Off-white */
-    --header-bottom-fg: 220 15% 25%; /* Dark text for bottom bar */
-    --header-bottom-border: 210 20% 88%; /* Standard border color */
+    --header-bottom-bg: 0 0% 97%; /* Light Gray/Off-white for internal header bottom bar */
+    --header-bottom-fg: 220 15% 25%;
+    --header-bottom-border: 210 20% 88%;
 
     /* Dashboard specific card header colors */
     --dashboard-pink-header-bg: 330 80% 96%;
@@ -67,53 +70,45 @@
     --font-sans: 'Inter', system-ui, sans-serif;
     --font-heading: 'Poppins', system-ui, sans-serif;
     --font-pixel: 'Press Start 2P', cursive;
+
+    /* Chart specific colors */
+    --chart-1: 220 70% 50%; /* Blue */
+    --chart-2: 145 65% 45%; /* Green */
+    --chart-3: 40 90% 55%;  /* Yellow/Gold */
+    --chart-4: 0 70% 55%;   /* Red */
+    --chart-5: 270 60% 60%; /* Purple */
+    --chart-6: 180 60% 45%; /* Teal/Cyan */
   }
 
-  /* Dark mode can be defined here if needed, but current focus is light theme */
   .dark {
-    --background: 220 15% 10%;
-    --foreground: 0 0% 95%;
-    --card: 220 15% 15%;
-    --card-foreground: 0 0% 95%;
-    --popover: 220 15% 15%;
-    --popover-foreground: 0 0% 95%;
+    /* Dark mode for internal app (not Neo-Brutalism landing) */
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 210 20% 98%;
+    --primary-foreground: 220.9 39.3% 11%;
+    --secondary: 215 27.9% 26.9%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 27.9% 26.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 210 20% 98%;
+    --accent-foreground: 220.9 39.3% 11%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 215 27.9% 26.9%;
+    --input: 215 27.9% 26.9%;
+    --ring: 215 20.2% 65.1%;
 
-    --primary: 40 90% 55%; /* Yellow accent for dark mode primary */
-    --primary-foreground: 220 15% 10%;
-    --secondary: 145 60% 45%; /* Green accent for dark mode secondary */
-    --secondary-foreground: 0 0% 100%;
-    --accent: 330 100% 70%; /* Pink accent for dark mode */
-    --accent-foreground: 220 15% 10%;
-
-    --muted: 220 15% 20%;
-    --muted-foreground: 210 20% 70%;
-    --border: 210 10% 35%;
-    --input: 210 10% 25%;
-    --ring: hsl(var(--primary));
-
-    /* Update header colors for dark mode if needed */
+    /* Update header colors for dark mode */
     --header-top-bg: 220 15% 15%;
     --header-top-fg: 0 0% 95%;
     --header-top-border: 210 10% 30%;
     --header-bottom-bg: 220 15% 18%;
     --header-bottom-fg: 0 0% 95%;
     --header-bottom-border: 210 10% 30%;
-
-    /* Update dashboard card header colors for dark mode */
-    --dashboard-pink-header-bg: 330 50% 20%;
-    --dashboard-pink-header-fg: 330 80% 90%;
-    --dashboard-purple-header-bg: 270 40% 20%;
-    --dashboard-purple-header-fg: 270 70% 90%;
-    --dashboard-blue-header-bg: 200 50% 20%;
-    --dashboard-blue-header-fg: 200 80% 90%;
-
-    /* NFT Theme on Dark - adjust if needed, or assume landing is always light */
-    --nft-pink: 330 100% 70%;
-    --nft-yellow: 45 100% 65%;
-    --nft-teal: 175 70% 50%;
-    --nft-dark: 0 0% 95%; /* Light text on dark bg */
-    --nft-light-bg: 0 0% 10%; /* Dark page background */
-    --nft-gray-text: 0 0% 70%;
   }
 }
 
@@ -127,23 +122,32 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-semibold tracking-tight;
+    @apply font-heading;
   }
 
-  /* Using more specific font colors for landing page when needed */
-  .landing-page-text { @apply text-nft-dark; }
-  .landing-page-text-muted { @apply text-nft-gray-text; }
-  .landing-page-bg { @apply bg-nft-light-bg; }
+  /* Landing page specific body background (Neo-Brutalism) */
+  body.landing-page-nb {
+    @apply bg-nb-yellow text-nb-black;
+    font-family: var(--font-pixel); /* Or a bolder sans-serif if pixel is too much */
+  }
+
+  .landing-page-nb h1, .landing-page-nb h2, .landing-page-nb h3, .landing-page-nb h4, .landing-page-nb p, .landing-page-nb a, .landing-page-nb span {
+      font-family: var(--font-pixel); /* Or a bolder sans-serif if pixel is too much */
+  }
+  .landing-page-nb h1 { @apply text-4xl md:text-5xl lg:text-6xl font-bold uppercase; }
+  .landing-page-nb h2 { @apply text-3xl md:text-4xl font-bold uppercase; }
+  .landing-page-nb p { @apply text-base md:text-lg; }
+
 
   a {
-    @apply text-primary no-underline; /* Default link color */
+    @apply text-primary no-underline; /* Default link color for app pages */
   }
   a:hover {
     @apply text-primary/80;
   }
-  /* Specific link style for landing page if needed */
-  .landing-link {
-    @apply text-nft-dark hover:text-nft-pink transition-colors;
+
+  .nb-link {
+    @apply text-nb-black font-bold hover:text-nb-purple transition-colors;
   }
 
   *:focus-visible {
@@ -152,138 +156,159 @@
 }
 
 @layer components {
-  /* Generic Pill Button (for landing page primarily) */
-  .btn-pill {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95;
-    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  /* Neo-Brutalist Card Style */
+  .nb-card {
+    @apply border-2 border-nb-black bg-nb-white p-4 md:p-6 transition-all duration-150 ease-in-out rounded-none;
+    box-shadow: 6px 6px 0px 0px hsl(var(--nb-black));
   }
-  .btn-pill-dark {
-    @apply bg-nft-dark text-nft-light-bg hover:bg-opacity-90;
-  }
-  .btn-pill-pink {
-    @apply bg-nft-pink text-white hover:bg-opacity-90;
-  }
-  .btn-pill-yellow {
-    @apply bg-nft-yellow text-nft-dark hover:bg-opacity-90;
-  }
-  .btn-pill-teal {
-    @apply bg-nft-teal text-white hover:bg-opacity-90;
-  }
-  .btn-pill-outline-light {
-    @apply border-2 border-nft-dark text-nft-dark bg-transparent hover:bg-nft-dark hover:text-nft-light-bg;
-  }
-   .btn-pill-outline-darker { /* For white buttons on colored backgrounds */
-    @apply border-2 border-white text-white bg-transparent hover:bg-white hover:text-nft-dark;
+  .nb-card:hover {
+    box-shadow: 8px 8px 0px 0px hsl(var(--nb-black));
+    transform: translate(-1px, -1px);
   }
 
-  /* Card style for landing page */
-  .landing-card {
-    @apply bg-card border border-gray-200 rounded-xl shadow-lg transition-all duration-200 hover:shadow-xl overflow-hidden;
+  /* Neo-Brutalist Button Style */
+  .nb-button {
+    @apply inline-flex items-center justify-center border-2 border-nb-black px-5 py-2.5 text-sm font-bold text-nb-black transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed active:translate-x-0.5 active:translate-y-0.5 rounded-none;
+    box-shadow: 3px 3px 0px 0px hsl(var(--nb-black));
+    font-family: var(--font-pixel); /* Use pixel font for NB buttons */
+  }
+  .nb-button:hover {
+    box-shadow: 4px 4px 0px 0px hsl(var(--nb-black));
+    transform: translate(-1px, -1px);
+  }
+  .nb-button:active {
+    box-shadow: 1px 1px 0px 0px hsl(var(--nb-black));
+  }
+  .nb-button-primary { @apply bg-nb-pink text-nb-black; }
+  .nb-button-secondary { @apply bg-nb-green text-nb-black; }
+  .nb-button-accent { @apply bg-nb-cyan text-nb-black; }
+  .nb-button-purple { @apply bg-nb-purple text-nb-white; }
+  .nb-button-white { @apply bg-nb-white text-nb-black; }
+  .nb-button-black { @apply bg-nb-black text-nb-white; }
+
+
+  /* Retro Card (used by internal app pages) */
+  .retro-card {
+    @apply border-2 border-foreground bg-card overflow-hidden transition-shadow duration-200 rounded-none shadow-md;
   }
 
-  /* Retro UI Components (used for internal app pages) */
-   .retro-button {
-      @apply inline-flex items-center justify-center px-4 py-2 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-base font-medium;
-      font-family: var(--font-sans);
-      @apply hover:shadow-retro hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-foreground/5 active:translate-y-px active:translate-x-px active:shadow-none;
-      border-radius: var(--radius);
-   }
-    .retro-button-primary { @apply bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:border-primary/90; }
-    .retro-button-secondary { @apply bg-secondary text-secondary-foreground border-secondary hover:bg-secondary/90 hover:border-secondary/90; }
-    .retro-button-accent { @apply bg-accent text-accent-foreground border-accent hover:bg-accent/90 hover:border-accent/90; }
-    .retro-button-destructive { @apply bg-destructive text-destructive-foreground border-destructive hover:bg-destructive/90 hover:border-destructive/90; }
-    .retro-button-ghost { @apply border-transparent shadow-none hover:bg-foreground/5 active:shadow-none active:translate-x-0 active:translate-y-0; }
-    .retro-button-link { @apply border-transparent shadow-none text-primary underline-offset-4 hover:underline active:shadow-none active:translate-x-0 active:translate-y-0; }
-    .retro-button-outline { @apply border-foreground bg-transparent text-foreground hover:bg-foreground/5; }
-    .retro-button-sm { @apply px-3 py-1.5 text-sm h-9; }
-    .retro-button-lg { @apply px-6 py-3 text-lg h-12; }
-    .retro-button-icon { @apply h-10 w-10 p-0; }
+  .retro-card-header {
+    @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
+    font-family: var(--font-sans);
+  }
+  .retro-card-content { @apply p-4; }
+  .retro-card-header + .retro-card-content { @apply border-t-0; } /* Prevent double border */
+  .retro-card-footer { @apply flex items-center p-4 border-t-2 border-foreground; }
 
-   .retro-card {
-      @apply border-2 border-foreground bg-card shadow-md overflow-hidden transition-shadow duration-200 rounded-none;
-   }
-   .retro-card-header {
-      @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
-      font-family: var(--font-sans);
-   }
-    .retro-card-content {
-       @apply p-4;
-   }
-    .retro-card-header + .retro-card-content {
-        @apply border-t-0;
-    }
-   .retro-card-footer {
-       @apply flex items-center p-4 border-t-2 border-foreground;
-   }
-
+   /* Retro Window style for Dialogs etc. */
    .retro-window {
-      @apply border-2 border-foreground bg-card shadow-retro overflow-hidden transition-shadow duration-200 rounded-[var(--radius)];
+      @apply border-2 border-foreground bg-card shadow-lg overflow-hidden transition-shadow duration-200 rounded-none;
    }
    .retro-window-header {
       @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
       font-family: var(--font-sans);
    }
-    .retro-window-header > .retro-window-controls {
-        @apply flex space-x-1.5 items-center;
-    }
-    .retro-window-header > .retro-window-controls span,
-    .retro-window-header > .retro-window-controls button {
-       @apply block h-3 w-3 border border-foreground bg-background transition-transform duration-100 hover:scale-110;
-    }
-    .retro-window-header.bg-primary > .retro-window-controls span,
-    .retro-window-header.bg-primary > .retro-window-controls button,
-    .retro-window-header.bg-secondary > .retro-window-controls span,
-    .retro-window-header.bg-secondary > .retro-window-controls button,
-    .retro-window-header.bg-accent > .retro-window-controls span,
-    .retro-window-header.bg-accent > .retro-window-controls button,
-    .retro-window-header.bg-destructive > .retro-window-controls span,
-    .retro-window-header.bg-destructive > .retro-window-controls button {
-        @apply bg-inherit border-inherit opacity-80 hover:opacity-100;
-    }
-     .retro-window-header.bg-destructive > .retro-window-controls > button {
-        @apply !bg-destructive-foreground !text-destructive hover:!bg-destructive-foreground/80;
-    }
-   .retro-window-content {
-       @apply p-4 border-t-2 border-foreground;
+   .retro-window-header > .retro-window-controls { @apply flex space-x-1.5 items-center; }
+   .retro-window-header > .retro-window-controls span,
+   .retro-window-header > .retro-window-controls button {
+       @apply block h-3 w-3 border border-foreground bg-background transition-transform duration-100 hover:scale-110 rounded-none;
    }
-    .retro-window-header + .retro-window-content {
-        @apply border-t-0;
-    }
+   .retro-window-header.bg-primary > .retro-window-controls span,
+   .retro-window-header.bg-primary > .retro-window-controls button,
+   .retro-window-header.bg-secondary > .retro-window-controls span,
+   .retro-window-header.bg-secondary > .retro-window-controls button,
+   .retro-window-header.bg-accent > .retro-window-controls span,
+   .retro-window-header.bg-accent > .retro-window-controls button,
+   .retro-window-header.bg-destructive > .retro-window-controls span,
+   .retro-window-header.bg-destructive > .retro-window-controls button {
+       @apply bg-inherit border-inherit opacity-80 hover:opacity-100;
+   }
+   .retro-window-header.bg-destructive > .retro-window-controls > button {
+       @apply !bg-destructive-foreground !text-destructive hover:!bg-destructive-foreground/80;
+   }
+   .retro-window-content { @apply p-4 border-t-2 border-foreground; }
+   .retro-window-header + .retro-window-content { @apply border-t-0; }
 
+   /* Retro Input, Textarea, Select styling - NB Style: rounded-none */
    .retro-input, .retro-textarea, .retro-select-trigger {
-      @apply flex w-full border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-retro-inset-dark transition-colors duration-150 rounded-[var(--radius)];
+      @apply flex w-full border-2 border-foreground bg-input px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 shadow-none transition-colors duration-150 rounded-none;
       font-family: var(--font-sans);
       @apply focus:border-primary focus:bg-background;
    }
    .retro-input { @apply h-10; }
    .retro-textarea { @apply min-h-[80px]; }
-   .retro-select-content { @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-retro mt-1 animate-in fade-in-80 rounded-[var(--radius)]; }
+   .retro-select-content { @apply relative z-50 min-w-[8rem] overflow-hidden border-2 border-foreground bg-background text-foreground shadow-lg mt-1 animate-in fade-in-80 rounded-none; }
    .retro-select-item {
       @apply relative flex w-full cursor-pointer select-none items-center py-1.5 pl-8 pr-2 text-base outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground transition-colors duration-100;
       font-family: var(--font-sans);
    }
    .retro-badge {
-        @apply inline-flex items-center border-2 border-foreground px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm;
-        font-family: var(--font-sans);
-    }
-    .retro-progress {
-      @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted;
-    }
-    .retro-progress-indicator {
-      @apply h-full w-full flex-1 bg-primary transition-all;
-    }
+      @apply inline-flex items-center border-2 border-foreground px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-none;
+      font-family: var(--font-sans);
+   }
+   .retro-progress {
+     @apply relative h-3 w-full overflow-hidden border-2 border-foreground bg-muted rounded-none;
+   }
+   .retro-progress-indicator {
+     @apply h-full w-full flex-1 bg-primary transition-all;
+   }
+
+  /* FinCo card & button styles (for internal app pages, using --radius for rounded corners) */
+  .finco-card {
+    @apply border border-border bg-card text-card-foreground shadow-lg rounded-lg;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground;
+  }
+  .btn-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  }
+  .btn-accent {
+    @apply bg-accent text-accent-foreground hover:bg-accent/90;
+  }
+
+   /* Specific Retro Button styles that use the .nb-button logic but with theme colors */
+   .retro-button { /* Base for all retro buttons in the app */
+    @apply inline-flex items-center justify-center border-2 border-foreground px-4 py-2 text-base font-medium text-foreground shadow-retro-sm transition-all duration-150 ease-in-out active:translate-y-px active:translate-x-px active:shadow-none disabled:cursor-not-allowed disabled:opacity-50 rounded-none;
+    font-family: var(--font-sans); /* Ensure app font */
+  }
+  .retro-button:hover {
+    @apply shadow-retro; /* Slightly larger shadow on hover */
+  }
+
+  /* Variants for retro-button */
+  .retro-button-primary { @apply bg-primary text-primary-foreground hover:bg-primary/90 border-primary; }
+  .retro-button-secondary { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 border-secondary; }
+  .retro-button-accent { @apply bg-accent text-accent-foreground hover:bg-accent/90 border-accent; }
+  .retro-button-destructive { @apply bg-destructive text-destructive-foreground hover:bg-destructive/90 border-destructive; }
+  .retro-button-outline { @apply bg-transparent text-foreground hover:bg-muted border-foreground; }
+  .retro-button-ghost { @apply bg-transparent text-foreground hover:bg-muted !border-transparent !shadow-none; }
+  .retro-button-link { @apply bg-transparent text-primary hover:underline !border-transparent !shadow-none px-0 py-0; }
+
+  /* Sizes for retro-button */
+  .retro-button-sm { @apply px-3 py-1.5 text-sm; }
+  .retro-button-lg { @apply px-6 py-3 text-lg; }
+  .retro-button-icon { @apply h-10 w-10 p-0; }
 }
 
 @layer utilities {
-  /* FinCo Modern Theme Utilities */
-  .section-padding { @apply py-12 md:py-16 lg:py-20; }
-  .container-default { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
-
   /* General utilities */
-  .font-heading { font-family: var(--font-heading) !important; font-weight: 600 !important; }
+  .container-default { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .section-padding { @apply py-16 md:py-24 lg:py-32; }
+  .font-heading { font-family: var(--font-heading) !important; }
   .font-pixel { font-family: var(--font-pixel) !important; }
 
-  /* Header specific utilities */
+  /* Header specific utilities (for internal app pages) */
   .bg-header-top { background-color: hsl(var(--header-top-bg)); }
   .text-header-top-fg { color: hsl(var(--header-top-fg)); }
   .border-header-top-border { border-color: hsl(var(--header-top-border)); }
@@ -291,7 +316,7 @@
   .text-header-bottom-fg { color: hsl(var(--header-bottom-fg)); }
   .border-header-bottom-border { border-color: hsl(var(--header-bottom-border)); }
 
-  /* Dashboard header colors */
+  /* Dashboard card header colors */
   .bg-dashboard-pink-header { background-color: hsl(var(--dashboard-pink-header-bg)); }
   .text-dashboard-pink-foreground { color: hsl(var(--dashboard-pink-header-fg)); }
   .border-dashboard-pink-foreground { border-color: hsl(var(--dashboard-pink-header-fg)); }
@@ -302,21 +327,64 @@
   .text-dashboard-blue-foreground { color: hsl(var(--dashboard-blue-header-fg)); }
   .border-dashboard-blue-foreground { border-color: hsl(var(--dashboard-blue-header-fg)); }
 
-  /* NFT Theme Utilities */
-  .bg-nft-pink { background-color: hsl(var(--nft-pink)); }
-  .text-nft-pink { color: hsl(var(--nft-pink)); }
-  .border-nft-pink { border-color: hsl(var(--nft-pink)); }
-  .bg-nft-yellow { background-color: hsl(var(--nft-yellow)); }
-  .text-nft-yellow { color: hsl(var(--nft-yellow)); }
-  .border-nft-yellow { border-color: hsl(var(--nft-yellow)); }
-  .bg-nft-teal { background-color: hsl(var(--nft-teal)); }
-  .text-nft-teal { color: hsl(var(--nft-teal)); }
-  .border-nft-teal { border-color: hsl(var(--nft-teal)); }
-  .bg-nft-dark { background-color: hsl(var(--nft-dark)); }
-  .text-nft-dark { color: hsl(var(--nft-dark)); }
-  .border-nft-dark { border-color: hsl(var(--nft-dark)); }
-  .bg-nft-light-bg { background-color: hsl(var(--nft-light-bg)); }
-  .text-nft-gray-text { color: hsl(var(--nft-gray-text)); }
+  /* Neo-Brutalism Color Utilities */
+  .bg-nb-yellow { background-color: hsl(var(--nb-yellow)); }
+  .text-nb-yellow { color: hsl(var(--nb-yellow)); }
+  .border-nb-yellow { border-color: hsl(var(--nb-yellow)); }
+  .bg-nb-pink { background-color: hsl(var(--nb-pink)); }
+  .text-nb-pink { color: hsl(var(--nb-pink)); }
+  .border-nb-pink { border-color: hsl(var(--nb-pink)); }
+  .bg-nb-green { background-color: hsl(var(--nb-green)); }
+  .text-nb-green { color: hsl(var(--nb-green)); }
+  .border-nb-green { border-color: hsl(var(--nb-green)); }
+  .bg-nb-cyan { background-color: hsl(var(--nb-cyan)); }
+  .text-nb-cyan { color: hsl(var(--nb-cyan)); }
+  .border-nb-cyan { border-color: hsl(var(--nb-cyan)); }
+  .bg-nb-purple { background-color: hsl(var(--nb-purple)); }
+  .text-nb-purple { color: hsl(var(--nb-purple)); }
+  .border-nb-purple { border-color: hsl(var(--nb-purple)); }
+  .bg-nb-orange { background-color: hsl(var(--nb-orange)); }
+  .text-nb-orange { color: hsl(var(--nb-orange)); }
+  .border-nb-orange { border-color: hsl(var(--nb-orange)); }
+  .bg-nb-black { background-color: hsl(var(--nb-black)); }
+  .text-nb-black { color: hsl(var(--nb-black)); }
+  .border-nb-black { border-color: hsl(var(--nb-black)); }
+  .bg-nb-white { background-color: hsl(var(--nb-white)); }
+  .text-nb-white { color: hsl(var(--nb-white)); }
+  .border-nb-white { border-color: hsl(var(--nb-white)); }
+
+  .shadow-nb-hard { box-shadow: 6px 6px 0px 0px hsl(var(--nb-black)); }
+  .shadow-nb-hard-sm { box-shadow: 3px 3px 0px 0px hsl(var(--nb-black)); }
+  .shadow-retro { box-shadow: 3px 3px 0px 0px hsl(var(--foreground)/0.10); }
+  .shadow-retro-sm { box-shadow: 2px 2px 0px 0px hsl(var(--foreground)/0.10); }
+
+
+  /* Chart specific styling for NB theme if needed */
+  .recharts-wrapper.nb-theme .recharts-cartesian-axis-tick_text { fill: hsl(var(--nb-black)) !important; }
+  .recharts-wrapper.nb-theme .recharts-legend-item-text { color: hsl(var(--nb-black)) !important; }
+  .recharts-wrapper.nb-theme .recharts-tooltip-label { color: hsl(var(--nb-black)) !important; }
+
+  /* Partner slider for Chorke-like landing */
+  .partner-slider-container {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  }
+  .dark .partner-slider-container {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, white 5%, white 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, white 5%, white 95%, transparent 100%);
+  }
+  .partner-slider-track {
+    display: flex;
+    width: fit-content;
+    animation: scrollPartners 60s linear infinite;
+  }
+  .partner-slider-track > div {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
 }
 
 @keyframes scrollPartners {
@@ -324,28 +392,4 @@
   100% { transform: translateX(-50%); }
 }
 
-[data-radix-select-content-wrapper] { box-shadow: none !important; }
-[data-radix-progress-root] { border-radius: var(--radius) !important; }
-
-.recharts-wrapper, .recharts-text { font-family: var(--font-sans) !important; }
-
-.partner-slider-container {
-  overflow: hidden;
-  width: 100%;
-  position: relative;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-}
-.dark .partner-slider-container {
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, white 5%, white 95%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, white 5%, white 95%, transparent 100%);
-}
-.partner-slider-track {
-  display: flex;
-  width: fit-content; /* Or a very large width like 200% if flex-shrink is not working well with animation */
-  animation: scrollPartners 60s linear infinite; /* Slower animation */
-}
-.partner-slider-track > div {
-  flex-shrink: 0;
-  white-space: nowrap;
-}
+    
