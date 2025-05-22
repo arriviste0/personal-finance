@@ -78,7 +78,7 @@ export default function DashboardPage() {
   const [mockBankBalance, setMockBankBalance] = useState('');
 
 
-  const investmentTotal = 12000;
+  const investmentTotal = 12000; // This would ideally come from context or API
   const netWorth = walletBalance + totalLockedFunds + investmentTotal;
   const emergencyFundAllocation = allocations['emergencyFund'];
   const emergencyFundCurrent = emergencyFundAllocation?.amount || 0;
@@ -155,7 +155,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {/* Row 1 on XL */}
-        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col">
+        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col h-full">
           <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -183,7 +183,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col">
+        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col h-full">
           <CardHeader className="retro-card-header !bg-dashboard-purple-header !text-dashboard-purple-foreground">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -216,7 +216,7 @@ export default function DashboardPage() {
           </CardFooter>
         </Card>
 
-        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col">
+        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col h-full">
           <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -247,8 +247,8 @@ export default function DashboardPage() {
             </Button>
           </CardFooter>
         </Card>
-
-        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col">
+        
+        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col h-full">
             <CardHeader className="retro-card-header !bg-dashboard-purple-header !text-dashboard-purple-foreground">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -262,7 +262,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1 h-[320px]">
+            <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1 h-[250px] overflow-y-auto">
                 {budgetSnapshotData.slice(0, 4).map(item => (
                     <div key={item.category}>
                         <div className="flex justify-between text-xs mb-0.5">
@@ -286,7 +286,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Row 2 on XL */}
-        <Card className="retro-card xl:col-span-2 md:col-span-2 flex flex-col">
+        <Card className="retro-card xl:col-span-2 md:col-span-2 flex flex-col h-full">
           <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -300,10 +300,10 @@ export default function DashboardPage() {
                 </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 pt-4 h-[320px] flex-1">
+          <CardContent className="retro-card-content !border-t-0 pt-4 h-[380px] flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={investmentPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                <Pie data={investmentPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={110} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
                   {investmentPieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
@@ -319,7 +319,7 @@ export default function DashboardPage() {
             </CardFooter>
         </Card>
 
-        <Card className="retro-card xl:col-span-2 md:col-span-2 flex flex-col"> {/* AI Savings Helper takes remaining 2 cols on XL */}
+        <Card className="retro-card xl:col-span-2 md:col-span-2 flex flex-col h-full">
             <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -333,10 +333,15 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1 h-[320px]">
+            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1 h-[380px]">
                 <p className="text-sm text-foreground/90">
                     Unlock personalized insights to boost your savings. Our AI analyzes your spending patterns and goals to provide actionable recommendations.
                 </p>
+                 {/* Placeholder for AI content - e.g. a list of tips or a summary */}
+                <div className="mt-4 space-y-2 text-xs text-muted-foreground">
+                    <p>Tip 1: You could save $X by reducing Y.</p>
+                    <p>Tip 2: Consider allocating Z to your emergency fund.</p>
+                </div>
             </CardContent>
             <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                 <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/ai-assistant')}>
@@ -346,7 +351,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Row 3 on XL */}
-        <Card className="retro-card xl:col-span-4 md:col-span-2 flex flex-col">
+        <Card className="retro-card xl:col-span-4 md:col-span-2 flex flex-col h-full">
           <CardHeader className="retro-card-header">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -429,3 +434,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
