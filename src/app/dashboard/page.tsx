@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,13 +24,13 @@ import {
     Lock,
     AlertTriangle,
     ArrowRight,
-    Briefcase, 
-    Zap, 
+    Briefcase,
+    Zap,
     Star,
     X,
-    BarChart3, 
-    Receipt, 
-    Users 
+    BarChart3,
+    Receipt,
+    Users
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
@@ -78,7 +78,7 @@ export default function DashboardPage() {
   const [mockBankBalance, setMockBankBalance] = useState('');
 
 
-  const investmentTotal = 12000; 
+  const investmentTotal = 12000;
   const netWorth = walletBalance + totalLockedFunds + investmentTotal;
   const emergencyFundAllocation = allocations['emergencyFund'];
   const emergencyFundCurrent = emergencyFundAllocation?.amount || 0;
@@ -101,7 +101,7 @@ export default function DashboardPage() {
     }
     setInitialWalletBalance(balance);
     setIsLinkBankModalOpen(false);
-    setMockBankBalance(''); 
+    setMockBankBalance('');
     toast({
       title: "Bank Balance Synced (Demo)",
       description: `Your wallet balance has been updated to ${formatCurrency(balance)}.`,
@@ -147,14 +147,14 @@ export default function DashboardPage() {
                  <div className="retro-window-controls"><span></span><span></span><span></span></div>
             </CardHeader>
             <CardContent className="retro-card-content pt-2 flex-1">
-                <p className="text-2xl font-bold text-green-500">Good</p> 
+                <p className="text-2xl font-bold text-green-500">Good</p>
                  <Progress value={75} className="h-1.5 mt-1 retro-progress" indicatorClassName="!bg-green-500" />
             </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <Card className="retro-card xl:col-span-1 md:col-span-2 flex flex-col">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col">
           <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -182,7 +182,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="retro-card flex flex-col">
+        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col">
           <CardHeader className="retro-card-header !bg-dashboard-purple-header !text-dashboard-purple-foreground">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -215,7 +215,7 @@ export default function DashboardPage() {
           </CardFooter>
         </Card>
 
-        <Card className="retro-card flex flex-col">
+        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col">
           <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -247,7 +247,7 @@ export default function DashboardPage() {
           </CardFooter>
         </Card>
 
-        <Card className="retro-card md:col-span-2 xl:col-span-1 flex flex-col">
+        <Card className="retro-card xl:col-span-1 md:col-span-1 flex flex-col">
             <CardHeader className="retro-card-header !bg-dashboard-purple-header !text-dashboard-purple-foreground">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -285,7 +285,66 @@ export default function DashboardPage() {
         </Card>
 
 
-        <Card className="retro-card md:col-span-2 flex flex-col">
+        <Card className="retro-card xl:col-span-2 md:col-span-2 flex flex-col"> {/* Investment Portfolio - wider */}
+          <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
+             <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <Briefcase className="h-5 w-5" />
+                    <CardTitle>Investment Portfolio</CardTitle>
+                </div>
+                <div className="retro-window-controls">
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
+                </div>
+            </div>
+          </CardHeader>
+          <CardContent className="retro-card-content !border-t-0 pt-4 h-[250px] flex-1"> {/* Increased height slightly */}
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={investmentPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={70} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                  {investmentPieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                  ))}
+                </Pie>
+                <RechartsTooltip formatter={(value: number, name: string) => [formatCurrency(value), name]} />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+           <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
+                <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/investments')}>
+                    <TrendingUp className="mr-2 h-4 w-4" /> Manage Investments
+                </Button>
+            </CardFooter>
+        </Card>
+
+        <Card className="retro-card xl:col-span-2 md:col-span-2 flex flex-col"> {/* AI Savings Helper */}
+            <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Zap className="h-5 w-5" />
+                        <CardTitle>AI Savings Helper</CardTitle>
+                    </div>
+                    <div className="retro-window-controls">
+                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
+                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
+                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
+                    </div>
+                </div>
+            </CardHeader>
+            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1">
+                <p className="text-sm text-foreground/90">
+                    Unlock personalized insights to boost your savings. Our AI analyzes your spending patterns and goals to provide actionable recommendations.
+                </p>
+            </CardContent>
+            <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
+                <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/ai-assistant')}>
+                    <Lightbulb className="mr-2 h-4 w-4" /> Get AI Recommendations
+                </Button>
+            </CardFooter>
+        </Card>
+
+        <Card className="retro-card xl:col-span-4 md:col-span-2 flex flex-col"> {/* Recent Transactions - full width */}
           <CardHeader className="retro-card-header">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -318,66 +377,6 @@ export default function DashboardPage() {
             </CardFooter>
         </Card>
 
-        <Card className="retro-card xl:col-span-1 flex flex-col">
-          <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
-             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <Briefcase className="h-5 w-5" />
-                    <CardTitle>Investment Portfolio</CardTitle>
-                </div>
-                <div className="retro-window-controls">
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                </div>
-            </div>
-          </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 pt-4 h-[200px] flex-1">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={investmentPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={60} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                  {investmentPieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Pie>
-                <RechartsTooltip formatter={(value: number, name: string) => [formatCurrency(value), name]} />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-           <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/investments')}>
-                    <TrendingUp className="mr-2 h-4 w-4" /> Manage Investments
-                </Button>
-            </CardFooter>
-        </Card>
-
-        <Card className="retro-card xl:col-span-2 flex flex-col">
-            <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Zap className="h-5 w-5" />
-                        <CardTitle>AI Savings Helper</CardTitle>
-                    </div>
-                    <div className="retro-window-controls">
-                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-                    </div>
-                </div>
-            </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1">
-                <p className="text-sm text-foreground/90">
-                    Unlock personalized insights to boost your savings. Our AI analyzes your spending patterns and goals to provide actionable recommendations.
-                </p>
-            </CardContent>
-            <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/ai-assistant')}>
-                    <Lightbulb className="mr-2 h-4 w-4" /> Get AI Recommendations
-                </Button>
-            </CardFooter>
-        </Card>
-
-
       </div>
 
       <Dialog open={isLinkBankModalOpen} onOpenChange={setIsLinkBankModalOpen}>
@@ -402,10 +401,10 @@ export default function DashboardPage() {
             </p>
             <div className="space-y-2">
                 <Label htmlFor="mock-balance" className="text-sm">Enter Mock Bank Balance ($)</Label>
-                <Input 
-                    id="mock-balance" 
-                    type="number" 
-                    placeholder="e.g., 50000" 
+                <Input
+                    id="mock-balance"
+                    type="number"
+                    placeholder="e.g., 50000"
                     className="retro-input"
                     value={mockBankBalance}
                     onChange={(e) => setMockBankBalance(e.target.value)}
@@ -428,4 +427,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
