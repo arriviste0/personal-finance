@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -11,7 +12,6 @@ import {
   Youtube,
   Facebook,
   Instagram,
-  Mail,
   ArrowRight,
   LayoutGrid,
   Wallet,
@@ -24,19 +24,13 @@ import {
   Package,
   BrainCircuit,
   ShieldCheck,
-  GraduationCap,
-  Cloud,
-  PiggyBank,
-  Landmark,
-  BarChartBig,
-  Award,
   ChevronRight,
   ChevronDown,
   ChevronLeft,
   ChevronUp,
   CircleDollarSign,
   Store,
-  AppleIcon as Apple, // Renamed to avoid conflict if another Apple exists
+  AppleIcon as Apple,
   Briefcase,
   CreditCard,
   DollarSign,
@@ -50,11 +44,18 @@ import {
   BookOpen,
   Server,
   Rocket,
-  MessageCircle,
-  Send,
   CheckCircle,
+  Award,
+  HandCoins, // For services
+  PiggyBank, // For services
+  Landmark,  // For services
+  Mail as MailIcon, // For footer
+  Phone, // For footer
+  MessageCircle, // For footer
+  Send, // For footer
+  BarChartBig, // For 4-step plan
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'; // Removed CardFooter from here
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
@@ -68,7 +69,7 @@ interface SectionWrapperProps {
 
 const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bgClassName = "", id, containerClassName = "container-default" }) => {
   return (
-    <section id={id} className={cn("py-12 md:py-20 lg:py-24 relative overflow-hidden", bgClassName, className)}>
+    <section id={id} className={cn("section-padding relative overflow-hidden", bgClassName, className)}>
       <div className={cn(containerClassName, "relative z-10")}>
         {children}
       </div>
@@ -81,42 +82,48 @@ interface ServiceCardProps {
   title: string;
   description: string;
   href: string;
-  bgColor: string;
-  textColor: string;
   buttonText?: string;
+  bgColorClass: string; // e.g., 'bg-wz-pink'
+  textColorClass: string; // e.g., 'text-wz-text-dark'
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, href, bgColor, textColor, buttonText = "Learn More" }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, href, buttonText = "Learn More", bgColorClass, textColorClass }) => {
   return (
     <motion.div
-      className={cn("p-6 rounded-xl border-2 border-wz-border-dark shadow-sm h-full flex flex-col hover:shadow-lg transition-all duration-200", bgColor, textColor)}
+      className={cn(
+        "card-wz p-6 rounded-xl h-full flex flex-col group", // Use card-wz for border etc.
+        bgColorClass,
+        textColorClass,
+        "hover:brightness-105 transition-all duration-300"
+      )}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5 }}
     >
-      <Icon className="h-8 w-8 mb-4" />
+      <Icon className="h-8 w-8 mb-4" /> {/* Icon color will be inherited from textColorClass */}
       <h3 className="text-xl font-bold mb-2 font-heading">{title}</h3>
-      <p className="text-sm opacity-80 mb-4 flex-grow">{description}</p>
-      <Button asChild className="btn-wz btn-wz-outline-dark mt-auto text-sm !py-2 !px-4">
+      <p className="text-sm opacity-90 mb-4 flex-grow">{description}</p>
+      <Button asChild className="btn-wz btn-wz-outline-dark mt-auto text-sm !py-2 !px-4 self-start">
         <Link href={href}>{buttonText} <ArrowRight className="ml-2 h-4 w-4" /></Link>
       </Button>
     </motion.div>
   );
 };
 
-const services = [
-  { icon: LayoutGrid, title: "Dashboard", description: "Your financial command center.", href: "/dashboard", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
-  { icon: Wallet, title: "Budget", description: "Plan and manage your monthly budgets.", href: "/budget", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
-  { icon: ListChecks, title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
-  { icon: Target, title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
-  { icon: TrendingUp, title: "Invest", description: "Monitor and grow your investments.", href: "/investments", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
-  { icon: ShieldAlert, title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
-  { icon: FileText, title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
-  { icon: Lightbulb, title: "AI", description: "Get smart financial insights.", href: "/ai-assistant", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
+const coreServices = [
+  { icon: LayoutGrid, title: "Dashboard", description: "Your financial command center.", href: "/dashboard" },
+  { icon: Wallet, title: "Budget", description: "Plan and manage your monthly budgets.", href: "/budget" },
+  { icon: ListChecks, title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses" },
+  { icon: Target, title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals" },
+  { icon: TrendingUp, title: "Invest", description: "Monitor and grow your investments.", href: "/investments" },
+  { icon: ShieldAlert, title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund" },
+  { icon: FileText, title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner" },
+  { icon: Lightbulb, title: "AI", description: "Get smart financial insights.", href: "/ai-assistant" },
 ];
 
 const serviceColors = ["bg-wz-pink", "bg-wz-green", "bg-wz-purple", "bg-wz-yellow"];
+
 
 const partners = ["Plaid", "Yodlee", "Stripe", "Visa", "Mastercard", "American Express", "Google Pay"];
 
@@ -141,12 +148,6 @@ const whyFinCoBenefits = [
   },
 ];
 
-const fourStepPlanData = [
-  { step: "1", title: "Set Your Goals", description: "Define your financial objetives", icon: Target, color: "orange", themeColor: "wz-yellow", iconColor: "text-orange-500", borderColor: "border-orange-400", badgeBg: "bg-orange-400" },
-  { step: "2", title: "Get a Tailored Action Plan", description: "Receive a step-by-step plan", icon: BarChartBig, color: "blue", themeColor: "wz-blue", iconColor: "text-blue-500", borderColor: "border-blue-400", badgeBg: "bg-blue-400" },
-  { step: "3", title: "Track What Works", description: "Adjust and optimize your plan", icon: TrendingUp, color: "purple", themeColor: "wz-purple", iconColor: "text-purple-500", borderColor: "border-purple-400", badgeBg: "bg-purple-400" },
-  { step: "4", title: "Achieve & Grow", description: "Celebrate milestones and continue building your financial future.", icon: Award, color: "green", themeColor: "wz-green", iconColor: "text-green-500", borderColor: "border-green-400", badgeBg: "bg-green-400" },
-];
 
 export default function LandingPage() {
   React.useEffect(() => {
@@ -157,17 +158,17 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen text-wz-text-dark">
+    <div className="flex flex-col min-h-screen text-wz-text-dark"> {/* Ensured dark text from Wzuh theme */}
       <main className="flex-grow">
         {/* Hero Section */}
-        <SectionWrapper bgClassName="bg-wz-green !py-20 md:!py-28 lg:!py-32" id="hero">
+        <SectionWrapper bgClassName="bg-wz-green !pt-20 md:!pt-28 lg:!pt-32 !pb-12 md:!pb-16" id="hero">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-wz-text-dark leading-tight font-heading">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-wz-text-dark leading-tight">
                 Master Your <br className="hidden md:inline" />Financial Goals
               </h1>
               <p className="text-lg md:text-xl text-wz-gray-text mb-8 max-w-lg">
@@ -190,8 +191,8 @@ export default function LandingPage() {
                 alt="FinCo app illustration"
                 width={500}
                 height={550}
-                className="rounded-2xl shadow-xl object-cover border-4 border-wz-border-dark"
-                data-ai-hint="person using finance app"
+                className="rounded-2xl shadow-lg object-cover border-4 border-wz-border-dark"
+                data-ai-hint="person finance app tablet"
               />
               <Sparkles className="absolute -top-8 -left-8 h-16 w-16 text-wz-pink opacity-70 animate-pulse" />
               <Sparkles className="absolute -bottom-5 -right-5 h-12 w-12 text-wz-yellow opacity-70 animate-pulse delay-500" />
@@ -201,7 +202,7 @@ export default function LandingPage() {
 
         {/* Partners Section */}
         <section className="py-4 bg-wz-pink border-y-2 border-wz-border-dark">
-           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="container-default">
              <div className="partner-slider-container">
                <div className="partner-slider-track">
                  {[...partners, ...partners].map((partner, i) => (
@@ -220,15 +221,15 @@ export default function LandingPage() {
         <SectionWrapper id="why-finco" bgClassName="bg-wz-light-bg">
            <div className="text-center mb-12 md:mb-16">
              <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading mb-4">Why Smart People Choose Fin.Co</h2>
-             <p className="text-lg text-wz-gray-text max-w-2xl mx-auto">
-               We're not just another finance app. We're your dedicated partner in achieving financial freedom with unparalleled simplicity and intelligence.
-             </p>
            </div>
            <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
              {whyFinCoBenefits.map((benefit, index) => (
                <motion.div
                  key={index}
-                 className="p-6 lg:p-8 bg-white text-wz-text-dark rounded-xl border-2 border-wz-border-dark shadow-md group hover:bg-wz-pink hover:shadow-lg transition-all duration-300 h-full flex flex-col"
+                 className={cn(
+                    "p-6 lg:p-8 bg-white text-wz-text-dark rounded-xl border-2 border-wz-border-dark shadow-md group transition-all duration-300 h-full flex flex-col",
+                    "hover:bg-wz-pink hover:border-wz-pink" // Pink background on hover
+                 )}
                  initial={{ opacity: 0, y: 20 }}
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true, amount: 0.3 }}
@@ -242,7 +243,7 @@ export default function LandingPage() {
            </div>
         </SectionWrapper>
 
-        {/* Explore Our Core Features Section */}
+         {/* Explore Our Core Features Section */}
         <SectionWrapper id="services" bgClassName="bg-wz-green">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading mb-4">Explore FinCo's Core Features</h2>
@@ -251,108 +252,21 @@ export default function LandingPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
+            {coreServices.map((service, index) => (
               <ServiceCard
-                key={index}
+                key={service.title}
                 icon={service.icon}
                 title={service.title}
                 description={service.description}
                 href={service.href}
-                bgColor={serviceColors[index % serviceColors.length]}
-                textColor="text-wz-text-dark"
+                bgColorClass={serviceColors[index % serviceColors.length]}
+                textColorClass="text-wz-text-dark"
                 buttonText="Explore"
               />
             ))}
           </div>
         </SectionWrapper>
 
-        {/* Your 4-Step Personalized Financial Plan Section */}
-        <SectionWrapper id="financial-plan" bgClassName="bg-wz-light-bg">
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading mb-4">Your 4-Step Personalized Financial Plan</h2>
-            <p className="text-lg text-wz-gray-text max-w-2xl mx-auto">
-              Follow these simple steps to take control of your finances and achieve your dreams with FinCo.
-            </p>
-          </div>
-          <div className="relative max-w-4xl mx-auto">
-            <div className="absolute inset-0 flex items-center justify-center -z-10">
-              <div className="w-[350px] h-[350px] md:w-[500px] md:h-[500px] border-[12px] border-yellow-200/50 rounded-full opacity-70"></div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 justify-items-center">
-              {fourStepPlanData.map((item, index) => (
-                <motion.div
-                  key={item.step}
-                  className={cn(
-                    "p-6 bg-white rounded-xl border-2 shadow-lg flex flex-col h-full w-full max-w-sm relative",
-                    item.borderColor
-                  )}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <span className={cn("absolute top-3 left-3 flex items-center justify-center h-7 w-7 rounded-full text-xs font-bold text-black", item.badgeBg)}>
-                    {item.step}
-                  </span>
-                  <div className="flex flex-col items-center text-center pt-8">
-                    <item.icon className={cn("h-10 w-10 mb-3", item.iconColor)} />
-                    <h3 className={cn("text-lg font-bold font-heading mb-1", item.iconColor)}>{item.title.replace(`Step ${item.step}: `, '')}</h3>
-                    <p className="text-sm text-wz-gray-text flex-grow">{item.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-             {/* Arrows for flow - order: 1->2 (top-right), 2->3 (bottom-right), 3->4 (bottom-left), 4->1 (top-left) */}
-            <ChevronRight className="hidden md:block absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-[150%] w-10 h-10 text-gray-400 opacity-70 transform" />
-            <ChevronDown className="hidden md:block absolute top-1/2 right-1/4 translate-x-[150%] -translate-y-1/2 w-10 h-10 text-gray-400 opacity-70 transform" />
-            <ChevronLeft className="hidden md:block absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-[150%] w-10 h-10 text-gray-400 opacity-70 transform" />
-            <ChevronUp className="hidden md:block absolute top-1/2 left-1/4 -translate-x-[150%] -translate-y-1/2 w-10 h-10 text-gray-400 opacity-70 transform" />
-          </div>
-        </SectionWrapper>
-
-        {/* "Potential Savings" Section */}
-        <SectionWrapper id="potential-savings" bgClassName="bg-wz-yellow">
-           <div className="text-center">
-             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="relative inline-block mb-8"
-            >
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-wz-text-dark mb-3 font-heading">
-                $1,234,567
-              </h2>
-              {[
-                { icon: CircleDollarSign, color: "text-wz-pink", classes: "top-0 -left-16", delay: 0.1 },
-                { icon: GraduationCap, color: "text-wz-green", classes: "top-10 -right-16", delay: 0.2 },
-                { icon: Cloud, color: "text-wz-purple", classes: "bottom-10 -left-10", delay: 0.3 },
-                { icon: PiggyBank, color: "text-teal-500", classes: "-bottom-8 right-0", delay: 0.4 },
-                { icon: Landmark, color: "text-wz-pink", classes: "left-1/2 -top-10 -translate-x-1/2", delay: 0.5 },
-              ].map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  className={cn("absolute text-4xl md:text-5xl opacity-70", item.classes)}
-                  initial={{ opacity:0, y: 20 }}
-                  animate={{ opacity: 0.7, y: [0, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", delay: item.delay + idx * 0.2, ease: "easeInOut" }}
-                >
-                  <item.icon className={item.color} />
-                </motion.div>
-              ))}
-            </motion.div>
-            <p className="text-lg md:text-xl text-wz-text-dark font-semibold max-w-xl mx-auto mb-10">
-              Potential annual savings our users achieve with Fin.Co!
-            </p>
-             <Image
-                src="https://storage.googleapis.com/idx-dev-fe-plugin-ai-test-assets/01J3Y6N12P55GSJBDY71G3P981.png"
-                alt="Cartoon illustrating people achieving financial goals like saving, investing, and becoming debt-free"
-                width={900}
-                height={300}
-                className="rounded-lg shadow-xl mx-auto border-4 border-wz-border-dark object-contain"
-                data-ai-hint="financial freedom cartoon people saving investing debt-free"
-              />
-          </div>
-        </SectionWrapper>
 
         {/* "Ready to Start?" CTA Section */}
         <SectionWrapper id="cta-download" bgClassName="bg-wz-light-bg">
@@ -379,13 +293,13 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="bg-wz-text-dark text-wz-text-light/70 pt-16 pb-8 border-t-4 border-wz-pink">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container-default">
           <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 mb-10 items-start">
             {/* Column 1: Logo & Subscription */}
             <div className="space-y-4">
               <Link href="/" className="flex items-center space-x-2 no-underline">
                 <Sparkles className="h-8 w-8 text-wz-pink" />
-                <span className="text-2xl font-bold font-heading text-wz-text-light">Fin.Co</span>
+                <span className="text-2xl font-bold font-heading text-wz-text-light">FinCo</span>
               </Link>
               <p className="text-sm text-wz-text-light/80">Get weekly financial tips and FinCo updates straight to your inbox.</p>
               <form className="flex gap-2 max-w-sm">
@@ -404,10 +318,10 @@ export default function LandingPage() {
             <div>
               <h4 className="font-semibold text-wz-text-light mb-3 font-heading">Company</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Features</Link></li>
-                <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Pricing</Link></li>
-                <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">About</Link></li>
-                <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Jobs</Link></li>
+                <li><Link href="#services" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Features</Link></li>
+                <li><Link href="#pricing" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Pricing</Link></li>
+                <li><Link href="#about" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">About</Link></li>
+                <li><Link href="#careers" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Jobs</Link></li>
               </ul>
             </div>
 
@@ -415,18 +329,18 @@ export default function LandingPage() {
              <div>
               <h4 className="font-semibold text-wz-text-light mb-3 font-heading">Resources</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Blog</Link></li>
-                <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Help Center</Link></li>
-                <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Contact Support</Link></li>
-                 <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Terms of Service</Link></li>
-                <li><Link href="#" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Privacy Policy</Link></li>
+                <li><Link href="#blog" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Blog</Link></li>
+                <li><Link href="#help" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Help Center</Link></li>
+                <li><Link href="#contact" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Contact Support</Link></li>
+                 <li><Link href="/terms" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="text-sm no-underline text-wz-text-light/80 hover:text-wz-pink">Privacy Policy</Link></li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-wz-gray-text/30 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm">
             <p className="text-wz-text-light/80">
-              © {new Date().getFullYear()} Fin.Co. All Rights Reserved.
+              © {new Date().getFullYear()} FinCo. All Rights Reserved.
             </p>
             <div className="flex space-x-5 mt-4 sm:mt-0">
               <Link href="#" aria-label="Twitter" className="text-wz-text-light/80 hover:text-wz-pink transition-colors no-underline"><Twitter className="h-5 w-5"/></Link>
@@ -440,3 +354,4 @@ export default function LandingPage() {
     </div>
   );
 }
+

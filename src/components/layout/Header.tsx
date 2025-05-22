@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from "next/link";
@@ -11,16 +10,16 @@ import {
   Twitter,
   Facebook,
   Instagram,
-  Sparkles,
+  Sparkles, // Keep Sparkles for the landing page logo
   X,
   LayoutGrid,
   ListChecks,
   Target,
-  TrendingUp,
+  TrendingUp, // Added as per user request for services
   ShieldAlert,
   FileText,
   Lightbulb,
-  PiggyBank,
+  PiggyBank, // Ensured import
   Landmark,
   HandCoins,
   Users,
@@ -30,6 +29,33 @@ import {
   ArrowRight,
   Receipt,
   BarChart3,
+  User as UserIcon, // Renamed to avoid conflict
+  Package,
+  BrainCircuit,
+  ShieldCheck,
+  ChevronRight,
+  Award,
+  MessageCircle,
+  Send,
+  Phone,
+  Mail as MailIcon,
+  Home,
+  Info,
+  Settings,
+  Users2,
+  BookOpen,
+  Server,
+  Rocket,
+  CheckCircle,
+  DollarSign, // Added for dashboard
+  CreditCard, // Added for dashboard
+  Activity, // Added for dashboard
+  BarChartBig,
+  ChevronDown,
+  ChevronLeft,
+  ChevronUp,
+  AppleIcon as Apple,
+  Store,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,18 +70,17 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { useWallet } from '@/contexts/WalletContext';
+import { useWallet } from '@/contexts/WalletContext'; // Import useWallet
 import React from "react";
 
-// Helper to get icon components by name
-const icons: { [key: string]: React.ElementType } = {
-  CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, LayoutGrid, ListChecks, Target, TrendingUp, ShieldAlert, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3,
-};
-
+// Helper to get icon components by name, now inside the component
 const getIcon = (iconName?: string, props?: any) => {
+  const icons: { [key: string]: React.ElementType } = {
+    CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, LayoutGrid, ListChecks, Target, TrendingUp, ShieldAlert, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, ShieldCheck, Award, ChevronRight, MessageCircle, Send, Phone, MailIcon, Home, Info, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity, DollarSign, BarChartBig, ChevronDown, ChevronLeft, ChevronUp, Apple, Store
+  };
   if (!iconName) return null;
   const IconComponent = icons[iconName];
-  return IconComponent ? <IconComponent {...props} /> : <Sparkles {...props} />; // Default to Sparkles if not found
+  return IconComponent ? <IconComponent {...props} /> : <Sparkles {...props} />;
 };
 
 
@@ -63,12 +88,14 @@ export default function Header() {
   const { toast } = useToast();
   const { data: session, status } = useSession();
   const pathname = usePathname();
-  const { walletBalance, totalLockedFunds } = useWallet();
+  const { walletBalance, totalLockedFunds } = useWallet(); // Get wallet data
 
   const isAuthenticated = status === 'authenticated';
   const isLoadingSession = status === 'loading';
   const isLandingPage = pathname === '/';
 
+
+  // Define links inside the component to ensure icons are initialized
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
     { href: "/budget", label: "Budget", iconName: "Wallet" },
@@ -98,31 +125,36 @@ export default function Header() {
   };
 
   const handleSignOut = async () => {
-    await signOut({ redirect: true, callbackUrl: '/login' });
+    await signOut({ redirect: true, callbackUrl: '/login' }); // Redirect to login after sign out
     toast({
       title: "Signed Out",
       description: "You have been successfully signed out.",
     });
   };
 
+
+  // Conditional rendering for the entire header based on landing page
   if (isLandingPage) {
     return (
-      <header className="w-full py-3 bg-wz-light-bg"> {/* Outer wrapper for vertical spacing */}
-        <div className="container-default"> {/* Standard container for width control */}
-          <div className="bg-white rounded-full border border-gray-300 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between">
+      <header className="bg-transparent w-full"> {/* Header area is transparent, AppLayout provides bg-wz-green */}
+        <div className="container-default py-3"> {/* Vertical padding for the pill bar */}
+          <div className="bg-white rounded-full border border-gray-300 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between w-full max-w-5xl mx-auto">
             {/* Left: Logo */}
             <Link href="/" className="flex items-center space-x-2 no-underline">
               <Sparkles className="h-7 w-7 text-wz-pink" />
-              <span className="text-2xl font-bold text-wz-text-dark font-sans">FinCo</span>
+              <span className="text-xl font-bold text-wz-text-dark font-sans">FinCo</span>
             </Link>
 
             {/* Center: Navigation Links (Desktop) */}
-            <nav className="hidden md:flex items-center space-x-2">
+            <nav className="hidden md:flex items-center space-x-1">
               {landingPageNavLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-3 py-1.5 text-sm font-semibold text-wz-text-dark hover:bg-gray-100 hover:rounded-full transition-colors duration-150 no-underline"
+                  className={cn(
+                    "px-3 py-1.5 text-sm font-semibold text-wz-text-dark hover:bg-gray-100 hover:rounded-full transition-colors duration-150 no-underline",
+                    pathname === link.href ? "bg-gray-100 rounded-full" : "" // Example active state
+                  )}
                 >
                   {link.label}
                 </Link>
@@ -130,19 +162,19 @@ export default function Header() {
             </nav>
 
             {/* Right: Auth Buttons & Mobile Menu Trigger */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
               {!isAuthenticated && !isLoadingSession && (
                 <>
-                  <Button asChild className="btn-wz btn-wz-pink text-sm !py-1.5 !px-5">
+                  <Button asChild className="btn-wz btn-wz-pink hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white text-sm !py-1.5 !px-4 whitespace-nowrap">
                     <Link href="/login">Log In</Link>
                   </Button>
-                  <Button asChild className="btn-wz btn-wz-outline-dark text-sm !py-1.5 !px-5 hidden sm:inline-flex">
-                     <Link href="/get-started">Get Started</Link>
+                  <Button asChild className="btn-wz btn-wz-outline-dark text-sm !py-1.5 !px-4 whitespace-nowrap">
+                    <Link href="/get-started">Get Started</Link>
                   </Button>
                 </>
               )}
               {isAuthenticated && (
-                 <Button onClick={handleSignOut} className="btn-wz btn-wz-pink text-sm !py-1.5 !px-5">
+                 <Button onClick={handleSignOut} className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap">
                   <LogOut className="mr-2 h-4 w-4" /> Sign Out
                 </Button>
               )}
@@ -178,7 +210,7 @@ export default function Header() {
                         {!isAuthenticated && !isLoadingSession && (
                           <>
                              <SheetClose asChild>
-                              <Button asChild className="w-full btn-wz btn-wz-pink text-sm py-2">
+                               <Button asChild className="w-full btn-wz btn-wz-pink text-sm py-2">
                                 <Link href="/login">Log In</Link>
                               </Button>
                             </SheetClose>
@@ -213,11 +245,11 @@ export default function Header() {
     <header className="w-full">
       {/* Top Row */}
       <div className="bg-header-top">
-        <div className="container mx-auto flex h-12 items-center px-4 md:px-6 border-b border-header-top-border">
-          <div className="flex items-center space-x-3 mr-auto">
+        <div className="container-default flex h-12 items-center border-b border-header-top-border">
+          <div className="flex items-center space-x-3 mr-auto"> {/* Use mr-auto to push right content */}
             <Link href="/dashboard" className="flex items-center space-x-2 no-underline shrink-0">
               {getIcon("CircleDollarSign", { className: "h-7 w-7 text-header-top-fg" })}
-              <span className="font-heading text-xl font-bold text-header-top-fg">Fin.Co</span>
+              <span className="font-heading text-xl font-bold text-header-top-fg">FinCo</span>
             </Link>
             {isAuthenticated && (
               <div className="hidden sm:flex items-center space-x-3 text-xs text-header-top-fg/90">
@@ -233,13 +265,14 @@ export default function Header() {
             )}
           </div>
 
+          {/* Right side of Top Row */}
           <div className="flex items-stretch h-full text-sm">
             {!isAuthenticated && !isLoadingSession && (
-               <div className="flex items-stretch h-full text-sm ml-auto">
+              <>
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                   <Link
                     href="/login"
-                    className="flex items-center justify-center w-full h-full px-4 text-sm font-medium text-header-top-fg hover:bg-header-top-fg/10 hover:text-header-top-fg whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
+                    className="flex items-center justify-center w-full h-full px-4 text-sm font-medium text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                   >
                     Log In
                   </Link>
@@ -248,16 +281,16 @@ export default function Header() {
                    <Button asChild variant="ghost" className="p-0 w-full h-full rounded-none">
                     <Link
                       href="/get-started"
-                      className="w-full h-full flex items-center justify-center bg-white text-header-top-bg hover:bg-blue-500 hover:text-white rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
+                      className="w-full h-full flex items-center justify-center bg-white text-header-top-bg hover:bg-blue-700 hover:text-white rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                     >
                       Get Started
                     </Link>
                   </Button>
                 </div>
-              </div>
+              </>
             )}
             {isAuthenticated && (
-              <div className="flex-1 flex items-center justify-center border-l border-header-top-border ml-auto">
+              <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                 <Button
                   onClick={handleSignOut}
                   variant="ghost"
@@ -267,7 +300,8 @@ export default function Header() {
                 </Button>
               </div>
             )}
-             <div className="flex items-center justify-center border-l border-header-top-border md:hidden">
+            {/* Mobile Menu Trigger */}
+            <div className="flex items-center justify-center border-l border-header-top-border md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="text-header-top-fg hover:bg-header-top-fg/10 h-full w-10 rounded-none px-2">
@@ -279,7 +313,7 @@ export default function Header() {
                   <SheetHeader className="p-4 border-b border-header-bottom-border bg-header-top">
                     <SheetTitle className="flex items-center gap-2">
                       {getIcon("CircleDollarSign", { className: "h-6 w-6 text-header-top-fg" })}
-                      <span className="text-lg font-heading font-semibold text-header-top-fg">Fin.Co</span>
+                      <span className="text-lg font-heading font-semibold text-header-top-fg">FinCo</span>
                     </SheetTitle>
                      <SheetClose asChild>
                         <Button variant="ghost" size="icon" className="absolute right-3 top-3 h-7 w-7 p-0 text-header-top-fg/80 hover:bg-header-top-fg/10">
@@ -343,7 +377,7 @@ export default function Header() {
                             <Link href="/get-started" passHref className="no-underline">
                               <Button
                                 variant="default"
-                                className="w-full bg-white text-blue-700 hover:bg-blue-500 hover:text-white rounded-md py-2 text-sm font-semibold !border-transparent !shadow-none whitespace-nowrap"
+                                className="w-full bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-md py-2 text-sm font-semibold !border-transparent !shadow-none whitespace-nowrap"
                               >
                                 Get Started
                               </Button>
@@ -368,16 +402,15 @@ export default function Header() {
 
       {/* Bottom Row (Sticky Navigation for Internal Pages) */}
       <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
-        <div className="container mx-auto flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md">
+        <div className="container-default flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md">
           <nav className="flex flex-grow items-stretch h-full">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
-              const IconComp = getIcon(link.iconName);
               return (
-                <div // This parent div is mainly for the border-r separator and flex distribution
+                <div
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-center justify-center", 
+                    "h-full flex flex-1 items-center justify-center",
                     index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
@@ -390,7 +423,7 @@ export default function Header() {
                         : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
                     )}
                   >
-                    {IconComp && <IconComp className="mr-2 h-4 w-4" />}
+                    {/* Icon was removed for single-word labels */}
                     {link.label}
                   </Link>
                 </div>
@@ -412,5 +445,3 @@ export default function Header() {
     </header>
   );
 }
-
-  
