@@ -14,12 +14,12 @@
     --wz-green: 100 40% 88%; /* Lighter, similar to #BBFEA3 for backgrounds */
     --wz-purple: 270 50% 85%; /* Lighter, similar to #B9A3FE for backgrounds */
     --wz-yellow: 54 98% 78%; /* #FEE191 for backgrounds/accents */
-    --wz-text-dark: 0 0% 10%; /* #1A1B1D */
-    --wz-text-light: 0 0% 100%; /* #FFFFFF */
-    --wz-border-dark: 0 0% 6%; /* #101010 - slightly darker than text for stronger border */
-    --wz-light-bg: 45 100% 97%; /* #FFFBEF - very light yellow for overall page */
-    --wz-gray-text: 0 0% 30%; /* #4C4D50 */
-    --wz-teal: 165 100% 65%; /* For accents like the "Follow" button */
+    --wz-teal: 165 100% 65%; /* For accents like the "Follow" button from NFT example */
+    --wz-text-dark: 0 0% 10%; /* #1A1B1D - For text on light/vibrant backgrounds */
+    --wz-text-light: 0 0% 100%; /* #FFFFFF - For text on dark backgrounds */
+    --wz-border-dark: 0 0% 6%; /* #101010 - For button borders */
+    --wz-light-bg: 45 100% 97%; /* #FFFBEF - Overall page background for Wzuh theme */
+    --wz-gray-text: 0 0% 30%; /* #4C4D50 - For subtitles or less prominent text */
 
 
     /* FinCo - Modern & Clean Theme (Default for internal app pages) */
@@ -112,6 +112,12 @@
     --header-bottom-bg: 220 15% 18%;
     --header-bottom-fg: 0 0% 95%;
     --header-bottom-border: 210 10% 30%;
+
+    /* Wzuh Dark Specific (if ever needed, typically Wzuh is light) */
+    --wz-text-dark: 0 0% 90%; /* Lighter text for dark Wzuh */
+    --wz-text-light: 0 0% 10%; /* Darker text for light elements on dark Wzuh */
+    --wz-border-dark: 0 0% 80%; /* Lighter border */
+    --wz-light-bg: 0 0% 10%; /* Dark background */
   }
 }
 
@@ -130,14 +136,14 @@
 
   /* Landing page specific body background (Wzuh-inspired) */
   body.wzuh-landing-page {
-    @apply bg-wz-light-bg text-wz-text-dark;
+    @apply bg-wz-light-bg text-wz-text-dark; /* Ensure dark text on light bg */
     font-family: var(--font-sans);
   }
 
-  .wzuh-landing-page h1, .wzuh-landing-page h2, .wzuh-landing-page h3, .wzuh-landing-page h4, .wzuh-landing-page p, .wzuh-landing-page span, .wzuh-landing-page button, .wzuh-landing-page a {
+  .wzuh-landing-page h1, .wzuh-landing-page h2, .wzuh-landing-page h3, .wzuh-landing-page h4, .wzuh-landing-page p, .wzuh-landing-page span, .wzuh-landing-page a {
       font-family: var(--font-sans); /* Inter for all text on landing page as per new style guide */
   }
-  .wzuh-landing-page h1 { @apply text-5xl md:text-6xl lg:text-7xl font-bold; } /* Russo One was used before, now Inter Bold for headings */
+  .wzuh-landing-page h1 { @apply text-5xl md:text-6xl lg:text-7xl font-bold; }
   .wzuh-landing-page h2 { @apply text-3xl md:text-4xl font-bold; }
   .wzuh-landing-page p { @apply text-base md:text-lg; }
 
@@ -228,11 +234,12 @@
 
   /* Wzuh-inspired Button (Pill-shaped with border) */
   .btn-wz {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold border-2 border-wz-border-dark shadow-sm transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:translate-y-px active:shadow-none;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-base border-2 border-wz-border-dark shadow-sm transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:translate-y-px active:shadow-none;
     font-family: var(--font-sans); /* Inter */
+    @apply font-semibold; /* Default to SemiBold */
   }
-  .btn-wz-pink { @apply bg-wz-pink text-wz-text-dark hover:opacity-90; } /* Black text on pink */
-  .btn-wz-purple { @apply bg-wz-purple text-wz-text-dark hover:opacity-90; } /* Black text on purple */
+  .btn-wz-pink { @apply bg-wz-pink text-wz-text-dark hover:opacity-90; }
+  .btn-wz-purple { @apply bg-wz-purple text-wz-text-dark hover:opacity-90; }
   .btn-wz-green { @apply bg-wz-green text-wz-text-dark hover:opacity-90; }
   .btn-wz-yellow { @apply bg-wz-yellow text-wz-text-dark hover:opacity-90; }
   .btn-wz-teal { @apply bg-wz-teal text-wz-text-dark hover:opacity-90; }
@@ -242,6 +249,7 @@
   /* Wzuh-inspired Card */
   .card-wz {
     @apply p-6 shadow-md rounded-[var(--radius)] border-2 border-wz-border-dark; /* Default light card with black border */
+    font-family: var(--font-sans);
   }
   .card-wz-pink { @apply bg-wz-pink text-wz-text-dark; }
   .card-wz-green { @apply bg-wz-green text-wz-text-dark; }
@@ -254,7 +262,7 @@
     @apply border border-border bg-card text-card-foreground shadow-lg rounded-[var(--radius)];
   }
 
-  /* Retro Button styles (used by internal app pages) */
+  /* Retro Button styles (used by internal app pages) - Kept for internal pages if needed */
   .retro-button {
     @apply inline-flex items-center justify-center border-2 border-foreground px-4 py-2 text-base font-medium text-foreground shadow-retro-sm transition-all duration-150 ease-in-out active:translate-y-px active:translate-x-px active:shadow-none disabled:cursor-not-allowed disabled:opacity-50 rounded-none;
     font-family: var(--font-sans);
@@ -324,11 +332,14 @@
   .border-wz-border-dark { border-color: hsl(var(--wz-border-dark)); }
 
 
-  /* Retro Shadows */
+  /* Retro Shadows (Kept for internal pages if needed) */
   .shadow-retro { box-shadow: 3px 3px 0px 0px hsl(var(--foreground)/0.10); }
   .shadow-retro-sm { box-shadow: 2px 2px 0px 0px hsl(var(--foreground)/0.10); }
-  .shadow-retro-inset { box-shadow: inset 2px 2px 0px 0px hsl(var(--foreground)/0.10); }
-  .shadow-retro-inset-dark { box-shadow: inset 2px 2px 0px 0px hsl(var(--foreground)/0.08); }
+
+  /* Neo-Brutalism Hard Shadow */
+  .shadow-nb-hard { box-shadow: 6px 6px 0px 0px hsl(var(--nb-black)); }
+  .shadow-nb-hard-sm { box-shadow: 3px 3px 0px 0px hsl(var(--nb-black)); }
+
 
   /* Partner slider for Chorke-like landing */
   .partner-slider-container {
