@@ -4,7 +4,7 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import {
-    Sparkles, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, X, CircleDollarSign, // Added CircleDollarSign
+    Sparkles, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, X, CircleDollarSign,
     LayoutGrid, ListChecks, Target, TrendingUp, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
     Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, DollarSign as DollarSignIcon, CreditCard, Activity,
@@ -32,17 +32,13 @@ const iconComponents: { [key: string]: React.ElementType } = {
     LayoutGrid, ListChecks, Target, TrendingUp, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
     Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, DollarSign: DollarSignIcon, CreditCard, Activity,
-    BarChartBig, ChevronDown, ChevronLeft, ChevronUp, Asterisk,
+    BarChartBig, ChevronDown, ChevronLeft, ChevronUp, Asterisk, // Using Asterisk as a fallback if no direct match
     MailIcon, Phone, MessageCircle, Send
 };
 
 const getIcon = (iconName?: string, props?: any): React.JSX.Element | null => {
     if (!iconName) return null;
-    const IconComponent = iconComponents[iconName];
-    if (!IconComponent) {
-      console.warn(`Icon "${iconName}" not found, defaulting to Sparkles.`);
-      return <Sparkles {...props} />;
-    }
+    const IconComponent = iconComponents[iconName] || iconComponents['Asterisk']; // Fallback to Asterisk if icon not found
     return <IconComponent {...props} />;
 };
 
@@ -58,13 +54,19 @@ export default function Header() {
     setIsMounted(true);
   }, []);
 
+  // Define these based on session status
+  const isAuthenticated = status === "authenticated";
+  const isLoadingSession = status === "loading";
+
+  // Navigation links for the Wzuh-style landing page header
   const wzLandingPageNavLinks = [
-    { href: "#services", label: "Services" },
-    { href: "#how-it-works", label: "How it Works" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "/contact", label: "Contact" },
+    { href: "/#services", label: "Services" },
+    { href: "/#how-it-works", label: "How it Works" },
+    { href: "/#pricing", label: "Pricing" },
+    { href: "/#contact", label: "Contact" },
   ];
 
+  // Main navigation links for the authenticated app (second row)
   const mainAppNavLinks = [
     { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
     { href: "/budget", label: "Budget", iconName: "Wallet" },
@@ -76,12 +78,11 @@ export default function Header() {
     { href: "/ai-assistant", label: "AI", iconName: "Lightbulb" },
   ];
 
-   const socialMediaLinks = [
+  const socialMediaLinks = [
     { href: "#", label: "Twitter", iconName: "Twitter" },
     { href: "#", label: "Facebook", iconName: "Facebook" },
     { href: "#", label: "Instagram", iconName: "Instagram" },
   ];
-
 
   const formatCurrency = (amount: number) => {
     return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -97,46 +98,55 @@ export default function Header() {
 
   const isLandingPage = pathname === '/';
 
-  // Height constants for dynamic padding calculation in AppLayout
-  const topRowHeightClass = "h-16"; // Corresponds to py-3 on wrapper + py-2 on pill approx 64px
-  const secondNavHeightClass = "h-10"; // 40px
+  // Top row height for sticky calculation
+  const topRowHeightPx = 64; // Approx h-16 (py-3 wrapper + py-2 on pill)
+  const secondNavHeightPx = 40; // Approx h-10
 
   if (!isMounted) {
+    // Basic skeleton for SSR to avoid layout shifts, matching the two-row structure
     return (
-      <header className={cn("w-full fixed top-0 left-0 right-0 z-50")}>
-        <div className={cn("bg-wz-green", topRowHeightClass)}></div>
-        <div className={cn("bg-nav-secondary", secondNavHeightClass, `sticky top-[4rem]`)}></div>
+      <header className="w-full fixed top-0 left-0 right-0 z-50">
+        <div className="bg-wz-green py-3" style={{ height: `${topRowHeightPx}px` }}>
+          {/* Placeholder for top pill bar area */}
+        </div>
+        <div className="bg-nav-secondary" style={{ height: `${secondNavHeightPx}px`, position: 'sticky', top: `${topRowHeightPx}px`, zIndex: 30 }}>
+          {/* Placeholder for second nav bar area */}
+        </div>
       </header>
     );
   }
 
   return (
-    <header className={cn("w-full fixed top-0 left-0 right-0 z-50", isLandingPage && "bg-wz-green")}>
-      {/* Top Pill Bar - Wzuh Style */}
-      <div className={cn("py-3", topRowHeightClass)}>
+    <header className="w-full fixed top-0 left-0 right-0 z-50">
+      {/* Top Row - Pill Bar (Wzuh Style - now consistent) */}
+      <div className="py-3"> {/* Green bg provided by AppLayout */}
         <div className="container-default">
           <div className={cn(
-            "flex items-center justify-between",
-            "bg-white rounded-full border border-gray-300/80 shadow-lg px-4 sm:px-6 py-2"
+            "bg-white rounded-full border border-gray-300/80 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between"
           )}>
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 no-underline">
               {getIcon("Sparkles", { className: "h-7 w-7 text-wz-pink" })}
-              <span className="font-heading text-xl font-bold text-wz-text-dark">Fin.Co</span>
+              <span className="font-heading text-xl font-bold text-wz-text-dark">FinCo</span>
             </Link>
 
-            {/* Desktop Navigation Links for Landing Page */}
-            <nav className="hidden md:flex items-center space-x-1">
-              {wzLandingPageNavLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-wz-text-dark hover:bg-gray-100/80 hover:text-wz-pink px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-150 no-underline"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
+            {/* Desktop Landing Page Navigation Links (Wzuh Style) */}
+            {isLandingPage && (
+                <nav className="hidden md:flex items-center space-x-1">
+                {wzLandingPageNavLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "text-wz-text-dark hover:bg-gray-100/80 hover:text-wz-pink px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-150 no-underline"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
+
 
             {/* Right Side: Auth Buttons & Mobile Menu Trigger */}
             <div className="flex items-center space-x-2">
@@ -186,7 +196,7 @@ export default function Header() {
                     <SheetHeader className="p-4 border-b-2 border-wz-border-dark bg-wz-light-bg flex flex-row justify-between items-center">
                       <SheetTitle className="flex items-center gap-2 text-left">
                         {getIcon("Sparkles", { className: "h-6 w-6 text-wz-pink" })}
-                        <span className="text-lg font-heading font-semibold text-wz-text-dark">Fin.Co</span>
+                        <span className="text-lg font-heading font-semibold text-wz-text-dark">FinCo</span>
                       </SheetTitle>
                        <SheetClose asChild>
                         <Button variant="ghost" size="icon" className="h-7 w-7 p-0 text-wz-text-dark/80 hover:bg-wz-pink/20 rounded-full">
@@ -207,8 +217,8 @@ export default function Header() {
                                 </div>
                             </div>
                         )}
-                        {/* Landing Page Links for Mobile */}
-                        {wzLandingPageNavLinks.map((link) => (
+                        {/* Landing Page Links for Mobile (Wzuh Style) */}
+                        {isLandingPage && wzLandingPageNavLinks.map((link) => (
                              <SheetClose key={`${link.label}-mobile-landing`} asChild>
                                 <Link
                                     href={link.href}
@@ -223,8 +233,8 @@ export default function Header() {
                                 </Link>
                             </SheetClose>
                         ))}
-                        {/* Main App Nav Links for Mobile (if user is authenticated, these are primary) */}
-                         <div className="border-t-2 border-wz-border-dark/20 mt-3 pt-3 space-y-1">
+                        {/* Main App Nav Links for Mobile (if not on landing page, these are primary) */}
+                         <div className={cn(isLandingPage && "border-t-2 border-wz-border-dark/20 mt-3 pt-3", "space-y-1")}>
                             {mainAppNavLinks.map((link) => (
                                 <SheetClose key={`${link.href}-mobile-app`} asChild>
                                 <Link
@@ -232,11 +242,11 @@ export default function Header() {
                                     className={cn(
                                     "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors whitespace-nowrap no-underline",
                                     pathname === link.href
-                                        ? "bg-wz-pink/20 text-wz-pink font-semibold"
-                                        : "text-wz-text-dark hover:bg-wz-pink/20"
+                                        ? isLandingPage ? "bg-wz-pink/20 text-wz-pink font-semibold" : "bg-nav-secondary-fg/10 text-nav-secondary-fg-hover font-semibold"
+                                        : isLandingPage ? "text-wz-text-dark hover:bg-wz-pink/20" : "text-nav-secondary-fg hover:bg-nav-secondary-fg/10"
                                     )}
                                 >
-                                    {getIcon(link.iconName, {className: "mr-2 h-5 w-5"})}
+                                    {getIcon(link.iconName, {className: cn("mr-2 h-5 w-5", isActive ? (isLandingPage ? "text-wz-pink" : "text-nav-secondary-fg-hover") : (isLandingPage ? "text-wz-text-dark/80" : "text-nav-secondary-fg/80"))})}
                                     {link.label}
                                 </Link>
                                 </SheetClose>
@@ -288,22 +298,24 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Second Row - Dark Sticky Navigation Bar */}
-      <div className={cn(
-          "bg-nav-secondary shadow-md",
-          secondNavHeightClass,
-          `sticky top-[4rem] z-30` // Assuming topRowHeightClass is h-16 (4rem)
-        )}>
+      {/* Second Row - Dark Sticky Navigation Bar - Consistent Across All Pages */}
+      <div
+        className={cn(
+          "bg-nav-secondary shadow-md h-10", // Fixed height h-10 (40px)
+          `sticky top-[${topRowHeightPx}px] z-30` // Stick below the top row area
+        )}
+      >
         <div className="container-default flex h-full items-stretch justify-between">
           <nav className="flex items-stretch h-full overflow-x-auto whitespace-nowrap flex-grow">
             {mainAppNavLinks.map((link, index) => {
               const isActive = pathname === link.href;
+              const IconComponent = getIcon(link.iconName);
               return (
-                <div // Cell container for border
+                <div
                   key={link.href}
                   className={cn(
                     "h-full flex flex-1 items-center justify-center",
-                    index < mainAppNavLinks.length ? "border-r border-nav-secondary-fg/20" : ""
+                    index < mainAppNavLinks.length -1 ? "border-r border-nav-secondary-fg/20" : ""
                   )}
                 >
                   <Link
@@ -311,11 +323,11 @@ export default function Header() {
                     className={cn(
                       "flex items-center justify-center w-full h-full px-5 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nav-secondary-active-border focus-visible:ring-offset-1 focus-visible:ring-offset-nav-secondary",
                       isActive
-                        ? "bg-white text-nav-secondary-bg font-semibold"
-                        : "text-nav-secondary-fg hover:bg-white hover:text-nav-secondary-bg"
+                        ? "bg-white text-nav-secondary-bg font-semibold" // White background, dark text for active
+                        : "text-nav-secondary-fg hover:bg-white hover:text-nav-secondary-bg" // Light text, hover to white bg & dark text
                     )}
                   >
-                    {/* Optional: {getIcon(link.iconName, { className: "mr-2 h-4 w-4" })} */}
+                    {/* {IconComponent && <IconComponent className={cn("mr-2 h-4 w-4", isActive ? "text-nav-secondary-bg" : "text-nav-secondary-fg/80")} />} */}
                     {link.label}
                   </Link>
                 </div>
@@ -323,11 +335,13 @@ export default function Header() {
             })}
           </nav>
           <div className="hidden md:flex items-center space-x-5 px-8 border-l border-nav-secondary-fg/20">
-            {socialMediaLinks.map((sLink) => (
-               <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-nav-secondary-fg hover:text-nav-secondary-fg-hover transition-colors no-underline">
-                  {getIcon(sLink.iconName, {className: "h-6 w-6"})}
-               </Link>
-            ))}
+            {socialMediaLinks.map((sLink) => {
+               return (
+                 <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-nav-secondary-fg hover:text-nav-secondary-fg-hover transition-colors no-underline">
+                    {getIcon(sLink.iconName, {className: "h-6 w-6"})}
+                 </Link>
+               );
+            })}
           </div>
         </div>
       </div>
