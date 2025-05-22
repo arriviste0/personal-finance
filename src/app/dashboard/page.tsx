@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from "recharts";
 import {
     DollarSign,
     CreditCard,
@@ -290,7 +290,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Row 2 on XL */}
-        <Card className="retro-card flex flex-col h-full xl:col-span-2 md:col-span-2">
+        <Card className="retro-card flex flex-col h-full xl:col-span-3 md:col-span-2">
           <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -304,15 +304,19 @@ export default function DashboardPage() {
                 </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 pt-4 h-[480px] flex-1">
+          <CardContent className="retro-card-content !border-t-0 pt-4 h-[520px] flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={investmentPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={160} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                <Pie dataKey="value" nameKey="name" data={investmentPieData} cx="50%" cy="50%" outerRadius={170} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
                   {investmentPieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
                 </Pie>
-                <RechartsTooltip formatter={(value: number, name: string) => [formatCurrency(value), name]} />
+                <RechartsTooltip formatter={(value: number, name: string) => [formatCurrency(value), name]} 
+                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--foreground))', fontFamily: 'var(--font-sans)', fontSize: '12px', boxShadow: 'none' }}
+                    itemStyle={{ color: 'hsl(var(--foreground))' }}
+                />
+                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '15px', fontFamily: 'var(--font-sans)' }}/>
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -323,7 +327,7 @@ export default function DashboardPage() {
             </CardFooter>
         </Card>
 
-        <Card className="retro-card flex flex-col h-full xl:col-span-2 md:col-span-2">
+        <Card className="retro-card flex flex-col h-full xl:col-span-1 md:col-span-2">
             <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -337,7 +341,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1 h-[480px]">
+            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1 h-[520px]">
                 <p className="text-sm text-foreground/90">
                     Unlock personalized insights to boost your savings. Our AI analyzes your spending patterns and goals to provide actionable recommendations.
                 </p>
@@ -441,3 +445,5 @@ export default function DashboardPage() {
     
 
       
+
+    
