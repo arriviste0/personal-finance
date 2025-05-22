@@ -30,7 +30,7 @@ import {
   Facebook,
   Twitter,
   Instagram,
-  CircleDollarSign,
+  CircleDollarSign, // Added back
   Award,
   BarChartBig,
   Briefcase,
@@ -47,13 +47,12 @@ import {
   Send,
   Server,
   Settings,
-  ShoppingCart,
-  User,
   Users,
   Users2,
   BookOpen,
+  ArrowRight, // Added ArrowRight
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
@@ -97,6 +96,19 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bg
   );
 };
 
+const coreServices = [
+  { icon: LayoutGrid, title: "Dashboard", description: "Overview of your finances.", href: "/dashboard" },
+  { icon: Wallet, title: "Budget", description: "Create & manage budgets effectively.", href: "/budget" },
+  { icon: ListChecks, title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses" },
+  { icon: Target, title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals" },
+  { icon: TrendingUp, title: "Invest", description: "Monitor and grow your investments.", href: "/investments" },
+  { icon: ShieldAlert, title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund" },
+  { icon: FileText, title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner" },
+  { icon: Lightbulb, title: "AI", description: "Get smart financial insights.", href: "/ai-assistant" },
+];
+
+const serviceBgColors = ["bg-wz-pink", "bg-wz-green", "bg-wz-purple", "bg-wz-yellow"];
+
 
 export default function LandingPage() {
   useEffect(() => {
@@ -105,19 +117,6 @@ export default function LandingPage() {
       document.body.classList.remove('wzuh-landing-page');
     };
   }, []);
-
-  const coreServices = [
-    { name: "Dashboard", href: "/dashboard", icon: LayoutGrid, description: "Overview of your finances." },
-    { name: "Budget", href: "/budget", icon: Wallet, description: "Create & manage budgets." },
-    { name: "Expenses", href: "/expenses", icon: ListChecks, description: "Log and categorize all your spending." },
-    { name: "Goals", href: "/savings-goals", icon: Target, description: "Set and achieve your financial targets." },
-    { name: "Invest", href: "/investments", icon: TrendingUp, description: "Monitor and grow your investments." },
-    { name: "Safety", href: "/emergency-fund", icon: ShieldAlert, description: "Build your financial safety net." },
-    { name: "Taxes", href: "/tax-planner", icon: FileText, description: "Estimate and prepare for your taxes." },
-    { name: "AI", href: "/ai-assistant", icon: Lightbulb, description: "Get smart financial insights." },
-  ];
-
-  const serviceBgColors = ["bg-wz-green", "bg-wz-pink", "bg-wz-purple", "bg-wz-yellow"];
 
 
   return (
@@ -167,7 +166,7 @@ export default function LandingPage() {
          <section className="py-3 bg-wz-pink border-y-2 border-wz-border-dark">
           <div className="partner-slider-container">
             <div className="partner-slider-track">
-              {["PayPal", "Visa", "Mastercard", "Stripe", "Wise", "American Express", "Google Pay", "PayPal", "Visa", "Mastercard", "Stripe", "Wise", "American Express", "Google Pay"].map((partner, i) => (
+              {["Plaid", "Yodlee", "Stripe", "Visa", "Mastercard", "PayPal", "American Express", "Plaid", "Yodlee", "Stripe", "Visa", "Mastercard", "PayPal", "American Express"].map((partner, i) => (
                 <div key={i} className="flex items-center space-x-12 md:space-x-16 lg:space-x-20 px-6">
                   <span className="text-2xl font-bold text-wz-text-dark/80 hover:text-wz-text-dark transition-colors whitespace-nowrap">
                     {partner}
@@ -189,19 +188,19 @@ export default function LandingPage() {
               Select the financial tool you need to start planning and achieving your dreams.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
             {coreServices.map((service, index) => {
               const ServiceIcon = service.icon;
               const bgColor = serviceBgColors[index % serviceBgColors.length];
-              const textColor = (bgColor === "bg-wz-yellow" || bgColor === "bg-wz-green") ? "text-wz-text-dark" : "text-wz-text-dark"; // All dark text for better contrast on pastels
+              const textColorClass = (bgColor === "bg-wz-yellow" || bgColor === "bg-wz-green") ? "text-wz-text-dark" : "text-wz-text-dark";
 
               return (
-                <Link key={service.name} href={service.href} className="block group relative no-underline">
+                <Link key={service.title} href={service.href} className="block group relative no-underline">
                   <div
                     className={cn(
                       "p-8 h-full flex flex-col items-center justify-between min-h-[450px] relative border-2 border-wz-border-dark",
                       bgColor,
-                      textColor,
+                      textColorClass,
                       "hover:brightness-110 transition-all duration-200"
                     )}
                   >
@@ -209,21 +208,21 @@ export default function LandingPage() {
                     <div className="absolute top-2 right-2 flex gap-0.5"> <Sparkles className="h-3 w-3 opacity-50" /> <Sparkles className="h-3 w-3 opacity-50 delay-100" /> </div>
                     <div className="absolute bottom-2 left-2 flex gap-0.5"> <Sparkles className="h-3 w-3 opacity-50" /> <Sparkles className="h-3 w-3 opacity-50 delay-150" /> </div>
                     <div className="absolute bottom-2 right-2 flex gap-0.5"> <Sparkles className="h-3 w-3 opacity-50" /> <Sparkles className="h-3 w-3 opacity-50 delay-200" /> </div>
-                    
+
                     <div className="flex-grow flex flex-col items-center justify-center py-4 text-center w-full">
                         <div className="mb-5 p-3 bg-white/40 rounded-full group-hover:scale-110 transition-transform duration-300">
                             {ServiceIcon && <ServiceIcon className="h-8 w-8" />}
                         </div>
                         <Image
                             src={`https://placehold.co/300x200.png`}
-                            alt={service.name}
+                            alt={service.title}
                             width={300}
                             height={200}
                             className="rounded-lg object-cover border-2 border-wz-border-dark/30 group-hover:scale-105 transition-transform duration-300 mb-4"
-                            data-ai-hint={`${service.name.toLowerCase().replace(/\s+/g, '-')}-illustration finance`}
+                            data-ai-hint={`${service.title.toLowerCase().replace(/\s+/g, '-')}-illustration finance`}
                         />
-                        <h3 className="text-xl font-bold font-heading mt-2">{service.name}</h3>
-                        <p className={cn("text-sm mt-2 px-2", textColor === "text-wz-text-dark" ? "text-wz-text-dark/80" : "text-wz-text-light/80")}>{service.description}</p>
+                        <h3 className="text-xl font-bold font-heading mt-2">{service.title}</h3>
+                         <p className={cn("text-sm mt-2 px-2", textColorClass === "text-wz-text-dark" ? "text-wz-text-dark/80" : "text-wz-text-light/80")}>{service.description}</p>
                     </div>
                     <Button className="btn-wz btn-wz-outline-dark mt-auto text-sm !py-2 !px-4 !shadow-wz-hard-sm">
                       Learn More <ArrowRight className="ml-2 h-4 w-4" />
@@ -237,7 +236,7 @@ export default function LandingPage() {
 
 
          {/* "Ready to Start Your Financial Journey?" CTA Section */}
-         <SectionWrapper id="cta-journey" bgClassName="bg-wz-light-bg" addShapes>
+         <SectionWrapper id="cta-journey" bgClassName="bg-wz-yellow" addShapes>
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-wz-text-dark font-heading">Ready to Start Your Financial Journey?</h2>
             <form className="mt-8 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto items-center">
@@ -258,76 +257,63 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="bg-wz-text-dark text-wz-text-light/80 py-10 border-t-4 border-wz-pink rounded-t-2xl">
         <div className="container-default">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] lg:grid-cols-[2fr_1fr_1fr] gap-8 mb-8 items-start">
             {/* Column 1: Logo and text */}
             <div className="space-y-4">
               <Link href="/" className="flex items-center space-x-2 no-underline">
-                <Sparkles className="h-8 w-8 text-wz-pink" />
-                <span className="text-2xl font-bold font-heading text-wz-text-light">FinCo</span>
+                <CircleDollarSign className="h-8 w-8 text-wz-pink" />
+                <span className="text-2xl font-bold font-heading text-wz-light-bg">FinCo</span>
               </Link>
               <p className="text-sm">Get weekly financial tips and FinCo updates straight to your inbox.</p>
-               <form className="flex gap-2 items-center mt-4 max-w-md">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 !bg-wz-text-dark/50 !border-wz-gray-text/50 !text-wz-text-light placeholder:text-wz-gray-text/80 focus:!ring-wz-pink focus:!border-wz-pink !rounded-full !py-2.5 !px-4 text-sm"
-                  suppressHydrationWarning={true}
-                />
-                <Button
-                  type="submit"
-                  className="btn-wz btn-wz-pink !py-2.5 !px-5 text-sm"
-                  suppressHydrationWarning={true}
-                >
-                  Subscribe
-                </Button>
-              </form>
             </div>
 
-            {/* Column 2: Company */}
-            <div>
-              <h5 className="font-semibold text-wz-text-light mb-4 font-heading">Company</h5>
-              <ul className="space-y-2.5">
-                {[
-                  {label: 'Features', href: '#core-features'},
-                  {label: 'Pricing', href: '#pricing'}, // Assuming you might add a pricing section later
-                  {label: 'About Us', href: '/about'}, // Placeholder, create page later
-                  {label: 'Jobs', href: '/careers'}    // Placeholder
-                ].map((item) => (
-                  <li key={item.label}>
-                    <Link href={item.href} className="text-sm hover:text-wz-pink transition-colors no-underline">
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-             {/* Column 3: Social Media & Legal Links */}
-             <div>
-                <h5 className="font-semibold text-wz-text-light mb-4 font-heading">Connect & Legal</h5>
-                 <div className="flex space-x-4 mb-4">
+             {/* Link Columns Wrapper */}
+            <div className="md:col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div>
+                  <h5 className="font-semibold text-wz-light-bg mb-4 font-heading">Company</h5>
+                  <ul className="space-y-2.5">
                     {[
-                        { icon: Twitter, href: "#", label: "Twitter" },
-                        { icon: Youtube, href: "#", label: "YouTube" },
-                        { icon: Instagram, href: "#", label: "Instagram" },
-                        { icon: Facebook, href: "#", label: "Facebook" },
-                    ].map((social) => {
-                        const Icon = social.icon;
-                        return (
-                        <Link key={social.label} href={social.href} className="text-wz-text-light/80 hover:text-wz-pink transition-colors no-underline">
-                            <Icon className="h-5 w-5" />
+                      {label: 'Features', href: '#core-features'},
+                      {label: 'Pricing', href: '#pricing'},
+                      {label: 'About Us', href: '/about'},
+                      {label: 'Jobs', href: '/careers'}
+                    ].map((item) => (
+                      <li key={item.label}>
+                        <Link href={item.href} className="text-sm text-wz-light-bg/80 hover:text-wz-pink transition-colors no-underline">
+                          {item.label}
                         </Link>
-                        );
-                    })}
-                 </div>
-                 <ul className="space-y-2.5">
-                    <li><Link href="/terms" className="text-sm hover:text-wz-pink transition-colors no-underline">Terms & Agreements</Link></li>
-                    <li><Link href="/privacy" className="text-sm hover:text-wz-pink transition-colors no-underline">Privacy Policy</Link></li>
-                 </ul>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                 {/* Social & Legal Links */}
+                 <div>
+                    <h5 className="font-semibold text-wz-light-bg mb-4 font-heading">Connect & Legal</h5>
+                     <div className="flex space-x-4 mb-4">
+                        {[
+                            { icon: Twitter, href: "#", label: "Twitter" },
+                            { icon: Youtube, href: "#", label: "YouTube" },
+                            { icon: Instagram, href: "#", label: "Instagram" },
+                            { icon: Facebook, href: "#", label: "Facebook" },
+                        ].map((social) => {
+                            const Icon = social.icon;
+                            return (
+                            <Link key={social.label} href={social.href} className="text-wz-light-bg/80 hover:text-wz-pink transition-colors no-underline">
+                                <Icon className="h-5 w-5" />
+                            </Link>
+                            );
+                        })}
+                     </div>
+                     <ul className="space-y-2.5">
+                        <li><Link href="/terms" className="text-sm text-wz-light-bg/80 hover:text-wz-pink transition-colors no-underline">Terms & Agreements</Link></li>
+                        <li><Link href="/privacy" className="text-sm text-wz-light-bg/80 hover:text-wz-pink transition-colors no-underline">Privacy Policy</Link></li>
+                     </ul>
+                </div>
             </div>
           </div>
 
           <div className="border-t border-wz-gray-text/30 pt-8 text-center md:text-left">
-            <p className="text-xs text-wz-text-light/70">
+            <p className="text-xs text-wz-light-bg/70">
               © {new Date().getFullYear()} FinCo. All Rights Reserved. Your modern finance companion.
             </p>
           </div>
@@ -337,4 +323,3 @@ export default function LandingPage() {
   );
 }
 
-  
