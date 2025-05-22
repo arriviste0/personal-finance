@@ -197,17 +197,19 @@ export default function DashboardPage() {
                 </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 max-h-[250px] overflow-y-auto flex-1">
-            {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0,3).map((goal) => (
-              <div key={goal.id} className="space-y-1">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="font-medium text-foreground/90">{goal.name}</span>
-                  <span className="text-xs text-muted-foreground">{formatCurrency(goal.amount)} / {formatCurrency(goal.target || 0)}</span>
-                </div>
-                <Progress value={goal.target ? (goal.amount / goal.target) * 100 : 0} className="h-2.5 retro-progress" indicatorClassName="!bg-purple-500" />
-              </div>
-            ))}
-             {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No active savings goals.</p>}
+          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1">
+             <div className="overflow-y-auto"> {/* Add scroll if content overflows */}
+                {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0,3).map((goal) => (
+                  <div key={goal.id} className="space-y-1 mb-3"> {/* Add margin bottom */}
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-medium text-foreground/90">{goal.name}</span>
+                      <span className="text-xs text-muted-foreground">{formatCurrency(goal.amount)} / {formatCurrency(goal.target || 0)}</span>
+                    </div>
+                    <Progress value={goal.target ? (goal.amount / goal.target) * 100 : 0} className="h-2.5 retro-progress" indicatorClassName="!bg-purple-500" />
+                  </div>
+                ))}
+                {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No active savings goals.</p>}
+             </div>
           </CardContent>
           <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
             <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/savings-goals')}>
@@ -262,9 +264,10 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1 h-[250px] overflow-y-auto">
+            <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1">
+               <div className="overflow-y-auto"> {/* Add scroll if content overflows */}
                 {budgetSnapshotData.slice(0, 4).map(item => (
-                    <div key={item.category}>
+                    <div key={item.category} className="mb-3"> {/* Add margin bottom */}
                         <div className="flex justify-between text-xs mb-0.5">
                             <span className="text-foreground/80">{item.category}</span>
                             <span className="text-muted-foreground">{formatCurrency(item.spent)} / {formatCurrency(item.budget)}</span>
@@ -277,6 +280,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
                 ))}
+                </div>
             </CardContent>
             <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                 <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/budget')}>
@@ -286,7 +290,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Row 2 on XL */}
-        <Card className="retro-card flex flex-col h-full xl:col-span-3 md:col-span-2">
+        <Card className="retro-card flex flex-col h-full xl:col-span-2 md:col-span-2">
           <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -300,10 +304,10 @@ export default function DashboardPage() {
                 </div>
             </div>
           </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 pt-4 h-[420px] flex-1">
+          <CardContent className="retro-card-content !border-t-0 pt-4 h-[480px] flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={investmentPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={140} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                <Pie data={investmentPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={160} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
                   {investmentPieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
@@ -319,7 +323,7 @@ export default function DashboardPage() {
             </CardFooter>
         </Card>
 
-        <Card className="retro-card flex flex-col h-full xl:col-span-1 md:col-span-2">
+        <Card className="retro-card flex flex-col h-full xl:col-span-2 md:col-span-2">
             <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -333,7 +337,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1 h-[420px]">
+            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1 h-[480px]">
                 <p className="text-sm text-foreground/90">
                     Unlock personalized insights to boost your savings. Our AI analyzes your spending patterns and goals to provide actionable recommendations.
                 </p>
@@ -436,4 +440,4 @@ export default function DashboardPage() {
 }
     
 
-    
+      
