@@ -7,55 +7,62 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
-  Sparkles, // Used for Wzuh logo and decorative elements
+  Sparkles,
   DollarSign,
-  Banknote,
   PiggyBank,
   Landmark,
-  TrendingUp,
   Lightbulb,
   ShieldAlert,
   PlusCircle,
+  ArrowRight,
+  Twitter,
+  Youtube,
+  Instagram,
+  Facebook,
+  Mail,
+  Send,
   Package,
   BrainCircuit,
   ShieldCheck,
-  ChevronRight,
+  LayoutGrid,
+  Wallet,
   ListChecks,
   Target,
+  TrendingUp,
   FileText,
-  Wallet,
-  LayoutGrid,
-  Mail,
-  Youtube,
-  Facebook,
-  Twitter,
-  Instagram,
-  CircleDollarSign, // Added back
-  Award,
-  BarChartBig,
+  CircleDollarSign,
+  Users,
   Briefcase,
+  Zap,
+  Star,
+  BarChart3,
+  Receipt,
+  CreditCard,
+  Activity,
+  Award,
+  Settings,
+  Users2,
+  BookOpen,
+  Server,
+  Rocket,
+  CheckCircle,
+  DollarSign as DollarSignIcon, // Aliased to avoid conflict with the variable
+  BarChartBig,
   ChevronDown,
   ChevronLeft,
+  ChevronRight,
   ChevronUp,
   Cloud,
-  CreditCard,
   GraduationCap,
   HandCoins,
   MessageCircle,
   Phone,
-  Rocket,
-  Send,
-  Server,
-  Settings,
-  Users,
-  Users2,
-  BookOpen,
-  ArrowRight, // Added ArrowRight
+  User as UserIcon,
+  Asterisk // Used as fallback
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-
 
 // Helper component for consistent section wrapping
 interface SectionWrapperProps {
@@ -97,22 +104,42 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bg
 };
 
 const coreServices = [
-  { icon: LayoutGrid, title: "Dashboard", description: "Overview of your finances.", href: "/dashboard" },
-  { icon: Wallet, title: "Budget", description: "Create & manage budgets effectively.", href: "/budget" },
-  { icon: ListChecks, title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses" },
-  { icon: Target, title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals" },
-  { icon: TrendingUp, title: "Invest", description: "Monitor and grow your investments.", href: "/investments" },
-  { icon: ShieldAlert, title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund" },
-  { icon: FileText, title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner" },
-  { icon: Lightbulb, title: "AI", description: "Get smart financial insights.", href: "/ai-assistant" },
+  { icon: LayoutGrid, title: "Dashboard", description: "Central hub for your financial overview.", href: "/dashboard", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
+  { icon: Wallet, title: "Budget", description: "Create and manage your monthly budgets.", href: "/budget", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
+  { icon: ListChecks, title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
+  { icon: Target, title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
+  { icon: TrendingUp, title: "Invest", description: "Monitor and grow your investments.", href: "/investments", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
+  { icon: ShieldAlert, title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
+  { icon: FileText, title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
+  { icon: Lightbulb, title: "AI", description: "Get smart financial insights.", href: "/ai-assistant", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
 ];
 
-const serviceBgColors = ["bg-wz-pink", "bg-wz-green", "bg-wz-purple", "bg-wz-yellow"];
+const whyFinCoItems = [
+  {
+    icon: Package,
+    title: "All-In-One Simplicity",
+    description: "Budgeting, expenses, goals, investments, and taxes – everything seamlessly integrated. No more app-hopping!",
+    bgColorClass: "card-wz-pink"
+  },
+  {
+    icon: BrainCircuit,
+    title: "AI-Powered Brilliance",
+    description: "Our intelligent assistant offers personalized insights, automates tasks, and helps you make smarter financial decisions.",
+    bgColorClass: "card-wz-green"
+  },
+  {
+    icon: ShieldCheck,
+    title: "Secure & Transparent",
+    description: "Bank-level security to protect your data. Clear, honest features with no hidden fees.",
+    bgColorClass: "card-wz-purple"
+  }
+];
 
 
 export default function LandingPage() {
   useEffect(() => {
     document.body.classList.add('wzuh-landing-page');
+    document.body.classList.remove('nb-landing-page'); // Ensure neo-brutalism is off
     return () => {
       document.body.classList.remove('wzuh-landing-page');
     };
@@ -124,7 +151,7 @@ export default function LandingPage() {
       <main className="flex-grow">
         {/* Hero Section */}
         <SectionWrapper bgClassName="bg-wz-green" id="hero" addShapes>
-          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[calc(100vh-120px)] pt-16 pb-10 md:pt-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[calc(80vh)] md:min-h-[calc(70vh)] pt-16 pb-10 md:pt-20">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -154,7 +181,7 @@ export default function LandingPage() {
                 width={500}
                 height={550}
                 className="rounded-2xl shadow-lg object-cover border-4 border-wz-border-dark"
-                data-ai-hint="finance app tablet"
+                data-ai-hint="finance app planning"
               />
               <Sparkles className="absolute -top-8 -left-8 h-16 w-16 text-wz-pink opacity-70 animate-pulse" />
               <Sparkles className="absolute -bottom-5 -right-5 h-12 w-12 text-wz-yellow opacity-70 animate-pulse delay-500" />
@@ -177,30 +204,65 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* "FinCo's Core Features" Section */}
-        <SectionWrapper id="core-features" bgClassName="bg-wz-light-bg">
+        {/* Why Smart People Choose Fin.Co Section */}
+        <SectionWrapper id="why-finco" bgClassName="bg-wz-light-bg">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading inline-block relative">
+              Why Smart People Choose Fin.Co
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 h-2 bg-wz-yellow/80 -z-10 translate-y-1.5"></span>
+            </h2>
+            <p className="text-lg text-wz-gray-text max-w-xl mx-auto mt-5">
+              We're not just another finance app. We're your dedicated partner in achieving financial freedom.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {whyFinCoItems.map((item, index) => {
+              const IconComponent = item.icon;
+              return (
+                <motion.div
+                  key={index}
+                  className={cn(
+                    "card-wz p-8 text-center hover:bg-wz-pink group transition-all duration-300",
+                    item.bgColorClass // Base background color
+                  )}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <div className="flex justify-center mb-5">
+                    <div className={cn("p-3 bg-white/40 rounded-full group-hover:bg-white/60 transition-colors duration-300")}>
+                      <IconComponent className="h-10 w-10 text-wz-text-dark group-hover:text-wz-text-dark" />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold font-heading mb-3 text-wz-text-dark">{item.title}</h3>
+                  <p className="text-sm text-wz-text-dark/90 group-hover:text-wz-text-dark">{item.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </SectionWrapper>
+
+        {/* FinCo's Core Features Section (Replaces "FinCo for every occasion") */}
+        <SectionWrapper id="core-features" bgClassName="bg-wz-green/50">
           <div className="text-center mb-14">
             <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading inline-block relative">
               FinCo's Core Features
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 h-2 bg-wz-yellow/80 -z-10 translate-y-1.5"></span>
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 h-2 bg-wz-pink/70 -z-10 translate-y-1.5"></span>
             </h2>
             <p className="text-lg text-wz-gray-text max-w-xl mx-auto mt-5">
               Select the financial tool you need to start planning and achieving your dreams.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
             {coreServices.map((service, index) => {
               const ServiceIcon = service.icon;
-              const bgColor = serviceBgColors[index % serviceBgColors.length];
-              const textColorClass = (bgColor === "bg-wz-yellow" || bgColor === "bg-wz-green") ? "text-wz-text-dark" : "text-wz-text-dark";
-
               return (
                 <Link key={service.title} href={service.href} className="block group relative no-underline">
                   <div
                     className={cn(
                       "p-8 h-full flex flex-col items-center justify-between min-h-[450px] relative border-2 border-wz-border-dark",
-                      bgColor,
-                      textColorClass,
+                      service.bgColor,
+                      service.textColor,
                       "hover:brightness-110 transition-all duration-200"
                     )}
                   >
@@ -210,19 +272,19 @@ export default function LandingPage() {
                     <div className="absolute bottom-2 right-2 flex gap-0.5"> <Sparkles className="h-3 w-3 opacity-50" /> <Sparkles className="h-3 w-3 opacity-50 delay-200" /> </div>
 
                     <div className="flex-grow flex flex-col items-center justify-center py-4 text-center w-full">
-                        <div className="mb-5 p-3 bg-white/40 rounded-full group-hover:scale-110 transition-transform duration-300">
-                            {ServiceIcon && <ServiceIcon className="h-8 w-8" />}
+                        <div className="mb-5 p-4 bg-white/40 rounded-full group-hover:scale-110 transition-transform duration-300">
+                            {ServiceIcon && <ServiceIcon className="h-10 w-10" />}
                         </div>
                         <Image
-                            src={`https://placehold.co/300x200.png`}
+                            src={`https://placehold.co/320x220.png`}
                             alt={service.title}
-                            width={300}
-                            height={200}
+                            width={320}
+                            height={220}
                             className="rounded-lg object-cover border-2 border-wz-border-dark/30 group-hover:scale-105 transition-transform duration-300 mb-4"
                             data-ai-hint={`${service.title.toLowerCase().replace(/\s+/g, '-')}-illustration finance`}
                         />
                         <h3 className="text-xl font-bold font-heading mt-2">{service.title}</h3>
-                         <p className={cn("text-sm mt-2 px-2", textColorClass === "text-wz-text-dark" ? "text-wz-text-dark/80" : "text-wz-text-light/80")}>{service.description}</p>
+                         <p className={cn("text-sm mt-2 px-2", service.textColor === "text-wz-text-dark" ? "text-wz-text-dark/80" : "text-wz-text-light/80")}>{service.description}</p>
                     </div>
                     <Button className="btn-wz btn-wz-outline-dark mt-auto text-sm !py-2 !px-4 !shadow-wz-hard-sm">
                       Learn More <ArrowRight className="ml-2 h-4 w-4" />
@@ -234,16 +296,15 @@ export default function LandingPage() {
           </div>
         </SectionWrapper>
 
-
          {/* "Ready to Start Your Financial Journey?" CTA Section */}
-         <SectionWrapper id="cta-journey" bgClassName="bg-wz-yellow" addShapes>
+         <SectionWrapper id="cta-journey" bgClassName="bg-wz-light-bg" addShapes>
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-wz-text-dark font-heading">Ready to Start Your Financial Journey?</h2>
             <form className="mt-8 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto items-center">
               <Input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 !bg-white !border-wz-border-dark !text-wz-text-dark placeholder:text-wz-gray-text/90 focus:!ring-wz-pink focus:!border-wz-pink !py-3 !px-4 !rounded-full"
+                className="flex-1 retro-input !bg-white !border-wz-border-dark !text-wz-text-dark placeholder:text-wz-gray-text/90 focus:!ring-wz-pink focus:!border-wz-pink !py-3 !px-4 !rounded-full"
                 suppressHydrationWarning={true}
               />
               <Button type="submit" className="btn-wz btn-wz-pink !py-3 !px-5" suppressHydrationWarning={true}>
@@ -255,71 +316,32 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-wz-text-dark text-wz-text-light/80 py-10 border-t-4 border-wz-pink rounded-t-2xl">
+      <footer className="bg-wz-text-dark text-wz-text-light/80 py-8 border-t-4 border-wz-pink rounded-t-2xl">
         <div className="container-default">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] lg:grid-cols-[2fr_1fr_1fr] gap-8 mb-8 items-start">
-            {/* Column 1: Logo and text */}
-            <div className="space-y-4">
-              <Link href="/" className="flex items-center space-x-2 no-underline">
-                <CircleDollarSign className="h-8 w-8 text-wz-pink" />
-                <span className="text-2xl font-bold font-heading text-wz-light-bg">FinCo</span>
-              </Link>
-              <p className="text-sm">Get weekly financial tips and FinCo updates straight to your inbox.</p>
-            </div>
-
-             {/* Link Columns Wrapper */}
-            <div className="md:col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
-                <div>
-                  <h5 className="font-semibold text-wz-light-bg mb-4 font-heading">Company</h5>
-                  <ul className="space-y-2.5">
-                    {[
-                      {label: 'Features', href: '#core-features'},
-                      {label: 'Pricing', href: '#pricing'},
-                      {label: 'About Us', href: '/about'},
-                      {label: 'Jobs', href: '/careers'}
-                    ].map((item) => (
-                      <li key={item.label}>
-                        <Link href={item.href} className="text-sm text-wz-light-bg/80 hover:text-wz-pink transition-colors no-underline">
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                 {/* Social & Legal Links */}
-                 <div>
-                    <h5 className="font-semibold text-wz-light-bg mb-4 font-heading">Connect & Legal</h5>
-                     <div className="flex space-x-4 mb-4">
-                        {[
-                            { icon: Twitter, href: "#", label: "Twitter" },
-                            { icon: Youtube, href: "#", label: "YouTube" },
-                            { icon: Instagram, href: "#", label: "Instagram" },
-                            { icon: Facebook, href: "#", label: "Facebook" },
-                        ].map((social) => {
-                            const Icon = social.icon;
-                            return (
-                            <Link key={social.label} href={social.href} className="text-wz-light-bg/80 hover:text-wz-pink transition-colors no-underline">
-                                <Icon className="h-5 w-5" />
-                            </Link>
-                            );
-                        })}
-                     </div>
-                     <ul className="space-y-2.5">
-                        <li><Link href="/terms" className="text-sm text-wz-light-bg/80 hover:text-wz-pink transition-colors no-underline">Terms & Agreements</Link></li>
-                        <li><Link href="/privacy" className="text-sm text-wz-light-bg/80 hover:text-wz-pink transition-colors no-underline">Privacy Policy</Link></li>
-                     </ul>
-                </div>
-            </div>
-          </div>
-
-          <div className="border-t border-wz-gray-text/30 pt-8 text-center md:text-left">
-            <p className="text-xs text-wz-light-bg/70">
-              © {new Date().getFullYear()} FinCo. All Rights Reserved. Your modern finance companion.
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            {/* Left: Copyright */}
+            <p className="text-xs text-wz-text-light/70">
+              © {new Date().getFullYear()} FinCo. All Rights Reserved.
             </p>
+
+            {/* Center: Logo */}
+            <Link href="/" className="flex items-center space-x-2 no-underline">
+              <Sparkles className="h-7 w-7 text-wz-pink" />
+              <span className="text-2xl font-bold font-heading text-wz-text-light">FinCo</span>
+            </Link>
+
+            {/* Right: Legal Links */}
+            <div className="flex items-center space-x-6">
+              <Link href="/terms" className="text-xs text-wz-text-light/70 hover:text-wz-pink transition-colors no-underline">
+                Terms & Agreements
+              </Link>
+              <Link href="/privacy" className="text-xs text-wz-text-light/70 hover:text-wz-pink transition-colors no-underline">
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
       </footer>
     </div>
   );
 }
-
