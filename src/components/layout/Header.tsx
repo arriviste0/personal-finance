@@ -2,62 +2,15 @@
 'use client';
 
 import Link from "next/link";
+import React, { useState, useEffect } from "react"; // Added useEffect
 import {
-  CircleDollarSign,
-  Menu,
-  LogOut,
-  Wallet,
-  Lock,
-  Twitter,
-  Facebook,
-  Instagram,
-  Sparkles,
-  X,
-  LayoutGrid,
-  ListChecks,
-  Target,
-  ShieldAlert,
-  FileText,
-  Lightbulb,
-  PiggyBank,
-  Landmark,
-  HandCoins,
-  TrendingUp,
-  MessageCircle, // For footer
-  Send, // For footer
-  Phone, // For footer
-  Mail as MailIcon, // For footer
-  Users,
-  Briefcase,
-  Zap,
-  Star,
-  ArrowRight,
-  Receipt,
-  BarChart3,
-  User as UserIcon,
-  Package,
-  BrainCircuit,
-  ShieldCheck,
-  ChevronRight,
-  Award,
-  Home,
-  Info,
-  Settings,
-  Users2,
-  BookOpen,
-  Server,
-  Rocket,
-  CheckCircle,
-  DollarSign,
-  CreditCard,
-  Activity,
-  BarChartBig,
-  ChevronDown,
-  ChevronLeft,
-  ChevronUp,
-  AppleIcon as Apple,
-  Store,
-  Asterisk // For Chorke logo placeholder
+    CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X,
+    LayoutGrid, ListChecks, Target, ShieldAlert, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
+    TrendingUp, Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, User as UserIcon,
+    Package, BrainCircuit, ShieldCheck, Award, Home, Info, Settings, Users2, BookOpen, Server,
+    Rocket, CheckCircle, DollarSign, CreditCard, Activity, BarChartBig, ChevronDown, ChevronLeft, ChevronUp,
+    Apple as AppleIcon, // Renamed to avoid conflict with HTML element
+    Store, Asterisk, Mail as MailIcon, Phone, MessageCircle, Send
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -73,16 +26,23 @@ import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { useWallet } from '@/contexts/WalletContext';
-import React from "react";
 
 // Helper to get icon components by name
-const getIcon = (iconName?: string, props?: any) => {
-  const icons: { [key: string]: React.ElementType } = {
-    CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, LayoutGrid, ListChecks, Target, TrendingUp, ShieldAlert, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, ShieldCheck, Award, ChevronRight, MessageCircle, Send, Phone, MailIcon, Home, Info, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity, DollarSign, BarChartBig, ChevronDown, ChevronLeft, ChevronUp, Apple, Store, Asterisk
-  };
-  if (!iconName) return null;
-  const IconComponent = icons[iconName];
-  return IconComponent ? <IconComponent {...props} /> : <Sparkles {...props} />; // Default to Sparkles if not found
+const iconComponents: { [key: string]: React.ElementType } = {
+    CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X,
+    LayoutGrid, ListChecks, Target, TrendingUp, ShieldAlert, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
+    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, ShieldCheck,
+    Award, Home, Info, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, DollarSign, CreditCard, Activity,
+    BarChartBig, ChevronDown, ChevronLeft, ChevronUp, AppleIcon, Store, Asterisk, MailIcon, Phone, MessageCircle, Send
+};
+
+const getIcon = (iconName?: string, props?: any): React.JSX.Element | null => {
+  const IconComponent = iconComponents[iconName || ''];
+  if (!IconComponent) {
+    if (iconName) console.warn(`Icon "${iconName}" not found, defaulting to Sparkles.`);
+    return iconName ? <Sparkles {...props} /> : null;
+  }
+  return <IconComponent {...props} />;
 };
 
 
@@ -90,13 +50,30 @@ export default function Header() {
   const { toast } = useToast();
   const { data: session, status } = useSession();
   const pathname = usePathname();
-  const { walletBalance, totalLockedFunds } = useWallet();
+  const { walletBalance, totalLockedFunds } = useWallet(); // Assuming useWallet() returns these
+
+  const [isMounted, setIsMounted] = React.useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
 
   const isAuthenticated = status === 'authenticated';
   const isLoadingSession = status === 'loading';
+
+  // Conditional logic for landing page. True if pathname is exactly '/'
   const isLandingPage = pathname === '/';
 
-  const navLinks = [
+  // Wzuh-style landing page navigation
+  const wzLandingPageNavLinks = [
+    { href: "/#services", label: "Services" },
+    { href: "/#how-it-works", label: "How it Works" },
+    { href: "/#pricing", label: "Pricing" },
+    { href: "/#contact", label: "Contact" },
+  ];
+
+  // Podportal-style internal application navigation
+  const mainAppNavLinks = [
     { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
     { href: "/budget", label: "Budget", iconName: "Wallet" },
     { href: "/expenses", label: "Expenses", iconName: "ListChecks" },
@@ -113,16 +90,8 @@ export default function Header() {
     { href: "#", label: "Instagram", iconName: "Instagram" },
   ];
 
-  const wzLandingPageNavLinks = [
-    { href: "#services", label: "Services" },
-    { href: "#how-it-works", label: "How it Works" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "#contact", label: "Contact" },
-  ];
-
-
   const formatCurrency = (amount: number) => {
-    return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   const handleSignOut = async () => {
@@ -133,14 +102,42 @@ export default function Header() {
     });
   };
 
-  if (isLandingPage) {
-    // Wzuh-inspired landing page header
+  if (!isMounted) {
+    // To prevent hydration errors with conditional rendering based on session status
     return (
-      <header className="w-full relative z-50"> {/* Ensure header is above other content */}
-        <div className="container-default py-3">
+        <header className="w-full">
+            <div className="bg-header-top">
+                <div className="container-default flex h-12 items-center justify-between border-b border-header-top-border">
+                    <div className="flex items-center space-x-3">
+                        {getIcon("CircleDollarSign", { className: "h-7 w-7 text-header-top-fg" })}
+                        <span className="font-heading text-xl font-bold text-header-top-fg">FinCo</span>
+                    </div>
+                    <div className="h-6 w-24 bg-gray-300 animate-pulse rounded-md md:hidden"></div> {/* Placeholder for mobile menu button */}
+                </div>
+            </div>
+            <div className="sticky top-0 z-30 bg-header-bottom shadow-sm hidden md:block">
+                <div className="container-default flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md">
+                    <nav className="flex flex-grow items-stretch h-full">
+                        {/* Placeholder for nav links */}
+                    </nav>
+                    <div className="flex items-center space-x-5 px-8 py-3 border-l border-header-bottom-border h-full">
+                         {/* Placeholder for social media */}
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
+  }
+
+
+  // Wzuh-inspired Landing Page Header
+  if (isLandingPage) {
+    return (
+      <header className="w-full relative z-50 py-3">
+        <div className="container-default">
           <div className="bg-white rounded-full border border-gray-300 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between w-full max-w-5xl mx-auto">
-            <Link href="/" className="flex items-center space-x-2 no-underline">
-              <Sparkles className="h-7 w-7 text-wz-pink" />
+            <Link href="/" className="flex items-center space-x-2 no-underline shrink-0">
+              {getIcon("Sparkles", { className: "h-7 w-7 text-wz-pink" })}
               <span className="text-xl font-bold text-wz-text-dark font-sans">FinCo</span>
             </Link>
 
@@ -151,7 +148,7 @@ export default function Header() {
                   href={link.href}
                   className={cn(
                     "px-3 py-1.5 text-sm font-semibold text-wz-text-dark hover:bg-gray-100 hover:rounded-full transition-colors duration-150 no-underline",
-                    pathname === link.href ? "bg-gray-100 rounded-full" : ""
+                    pathname === link.href ? "bg-gray-100 rounded-full" : "" // Basic active state
                   )}
                 >
                   {link.label}
@@ -162,10 +159,13 @@ export default function Header() {
             <div className="flex items-center space-x-2">
               {!isAuthenticated && !isLoadingSession && (
                 <>
-                  <Button asChild className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white">
+                  <Button
+                    className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white"
+                    asChild
+                  >
                     <Link href="/login">Log In</Link>
                   </Button>
-                  <Button asChild className="btn-wz btn-wz-outline-dark text-sm !py-1.5 !px-4 whitespace-nowrap">
+                  <Button className="btn-wz btn-wz-outline-dark text-sm !py-1.5 !px-4 whitespace-nowrap" asChild>
                     <Link href="/get-started">Get Started</Link>
                   </Button>
                 </>
@@ -180,12 +180,13 @@ export default function Header() {
                   <SheetTrigger asChild>
                     <Button variant="ghost" size="icon" className="text-wz-text-dark hover:bg-wz-pink/10">
                       <Menu className="h-6 w-6" />
+                       <span className="sr-only">Toggle Menu</span>
                     </Button>
                   </SheetTrigger>
                   <SheetContent side="left" className="w-[280px] bg-wz-light-bg p-0">
                     <SheetHeader className="p-4 border-b border-gray-200">
                       <SheetTitle className="flex items-center gap-2 text-wz-text-dark font-sans">
-                        <Sparkles className="h-6 w-6 text-wz-pink" />
+                        {getIcon("Sparkles", { className: "h-6 w-6 text-wz-pink"})}
                         FinCo
                       </SheetTitle>
                        <SheetClose asChild>
@@ -264,26 +265,26 @@ export default function Header() {
 
           <div className="flex items-stretch h-full text-sm ml-auto">
              {!isAuthenticated && !isLoadingSession && (
-              <div className="flex items-stretch h-full">
-                <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                   <Link
-                    href="/login"
-                    className="flex items-center justify-center w-full h-full px-4 text-sm font-medium text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
-                  >
-                    Log In
-                  </Link>
+                <div className="flex items-stretch h-full">
+                    <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                        <Link
+                            href="/login"
+                            className="flex items-center justify-center w-full h-full px-4 text-sm font-medium text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
+                        >
+                            Log In
+                        </Link>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                      <Button asChild variant="ghost" className="p-0 w-full h-full rounded-none">
+                        <Link
+                          href="/get-started"
+                          className="w-full h-full flex items-center justify-center bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
+                        >
+                          Get Started
+                        </Link>
+                      </Button>
+                    </div>
                 </div>
-                <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                   <Button asChild variant="ghost" className="p-0 w-full h-full rounded-none">
-                    <Link
-                      href="/get-started"
-                      className="w-full h-full flex items-center justify-center bg-white text-header-top-bg hover:bg-blue-700 hover:text-white rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
-                    >
-                      Get Started
-                    </Link>
-                  </Button>
-                </div>
-              </div>
             )}
             {isAuthenticated && (
               <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
@@ -292,7 +293,7 @@ export default function Header() {
                   variant="ghost"
                   className="w-full h-full flex items-center justify-center px-4 text-header-top-fg text-sm font-medium hover:bg-white/20 hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                 >
-                  <LogOut className="mr-1.5 h-4 w-4" /> Sign Out
+                  {getIcon("LogOut", {className: "mr-1.5 h-4 w-4"})} Sign Out
                 </Button>
               </div>
             )}
@@ -301,7 +302,7 @@ export default function Header() {
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="text-header-top-fg hover:bg-header-top-fg/10 h-full w-10 rounded-none px-2">
-                    <Menu className="h-5 w-5" />
+                    {getIcon("Menu", { className: "h-5 w-5" })}
                     <span className="sr-only">Toggle Menu</span>
                   </Button>
                 </SheetTrigger>
@@ -313,7 +314,7 @@ export default function Header() {
                     </SheetTitle>
                      <SheetClose asChild>
                         <Button variant="ghost" size="icon" className="absolute right-3 top-3 h-7 w-7 p-0 text-header-top-fg/80 hover:bg-header-top-fg/10">
-                            <X className="h-4 w-4" />
+                            {getIcon("X", { className: "h-4 w-4" })}
                             <span className="sr-only">Close</span>
                         </Button>
                     </SheetClose>
@@ -331,9 +332,8 @@ export default function Header() {
                         </div>
                       </div>
                     )}
-                    {navLinks.map(link => {
+                    {mainAppNavLinks.map(link => {
                       const isActive = pathname === link.href;
-                      const IconComp = getIcon(link.iconName);
                       return (
                         <SheetClose key={`${link.href}-mobile-internal`} asChild>
                           <Link
@@ -345,7 +345,7 @@ export default function Header() {
                                 : "text-header-bottom-fg/90 hover:bg-white/70 hover:text-header-bottom-fg"
                             )}
                           >
-                            {IconComp && <IconComp className="mr-2 h-4 w-4" />}
+                            {getIcon(link.iconName, { className: "mr-2 h-4 w-4" })}
                             {link.label}
                           </Link>
                         </SheetClose>
@@ -354,10 +354,9 @@ export default function Header() {
                      <div className="border-t border-header-bottom-border mt-4 pt-4 space-y-3">
                        <div className="flex justify-center space-x-5 mb-3">
                         {socialMediaLinks.map((sLink) => {
-                           const SocialIcon = getIcon(sLink.iconName);
                            return (
-                             <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
-                                {SocialIcon && <SocialIcon className="h-6 w-6"/>}
+                             <Link key={`${sLink.label}-mobile`} href={sLink.href} aria-label={sLink.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
+                                {getIcon(sLink.iconName, { className: "h-6 w-6"})}
                              </Link>
                            );
                         })}
@@ -383,7 +382,7 @@ export default function Header() {
                       ) : isAuthenticated && (
                         <SheetClose asChild>
                            <Button variant="outline" className="w-full retro-button text-destructive hover:bg-destructive/10 border-destructive/50 whitespace-nowrap" onClick={handleSignOut}>
-                            <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                            {getIcon("LogOut", { className: "mr-2 h-4 w-4" })} Sign Out
                           </Button>
                         </SheetClose>
                       )}
@@ -397,49 +396,48 @@ export default function Header() {
       </div>
 
       {/* Bottom Row (Sticky Navigation for Internal Pages) */}
-      <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
-        <div className="container-default flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md">
-          <nav className="flex flex-grow items-stretch h-full">
-            {navLinks.map((link, index) => {
-              const isActive = pathname === link.href;
-              // const IconComp = getIcon(link.iconName); // Not used for desktop bottom bar labels
-
-              return (
-                <div // Cell wrapper
-                  key={link.href}
-                  className={cn(
-                    "h-full flex flex-1 items-center justify-center",
-                     index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
-                  )}
-                >
-                  <Link
-                    href={link.href}
+      {!isLandingPage && (
+        <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
+          <div className="container-default flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md">
+            <nav className="flex flex-grow items-stretch h-full">
+              {mainAppNavLinks.map((link, index) => {
+                const isActive = pathname === link.href;
+                return (
+                  <div // Cell wrapper
+                    key={link.href}
                     className={cn(
-                      "flex items-center justify-center w-full h-full px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom whitespace-nowrap",
-                      isActive
-                        ? "bg-white text-primary rounded-md shadow-sm font-semibold"
-                        : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
+                      "h-full flex flex-1 items-center justify-center",
+                       index < mainAppNavLinks.length -1 ? "border-r border-header-bottom-border" : ""
                     )}
                   >
-                    {/* {IconComp && <IconComp className="mr-2 h-4 w-4" />} */}
-                    {link.label}
-                  </Link>
-                </div>
-              );
-            })}
-          </nav>
-          <div className="flex items-center space-x-5 pl-8 pr-4 py-3 border-l border-header-bottom-border h-full">
-            {socialMediaLinks.map((sLink) => {
-               const SocialIcon = getIcon(sLink.iconName);
-               return (
-                 <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
-                    {SocialIcon && <SocialIcon className="h-6 w-6"/>}
-                 </Link>
-               );
-            })}
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "flex items-center justify-center w-full h-full px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom whitespace-nowrap",
+                        isActive
+                          ? "bg-white text-primary rounded-md shadow-sm font-semibold"
+                          : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  </div>
+                );
+              })}
+            </nav>
+            <div className="flex items-center space-x-5 px-8 py-3 border-l border-header-bottom-border h-full">
+              {socialMediaLinks.map((sLink) => {
+                 return (
+                   <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
+                      {getIcon(sLink.iconName, { className: "h-6 w-6"})}
+                   </Link>
+                 );
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }
+
