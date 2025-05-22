@@ -13,10 +13,10 @@ export default {
        fontFamily: {
          sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
          heading: ['var(--font-heading)', 'system-ui', 'sans-serif'],
-         pixel: ['var(--font-pixel)', 'cursive'],
+         pixel: ['var(--font-pixel)', 'cursive'], // Keep if used elsewhere
        },
   		colors: {
-        // Base FinCo theme
+        // Base FinCo theme (remains for internal app pages)
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -58,7 +58,7 @@ export default {
   				'5': 'hsl(var(--chart-5))',
           '6': 'hsl(var(--chart-6))'
   			},
-        // Dashboard card header colors
+        // Dashboard card header colors (remains for internal app pages)
         'dashboard-pink-header': {
           DEFAULT: 'hsl(var(--dashboard-pink-header-bg))',
           foreground: 'hsl(var(--dashboard-pink-header-fg))',
@@ -71,7 +71,7 @@ export default {
           DEFAULT: 'hsl(var(--dashboard-blue-header-bg))',
           foreground: 'hsl(var(--dashboard-blue-header-fg))',
         },
-        // Internal App Header colors
+        // Internal App Header colors (Podportal style, remains for internal app pages)
         'header-top': {
           DEFAULT: 'hsl(var(--header-top-bg))',
           foreground: 'hsl(var(--header-top-fg))',
@@ -96,10 +96,10 @@ export default {
   		borderRadius: {
         none: '0',
         sm: 'calc(var(--radius) - 4px)',
-        DEFAULT: 'var(--radius)', // Use the CSS variable for default
+        DEFAULT: 'var(--radius)',
         md: 'var(--radius)',
         lg: 'calc(var(--radius) + 4px)',
-        xl: 'calc(var(--radius) + 8px)', // Wzuh uses larger rounding
+        xl: 'calc(var(--radius) + 8px)',
         '2xl': 'calc(var(--radius) + 16px)',
         '3xl': 'calc(var(--radius) + 24px)',
         full: '9999px',
@@ -124,8 +124,12 @@ export default {
         'scroll-partners': 'scrollPartners 60s linear infinite',
       },
       boxShadow: {
+        // Retro shadow (can be removed if not used elsewhere)
          'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.10)',
          'retro-sm': '2px 2px 0px 0px hsl(var(--foreground)/0.10)',
+        // Wzuh/Neo-Brutalist hard shadow
+         'wz-hard': '4px 4px 0px hsl(var(--wz-border-dark))',
+         'wz-hard-sm': '2px 2px 0px hsl(var(--wz-border-dark))',
       },
   	}
   },

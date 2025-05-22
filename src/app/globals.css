@@ -13,15 +13,13 @@
   :root {
     /* Wzuh-inspired Theme Variables */
     --wz-pink: 330 100% 75%; /* #FEA3E8 */
-    --wz-pink-darker: 330 90% 70%; /* For hover */
     --wz-green: 100 50% 80%; /* #BBFEA3 for backgrounds */
     --wz-purple: 270 60% 80%; /* #B9A3FE for backgrounds */
-    --wz-purple-darker: 270 50% 75%; /* For hover */
     --wz-yellow: 50 100% 80%; /* #FEE191 for backgrounds/accents */
     --wz-text-dark: 0 0% 10%; /* #1A1B1D - For text on light/vibrant backgrounds */
     --wz-text-light: 0 0% 100%; /* #FFFFFF - For text on dark backgrounds */
-    --wz-border-dark: 0 0% 6%; /* #101010 - For button borders */
-    --wz-light-bg: 0 0% 100%; /* #FFFFFF - Overall page background for Wzuh theme, usually white */
+    --wz-border-dark: 0 0% 10%; /* #1A1B1D - For button borders and hard shadows */
+    --wz-light-bg: 0 0% 98%; /* #F9FAFB - Overall page background for Wzuh theme, usually very light gray/off-white */
     --wz-gray-text: 0 0% 30%; /* #4C4D50 - For subtitles or less prominent text */
 
     /* FinCo - Modern & Clean Theme (Default for internal app pages) */
@@ -56,7 +54,7 @@
     --radius: 0.75rem; /* Default to 0.75rem (rounded-xl) for Wzuh style */
 
     /* Header specific colors (Podportal inspired - for internal app pages) */
-    --header-top-bg: 210 70% 55%; /* Blue for internal header */
+    --header-top-bg: 210 70% 55%; /* Blue for internal header top */
     --header-top-fg: 0 0% 100%;
     --header-top-border: 210 70% 45%;
 
@@ -84,7 +82,7 @@
     --chart-5: 270 60% 60%; /* Purple */
     --chart-6: 180 60% 45%; /* Teal/Cyan */
 
-    /* Neo-Brutalism Specific */
+    /* Neo-Brutalism Specific (can be removed if not active theme) */
     --nb-yellow: 54 100% 50%;
     --nb-pink: 300 100% 50%;
     --nb-green: 150 100% 47%;
@@ -148,7 +146,7 @@
   .wzuh-landing-page h1, .wzuh-landing-page h2, .wzuh-landing-page h3, .wzuh-landing-page h4, .wzuh-landing-page p, .wzuh-landing-page span, .wzuh-landing-page div {
       font-family: var(--font-sans);
   }
-   .wzuh-landing-page h1 { @apply text-4xl md:text-5xl lg:text-6xl font-bold; } /* Slightly reduced from original 7xl */
+   .wzuh-landing-page h1 { @apply text-4xl md:text-5xl lg:text-6xl font-bold; }
    .wzuh-landing-page h2 { @apply text-3xl md:text-4xl font-bold; }
    .wzuh-landing-page p { @apply text-base md:text-lg; }
 
@@ -166,7 +164,7 @@
     @apply text-primary/80;
   }
 
-   /* Landing page specific body background (Neo-Brutalism) */
+   /* Landing page specific body background (Neo-Brutalism) - Can be removed if Wzuh is the active theme */
   body.nb-landing-page {
     @apply bg-nb-yellow text-nb-black;
     font-family: var(--font-sans);
@@ -192,7 +190,7 @@
 @layer components {
   /* Retro Card (used by internal app pages - sharp corners, black border) */
   .retro-card {
-    @apply border-2 border-foreground bg-card overflow-hidden transition-shadow duration-200 rounded-none shadow-md; /* Changed shadow to shadow-md */
+    @apply border-2 border-foreground bg-card overflow-hidden transition-shadow duration-200 rounded-none shadow-md;
   }
   .retro-card-header {
     @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
@@ -255,23 +253,36 @@
      @apply h-full w-full flex-1 bg-primary transition-all;
   }
 
- /* Wzuh-inspired Button (Pill-shaped with border) */
+ /* Wzuh-inspired Button (Pill-shaped with border and hard shadow) */
   .btn-wz {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-base font-semibold border-2 border-wz-border-dark shadow-sm transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:translate-y-px active:shadow-none;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-base border-2 border-wz-border-dark shadow-wz-hard transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+    @apply active:translate-x-px active:translate-y-px active:shadow-none active:brightness-90; /* Combined active states */
     font-family: var(--font-sans);
+    font-weight: 600; /* SemiBold */
   }
-  .btn-wz-pink { @apply bg-wz-pink text-wz-text-dark hover:bg-wz-pink-darker active:brightness-90; } /* Updated hover */
-  .btn-wz-purple { @apply bg-wz-purple text-wz-text-dark hover:bg-wz-purple-darker active:brightness-90; } /* Updated hover */
-  .btn-wz-green { @apply bg-wz-green text-wz-text-dark hover:brightness-95 active:brightness-90; }
-  .btn-wz-yellow { @apply bg-wz-yellow text-wz-text-dark hover:brightness-95 active:brightness-90; }
-  .btn-wz-teal { @apply bg-wz-teal text-wz-text-dark hover:brightness-95 active:brightness-90; } /* Added from config */
-  .btn-wz-dark { @apply bg-wz-text-dark text-wz-text-light hover:bg-opacity-90 active:translate-y-px active:shadow-none; }
-  .btn-wz-outline-dark { @apply bg-transparent text-wz-text-dark border-wz-border-dark hover:bg-wz-text-dark hover:text-wz-text-light active:translate-y-px active:shadow-none; }
+  .btn-wz-pink {
+    @apply bg-wz-pink text-wz-text-dark hover:brightness-95;
+  }
+  .btn-wz-purple {
+    @apply bg-wz-purple text-wz-text-dark hover:brightness-95;
+  }
+  .btn-wz-green {
+    @apply bg-wz-green text-wz-text-dark hover:brightness-95;
+  }
+  .btn-wz-yellow {
+    @apply bg-wz-yellow text-wz-text-dark hover:brightness-95;
+  }
+  .btn-wz-dark { /* For black button with light text */
+    @apply bg-wz-text-dark text-wz-text-light hover:opacity-90;
+  }
+  .btn-wz-outline-dark { /* For white/transparent button with black text/border */
+    @apply bg-transparent text-wz-text-dark border-wz-border-dark hover:bg-wz-text-dark hover:text-wz-pink; /* Wzuh outline hover often changes bg */
+  }
 
 
   /* Wzuh-inspired Card */
   .card-wz {
-    @apply p-6 shadow-md rounded-[var(--radius)] border-2 border-wz-border-dark;
+    @apply p-6 rounded-xl border-2 border-wz-border-dark shadow-md; /* Use rounded-xl as per --radius */
     font-family: var(--font-sans);
   }
   .card-wz-pink { @apply bg-wz-pink text-wz-text-dark; }
@@ -285,7 +296,7 @@
     @apply border border-border bg-card text-card-foreground shadow-lg rounded-[var(--radius)];
   }
 
-  /* Neo-Brutalism Button styles */
+  /* Neo-Brutalism Button styles (can be removed if Wzuh is the active theme) */
   .nb-button {
     @apply inline-flex items-center justify-center rounded-none border-2 border-nb-black px-5 py-2.5 text-sm font-bold shadow-nb-hard-sm transition-all duration-100 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nb-black focus-visible:ring-offset-2 focus-visible:ring-offset-background active:translate-x-0.5 active:translate-y-0.5 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed;
     font-family: var(--font-sans);
@@ -299,7 +310,7 @@
   .nb-button-white-outline { @apply bg-transparent text-nb-black border-nb-black hover:bg-nb-black hover:text-nb-white; }
 
 
-  /* Neo-Brutalism Card styles */
+  /* Neo-Brutalism Card styles (can be removed if Wzuh is the active theme) */
   .nb-card {
     @apply border-2 border-nb-black bg-nb-white shadow-nb-hard rounded-none p-4 sm:p-6;
     font-family: var(--font-sans);
@@ -313,7 +324,7 @@
 
 @layer utilities {
   .container-default { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
-  .section-padding { @apply py-12 md:py-20 lg:py-24; } /* Adjusted from Wzuh, was py-16... */
+  .section-padding { @apply py-12 md:py-20 lg:py-24; }
   .font-heading { font-family: var(--font-heading) !important; }
   .font-pixel { font-family: var(--font-pixel) !important; }
 
@@ -338,22 +349,20 @@
 
   /* Wzuh Color Utilities */
   .bg-wz-pink { background-color: hsl(var(--wz-pink)); }
-  .bg-wz-pink-darker { background-color: hsl(var(--wz-pink-darker)); }
   .text-wz-pink { color: hsl(var(--wz-pink)); }
   .border-wz-pink { border-color: hsl(var(--wz-pink)); }
   .bg-wz-green { background-color: hsl(var(--wz-green)); }
   .text-wz-green { color: hsl(var(--wz-green)); }
   .border-wz-green { border-color: hsl(var(--wz-green)); }
   .bg-wz-purple { background-color: hsl(var(--wz-purple)); }
-  .bg-wz-purple-darker { background-color: hsl(var(--wz-purple-darker)); }
   .text-wz-purple { color: hsl(var(--wz-purple)); }
   .border-wz-purple { border-color: hsl(var(--wz-purple)); }
   .bg-wz-yellow { background-color: hsl(var(--wz-yellow)); }
   .text-wz-yellow { color: hsl(var(--wz-yellow)); }
   .border-wz-yellow { border-color: hsl(var(--wz-yellow)); }
-  .bg-wz-teal { background-color: hsl(var(--wz-teal)); }
-  .text-wz-teal { color: hsl(var(--wz-teal)); }
-  .border-wz-teal { border-color: hsl(var(--wz-teal)); }
+  /* .bg-wz-teal { background-color: hsl(var(--wz-teal)); } Added wz-teal for completeness if needed */
+  /* .text-wz-teal { color: hsl(var(--wz-teal)); } */
+  /* .border-wz-teal { border-color: hsl(var(--wz-teal)); } */
   .bg-wz-text-dark { background-color: hsl(var(--wz-text-dark)); }
   .text-wz-text-dark { color: hsl(var(--wz-text-dark)); }
   .border-wz-text-dark { border-color: hsl(var(--wz-text-dark)); }
@@ -364,7 +373,7 @@
   .text-wz-gray-text { color: hsl(var(--wz-gray-text)); }
   .border-wz-border-dark { border-color: hsl(var(--wz-border-dark)); }
 
-  /* Neo-Brutalism Color Utilities */
+  /* Neo-Brutalism Color Utilities (can be removed if Wzuh is the active theme) */
   .bg-nb-yellow { background-color: hsl(var(--nb-yellow)); }
   .text-nb-yellow { color: hsl(var(--nb-yellow)); }
   .border-nb-yellow { border-color: hsl(var(--nb-yellow)); }
@@ -387,9 +396,12 @@
   .text-nb-white { color: hsl(var(--nb-white)); }
   .border-nb-white { border-color: hsl(var(--nb-white)); }
 
-  /* Neo-Brutalism Hard Shadow */
-  .shadow-nb-hard { box-shadow: 6px 6px 0px 0px hsl(var(--nb-black)); }
-  .shadow-nb-hard-sm { box-shadow: 3px 3px 0px 0px hsl(var(--nb-black)); }
+  /* Hard Shadows for Wzuh/Neo-Brutalism */
+  .shadow-wz-hard { box-shadow: 4px 4px 0px hsl(var(--wz-border-dark)); }
+  .shadow-wz-hard-sm { box-shadow: 2px 2px 0px hsl(var(--wz-border-dark)); }
+  .shadow-nb-hard { box-shadow: 6px 6px 0px hsl(var(--nb-black)); } /* Kept for neo-brutalism if toggled */
+  .shadow-nb-hard-sm { box-shadow: 3px 3px 0px hsl(var(--nb-black)); } /* Kept for neo-brutalism if toggled */
+
 
   /* Partner slider for Wzuh-like landing */
   .partner-slider-container {

@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -10,18 +11,22 @@ import {
   Twitter,
   Facebook,
   Instagram,
-  Sparkles, // Keep Sparkles for the landing page logo
+  Sparkles,
   X,
   LayoutGrid,
   ListChecks,
   Target,
-  TrendingUp, // Added as per user request for services
   ShieldAlert,
   FileText,
   Lightbulb,
-  PiggyBank, // Ensured import
+  PiggyBank,
   Landmark,
   HandCoins,
+  TrendingUp,
+  MessageCircle, // For footer
+  Send, // For footer
+  Phone, // For footer
+  Mail as MailIcon, // For footer
   Users,
   Briefcase,
   Zap,
@@ -29,16 +34,12 @@ import {
   ArrowRight,
   Receipt,
   BarChart3,
-  User as UserIcon, // Renamed to avoid conflict
+  User as UserIcon,
   Package,
   BrainCircuit,
   ShieldCheck,
   ChevronRight,
   Award,
-  MessageCircle,
-  Send,
-  Phone,
-  Mail as MailIcon,
   Home,
   Info,
   Settings,
@@ -47,15 +48,16 @@ import {
   Server,
   Rocket,
   CheckCircle,
-  DollarSign, // Added for dashboard
-  CreditCard, // Added for dashboard
-  Activity, // Added for dashboard
+  DollarSign,
+  CreditCard,
+  Activity,
   BarChartBig,
   ChevronDown,
   ChevronLeft,
   ChevronUp,
   AppleIcon as Apple,
   Store,
+  Asterisk // For Chorke logo placeholder
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -70,17 +72,17 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { useWallet } from '@/contexts/WalletContext'; // Import useWallet
+import { useWallet } from '@/contexts/WalletContext';
 import React from "react";
 
-// Helper to get icon components by name, now inside the component
+// Helper to get icon components by name
 const getIcon = (iconName?: string, props?: any) => {
   const icons: { [key: string]: React.ElementType } = {
-    CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, LayoutGrid, ListChecks, Target, TrendingUp, ShieldAlert, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, ShieldCheck, Award, ChevronRight, MessageCircle, Send, Phone, MailIcon, Home, Info, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity, DollarSign, BarChartBig, ChevronDown, ChevronLeft, ChevronUp, Apple, Store
+    CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, LayoutGrid, ListChecks, Target, TrendingUp, ShieldAlert, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, ShieldCheck, Award, ChevronRight, MessageCircle, Send, Phone, MailIcon, Home, Info, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity, DollarSign, BarChartBig, ChevronDown, ChevronLeft, ChevronUp, Apple, Store, Asterisk
   };
   if (!iconName) return null;
   const IconComponent = icons[iconName];
-  return IconComponent ? <IconComponent {...props} /> : <Sparkles {...props} />;
+  return IconComponent ? <IconComponent {...props} /> : <Sparkles {...props} />; // Default to Sparkles if not found
 };
 
 
@@ -88,14 +90,12 @@ export default function Header() {
   const { toast } = useToast();
   const { data: session, status } = useSession();
   const pathname = usePathname();
-  const { walletBalance, totalLockedFunds } = useWallet(); // Get wallet data
+  const { walletBalance, totalLockedFunds } = useWallet();
 
   const isAuthenticated = status === 'authenticated';
   const isLoadingSession = status === 'loading';
   const isLandingPage = pathname === '/';
 
-
-  // Define links inside the component to ensure icons are initialized
   const navLinks = [
     { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
     { href: "/budget", label: "Budget", iconName: "Wallet" },
@@ -113,47 +113,45 @@ export default function Header() {
     { href: "#", label: "Instagram", iconName: "Instagram" },
   ];
 
-  const landingPageNavLinks = [
+  const wzLandingPageNavLinks = [
     { href: "#services", label: "Services" },
     { href: "#how-it-works", label: "How it Works" },
     { href: "#pricing", label: "Pricing" },
     { href: "#contact", label: "Contact" },
   ];
 
+
   const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   const handleSignOut = async () => {
-    await signOut({ redirect: true, callbackUrl: '/login' }); // Redirect to login after sign out
+    await signOut({ redirect: true, callbackUrl: '/login' });
     toast({
       title: "Signed Out",
       description: "You have been successfully signed out.",
     });
   };
 
-
-  // Conditional rendering for the entire header based on landing page
   if (isLandingPage) {
+    // Wzuh-inspired landing page header
     return (
-      <header className="bg-transparent w-full"> {/* Header area is transparent, AppLayout provides bg-wz-green */}
-        <div className="container-default py-3"> {/* Vertical padding for the pill bar */}
+      <header className="w-full relative z-50"> {/* Ensure header is above other content */}
+        <div className="container-default py-3">
           <div className="bg-white rounded-full border border-gray-300 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between w-full max-w-5xl mx-auto">
-            {/* Left: Logo */}
             <Link href="/" className="flex items-center space-x-2 no-underline">
               <Sparkles className="h-7 w-7 text-wz-pink" />
               <span className="text-xl font-bold text-wz-text-dark font-sans">FinCo</span>
             </Link>
 
-            {/* Center: Navigation Links (Desktop) */}
             <nav className="hidden md:flex items-center space-x-1">
-              {landingPageNavLinks.map((link) => (
+              {wzLandingPageNavLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
                     "px-3 py-1.5 text-sm font-semibold text-wz-text-dark hover:bg-gray-100 hover:rounded-full transition-colors duration-150 no-underline",
-                    pathname === link.href ? "bg-gray-100 rounded-full" : "" // Example active state
+                    pathname === link.href ? "bg-gray-100 rounded-full" : ""
                   )}
                 >
                   {link.label}
@@ -161,11 +159,10 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* Right: Auth Buttons & Mobile Menu Trigger */}
             <div className="flex items-center space-x-2">
               {!isAuthenticated && !isLoadingSession && (
                 <>
-                  <Button asChild className="btn-wz btn-wz-pink hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white text-sm !py-1.5 !px-4 whitespace-nowrap">
+                  <Button asChild className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white">
                     <Link href="/login">Log In</Link>
                   </Button>
                   <Button asChild className="btn-wz btn-wz-outline-dark text-sm !py-1.5 !px-4 whitespace-nowrap">
@@ -199,7 +196,7 @@ export default function Header() {
                       </SheetClose>
                     </SheetHeader>
                     <nav className="grid gap-2 p-4">
-                      {landingPageNavLinks.map((link) => (
+                      {wzLandingPageNavLinks.map((link) => (
                         <SheetClose key={`${link.href}-mobile-wz`} asChild>
                           <Link href={link.href} className="block rounded-lg px-3 py-2 text-wz-text-dark hover:bg-wz-pink/10 no-underline font-medium">
                             {link.label}
@@ -245,8 +242,8 @@ export default function Header() {
     <header className="w-full">
       {/* Top Row */}
       <div className="bg-header-top">
-        <div className="container-default flex h-12 items-center border-b border-header-top-border">
-          <div className="flex items-center space-x-3 mr-auto"> {/* Use mr-auto to push right content */}
+        <div className="container-default flex h-12 items-center justify-between border-b border-header-top-border">
+          <div className="flex items-center space-x-3">
             <Link href="/dashboard" className="flex items-center space-x-2 no-underline shrink-0">
               {getIcon("CircleDollarSign", { className: "h-7 w-7 text-header-top-fg" })}
               <span className="font-heading text-xl font-bold text-header-top-fg">FinCo</span>
@@ -265,12 +262,11 @@ export default function Header() {
             )}
           </div>
 
-          {/* Right side of Top Row */}
-          <div className="flex items-stretch h-full text-sm">
-            {!isAuthenticated && !isLoadingSession && (
-              <>
+          <div className="flex items-stretch h-full text-sm ml-auto">
+             {!isAuthenticated && !isLoadingSession && (
+              <div className="flex items-stretch h-full">
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                  <Link
+                   <Link
                     href="/login"
                     className="flex items-center justify-center w-full h-full px-4 text-sm font-medium text-header-top-fg hover:bg-white hover:text-header-top-bg hover:rounded-md whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                   >
@@ -287,7 +283,7 @@ export default function Header() {
                     </Link>
                   </Button>
                 </div>
-              </>
+              </div>
             )}
             {isAuthenticated && (
               <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
@@ -406,12 +402,14 @@ export default function Header() {
           <nav className="flex flex-grow items-stretch h-full">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
+              // const IconComp = getIcon(link.iconName); // Not used for desktop bottom bar labels
+
               return (
-                <div
+                <div // Cell wrapper
                   key={link.href}
                   className={cn(
                     "h-full flex flex-1 items-center justify-center",
-                    index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
+                     index < navLinks.length - 1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
@@ -423,7 +421,7 @@ export default function Header() {
                         : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:rounded-md hover:shadow-sm"
                     )}
                   >
-                    {/* Icon was removed for single-word labels */}
+                    {/* {IconComp && <IconComp className="mr-2 h-4 w-4" />} */}
                     {link.label}
                   </Link>
                 </div>
