@@ -33,10 +33,24 @@ import {
   CircleDollarSign,
   LayoutGrid,
   HandCoins,
-  Landmark, // Added for services
-  CheckCircle // Added for pricing features
+  Landmark,
+  CheckCircle,
+  MessageCircle,
+  Phone,
+  User,
+  ShoppingCart,
+  CreditCard,
+  Activity,
+  Users, // Added Users icon for "Most Popular Artists/Features" section
+  Settings, // Added for general use if needed
+  Server, // Added for general use if needed
+  Rocket, // Added for general use if needed
+  BookOpen, // Added for articles
+  BarChart3, // For stats
+  PiggyBank, // Added for services
+  DollarSign as DollarSignIcon, // Aliased for clarity if DollarSign is used differently
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
@@ -54,7 +68,13 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bg
       <div className={cn(containerClassName, "relative z-10")}>
         {children}
       </div>
-      {/* Optional: Abstract shapes - can be added later or customized */}
+      {/* Placeholder for abstract shapes - can be styled with ::before/::after or SVGs */}
+      {bgClassName && bgClassName.includes('bg-wz') && ( // Example: only add for Wzuh specific backgrounds
+        <>
+          <div className="absolute top-1/4 left-10 w-32 h-32 bg-wz-pink/30 rounded-full filter blur-xl opacity-50 animate-pulse-slow -z-10"></div>
+          <div className="absolute bottom-1/4 right-10 w-40 h-40 bg-wz-yellow/30 rounded-full filter blur-xl opacity-50 animate-pulse-slow animation-delay-2000 -z-10"></div>
+        </>
+      )}
     </section>
   );
 };
@@ -64,24 +84,50 @@ interface ServiceCardProps {
   title: string;
   description: string;
   href: string;
+  tags: string[];
   bgColor: string;
   textColor: string;
+  borderColor: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, href, bgColor, textColor }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, href, tags, bgColor, textColor, borderColor }) => {
   return (
     <motion.div
-      className={cn("finco-card p-6 text-left hover:shadow-xl transition-shadow duration-300 flex flex-col", bgColor)}
-      initial={{ opacity: 0, y: 20 }}
+      className={cn(
+        "landing-card p-6 text-left group flex flex-col border-2",
+        bgColor,
+        textColor,
+        borderColor,
+        "hover:shadow-xl transition-all duration-300"
+      )}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5 }}
     >
-      <Icon className={cn("h-10 w-10 mb-4", textColor === "text-chorke-dark" ? "text-chorke-dark" : textColor)} />
-      <h3 className={cn("text-xl font-bold font-heading mb-2", textColor)}>{title}</h3>
-      <p className={cn("text-sm mb-4 flex-grow", textColor === "text-chorke-dark" ? "text-chorke-text-secondary" : `${textColor}/80`)}>{description}</p>
+      <div className="flex items-center mb-4">
+        <div className={cn("p-2 rounded-lg mr-3", bgColor === 'bg-wz-dark-bg' ? 'bg-wz-pink' : 'bg-white/30')}>
+          <Icon className={cn("h-6 w-6", textColor === 'text-wz-text-light' && bgColor === 'bg-wz-dark-bg' ? 'text-wz-pink' : textColor)} />
+        </div>
+        <h3 className={cn("text-xl font-bold font-heading", textColor)}>{title}</h3>
+      </div>
+      <p className={cn("text-sm mb-4 flex-grow", textColor === 'text-wz-text-light' ? 'text-wz-text-light/80' : 'text-wz-gray-text')}>{description}</p>
+      <div className="mb-4">
+        <span className={cn("text-xs font-semibold uppercase tracking-wider", textColor === 'text-wz-text-light' ? 'text-wz-text-light/70' : 'text-wz-gray-text/80')}>Popular tags:</span>
+        <div className="flex flex-wrap gap-2 mt-1.5">
+          {tags.map(tag => (
+            <span key={tag} className={cn("text-xs px-2.5 py-1 rounded-full border-2 font-medium transition-colors duration-200",
+              textColor === 'text-wz-text-light'
+              ? 'bg-wz-light-bg/10 border-wz-light-bg/30 text-wz-light-bg/90 hover:bg-wz-pink hover:text-wz-text-dark hover:border-wz-pink'
+              : 'bg-black/5 border-black/20 text-black/70 hover:bg-black hover:text-white hover:border-black'
+            )}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
       <Link href={href} passHref className="no-underline mt-auto">
-        <Button variant="outline" className={cn("btn-pill btn-pill-outline-dark w-full", textColor === "text-chorke-dark" ? "!border-chorke-dark !text-chorke-dark hover:!bg-chorke-dark hover:!text-white" : "!border-current !text-current hover:!bg-current hover:!text-card")}>
+        <Button className={cn("btn-wz btn-wz-outline-dark w-full !py-2 !text-sm", textColor === 'text-wz-text-light' ? '!border-wz-text-light !text-wz-text-light hover:!bg-wz-text-light hover:!text-wz-text-dark' : '')}>
           Learn More <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </Link>
@@ -92,39 +138,27 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, descriptio
 
 export default function LandingPage() {
   const coreServices = [
-    { internalIcon: LayoutGrid, title: "Dashboard", href: "/dashboard", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
-    { internalIcon: Wallet, title: "Budget", href: "/budget", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
-    { internalIcon: ListChecks, title: "Expenses", href: "/expenses", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
-    { internalIcon: Target, title: "Goals", href: "/savings-goals", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
-    { internalIcon: TrendingUp, title: "Invest", href: "/investments", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
-    { internalIcon: ShieldAlert, title: "Safety", href: "/emergency-fund", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
-    { internalIcon: FileText, title: "Taxes", href: "/tax-planner", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
-    { internalIcon: Lightbulb, title: "AI", href: "/ai-assistant", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
+    { iconName: "LayoutGrid", title: "Dashboard", description: "Your financial command center.", href: "/dashboard" },
+    { iconName: "Wallet", title: "Budget", description: "Plan and manage your spending.", href: "/budget" },
+    { iconName: "ListChecks", title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses" },
+    { iconName: "Target", title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals" },
+    { iconName: "TrendingUp", title: "Invest", description: "Monitor and grow your investments.", href: "/investments" },
+    { iconName: "ShieldAlert", title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund" },
+    { iconName: "FileText", title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner" },
+    { iconName: "Lightbulb", title: "AI", description: "Get smart financial insights.", href: "/ai-assistant" },
   ];
 
-  const whyChooseItems = [
-    {
-      icon: Package,
-      title: "All-In-One Simplicity",
-      description: "Budgeting, expenses, goals, investments, and taxes – everything seamlessly integrated. No more app-hopping!",
-    },
-    {
-      icon: BrainCircuit,
-      title: "AI-Powered Brilliance",
-      description: "Our intelligent assistant offers personalized insights, automates tasks, and helps you make smarter financial decisions.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Secure & Transparent",
-      description: "Bank-level security to protect your data. Clear, honest features with no hidden fees.",
-    },
+  const serviceColors = [
+    { bg: "bg-wz-green", text: "text-wz-text-dark", border: "border-wz-border-dark" },
+    { bg: "bg-wz-pink", text: "text-wz-text-dark", border: "border-wz-border-dark" },
+    { bg: "bg-wz-purple", text: "text-wz-text-dark", border: "border-wz-border-dark" },
+    { bg: "bg-wz-yellow", text: "text-wz-text-dark", border: "border-wz-border-dark" },
   ];
-  
-  const partners = ["Plaid", "Yodlee", "Stripe", "Visa", "Mastercard", "American Express", "Google Pay", "Wise"];
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-wz-light-bg text-wz-text-dark font-sans">
+    // Add wzuh-landing-page class to body for specific landing page styles
+    <>
       <main className="flex-grow">
         {/* Hero Section - Wzuh Style */}
         <SectionWrapper bgClassName="bg-wz-green !pt-20 md:!pt-28 lg:!pt-32 !pb-12 md:!pb-16" id="hero">
@@ -171,7 +205,7 @@ export default function LandingPage() {
            <div className="container-default">
              <div className="partner-slider-container">
                <div className="partner-slider-track">
-                 {[...partners, ...partners].map((partner, i) => (
+                 {["PayPal", "Visa", "Mastercard", "Stripe", "Wise", "American Express", "Google Pay", "PayPal", "Visa", "Mastercard", "Stripe", "Wise", "American Express", "Google Pay"].map((partner, i) => (
                   <div key={i} className="flex items-center space-x-12 md:space-x-16 lg:space-x-20 px-6">
                      <span className="text-2xl font-bold text-wz-text-dark/80 hover:text-wz-text-dark transition-colors whitespace-nowrap">
                        {partner}
@@ -183,7 +217,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Why Choose Fin.Co Section - Wzuh Style */}
+        {/* "Why Choose Fin.Co?" Section */}
         <SectionWrapper id="why-finco" bgClassName="bg-wz-light-bg">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading mb-4">Why Smart People Choose Fin.Co</h2>
@@ -192,46 +226,54 @@ export default function LandingPage() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {whyChooseItems.map((item) => (
-              <motion.div
-                key={item.title}
-                className="group p-6 bg-white rounded-xl border-2 border-wz-border-dark hover:bg-wz-pink hover:shadow-lg text-center transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5 }}
-              >
-                <item.icon className="h-12 w-12 text-wz-yellow mx-auto mb-4 group-hover:text-wz-text-dark transition-colors duration-300" />
-                <h3 className="text-xl font-bold text-wz-text-dark group-hover:text-wz-text-dark font-heading mb-2">{item.title}</h3>
-                <p className="text-sm text-wz-gray-text group-hover:text-wz-text-dark transition-colors duration-300">{item.description}</p>
-              </motion.div>
-            ))}
+            {[
+              { icon: Package, title: "All-In-One Simplicity", description: "Budgeting, expenses, goals, investments, and taxes – everything seamlessly integrated. No more app-hopping!" },
+              { icon: BrainCircuit, title: "AI-Powered Brilliance", description: "Our intelligent assistant offers personalized insights, automates tasks, and helps you make smarter financial decisions." },
+              { icon: ShieldCheck, title: "Secure & Transparent", description: "Bank-level security to protect your data. Clear, honest features with no hidden fees." },
+            ].map((item, index) => {
+              const ItemIcon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  className="group p-6 bg-white rounded-xl border-2 border-transparent hover:border-wz-pink text-center transition-all duration-300 hover:bg-wz-pink shadow-md hover:shadow-wz-hard"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <ItemIcon className="h-12 w-12 text-wz-yellow mx-auto mb-4 group-hover:text-wz-text-dark transition-colors duration-300" />
+                  <h3 className="text-xl font-bold text-wz-text-dark group-hover:text-wz-text-dark font-heading mb-2">{item.title}</h3>
+                  <p className="text-sm text-wz-gray-text group-hover:text-wz-text-dark transition-colors duration-300">{item.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </SectionWrapper>
-        
-        {/* FinCo for every occasion Section - Wzuh Style */}
-        <SectionWrapper id="finco-occasions" bgClassName="bg-wz-light-bg">
+
+        {/* "FinCo's Core Features" Section */}
+        <SectionWrapper id="core-features" bgClassName="bg-wz-light-bg">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading inline-block relative">
-              FinCo for every occasion
+              FinCo's Core Features
               <span className="absolute bottom-0 left-0 w-full h-2 bg-wz-yellow/70 -z-10 transform translate-y-1"></span>
             </h2>
             <p className="text-lg text-wz-gray-text max-w-xl mx-auto mt-4">
               Select the financial goal for which you would like to start planning.
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0"> {/* gap-0 to make borders meet */}
-            {coreServices.map((service) => {
-              const ServiceIcon = service.internalIcon;
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
+            {coreServices.map((service, index) => {
+              const ServiceIcon = service.iconName ? (LucideIcons[service.iconName as keyof typeof LucideIcons] || Sparkles) : Sparkles;
+              const colorScheme = serviceColors[index % serviceColors.length];
               return (
                 <Link key={service.title} href={service.href} className="block group relative text-center no-underline">
                   <div
                     className={cn(
-                      "p-6 h-full flex flex-col items-center justify-between relative border-2 border-wz-border-dark min-h-[300px] md:min-h-[320px]", // min-height for consistency
-                      service.bgColor,
-                      service.textColor,
-                      "hover:brightness-105 transition-all duration-200" // Subtle brightness on hover
+                      "p-8 h-full flex flex-col items-center justify-between relative border-2 min-h-[400px]", 
+                      colorScheme.bg,
+                      colorScheme.text,
+                      colorScheme.border,
+                      "hover:brightness-105 transition-all duration-200"
                     )}
                   >
                     <Sparkles className="absolute top-2 left-2 h-5 w-5 opacity-30" />
@@ -242,15 +284,17 @@ export default function LandingPage() {
                     <div className="flex-grow flex flex-col items-center justify-center py-4">
                       <div className="mb-4">
                         <Image
-                          src={`https://placehold.co/300x180.png`} // Adjusted aspect ratio
+                          src={`https://placehold.co/300x200.png`}
                           alt={service.title}
                           width={300}
-                          height={180}
+                          height={200}
                           className="rounded-lg object-cover border-2 border-wz-border-dark/30 group-hover:scale-105 transition-transform duration-300"
                           data-ai-hint={`${service.title.toLowerCase().replace(/\s+/g, '-')} graphic`}
                         />
                       </div>
                       <h3 className="text-xl font-bold font-heading mt-2">{service.title}</h3>
+                       {/* Optional: Add a short description here if desired */}
+                       {/* <p className="text-sm mt-1 text-wz-text-dark/80">{service.description}</p> */}
                     </div>
                   </div>
                 </Link>
@@ -258,8 +302,8 @@ export default function LandingPage() {
             })}
           </div>
         </SectionWrapper>
-
-        {/* "Ready to Start Your Financial Journey?" CTA Section - Wzuh Style */}
+        
+        {/* "Ready to Start Your Financial Journey?" CTA Section */}
          <SectionWrapper id="cta-download" bgClassName="bg-wz-light-bg">
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-wz-text-dark font-heading">Ready to Start Your Financial Journey?</h2>
@@ -293,7 +337,7 @@ export default function LandingPage() {
             </p>
             <div className="mb-4 md:mb-0">
                <Link href="/" className="flex items-center space-x-2 no-underline justify-center md:justify-start">
-                <Sparkles className="h-7 w-7 text-wz-pink" /> {/* Using Sparkles for FinCo logo */}
+                <Sparkles className="h-7 w-7 text-wz-pink" />
                 <span className="text-2xl font-bold font-heading text-wz-text-light">FinCo</span>
               </Link>
             </div>
@@ -308,6 +352,25 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
+
+// Helper to map icon names to Lucide components
+const LucideIcons: { [key: string]: React.ElementType } = {
+  LayoutGrid,
+  Wallet,
+  ListChecks,
+  Target,
+  TrendingUp,
+  ShieldAlert,
+  FileText,
+  Lightbulb,
+  Sparkles,
+  // Add any other icons you might use in coreServices or elsewhere
+  // For example, if some services were to have unique icons:
+  // PiggyBank,
+  // Landmark,
+  // HandCoins,
+  // Briefcase,
+};
