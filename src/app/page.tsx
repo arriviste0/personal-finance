@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -14,7 +13,6 @@ import {
   Instagram,
   Mail,
   ArrowRight,
-  CircleDollarSign,
   LayoutGrid,
   Wallet,
   ListChecks,
@@ -36,31 +34,47 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronUp,
+  CircleDollarSign,
   Store,
-  Apple,
+  AppleIcon as Apple, // Renamed to avoid conflict if another Apple exists
+  Briefcase,
+  CreditCard,
+  DollarSign,
+  Home,
+  Settings,
+  Users,
+  Zap,
+  Star,
+  Receipt,
+  Users2,
+  BookOpen,
+  Server,
+  Rocket,
+  MessageCircle,
+  Send,
+  CheckCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-
 
 interface SectionWrapperProps {
   children: React.ReactNode;
   className?: string;
   bgClassName?: string;
   id?: string;
+  containerClassName?: string;
 }
 
-const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bgClassName = "bg-wz-light-bg", id }) => {
+const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bgClassName = "", id, containerClassName = "container-default" }) => {
   return (
-    <section id={id} className={cn("py-12 md:py-20 relative overflow-hidden", bgClassName, className)}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id={id} className={cn("py-12 md:py-20 lg:py-24 relative overflow-hidden", bgClassName, className)}>
+      <div className={cn(containerClassName, "relative z-10")}>
         {children}
       </div>
     </section>
   );
 };
-
 
 interface ServiceCardProps {
   icon: React.ElementType;
@@ -75,7 +89,7 @@ interface ServiceCardProps {
 const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, href, bgColor, textColor, buttonText = "Learn More" }) => {
   return (
     <motion.div
-      className={cn("p-6 rounded-xl border-2 border-wz-border-dark shadow-sm h-full flex flex-col hover:shadow-lg transition-shadow", bgColor, textColor)}
+      className={cn("p-6 rounded-xl border-2 border-wz-border-dark shadow-sm h-full flex flex-col hover:shadow-lg transition-all duration-200", bgColor, textColor)}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -92,18 +106,17 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, descriptio
 };
 
 const services = [
-  { icon: LayoutGrid, title: "Dashboard", description: "Your financial command center.", href: "/dashboard"},
-  { icon: Wallet, title: "Budget", description: "Plan and manage your monthly budgets.", href: "/budget"},
-  { icon: ListChecks, title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses"},
-  { icon: Target, title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals"},
-  { icon: TrendingUp, title: "Invest", description: "Monitor and grow your investments.", href: "/investments"},
-  { icon: ShieldAlert, title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund"},
-  { icon: FileText, title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner"},
-  { icon: Lightbulb, title: "AI", description: "Get smart financial insights.", href: "/ai-assistant"},
+  { icon: LayoutGrid, title: "Dashboard", description: "Your financial command center.", href: "/dashboard", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
+  { icon: Wallet, title: "Budget", description: "Plan and manage your monthly budgets.", href: "/budget", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
+  { icon: ListChecks, title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
+  { icon: Target, title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
+  { icon: TrendingUp, title: "Invest", description: "Monitor and grow your investments.", href: "/investments", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
+  { icon: ShieldAlert, title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
+  { icon: FileText, title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
+  { icon: Lightbulb, title: "AI", description: "Get smart financial insights.", href: "/ai-assistant", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
 ];
 
 const serviceColors = ["bg-wz-pink", "bg-wz-green", "bg-wz-purple", "bg-wz-yellow"];
-
 
 const partners = ["Plaid", "Yodlee", "Stripe", "Visa", "Mastercard", "American Express", "Google Pay"];
 
@@ -112,19 +125,19 @@ const whyFinCoBenefits = [
     icon: Package,
     title: "All-In-One Simplicity",
     description: "Budgeting, expenses, goals, investments, and taxes – everything seamlessly integrated. No more app-hopping!",
-    color: "text-wz-purple",
+    color: "text-wz-yellow",
   },
   {
     icon: BrainCircuit,
     title: "AI-Powered Brilliance",
     description: "Our intelligent assistant offers personalized insights, automates tasks, and helps you make smarter financial decisions.",
-     color: "text-wz-green",
+    color: "text-wz-green",
   },
   {
     icon: ShieldCheck,
     title: "Secure & Transparent",
     description: "Bank-level security to protect your data. Clear, honest features with no hidden fees.",
-     color: "text-wz-pink",
+    color: "text-wz-pink",
   },
 ];
 
@@ -135,7 +148,6 @@ const fourStepPlanData = [
   { step: "4", title: "Achieve & Grow", description: "Celebrate milestones and continue building your financial future.", icon: Award, color: "green", themeColor: "wz-green", iconColor: "text-green-500", borderColor: "border-green-400", badgeBg: "bg-green-400" },
 ];
 
-
 export default function LandingPage() {
   React.useEffect(() => {
     document.body.classList.add('wzuh-landing-page');
@@ -145,7 +157,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-wz-light-bg text-wz-text-dark">
+    <div className="flex flex-col min-h-screen text-wz-text-dark">
       <main className="flex-grow">
         {/* Hero Section */}
         <SectionWrapper bgClassName="bg-wz-green !py-20 md:!py-28 lg:!py-32" id="hero">
@@ -187,7 +199,7 @@ export default function LandingPage() {
           </div>
         </SectionWrapper>
 
-         {/* Partners Section */}
+        {/* Partners Section */}
         <section className="py-4 bg-wz-pink border-y-2 border-wz-border-dark">
            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
              <div className="partner-slider-container">
@@ -216,15 +228,15 @@ export default function LandingPage() {
              {whyFinCoBenefits.map((benefit, index) => (
                <motion.div
                  key={index}
-                 className="p-6 lg:p-8 bg-white rounded-xl border-2 border-transparent hover:border-yellow-500 transition-colors duration-200 shadow-md hover:shadow-xl h-full flex flex-col group"
+                 className="p-6 lg:p-8 bg-white text-wz-text-dark rounded-xl border-2 border-wz-border-dark shadow-md group hover:bg-wz-pink hover:shadow-lg transition-all duration-300 h-full flex flex-col"
                  initial={{ opacity: 0, y: 20 }}
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true, amount: 0.3 }}
                  transition={{ duration: 0.5, delay: index * 0.1 }}
                >
-                 <benefit.icon className={cn("h-10 w-10 mb-4", benefit.color)} />
+                 <benefit.icon className={cn("h-10 w-10 mb-4", benefit.color, "group-hover:text-wz-text-dark transition-colors duration-300")} />
                  <h3 className="text-xl font-bold text-wz-text-dark mb-2 font-heading">{benefit.title}</h3>
-                 <p className="text-sm text-wz-gray-text group-hover:text-yellow-600 transition-colors flex-grow">{benefit.description}</p>
+                 <p className="text-sm text-wz-gray-text group-hover:text-wz-text-dark transition-colors duration-300 flex-grow">{benefit.description}</p>
                </motion.div>
              ))}
            </div>
@@ -290,11 +302,11 @@ export default function LandingPage() {
                 </motion.div>
               ))}
             </div>
-            {/* Arrows for flow */}
-            <ChevronRight className="hidden md:block absolute top-[25%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 text-gray-400 opacity-70 transform -mt-5" />
-            <ChevronDown className="hidden md:block absolute top-1/2 right-[20%] -translate-x-1/2 -translate-y-1/2 w-10 h-10 text-gray-400 opacity-70 transform rotate-0" />
-            <ChevronLeft className="hidden md:block absolute bottom-[25%] left-1/2 -translate-x-1/2 translate-y-1/2 w-10 h-10 text-gray-400 opacity-70 transform mt-5 rotate-180" />
-            <ChevronUp className="hidden md:block absolute top-1/2 left-[20%] -translate-x-1/2 -translate-y-1/2 w-10 h-10 text-gray-400 opacity-70 transform rotate-0" />
+             {/* Arrows for flow - order: 1->2 (top-right), 2->3 (bottom-right), 3->4 (bottom-left), 4->1 (top-left) */}
+            <ChevronRight className="hidden md:block absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-[150%] w-10 h-10 text-gray-400 opacity-70 transform" />
+            <ChevronDown className="hidden md:block absolute top-1/2 right-1/4 translate-x-[150%] -translate-y-1/2 w-10 h-10 text-gray-400 opacity-70 transform" />
+            <ChevronLeft className="hidden md:block absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-[150%] w-10 h-10 text-gray-400 opacity-70 transform" />
+            <ChevronUp className="hidden md:block absolute top-1/2 left-1/4 -translate-x-[150%] -translate-y-1/2 w-10 h-10 text-gray-400 opacity-70 transform" />
           </div>
         </SectionWrapper>
 
@@ -329,7 +341,7 @@ export default function LandingPage() {
               ))}
             </motion.div>
             <p className="text-lg md:text-xl text-wz-text-dark font-semibold max-w-xl mx-auto mb-10">
-              Potential annual savings our users achieve with FinCo!
+              Potential annual savings our users achieve with Fin.Co!
             </p>
              <Image
                 src="https://storage.googleapis.com/idx-dev-fe-plugin-ai-test-assets/01J3Y6N12P55GSJBDY71G3P981.png"
@@ -368,12 +380,12 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="bg-wz-text-dark text-wz-text-light/70 pt-16 pb-8 border-t-4 border-wz-pink">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[1.5fr_1fr_1fr] gap-8 mb-10 items-start">
+          <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 mb-10 items-start">
             {/* Column 1: Logo & Subscription */}
             <div className="space-y-4">
               <Link href="/" className="flex items-center space-x-2 no-underline">
                 <Sparkles className="h-8 w-8 text-wz-pink" />
-                <span className="text-2xl font-bold font-heading text-wz-text-light">FinCo</span>
+                <span className="text-2xl font-bold font-heading text-wz-text-light">Fin.Co</span>
               </Link>
               <p className="text-sm text-wz-text-light/80">Get weekly financial tips and FinCo updates straight to your inbox.</p>
               <form className="flex gap-2 max-w-sm">
@@ -388,7 +400,7 @@ export default function LandingPage() {
               </form>
             </div>
 
-             {/* Column 2: Company Links */}
+            {/* Column 2: Company Links */}
             <div>
               <h4 className="font-semibold text-wz-text-light mb-3 font-heading">Company</h4>
               <ul className="space-y-2">
@@ -414,7 +426,7 @@ export default function LandingPage() {
 
           <div className="border-t border-wz-gray-text/30 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm">
             <p className="text-wz-text-light/80">
-              © {new Date().getFullYear()} FinCo. All Rights Reserved.
+              © {new Date().getFullYear()} Fin.Co. All Rights Reserved.
             </p>
             <div className="flex space-x-5 mt-4 sm:mt-0">
               <Link href="#" aria-label="Twitter" className="text-wz-text-light/80 hover:text-wz-pink transition-colors no-underline"><Twitter className="h-5 w-5"/></Link>
@@ -428,6 +440,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
-
-    
