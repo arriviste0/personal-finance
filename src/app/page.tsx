@@ -9,32 +9,61 @@ import { motion } from 'framer-motion';
 import {
   ArrowRight,
   Sparkles,
-  CircleDollarSign, // For FinCo logo in footer
-  Twitter, // For footer
-  Youtube, // For footer
-  Facebook, // For footer
-  Instagram, // For footer
-  Palette, // Example icon for "Create a Financial Plan"
-  BarChart3, // Example icon for "Track & Automate"
-  Award, // Example icon for "Achieve Your Dreams"
-  Store, // For app store icons
-  Apple, // For app store icons
+  CircleDollarSign,
+  Twitter,
+  Youtube,
+  Facebook,
+  Instagram,
+  Palette,
+  BarChart3,
+  Award,
+  Store,
+  Apple,
+  ChevronRight,
+  Mail,
+  Heart,
+  Briefcase,
+  LayoutGrid,
+  Wallet,
+  ListChecks,
+  Target,
+  TrendingUp,
+  ShieldAlert,
+  FileText,
+  Lightbulb,
+  CreditCard, // For new service card
+  DollarSign,  // For new service card
+  Users,       // For new service card
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-
 
 interface SectionWrapperProps {
   children: React.ReactNode;
   className?: string;
   bgClassName?: string;
   id?: string;
+  hasShapes?: boolean;
 }
 
-const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bgClassName = "bg-wz-light-bg", id }) => {
+const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bgClassName = "bg-wz-light-bg", id, hasShapes = false }) => {
   return (
     <section id={id} className={cn("py-16 md:py-24 relative overflow-hidden", bgClassName, className)}>
+      {hasShapes && (
+        <>
+          <motion.div
+            className="absolute -top-20 -left-20 w-64 h-64 bg-wz-pink/30 rounded-full filter blur-2xl opacity-50"
+            animate={{ x: [0, 20, 0], y: [0, -20, 0] }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute -bottom-20 -right-20 w-72 h-72 bg-wz-green/30 rounded-full filter blur-2xl opacity-50"
+            animate={{ x: [0, -20, 0], y: [0, 20, 0] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: 5 }}
+          />
+        </>
+      )}
       <div className="container-default relative z-10">
         {children}
       </div>
@@ -42,25 +71,72 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bg
   );
 };
 
+interface ServiceCardProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  href: string;
+  bgColor: string;
+}
+
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, href, bgColor }) => {
+  return (
+    <motion.div
+      className={cn("p-6 rounded-xl border-2 border-wz-border-dark shadow-nb-hard h-full flex flex-col", bgColor)}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Icon className="h-8 w-8 text-wz-text-dark mb-4" />
+      <h3 className="text-xl font-bold text-wz-text-dark mb-2 font-heading">{title}</h3>
+      <p className="text-sm text-wz-text-dark/80 mb-4 flex-grow">{description}</p>
+      <Button asChild className="btn-wz btn-wz-outline-dark mt-auto text-sm">
+        <Link href={href}>Learn More <ArrowRight className="ml-2 h-4 w-4" /></Link>
+      </Button>
+    </motion.div>
+  );
+};
+
+
 const PartnerLogo = ({ name }: { name: string }) => (
   <div className="text-2xl font-bold text-wz-text-dark/70 hover:text-wz-text-dark transition-colors">
     {name}
   </div>
 );
 
+const services = [
+  { icon: LayoutGrid, title: "Dashboard", description: "Your financial command center.", href: "/dashboard", bgColor: "bg-wz-pink" },
+  { icon: Wallet, title: "Budgeting Tools", description: "Plan and manage your monthly budgets.", href: "/budget", bgColor: "bg-wz-green" },
+  { icon: ListChecks, title: "Expense Tracking", description: "Log and categorize all your spending.", href: "/expenses", bgColor: "bg-wz-purple" },
+  { icon: Target, title: "Savings Goals", description: "Set and achieve your financial targets.", href: "/savings-goals", bgColor: "bg-wz-yellow" },
+  { icon: TrendingUp, title: "Investment Portfolio", description: "Monitor and grow your investments.", href: "/investments", bgColor: "bg-wz-green" },
+  { icon: ShieldAlert, title: "Emergency Fund", description: "Build your financial safety net.", href: "/emergency-fund", bgColor: "bg-wz-pink" },
+  { icon: FileText, title: "Tax Planner", description: "Estimate and prepare for your taxes.", href: "/tax-planner", bgColor: "bg-wz-yellow" },
+  { icon: Lightbulb, title: "AI Assistant", description: "Get smart financial insights.", href: "/ai-assistant", bgColor: "bg-wz-purple" },
+];
+
+
 export default function LandingPage() {
+  React.useEffect(() => {
+    document.body.classList.add('wzuh-landing-page');
+    return () => {
+      document.body.classList.remove('wzuh-landing-page');
+    };
+  }, []);
+
   return (
-    <div className="wzuh-landing-page flex flex-col min-h-screen text-wz-text-dark">
+    <div className="flex flex-col min-h-screen text-wz-text-dark">
       <main className="flex-grow">
         {/* Hero Section */}
-        <SectionWrapper bgClassName="bg-wz-green py-20 md:py-32" id="hero">
+        <SectionWrapper bgClassName="bg-wz-green py-20 md:py-32" id="hero" hasShapes>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-wz-text-dark leading-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-wz-text-dark leading-tight font-heading">
                 Master Your <br className="hidden md:inline" />Financial Goals
               </h1>
               <p className="text-lg md:text-xl text-wz-gray-text mb-8 max-w-md">
@@ -94,19 +170,28 @@ export default function LandingPage() {
 
         {/* Partners Section */}
         <section className="py-8 bg-wz-pink">
-          <div className="container-default">
-            <div className="flex flex-wrap justify-around items-center gap-x-8 gap-y-4">
-              <PartnerLogo name="Plaid" />
-              <PartnerLogo name="Yodlee" />
-              <PartnerLogo name="Stripe" />
-              <PartnerLogo name="Visa" />
-              <PartnerLogo name="Mastercard" />
+           <div className="container-default">
+             <div className="partner-slider-container">
+               <div className="partner-slider-track">
+                 {/* Duplicate for seamless scroll */}
+                 {[...Array(2)].map((_, i) => (
+                  <div key={i} className="flex items-center space-x-12 md:space-x-16 lg:space-x-20 px-6">
+                    <PartnerLogo name="Plaid" />
+                    <PartnerLogo name="Visa" />
+                    <PartnerLogo name="Mastercard" />
+                    <PartnerLogo name="Stripe" />
+                    <PartnerLogo name="Wise" />
+                    <PartnerLogo name="American Express" />
+                    <PartnerLogo name="Google Pay" />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* Get the Financial Future of Your Dreams Section */}
-        <SectionWrapper id="get-future">
+        <SectionWrapper id="get-future" hasShapes>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -131,7 +216,7 @@ export default function LandingPage() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-wz-text-dark">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-wz-text-dark font-heading">
                 Get the Financial Future <br className="hidden md:inline" />of Your Dreams.
               </h2>
               <p className="text-lg text-wz-gray-text mb-6 max-w-md">
@@ -145,120 +230,32 @@ export default function LandingPage() {
           </div>
         </SectionWrapper>
 
-        {/* Our Approach is Simple / How It Works Section */}
-        <SectionWrapper id="how-it-works" bgClassName="bg-gray-50">
-           <div className="grid lg:grid-cols-[1fr_0.8fr] gap-12 items-start">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-wz-text-dark">
-                Our Approach is Simple.
-              </h2>
-              <p className="text-lg text-wz-gray-text mb-8 leading-relaxed">
-                FinCo breaks down complex financial management into easy-to-follow steps.
-                We guide you from setting clear objectives to celebrating your achievements,
-                with smart automation and AI-powered insights along the way.
-              </p>
-            </motion.div>
-            <div className="space-y-6">
-              {[
-                { title: "Create a Financial Plan", text: "Define your goals, big or small. Our tools help you outline a clear path.", bgColor: "bg-wz-pink", icon: Palette },
-                { title: "Track & Automate", text: "Monitor your progress effortlessly. Automate savings and get smart alerts.", bgColor: "bg-wz-purple", icon: BarChart3 },
-                { title: "Achieve Your Dreams", text: "Reach your milestones and build a secure financial future with confidence.", bgColor: "bg-wz-green", icon: Award },
-              ].map((item, index) => {
-                const ItemIcon = item.icon;
-                return (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{ duration: 0.4, delay: index * 0.15 }}
-                    className={cn("p-6 rounded-xl border-2 border-wz-border-dark relative overflow-hidden", item.bgColor)}
-                  >
-                    <ItemIcon className="h-8 w-8 text-wz-text-dark mb-3" />
-                    <h3 className="text-xl font-bold mb-2 text-wz-text-dark">{item.title}</h3>
-                    <p className="text-sm text-wz-text-dark/80">{item.text}</p>
-                    <Sparkles className="absolute -bottom-3 -right-3 h-10 w-10 text-wz-text-dark/20" />
-                  </motion.div>
-                );
-              })}
-            </div>
+        {/* Explore FinCo's Core Features Section */}
+        <SectionWrapper id="services" bgClassName="bg-gray-50">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading mb-4">Explore FinCo's Core Features</h2>
+            <p className="text-lg text-wz-gray-text max-w-2xl mx-auto">
+              From daily expense tracking to long-term investment planning, FinCo offers a comprehensive suite of tools.
+            </p>
           </div>
-        </SectionWrapper>
-
-        {/* Financial Plan for Every Life Goal Section */}
-        <SectionWrapper id="life-goals">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              className="p-8 md:p-12 bg-wz-yellow rounded-2xl border-2 border-wz-border-dark"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-wz-text-dark">Financial Plan for Every Life Goal</h2>
-              <p className="text-wz-gray-text mb-6">
-                Whether it's for education, travel, or retirement, FinCo helps you plan effectively.
-              </p>
-              <Button asChild className="btn-wz btn-wz-pink">
-                <Link href="/get-started">Create a Plan</Link>
-              </Button>
-              <Sparkles className="absolute top-5 -left-5 h-12 w-12 text-wz-pink opacity-50 -z-10" />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="p-8 md:p-12 bg-wz-green rounded-2xl border-2 border-wz-border-dark text-center"
-            >
-              <Image
-                src="https://placehold.co/400x300.png"
-                alt="Retirement planning"
-                width={400}
-                height={300}
-                className="rounded-xl shadow-md mx-auto mb-4"
-                data-ai-hint="retirement planning piggy bank"
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((service, index) => (
+              <ServiceCard
+                key={index}
+                icon={service.icon}
+                title={service.title}
+                description={service.description}
+                href={service.href}
+                bgColor={service.bgColor}
               />
-              <p className="font-semibold text-wz-text-dark">Plan for a Secure Retirement</p>
-            </motion.div>
-          </div>
-        </SectionWrapper>
-
-         {/* Two-Column Image Section for Goals */}
-        <SectionWrapper bgClassName="bg-gray-50 py-12 md:py-20">
-          <div className="grid md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5 }}
-              className="p-6 bg-wz-pink rounded-2xl border-2 border-wz-border-dark text-center"
-            >
-              <Image src="https://placehold.co/450x300.png" alt="Education Fund" width={450} height={300} className="rounded-xl shadow-md mx-auto mb-3" data-ai-hint="student graduation cap money"/>
-              <p className="font-semibold text-wz-text-dark">Save for Education</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="p-6 bg-wz-purple rounded-2xl border-2 border-wz-border-dark text-center"
-            >
-              <Image src="https://placehold.co/450x300.png" alt="Emergency Fund" width={450} height={300} className="rounded-xl shadow-md mx-auto mb-3" data-ai-hint="emergency fund shield money"/>
-              <p className="font-semibold text-wz-text-dark">Build Your Emergency Fund</p>
-            </motion.div>
+            ))}
           </div>
         </SectionWrapper>
 
         {/* Ready to Start CTA Section */}
-        <SectionWrapper id="cta" bgClassName="bg-wz-light-bg">
+        <SectionWrapper id="cta" bgClassName="bg-wz-light-bg" hasShapes>
           <div className="text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-wz-text-dark">Ready to Start Your Financial Journey?</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-wz-text-dark font-heading">Ready to Start Your Financial Journey?</h2>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button asChild className="btn-wz btn-wz-pink px-8 py-3">
                 <Link href="#">
@@ -300,3 +297,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
