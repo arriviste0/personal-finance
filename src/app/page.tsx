@@ -27,13 +27,21 @@ import {
   Wallet,
   ListChecks,
   Target,
-  TrendingUp,
   ShieldAlert,
   FileText,
   Lightbulb,
-  CreditCard, // For new service card
-  DollarSign,  // For new service card
-  Users,       // For new service card
+  Package,
+  BrainCircuit,
+  ShieldCheck,
+  HandCoins,
+  PiggyBank,
+  Landmark,
+  Users,
+  Receipt,
+  DollarSign,
+  Zap,
+  Star,
+  MessageCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
@@ -44,26 +52,11 @@ interface SectionWrapperProps {
   className?: string;
   bgClassName?: string;
   id?: string;
-  hasShapes?: boolean;
 }
 
-const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bgClassName = "bg-wz-light-bg", id, hasShapes = false }) => {
+const SectionWrapper: React.FC<SectionWrapperProps> = ({ children, className, bgClassName = "bg-wz-light-bg", id }) => {
   return (
     <section id={id} className={cn("py-16 md:py-24 relative overflow-hidden", bgClassName, className)}>
-      {hasShapes && (
-        <>
-          <motion.div
-            className="absolute -top-20 -left-20 w-64 h-64 bg-wz-pink/30 rounded-full filter blur-2xl opacity-50"
-            animate={{ x: [0, 20, 0], y: [0, -20, 0] }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          />
-          <motion.div
-            className="absolute -bottom-20 -right-20 w-72 h-72 bg-wz-green/30 rounded-full filter blur-2xl opacity-50"
-            animate={{ x: [0, -20, 0], y: [0, 20, 0] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: 5 }}
-          />
-        </>
-      )}
       <div className="container-default relative z-10">
         {children}
       </div>
@@ -76,22 +69,23 @@ interface ServiceCardProps {
   title: string;
   description: string;
   href: string;
-  bgColor: string;
+  bgColor: string; // e.g., 'bg-wz-pink'
+  textColor: string; // e.g., 'text-wz-text-dark'
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, href, bgColor }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, href, bgColor, textColor }) => {
   return (
     <motion.div
-      className={cn("p-6 rounded-xl border-2 border-wz-border-dark shadow-nb-hard h-full flex flex-col", bgColor)}
+      className={cn("p-6 rounded-xl border-2 border-wz-border-dark shadow-sm h-full flex flex-col", bgColor, textColor)}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5 }}
     >
-      <Icon className="h-8 w-8 text-wz-text-dark mb-4" />
-      <h3 className="text-xl font-bold text-wz-text-dark mb-2 font-heading">{title}</h3>
-      <p className="text-sm text-wz-text-dark/80 mb-4 flex-grow">{description}</p>
-      <Button asChild className="btn-wz btn-wz-outline-dark mt-auto text-sm">
+      <Icon className="h-8 w-8 mb-4" />
+      <h3 className="text-xl font-bold mb-2 font-heading">{title}</h3>
+      <p className="text-sm opacity-80 mb-4 flex-grow">{description}</p>
+      <Button asChild className="btn-wz btn-wz-outline-dark mt-auto text-sm !py-2 !px-4">
         <Link href={href}>Learn More <ArrowRight className="ml-2 h-4 w-4" /></Link>
       </Button>
     </motion.div>
@@ -99,21 +93,21 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, descriptio
 };
 
 
-const PartnerLogo = ({ name }: { name: string }) => (
-  <div className="text-2xl font-bold text-wz-text-dark/70 hover:text-wz-text-dark transition-colors">
+const PartnerLogo = ({ name, className }: { name: string, className?: string }) => (
+  <div className={cn("text-2xl font-bold text-wz-gray-text/80 hover:text-wz-text-dark transition-colors", className)}>
     {name}
   </div>
 );
 
 const services = [
-  { icon: LayoutGrid, title: "Dashboard", description: "Your financial command center.", href: "/dashboard", bgColor: "bg-wz-pink" },
-  { icon: Wallet, title: "Budgeting Tools", description: "Plan and manage your monthly budgets.", href: "/budget", bgColor: "bg-wz-green" },
-  { icon: ListChecks, title: "Expense Tracking", description: "Log and categorize all your spending.", href: "/expenses", bgColor: "bg-wz-purple" },
-  { icon: Target, title: "Savings Goals", description: "Set and achieve your financial targets.", href: "/savings-goals", bgColor: "bg-wz-yellow" },
-  { icon: TrendingUp, title: "Investment Portfolio", description: "Monitor and grow your investments.", href: "/investments", bgColor: "bg-wz-green" },
-  { icon: ShieldAlert, title: "Emergency Fund", description: "Build your financial safety net.", href: "/emergency-fund", bgColor: "bg-wz-pink" },
-  { icon: FileText, title: "Tax Planner", description: "Estimate and prepare for your taxes.", href: "/tax-planner", bgColor: "bg-wz-yellow" },
-  { icon: Lightbulb, title: "AI Assistant", description: "Get smart financial insights.", href: "/ai-assistant", bgColor: "bg-wz-purple" },
+  { icon: LayoutGrid, title: "Dashboard", description: "Your financial command center.", href: "/dashboard", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
+  { icon: Wallet, title: "Budget", description: "Plan and manage your monthly budgets.", href: "/budget", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
+  { icon: ListChecks, title: "Expenses", description: "Log and categorize all your spending.", href: "/expenses", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
+  { icon: Target, title: "Goals", description: "Set and achieve your financial targets.", href: "/savings-goals", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
+  { icon: TrendingUp, title: "Invest", description: "Monitor and grow your investments.", href: "/investments", bgColor: "bg-wz-green", textColor: "text-wz-text-dark" },
+  { icon: ShieldAlert, title: "Safety", description: "Build your financial safety net.", href: "/emergency-fund", bgColor: "bg-wz-pink", textColor: "text-wz-text-dark" },
+  { icon: FileText, title: "Taxes", description: "Estimate and prepare for your taxes.", href: "/tax-planner", bgColor: "bg-wz-yellow", textColor: "text-wz-text-dark" },
+  { icon: Lightbulb, title: "AI", description: "Get smart financial insights.", href: "/ai-assistant", bgColor: "bg-wz-purple", textColor: "text-wz-text-dark" },
 ];
 
 
@@ -129,7 +123,7 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen text-wz-text-dark">
       <main className="flex-grow">
         {/* Hero Section */}
-        <SectionWrapper bgClassName="bg-wz-green py-20 md:py-32" id="hero" hasShapes>
+        <SectionWrapper bgClassName="bg-wz-green py-20 md:py-32" id="hero">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -143,7 +137,7 @@ export default function LandingPage() {
                 FinCo empowers you to track income, budget smarter, save with purpose, and grow your wealth through intuitive tools and AI-powered insights.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild className="btn-wz btn-wz-pink text-lg px-8 py-4">
+                <Button asChild className="btn-wz btn-wz-pink">
                   <Link href="/get-started">Start Now <ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
               </div>
@@ -169,11 +163,10 @@ export default function LandingPage() {
         </SectionWrapper>
 
         {/* Partners Section */}
-        <section className="py-8 bg-wz-pink">
+        <section className="py-6 bg-wz-pink">
            <div className="container-default">
              <div className="partner-slider-container">
                <div className="partner-slider-track">
-                 {/* Duplicate for seamless scroll */}
                  {[...Array(2)].map((_, i) => (
                   <div key={i} className="flex items-center space-x-12 md:space-x-16 lg:space-x-20 px-6">
                     <PartnerLogo name="Plaid" />
@@ -191,7 +184,7 @@ export default function LandingPage() {
         </section>
 
         {/* Get the Financial Future of Your Dreams Section */}
-        <SectionWrapper id="get-future" hasShapes>
+        <SectionWrapper id="get-future">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -223,15 +216,15 @@ export default function LandingPage() {
                 With FinCo, achieving your financial aspirations is simpler than ever.
                 All it takes is three simple steps!
               </p>
-              <Button asChild className="btn-wz btn-wz-pink text-lg px-8 py-4">
+              <Button asChild className="btn-wz btn-wz-pink">
                 <Link href="#how-it-works">Start Planning <ArrowRight className="ml-2 h-5 w-5" /></Link>
               </Button>
             </motion.div>
           </div>
         </SectionWrapper>
 
-        {/* Explore FinCo's Core Features Section */}
-        <SectionWrapper id="services" bgClassName="bg-gray-50">
+         {/* Explore FinCo's Core Features Section */}
+        <SectionWrapper id="services" bgClassName="bg-wz-light-bg">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-wz-text-dark font-heading mb-4">Explore FinCo's Core Features</h2>
             <p className="text-lg text-wz-gray-text max-w-2xl mx-auto">
@@ -247,22 +240,24 @@ export default function LandingPage() {
                 description={service.description}
                 href={service.href}
                 bgColor={service.bgColor}
+                textColor={service.textColor}
               />
             ))}
           </div>
         </SectionWrapper>
 
+
         {/* Ready to Start CTA Section */}
-        <SectionWrapper id="cta" bgClassName="bg-wz-light-bg" hasShapes>
+        <SectionWrapper id="cta" bgClassName="bg-wz-light-bg">
           <div className="text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-8 text-wz-text-dark font-heading">Ready to Start Your Financial Journey?</h2>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button asChild className="btn-wz btn-wz-pink px-8 py-3">
+              <Button asChild className="btn-wz btn-wz-pink">
                 <Link href="#">
                   <Apple className="mr-2 h-5 w-5" /> Get FinCo for iOS
                 </Link>
               </Button>
-              <Button asChild className="btn-wz btn-wz-purple px-8 py-3">
+              <Button asChild className="btn-wz btn-wz-purple">
                 <Link href="#">
                   <Store className="mr-2 h-5 w-5" /> Get FinCo for Android
                 </Link>
@@ -274,27 +269,52 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="bg-wz-text-dark text-wz-text-light/70 py-12">
-        <div className="container-default text-center">
-          <Link href="/" className="flex items-center justify-center space-x-2 no-underline mb-6">
-            <Sparkles className="h-8 w-8 text-wz-pink" />
-            <span className="text-2xl font-bold font-heading text-wz-text-light">FinCo</span>
-          </Link>
-          <p className="text-sm mb-6">
-            © {new Date().getFullYear()} FinCo. All Rights Reserved.
-          </p>
-          <div className="flex justify-center space-x-6 mb-6">
-            <Link href="#" className="hover:text-wz-pink transition-colors no-underline text-sm">Terms & Agreements</Link>
-            <Link href="#" className="hover:text-wz-pink transition-colors no-underline text-sm">Privacy Policy</Link>
+        <div className="container-default">
+          <div className="grid lg:grid-cols-[2fr_1fr_1fr] gap-8 items-start mb-8">
+            {/* Column 1: Logo & Subscription */}
+            <div className="space-y-4">
+              <Link href="/" className="flex items-center space-x-2 no-underline">
+                <Sparkles className="h-8 w-8 text-wz-pink" />
+                <span className="text-2xl font-bold font-heading text-wz-text-light">FinCo</span>
+              </Link>
+              <p className="text-sm text-wz-text-light/80">Get weekly financial tips and FinCo updates straight to your inbox.</p>
+              <form className="flex gap-2 max-w-sm">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="flex-1 !bg-wz-text-dark/50 !border-wz-gray-text/50 !text-wz-text-light placeholder:!text-wz-text-light/50 focus:!border-wz-pink focus:!ring-wz-pink !rounded-full"
+                />
+                <Button type="submit" className="btn-wz btn-wz-pink !py-2.5">
+                  Subscribe
+                </Button>
+              </form>
+            </div>
+
+            {/* Column 2 & 3: Links (Removed as per previous request to only keep Company links) */}
+            <div>
+              <h4 className="font-semibold text-wz-text-light mb-3 font-heading">Company</h4>
+              <ul className="space-y-2">
+                <li><Link href="/#services" className="hover:text-wz-pink text-sm no-underline text-wz-text-light/80">Features</Link></li>
+                <li><Link href="#" className="hover:text-wz-pink text-sm no-underline text-wz-text-light/80">Pricing</Link></li>
+                <li><Link href="#" className="hover:text-wz-pink text-sm no-underline text-wz-text-light/80">About</Link></li>
+                <li><Link href="#" className="hover:text-wz-pink text-sm no-underline text-wz-text-light/80">Jobs</Link></li>
+              </ul>
+            </div>
           </div>
-          <div className="flex justify-center space-x-5">
-            <Link href="#" aria-label="Twitter" className="hover:text-wz-pink transition-colors no-underline"><Twitter className="h-6 w-6"/></Link>
-            <Link href="#" aria-label="YouTube" className="hover:text-wz-pink transition-colors no-underline"><Youtube className="h-6 w-6"/></Link>
-            <Link href="#" aria-label="Instagram" className="hover:text-wz-pink transition-colors no-underline"><Instagram className="h-6 w-6"/></Link>
-            <Link href="#" aria-label="Facebook" className="hover:text-wz-pink transition-colors no-underline"><Facebook className="h-6 w-6"/></Link>
+
+          <div className="border-t border-wz-gray-text/30 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm">
+            <p className="text-wz-text-light/80">
+              © {new Date().getFullYear()} FinCo. All Rights Reserved.
+            </p>
+            <div className="flex space-x-5 mt-4 sm:mt-0">
+              <Link href="#" aria-label="Twitter" className="text-wz-text-light/80 hover:text-wz-pink transition-colors no-underline"><Twitter className="h-5 w-5"/></Link>
+              <Link href="#" aria-label="YouTube" className="text-wz-text-light/80 hover:text-wz-pink transition-colors no-underline"><Youtube className="h-5 w-5"/></Link>
+              <Link href="#" aria-label="Instagram" className="text-wz-text-light/80 hover:text-wz-pink transition-colors no-underline"><Instagram className="h-5 w-5"/></Link>
+              <Link href="#" aria-label="Facebook" className="text-wz-text-light/80 hover:text-wz-pink transition-colors no-underline"><Facebook className="h-5 w-5"/></Link>
+            </div>
           </div>
         </div>
       </footer>
     </div>
   );
 }
-

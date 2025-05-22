@@ -14,13 +14,12 @@
     --wz-green: 100 40% 88%; /* Lighter, similar to #BBFEA3 for backgrounds */
     --wz-purple: 270 50% 85%; /* Lighter, similar to #B9A3FE for backgrounds */
     --wz-yellow: 54 98% 78%; /* #FEE191 for backgrounds/accents */
-    --wz-teal: 165 100% 65%; /* For accents like the "Follow" button from NFT example */
+    --wz-teal: 165 100% 65%; /* For accents */
     --wz-text-dark: 0 0% 10%; /* #1A1B1D - For text on light/vibrant backgrounds */
     --wz-text-light: 0 0% 100%; /* #FFFFFF - For text on dark backgrounds */
     --wz-border-dark: 0 0% 6%; /* #101010 - For button borders */
     --wz-light-bg: 45 100% 97%; /* #FFFBEF - Overall page background for Wzuh theme */
     --wz-gray-text: 0 0% 30%; /* #4C4D50 - For subtitles or less prominent text */
-
 
     /* FinCo - Modern & Clean Theme (Default for internal app pages) */
     --background: 0 0% 98%; /* Lightest Gray - Default for internal app pages */
@@ -81,6 +80,15 @@
     --chart-4: 0 70% 55%;   /* Red */
     --chart-5: 270 60% 60%; /* Purple */
     --chart-6: 180 60% 45%; /* Teal/Cyan */
+
+    /* Neo-Brutalism Specific (if needed for a different theme variant) */
+    --nb-yellow: 54 100% 50%;
+    --nb-pink: 300 100% 50%;
+    --nb-green: 150 100% 47%;
+    --nb-cyan: 180 100% 50%;
+    --nb-purple: 262 100% 50%;
+    --nb-black: 0 0% 0%;
+    --nb-white: 0 0% 100%;
   }
 
   .dark {
@@ -113,11 +121,12 @@
     --header-bottom-fg: 0 0% 95%;
     --header-bottom-border: 210 10% 30%;
 
-    /* Wzuh Dark Specific (if ever needed, typically Wzuh is light) */
-    --wz-text-dark: 0 0% 90%; /* Lighter text for dark Wzuh */
-    --wz-text-light: 0 0% 10%; /* Darker text for light elements on dark Wzuh */
-    --wz-border-dark: 0 0% 80%; /* Lighter border */
-    --wz-light-bg: 0 0% 10%; /* Dark background */
+    /* Wzuh Dark Specific */
+    --wz-text-dark: hsl(0 0% 90%); /* Lighter text for dark Wzuh */
+    --wz-text-light: hsl(0 0% 10%); /* Darker text for light elements on dark Wzuh */
+    --wz-border-dark: hsl(0 0% 80%); /* Lighter border */
+    --wz-light-bg: hsl(0 0% 10%); /* Dark background */
+    --wz-gray-text: hsl(0 0% 70%);
   }
 }
 
@@ -140,8 +149,8 @@
     font-family: var(--font-sans);
   }
 
-  .wzuh-landing-page h1, .wzuh-landing-page h2, .wzuh-landing-page h3, .wzuh-landing-page h4, .wzuh-landing-page p, .wzuh-landing-page span, .wzuh-landing-page a {
-      font-family: var(--font-sans); /* Inter for all text on landing page as per new style guide */
+  .wzuh-landing-page h1, .wzuh-landing-page h2, .wzuh-landing-page h3, .wzuh-landing-page h4, .wzuh-landing-page p, .wzuh-landing-page span, .wzuh-landing-page a, .wzuh-landing-page div {
+      font-family: var(--font-sans); /* Inter for all text on landing page as per Wzuh style guide */
   }
   .wzuh-landing-page h1 { @apply text-5xl md:text-6xl lg:text-7xl font-bold; }
   .wzuh-landing-page h2 { @apply text-3xl md:text-4xl font-bold; }
@@ -169,7 +178,7 @@
 @layer components {
   /* Retro Card (used by internal app pages - sharp corners) */
   .retro-card {
-    @apply border-2 border-foreground bg-card overflow-hidden transition-shadow duration-200 rounded-none shadow-md;
+    @apply border-2 border-foreground bg-card overflow-hidden transition-shadow duration-200 rounded-none shadow-lg;
   }
   .retro-card-header {
     @apply flex items-center justify-between p-2 px-3 border-b-2 border-foreground bg-muted;
@@ -232,19 +241,20 @@
      @apply h-full w-full flex-1 bg-primary transition-all;
   }
 
-  /* Wzuh-inspired Button (Pill-shaped with border) */
+ /* Wzuh-inspired Button (Pill-shaped with border) */
   .btn-wz {
     @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-base border-2 border-wz-border-dark shadow-sm transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:translate-y-px active:shadow-none;
     font-family: var(--font-sans); /* Inter */
     @apply font-semibold; /* Default to SemiBold */
   }
-  .btn-wz-pink { @apply bg-wz-pink text-wz-text-dark hover:opacity-90; }
-  .btn-wz-purple { @apply bg-wz-purple text-wz-text-dark hover:opacity-90; }
-  .btn-wz-green { @apply bg-wz-green text-wz-text-dark hover:opacity-90; }
-  .btn-wz-yellow { @apply bg-wz-yellow text-wz-text-dark hover:opacity-90; }
-  .btn-wz-teal { @apply bg-wz-teal text-wz-text-dark hover:opacity-90; }
-  .btn-wz-dark { @apply bg-wz-text-dark text-wz-text-light hover:bg-opacity-90; }
-  .btn-wz-outline-dark { @apply bg-transparent text-wz-text-dark border-wz-border-dark hover:bg-wz-text-dark hover:text-wz-text-light; }
+  .btn-wz-pink { @apply bg-wz-pink text-wz-text-dark hover:brightness-95 active:brightness-90; }
+  .btn-wz-purple { @apply bg-wz-purple text-wz-text-dark hover:brightness-95 active:brightness-90; }
+  .btn-wz-green { @apply bg-wz-green text-wz-text-dark hover:brightness-95 active:brightness-90; }
+  .btn-wz-yellow { @apply bg-wz-yellow text-wz-text-dark hover:brightness-95 active:brightness-90; }
+  .btn-wz-teal { @apply bg-wz-teal text-wz-text-dark hover:brightness-95 active:brightness-90; }
+  .btn-wz-dark { @apply bg-wz-text-dark text-wz-text-light hover:bg-opacity-90 active:translate-y-px active:shadow-none; }
+  .btn-wz-outline-dark { @apply bg-transparent text-wz-text-dark border-wz-border-dark hover:bg-wz-text-dark hover:text-wz-text-light active:translate-y-px active:shadow-none; }
+
 
   /* Wzuh-inspired Card */
   .card-wz {
@@ -262,7 +272,7 @@
     @apply border border-border bg-card text-card-foreground shadow-lg rounded-[var(--radius)];
   }
 
-  /* Retro Button styles (used by internal app pages) - Kept for internal pages if needed */
+  /* Retro Button styles (used by internal app pages - Kept for internal pages if needed) */
   .retro-button {
     @apply inline-flex items-center justify-center border-2 border-foreground px-4 py-2 text-base font-medium text-foreground shadow-retro-sm transition-all duration-150 ease-in-out active:translate-y-px active:translate-x-px active:shadow-none disabled:cursor-not-allowed disabled:opacity-50 rounded-none;
     font-family: var(--font-sans);
@@ -341,18 +351,15 @@
   .shadow-nb-hard-sm { box-shadow: 3px 3px 0px 0px hsl(var(--nb-black)); }
 
 
-  /* Partner slider for Chorke-like landing */
+  /* Partner slider for Wzuh-like landing */
   .partner-slider-container {
     overflow: hidden;
     width: 100%;
     position: relative;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  }
-  .wzuh-landing-page .partner-slider-container { /* Specific for Wzuh landing if needed */
     -webkit-mask-image: linear-gradient(to right, transparent 0%, hsl(var(--wz-text-dark)) 5%, hsl(var(--wz-text-dark)) 95%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0%, hsl(var(--wz-text-dark)) 5%, hsl(var(--wz-text-dark)) 95%, transparent 100%);
   }
+
   .partner-slider-track {
     display: flex;
     width: fit-content;
