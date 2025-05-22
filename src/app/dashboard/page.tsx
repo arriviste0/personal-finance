@@ -162,9 +162,9 @@ export default function DashboardPage() {
                 <CardTitle>Quick Actions</CardTitle>
               </div>
               <div className="retro-window-controls">
-                <span className="!border-dashboard-pink-foreground"></span>
-                <span className="!border-dashboard-pink-foreground"></span>
-                <span className="!border-dashboard-pink-foreground"></span>
+                <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
+                <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
+                <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
               </div>
             </div>
           </CardHeader>
@@ -176,7 +176,7 @@ export default function DashboardPage() {
             <Button variant="outline" className="w-full retro-button justify-start" onClick={() => setIsLinkBankModalOpen(true)}>
               <Landmark className="mr-2 h-4 w-4" /> Link Bank Account
             </Button>
-             <Button variant="primary" className="w-full retro-button justify-start !bg-brand-yellow !text-black hover:!bg-brand-yellow/90">
+             <Button variant="primary" className="w-full retro-button justify-start !bg-wz-yellow !text-wz-text-dark hover:!bg-wz-yellow/90">
               <Star className="mr-2 h-4 w-4" /> Upgrade to Premium
             </Button>
           </CardContent>
@@ -190,9 +190,9 @@ export default function DashboardPage() {
                     <CardTitle>Savings Goals</CardTitle>
                 </div>
                 <div className="retro-window-controls">
-                    <span className="!border-dashboard-purple-foreground"></span>
-                    <span className="!border-dashboard-purple-foreground"></span>
-                    <span className="!border-dashboard-purple-foreground"></span>
+                    <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
+                    <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
+                    <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
                 </div>
             </div>
           </CardHeader>
@@ -223,9 +223,9 @@ export default function DashboardPage() {
                     <CardTitle>Emergency Fund</CardTitle>
                 </div>
                 <div className="retro-window-controls">
-                    <span className="!border-dashboard-blue-foreground"></span>
-                    <span className="!border-dashboard-blue-foreground"></span>
-                    <span className="!border-dashboard-blue-foreground"></span>
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
                 </div>
             </div>
           </CardHeader>
@@ -255,9 +255,9 @@ export default function DashboardPage() {
                         <CardTitle>Budget Snapshot</CardTitle>
                     </div>
                     <div className="retro-window-controls">
-                        <span className="!border-dashboard-purple-foreground"></span>
-                        <span className="!border-dashboard-purple-foreground"></span>
-                        <span className="!border-dashboard-purple-foreground"></span>
+                        <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
+                        <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
+                        <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
                     </div>
                 </div>
             </CardHeader>
@@ -303,7 +303,7 @@ export default function DashboardPage() {
                         <p className="font-medium text-sm">{tx.description}</p>
                         <p className="text-xs text-muted-foreground">{tx.category} &bull; {tx.date}</p>
                     </div>
-                    <span className={cn("text-sm font-semibold", tx.amount >= 0 ? 'text-brand-green' : 'text-destructive')}>
+                    <span className={cn("text-sm font-semibold", tx.amount >= 0 ? 'text-green-500' : 'text-destructive')}>
                         {formatCurrency(tx.amount, true)}
                     </span>
                   </div>
@@ -318,7 +318,7 @@ export default function DashboardPage() {
             </CardFooter>
         </Card>
 
-        <Card className="retro-card flex flex-col">
+        <Card className="retro-card xl:col-span-1 flex flex-col">
           <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -326,9 +326,9 @@ export default function DashboardPage() {
                     <CardTitle>Investment Portfolio</CardTitle>
                 </div>
                 <div className="retro-window-controls">
-                    <span className="!border-dashboard-blue-foreground"></span>
-                    <span className="!border-dashboard-blue-foreground"></span>
-                    <span className="!border-dashboard-blue-foreground"></span>
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
+                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
                 </div>
             </div>
           </CardHeader>
@@ -351,7 +351,7 @@ export default function DashboardPage() {
             </CardFooter>
         </Card>
 
-        <Card className="retro-card md:col-span-2 xl:col-span-3 flex flex-col">
+        <Card className="retro-card xl:col-span-2 flex flex-col">
             <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -359,9 +359,9 @@ export default function DashboardPage() {
                         <CardTitle>AI Savings Helper</CardTitle>
                     </div>
                     <div className="retro-window-controls">
-                        <span className="!border-dashboard-pink-foreground"></span>
-                        <span className="!border-dashboard-pink-foreground"></span>
-                        <span className="!border-dashboard-pink-foreground"></span>
+                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
+                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
+                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
                     </div>
                 </div>
             </CardHeader>
