@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -15,6 +16,7 @@ export default {
          pixel: ['var(--font-pixel)', 'cursive'],
        },
   		colors: {
+        // Base FinCo theme
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -56,6 +58,7 @@ export default {
   				'5': 'hsl(var(--chart-5))',
           '6': 'hsl(var(--chart-6))'
   			},
+        // Dashboard card header colors
         'dashboard-pink-header': {
           DEFAULT: 'hsl(var(--dashboard-pink-header-bg))',
           foreground: 'hsl(var(--dashboard-pink-header-fg))',
@@ -68,6 +71,7 @@ export default {
           DEFAULT: 'hsl(var(--dashboard-blue-header-bg))',
           foreground: 'hsl(var(--dashboard-blue-header-fg))',
         },
+        // Internal App Header colors
         'header-top': {
           DEFAULT: 'hsl(var(--header-top-bg))',
           foreground: 'hsl(var(--header-top-fg))',
@@ -78,21 +82,26 @@ export default {
           foreground: 'hsl(var(--header-bottom-fg))',
           border: 'hsl(var(--header-bottom-border))',
         },
-        // NFT Market Theme Colors
-        'nft-pink': 'hsl(var(--nft-pink))',
-        'nft-yellow': 'hsl(var(--nft-yellow))',
-        'nft-teal': 'hsl(var(--nft-teal))',
-        'nft-dark': 'hsl(var(--nft-dark))',
-        'nft-light-bg': 'hsl(var(--nft-light-bg))',
-        'nft-gray-text': 'hsl(var(--nft-gray-text))',
+        // Wzuh-inspired Theme Colors (for landing page)
+        'wz-pink': 'hsl(var(--wz-pink))',
+        'wz-green': 'hsl(var(--wz-green))',
+        'wz-purple': 'hsl(var(--wz-purple))',
+        'wz-yellow': 'hsl(var(--wz-yellow))',
+        'wz-text-dark': 'hsl(var(--wz-text-dark))',
+        'wz-text-light': 'hsl(var(--wz-text-light))',
+        'wz-border-dark': 'hsl(var(--wz-border-dark))',
+        'wz-light-bg': 'hsl(var(--wz-light-bg))',
+        'wz-gray-text': 'hsl(var(--wz-gray-text))',
   		},
   		borderRadius: {
         none: '0',
-        sm: 'calc(var(--radius) - 4px)', // Adjusted for slightly more noticeable difference
-        DEFAULT: 'var(--radius)', // e.g., 0.75rem for NFT theme
+        sm: 'calc(var(--radius) - 4px)',
+        DEFAULT: 'var(--radius)', // Use the CSS variable for default
         md: 'var(--radius)',
         lg: 'calc(var(--radius) + 4px)',
-        xl: 'calc(var(--radius) + 8px)',
+        xl: 'calc(var(--radius) + 8px)', // Wzuh uses larger rounding
+        '2xl': 'calc(var(--radius) + 16px)',
+        '3xl': 'calc(var(--radius) + 24px)',
         full: '9999px',
       },
   		keyframes: {
@@ -104,23 +113,6 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        'retro-glow': {
-          '0%, 100%': { 'box-shadow': '0 0 3px 0.5px hsl(var(--primary)/0.5)' },
-          '50%': { 'box-shadow': '0 0 6px 2px hsl(var(--primary)/0.7)' },
-        },
-        'retro-blink': {
-            '0%, 100%': { opacity: '1' },
-            '50%': { opacity: '0.6' },
-        },
-         'retro-check-pop': {
-           '0%': { transform: 'scale(0.8)', opacity: '0.5' },
-           '80%': { transform: 'scale(1.1)', opacity: '1' },
-           '100%': { transform: 'scale(1)', opacity: '1' },
-         },
-         'retro-alert-pulse': {
-            '0%, 100%': { borderColor: 'hsl(var(--destructive)/0.7)', boxShadow: '0 0 0 0 hsl(var(--destructive)/0.3)' },
-            '50%': { borderColor: 'hsl(var(--destructive))', boxShadow: '0 0 0 2.5px hsl(var(--destructive)/0.05)' },
-         },
          scrollPartners: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
@@ -129,17 +121,11 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'retro-glow': 'retro-glow 1.5s ease-in-out infinite',
-        'retro-blink': 'retro-blink 1s step-end infinite',
-         'retro-check-pop': 'retro-check-pop 0.3s ease-out',
-         'retro-alert-pulse': 'retro-alert-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-         'scroll-partners': 'scrollPartners 60s linear infinite', // Slower animation
+        'scroll-partners': 'scrollPartners 60s linear infinite',
       },
       boxShadow: {
          'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.10)',
          'retro-sm': '2px 2px 0px 0px hsl(var(--foreground)/0.10)',
-         'retro-inset': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.10)',
-         'retro-inset-dark': 'inset 2px 2px 0px 0px hsl(var(--foreground)/0.08)',
       },
   	}
   },

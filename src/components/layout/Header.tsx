@@ -11,55 +11,8 @@ import {
   Twitter,
   Facebook,
   Instagram,
-  LayoutGrid,
-  Landmark,
-  TrendingUp,
-  ShieldAlert,
-  FileText,
-  Lightbulb,
-  Settings,
-  User,
-  DollarSign,
-  CreditCard,
-  Home,
-  PieChart as IconPieChart,
-  HelpCircle,
-  Info,
-  AtSign,
-  KeyRound,
-  MailIcon,
-  LockIcon,
-  UserPlus,
-  ShoppingBag,
-  BookOpen,
-  BarChart3,
-  BriefcaseIcon,
-  Receipt,
-  Settings2,
-  Percent,
-  MessageSquare,
-  LifeBuoy,
-  Newspaper,
-  InfoIcon,
-  Phone,
-  UserCircle2,
-  Search,
-  Bell,
-  MessageCircleMore,
-  ArrowRight,
-  X,
-  Package,
-  BrainCircuit,
-  ShieldCheck,
-  Zap,
-  Target,
-  BarChartBig,
-  Award,
-  ChevronDown,
-  ChevronUp,
-  ChevronRight,
-  ChevronLeft,
-  PiggyBank,
+  Sparkles,
+  X, // Added X for mobile menu close
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -75,58 +28,44 @@ import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { useWallet } from '@/contexts/WalletContext';
+import React from "react"; // Ensure React is imported for JSX
 
 export default function Header() {
   const { toast } = useToast();
   const { data: session, status } = useSession();
   const pathname = usePathname();
-  const { walletBalance, totalLockedFunds } = useWallet();
+  const { walletBalance, totalLockedFunds } = useWallet(); // Assuming this is for internal pages
 
   const isAuthenticated = status === 'authenticated';
   const isLoadingSession = status === 'loading';
   const isLandingPage = pathname === '/';
 
+  // Wzuh-inspired landing page navigation
+  const wzuhNavLinks = [
+    { href: "#services", label: "Services" }, // Example, update as needed
+    { href: "#how-it-works", label: "How it Works" },
+    { href: "#pricing", label: "Pricing" }, // Example
+    { href: "#contact", label: "Contact" },
+  ];
+
+  // Podportal-inspired internal app navigation
   const finCoNavLinks = [
-    { href: "/dashboard", label: "Dashboard", iconName: "LayoutGrid" },
-    { href: "/budget", label: "Budget", iconName: "Wallet" },
-    { href: "/expenses", label: "Expenses", iconName: "Landmark" },
-    { href: "/savings-goals", label: "Goals", iconName: "PiggyBank" },
-    { href: "/investments", label: "Invest", iconName: "TrendingUp" },
-    { href: "/emergency-fund", label: "Safety", iconName: "ShieldAlert" },
-    { href: "/tax-planner", label: "Taxes", iconName: "FileText" },
-    { href: "/ai-assistant", label: "AI", iconName: "Lightbulb" },
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/budget", label: "Budget" },
+    { href: "/expenses", label: "Expenses" },
+    { href: "/savings-goals", label: "Goals" },
+    { href: "/investments", label: "Invest" },
+    { href: "/emergency-fund", label: "Safety" },
+    { href: "/tax-planner", label: "Taxes" },
+    { href: "/ai-assistant", label: "AI" },
   ];
-
-  const nftMarketNavLinks = [
-    { href: "#auction", label: "Auction" },
-    { href: "#roadmap", label: "Roadmap" },
-    { href: "#discover", label: "Discover" },
-    { href: "#community", label: "Community" },
-  ];
-
-  const currentNavLinks = isLandingPage ? nftMarketNavLinks : finCoNavLinks;
 
   const socialMediaLinks = [
-    { href: "#", label: "Twitter", iconName: "Twitter" },
-    { href: "#", label: "Facebook", iconName: "Facebook" },
-    { href: "#", label: "Instagram", iconName: "Instagram" },
+    { href: "#", label: "Twitter", icon: Twitter },
+    { href: "#", label: "Facebook", icon: Facebook },
+    { href: "#", label: "Instagram", icon: Instagram },
   ];
 
-  const iconMap: { [key: string]: React.ElementType } = {
-    LayoutGrid, Wallet, Landmark, PiggyBank, TrendingUp, ShieldAlert, FileText, Lightbulb, Settings,
-    Twitter, Facebook, Instagram, LogOut, CircleDollarSign, X, User, DollarSign, CreditCard, Home,
-    IconPieChart, HelpCircle, Info, AtSign, KeyRound, MailIcon, LockIcon, UserPlus, ShoppingBag,
-    BookOpen, BarChart3, BriefcaseIcon, Receipt, Settings2, Percent, MessageSquare, LifeBuoy,
-    Newspaper, InfoIcon, Phone, UserCircle2, Search, Bell, MessageCircleMore, ArrowRight,
-    Package, BrainCircuit, ShieldCheck, Zap, Target, BarChartBig, Award, ChevronDown, ChevronUp,
-    ChevronRight, ChevronLeft,
-  };
-
-  const getIcon = (iconName?: string): React.ElementType | null => {
-    if (!iconName) return null;
-    const IconComponent = iconMap[iconName];
-    return IconComponent || CircleDollarSign;
-  };
 
   const formatCurrency = (amount: number) => {
     return `$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -140,62 +79,87 @@ export default function Header() {
     });
   };
 
+  // Wzuh-inspired Landing Page Header
   if (isLandingPage) {
-    // NFT Market Inspired Header for Landing Page
     return (
-      <header className="sticky top-0 z-50 w-full border-b bg-nft-light-bg shadow-sm">
+      <header className="sticky top-0 z-50 w-full bg-wz-light-bg/80 backdrop-blur-md shadow-sm">
         <div className="container-default flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 no-underline">
-            <span className="text-2xl font-bold text-nft-dark font-heading">FinCo</span>
+            <Sparkles className="h-7 w-7 text-wz-pink" />
+            <span className="text-2xl font-bold text-wz-text-dark font-heading">FinCo</span>
           </Link>
-          <nav className="hidden items-center space-x-8 md:flex">
-            {currentNavLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="text-sm font-medium text-nft-gray-text hover:text-nft-dark transition-colors no-underline">
+          <nav className="hidden items-center space-x-6 md:flex">
+            {wzuhNavLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm font-semibold text-wz-text-dark hover:text-wz-pink transition-colors no-underline"
+              >
                 {link.label}
               </Link>
             ))}
           </nav>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {!isAuthenticated && !isLoadingSession && (
-              <Button asChild className="btn-pill bg-nft-pink text-white hover:bg-nft-pink/90 px-6 py-2.5 text-sm">
-                <Link href="/get-started">Login/Signup</Link>
-              </Button>
+              <>
+                <Link href="/login" className="hidden sm:inline-block text-sm font-semibold text-wz-text-dark hover:text-wz-pink transition-colors no-underline">
+                  Log In
+                </Link>
+                <Button asChild className="btn-wz btn-wz-pink text-sm">
+                  <Link href="/get-started">Get Started</Link>
+                </Button>
+              </>
             )}
             {isAuthenticated && (
-               <Button onClick={handleSignOut} className="btn-pill bg-nft-pink text-white hover:bg-nft-pink/90 px-6 py-2.5 text-sm">
+               <Button onClick={handleSignOut} className="btn-wz btn-wz-pink text-sm">
                 <LogOut className="mr-2 h-4 w-4" /> Sign Out
               </Button>
             )}
             <div className="md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-nft-dark">
+                  <Button variant="ghost" size="icon" className="text-wz-text-dark hover:bg-wz-pink/10">
                     <Menu className="h-6 w-6" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-[280px] bg-nft-light-bg p-0">
-                  <SheetHeader className="p-4 border-b">
-                    <SheetTitle className="text-nft-dark font-heading">FinCo</SheetTitle>
+                <SheetContent side="left" className="w-[280px] bg-wz-light-bg p-0">
+                  <SheetHeader className="p-4 border-b border-gray-200">
+                    <SheetTitle className="flex items-center gap-2 text-wz-text-dark font-heading">
+                      <Sparkles className="h-6 w-6 text-wz-pink" />
+                      FinCo
+                    </SheetTitle>
+                    <SheetClose asChild>
+                      <Button variant="ghost" size="icon" className="absolute right-3 top-3 h-7 w-7 p-0 text-wz-gray-text hover:bg-gray-100">
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </SheetClose>
                   </SheetHeader>
                   <nav className="grid gap-2 p-4">
-                    {currentNavLinks.map((link) => (
+                    {wzuhNavLinks.map((link) => (
                       <SheetClose key={`${link.href}-mobile`} asChild>
-                        <Link href={link.href} className="block rounded-lg px-3 py-2 text-nft-gray-text hover:bg-gray-100 hover:text-nft-dark no-underline">
+                        <Link href={link.href} className="block rounded-lg px-3 py-2 text-wz-text-dark hover:bg-wz-pink/10 no-underline font-medium">
                           {link.label}
                         </Link>
                       </SheetClose>
                     ))}
-                    <div className="mt-4 border-t pt-4">
+                    <div className="mt-4 border-t border-gray-200 pt-4 space-y-3">
                       {!isAuthenticated && !isLoadingSession && (
-                        <SheetClose asChild>
-                          <Button asChild className="w-full btn-pill bg-nft-pink text-white hover:bg-nft-pink/90">
-                            <Link href="/get-started">Login/Signup</Link>
-                          </Button>
-                        </SheetClose>
+                        <>
+                           <SheetClose asChild>
+                              <Link href="/login" className="block text-center rounded-lg px-3 py-2 text-wz-text-dark hover:bg-wz-pink/10 no-underline font-medium">
+                                Log In
+                              </Link>
+                            </SheetClose>
+                          <SheetClose asChild>
+                            <Button asChild className="w-full btn-wz btn-wz-pink text-sm">
+                              <Link href="/get-started">Get Started</Link>
+                            </Button>
+                          </SheetClose>
+                        </>
                       )}
                       {isAuthenticated && (
                         <SheetClose asChild>
-                          <Button onClick={handleSignOut} className="w-full btn-pill bg-nft-pink text-white hover:bg-nft-pink/90">
+                          <Button onClick={handleSignOut} className="w-full btn-wz btn-wz-pink text-sm">
                             <LogOut className="mr-2 h-4 w-4" /> Sign Out
                           </Button>
                         </SheetClose>
@@ -211,9 +175,10 @@ export default function Header() {
     );
   }
 
-  // Podportal Inspired Header for Internal App Pages
+  // Podportal Inspired Header for Internal App Pages (remains the same)
   return (
     <header className="w-full">
+      {/* Top Row */}
       <div className="bg-header-top">
         <div className="container mx-auto flex h-12 items-center justify-between px-4 md:px-6 border-b border-header-top-border">
           <div className="flex items-center space-x-3">
@@ -234,27 +199,23 @@ export default function Header() {
               </div>
             )}
           </div>
+
           <div className="flex items-stretch h-full text-sm ml-auto">
             {!isAuthenticated && !isLoadingSession && (
               <>
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
                   <Link
                     href="/login"
-                    className={cn(
-                      "w-full h-full flex items-center justify-center px-4 text-sm font-medium text-header-top-fg hover:bg-white hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top no-underline transition-colors duration-150 whitespace-nowrap",
-                      "hover:bg-white hover:text-blue-700" // Removed hover:rounded-md
-                    )}
+                    className="w-full h-full flex items-center justify-center px-4 text-sm font-medium text-header-top-fg hover:bg-white hover:text-header-top-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-header-top no-underline transition-colors duration-150 whitespace-nowrap"
                   >
                     Log In
                   </Link>
                 </div>
                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                  <Button asChild variant="ghost" className="p-0 w-full h-full rounded-none">
+                   <Button asChild variant="ghost" className="p-0 w-full h-full rounded-none">
                     <Link
                       href="/get-started"
-                      className={cn(
-                        "w-full h-full flex items-center justify-center bg-white text-blue-700 hover:bg-blue-500 hover:text-white rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
-                      )}
+                      className="w-full h-full flex items-center justify-center bg-white text-header-top-bg hover:bg-blue-500 hover:text-white rounded-md px-3 py-1.5 text-sm font-semibold !shadow-none !border-transparent whitespace-nowrap no-underline transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-header-top"
                     >
                       Get Started
                     </Link>
@@ -273,7 +234,7 @@ export default function Header() {
                 </Button>
               </div>
             )}
-            <div className="flex items-center justify-center border-l border-header-top-border md:hidden">
+             <div className="flex items-center justify-center border-l border-header-top-border md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="text-header-top-fg hover:bg-header-top-fg/10 h-full w-10 rounded-none px-2">
@@ -310,7 +271,7 @@ export default function Header() {
                     {finCoNavLinks.map(link => {
                       const isActive = pathname === link.href;
                       return (
-                        <SheetClose key={`${link.href}-mobile`} asChild>
+                        <SheetClose key={`${link.href}-mobile-internal`} asChild>
                           <Link
                             href={link.href}
                             className={cn(
@@ -328,7 +289,7 @@ export default function Header() {
                      <div className="border-t border-header-bottom-border mt-4 pt-4 space-y-3">
                        <div className="flex justify-center space-x-4 mb-3">
                         {socialMediaLinks.map((sLink) => {
-                          const SocialIcon = getIcon(sLink.iconName);
+                          const SocialIcon = sLink.icon;
                           return (
                             <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
                               {SocialIcon && <SocialIcon className="h-6 w-6" />}
@@ -370,6 +331,7 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Bottom Row (Sticky Navigation) */}
       <div className="hidden md:block sticky top-0 z-30 bg-header-bottom shadow-sm">
         <div className="container mx-auto flex items-stretch justify-between h-14 border-x border-b border-header-bottom-border rounded-b-md bg-header-bottom">
           <nav className="flex flex-grow items-stretch h-full">
@@ -380,13 +342,13 @@ export default function Header() {
                   key={link.href}
                   className={cn(
                     "h-full flex flex-1 items-stretch",
-                    index < finCoNavLinks.length - 1 ? "border-r border-header-bottom-border" : ""
+                    index < finCoNavLinks.length -1 ? "border-r border-header-bottom-border" : ""
                   )}
                 >
                   <Link
                     href={link.href}
                     className={cn(
-                      "flex w-full items-center justify-center px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
+                      "flex items-center justify-center w-full px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom",
                       isActive
                         ? "bg-white text-primary shadow-sm font-semibold"
                         : "text-header-bottom-fg/80 hover:bg-white hover:text-header-bottom-fg hover:shadow-sm"
@@ -400,7 +362,7 @@ export default function Header() {
           </nav>
           <div className="flex items-center space-x-5 px-8 py-3 border-l border-header-bottom-border h-full">
             {socialMediaLinks.map((sLink) => {
-              const SocialIcon = getIcon(sLink.iconName);
+              const SocialIcon = sLink.icon;
               return (
                 <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-header-bottom-fg/70 hover:text-primary transition-colors no-underline">
                   {SocialIcon && <SocialIcon className="h-6 w-6" />}
