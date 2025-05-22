@@ -81,7 +81,7 @@
     --chart-5: 270 60% 60%; /* Purple */
     --chart-6: 180 60% 45%; /* Teal/Cyan */
 
-    /* Neo-Brutalism Specific (if needed for a different theme variant) */
+    /* Neo-Brutalism Specific */
     --nb-yellow: 54 100% 50%;
     --nb-pink: 300 100% 50%;
     --nb-green: 150 100% 47%;
@@ -121,12 +121,12 @@
     --header-bottom-fg: 0 0% 95%;
     --header-bottom-border: 210 10% 30%;
 
-    /* Wzuh Dark Specific */
-    --wz-text-dark: hsl(0 0% 90%); /* Lighter text for dark Wzuh */
-    --wz-text-light: hsl(0 0% 10%); /* Darker text for light elements on dark Wzuh */
-    --wz-border-dark: hsl(0 0% 80%); /* Lighter border */
-    --wz-light-bg: hsl(0 0% 10%); /* Dark background */
-    --wz-gray-text: hsl(0 0% 70%);
+    /* Wzuh Dark Specific (if we were to implement a dark Wzuh variant) */
+    /* --wz-text-dark: hsl(0 0% 90%); */
+    /* --wz-text-light: hsl(0 0% 10%); */
+    /* --wz-border-dark: hsl(0 0% 80%); */
+    /* --wz-light-bg: hsl(0 0% 10%); */
+    /* --wz-gray-text: hsl(0 0% 70%); */
   }
 }
 
@@ -158,17 +158,36 @@
 
 
   /* Links on Wzuh landing page */
-  .wzuh-landing-page a:not(.btn-wz) {
+  .wzuh-landing-page a:not(.btn-wz):not(.nb-button) {
     @apply text-wz-text-dark hover:text-wz-pink font-medium no-underline transition-colors;
   }
 
   /* Links for internal app pages */
-  body:not(.wzuh-landing-page) a {
+  body:not(.wzuh-landing-page):not(.nb-landing-page) a {
     @apply text-primary no-underline;
   }
-  body:not(.wzuh-landing-page) a:hover {
+  body:not(.wzuh-landing-page):not(.nb-landing-page) a:hover {
     @apply text-primary/80;
   }
+
+   /* Landing page specific body background (Neo-Brutalism) */
+  body.nb-landing-page {
+    @apply bg-nb-yellow text-nb-black;
+    font-family: var(--font-sans);
+  }
+
+  .nb-landing-page h1, .nb-landing-page h2, .nb-landing-page h3, .nb-landing-page h4, .nb-landing-page p, .nb-landing-page span, .nb-landing-page a, .nb-landing-page div {
+    font-family: var(--font-sans);
+  }
+  .nb-landing-page h1 { @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight; }
+  .nb-landing-page h2 { @apply text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight; }
+  .nb-landing-page h3 { @apply text-2xl sm:text-3xl font-bold; }
+  .nb-landing-page p { @apply text-base sm:text-lg font-medium; }
+
+  .nb-landing-page a:not(.nb-button):not(.btn-wz) {
+     @apply text-nb-black hover:underline font-semibold;
+  }
+
 
   *:focus-visible {
      @apply ring-2 ring-ring ring-offset-2 ring-offset-background outline-none;
@@ -244,8 +263,8 @@
  /* Wzuh-inspired Button (Pill-shaped with border) */
   .btn-wz {
     @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-base border-2 border-wz-border-dark shadow-sm transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:translate-y-px active:shadow-none;
-    font-family: var(--font-sans); /* Inter */
-    @apply font-semibold; /* Default to SemiBold */
+    font-family: var(--font-sans);
+    @apply font-semibold;
   }
   .btn-wz-pink { @apply bg-wz-pink text-wz-text-dark hover:brightness-95 active:brightness-90; }
   .btn-wz-purple { @apply bg-wz-purple text-wz-text-dark hover:brightness-95 active:brightness-90; }
@@ -258,7 +277,7 @@
 
   /* Wzuh-inspired Card */
   .card-wz {
-    @apply p-6 shadow-md rounded-[var(--radius)] border-2 border-wz-border-dark; /* Default light card with black border */
+    @apply p-6 shadow-md rounded-[var(--radius)] border-2 border-wz-border-dark;
     font-family: var(--font-sans);
   }
   .card-wz-pink { @apply bg-wz-pink text-wz-text-dark; }
@@ -272,22 +291,30 @@
     @apply border border-border bg-card text-card-foreground shadow-lg rounded-[var(--radius)];
   }
 
-  /* Retro Button styles (used by internal app pages - Kept for internal pages if needed) */
-  .retro-button {
-    @apply inline-flex items-center justify-center border-2 border-foreground px-4 py-2 text-base font-medium text-foreground shadow-retro-sm transition-all duration-150 ease-in-out active:translate-y-px active:translate-x-px active:shadow-none disabled:cursor-not-allowed disabled:opacity-50 rounded-none;
+  /* Neo-Brutalism Button styles */
+  .nb-button {
+    @apply inline-flex items-center justify-center rounded-none border-2 border-nb-black px-5 py-2.5 text-sm font-bold shadow-nb-hard-sm transition-all duration-100 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-nb-black focus-visible:ring-offset-2 focus-visible:ring-offset-background active:translate-x-0.5 active:translate-y-0.5 active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed;
     font-family: var(--font-sans);
   }
-  .retro-button:hover { @apply shadow-retro; }
-  .retro-button-primary { @apply bg-primary text-primary-foreground hover:bg-primary/90 border-primary; }
-  .retro-button-secondary { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 border-secondary; }
-  .retro-button-accent { @apply bg-accent text-accent-foreground hover:bg-accent/90 border-accent; }
-  .retro-button-destructive { @apply bg-destructive text-destructive-foreground hover:bg-destructive/90 border-destructive; }
-  .retro-button-outline { @apply bg-transparent text-foreground hover:bg-muted border-foreground; }
-  .retro-button-ghost { @apply bg-transparent text-foreground hover:bg-muted !border-transparent !shadow-none; }
-  .retro-button-link { @apply bg-transparent text-primary hover:underline !border-transparent !shadow-none px-0 py-0; }
-  .retro-button-sm { @apply px-3 py-1.5 text-sm; }
-  .retro-button-lg { @apply px-6 py-3 text-lg; }
-  .retro-button-icon { @apply h-10 w-10 p-0; }
+  .nb-button-pink { @apply bg-nb-pink text-nb-black hover:bg-pink-400; }
+  .nb-button-yellow { @apply bg-nb-yellow text-nb-black hover:bg-yellow-400; }
+  .nb-button-green { @apply bg-nb-green text-nb-black hover:bg-green-400; }
+  .nb-button-cyan { @apply bg-nb-cyan text-nb-black hover:bg-cyan-400; }
+  .nb-button-purple { @apply bg-nb-purple text-nb-white hover:bg-purple-400; }
+  .nb-button-black { @apply bg-nb-black text-nb-white hover:bg-gray-800; }
+  .nb-button-white-outline { @apply bg-transparent text-nb-black border-nb-black hover:bg-nb-black hover:text-nb-white; }
+
+
+  /* Neo-Brutalism Card styles */
+  .nb-card {
+    @apply border-2 border-nb-black bg-nb-white shadow-nb-hard rounded-none p-4 sm:p-6;
+    font-family: var(--font-sans);
+  }
+  .nb-card-pink { @apply bg-nb-pink text-nb-black; }
+  .nb-card-yellow { @apply bg-nb-yellow text-nb-black; }
+  .nb-card-green { @apply bg-nb-green text-nb-black; }
+  .nb-card-cyan { @apply bg-nb-cyan text-nb-black; }
+  .nb-card-purple { @apply bg-nb-purple text-nb-white; }
 }
 
 @layer utilities {
@@ -340,6 +367,29 @@
   .bg-wz-light-bg { background-color: hsl(var(--wz-light-bg)); }
   .text-wz-gray-text { color: hsl(var(--wz-gray-text)); }
   .border-wz-border-dark { border-color: hsl(var(--wz-border-dark)); }
+
+  /* Neo-Brutalism Color Utilities */
+  .bg-nb-yellow { background-color: hsl(var(--nb-yellow)); }
+  .text-nb-yellow { color: hsl(var(--nb-yellow)); }
+  .border-nb-yellow { border-color: hsl(var(--nb-yellow)); }
+  .bg-nb-pink { background-color: hsl(var(--nb-pink)); }
+  .text-nb-pink { color: hsl(var(--nb-pink)); }
+  .border-nb-pink { border-color: hsl(var(--nb-pink)); }
+  .bg-nb-green { background-color: hsl(var(--nb-green)); }
+  .text-nb-green { color: hsl(var(--nb-green)); }
+  .border-nb-green { border-color: hsl(var(--nb-green)); }
+  .bg-nb-cyan { background-color: hsl(var(--nb-cyan)); }
+  .text-nb-cyan { color: hsl(var(--nb-cyan)); }
+  .border-nb-cyan { border-color: hsl(var(--nb-cyan)); }
+  .bg-nb-purple { background-color: hsl(var(--nb-purple)); }
+  .text-nb-purple { color: hsl(var(--nb-purple)); }
+  .border-nb-purple { border-color: hsl(var(--nb-purple)); }
+  .bg-nb-black { background-color: hsl(var(--nb-black)); }
+  .text-nb-black { color: hsl(var(--nb-black)); }
+  .border-nb-black { border-color: hsl(var(--nb-black)); }
+  .bg-nb-white { background-color: hsl(var(--nb-white)); }
+  .text-nb-white { color: hsl(var(--nb-white)); }
+  .border-nb-white { border-color: hsl(var(--nb-white)); }
 
 
   /* Retro Shadows (Kept for internal pages if needed) */
