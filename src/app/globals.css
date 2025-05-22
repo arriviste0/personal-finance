@@ -11,7 +11,7 @@
 
 @layer base {
   :root {
-    /* Wzuh-inspired Theme Variables */
+    /* Wzuh-inspired Theme Variables (Primarily for Landing Page) */
     --wz-pink: 330 100% 75%; /* #FEA3E8 */
     --wz-green: 100 50% 80%; /* #BBFEA3 for backgrounds */
     --wz-purple: 270 60% 80%; /* #B9A3FE for backgrounds */
@@ -51,7 +51,7 @@
     --input: 220 13% 94%;
     --ring: hsl(var(--primary)); /* Ring color for focus states */
 
-    --radius: 0.75rem; /* Default to 0.75rem (rounded-xl) for Wzuh style */
+    --radius: 0.5rem; /* Default to 0.5rem (rounded-lg) */
 
     /* Header specific colors (Podportal inspired - for internal app pages) */
     --header-top-bg: 210 70% 55%; /* Blue for internal header top */
@@ -61,6 +61,13 @@
     --header-bottom-bg: 0 0% 97%; /* Light Gray/Off-white for internal header bottom bar */
     --header-bottom-fg: 220 15% 25%;
     --header-bottom-border: 210 20% 88%;
+
+    /* New Second Navigation Bar Theme (Dark) */
+    --nav-secondary-bg: 220 20% 18%;      /* Dark charcoal/blue-gray */
+    --nav-secondary-fg: 210 20% 85%;      /* Light gray for text */
+    --nav-secondary-fg-hover: 0 0% 100%; /* White for hover/active text */
+    --nav-secondary-active-border: 0 0% 100%; /* White for the active underline */
+
 
     /* Dashboard specific card header colors */
     --dashboard-pink-header-bg: 330 80% 96%;
@@ -82,7 +89,7 @@
     --chart-5: 270 60% 60%; /* Purple */
     --chart-6: 180 60% 45%; /* Teal/Cyan */
 
-    /* Neo-Brutalism Specific (can be removed if not active theme) */
+    /* Neo-Brutalism Specific Colors (Used by previous landing page, kept for reference or potential future use) */
     --nb-yellow: 54 100% 50%;
     --nb-pink: 300 100% 50%;
     --nb-green: 150 100% 47%;
@@ -256,7 +263,7 @@
  /* Wzuh-inspired Button (Pill-shaped with border and hard shadow) */
   .btn-wz {
     @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-base border-2 border-wz-border-dark shadow-wz-hard transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
-    @apply active:translate-x-px active:translate-y-px active:shadow-none active:brightness-90; /* Combined active states */
+    @apply active:translate-y-px active:translate-x-px active:shadow-none active:brightness-90; /* Combined active states */
     font-family: var(--font-sans);
     font-weight: 600; /* SemiBold */
   }
@@ -336,6 +343,13 @@
   .text-header-bottom-fg { color: hsl(var(--header-bottom-fg)); }
   .border-header-bottom-border { border-color: hsl(var(--header-bottom-border)); }
 
+  /* Second Nav Bar Utilities */
+  .bg-nav-secondary { background-color: hsl(var(--nav-secondary-bg)); }
+  .text-nav-secondary-fg { color: hsl(var(--nav-secondary-fg)); }
+  .hover\:text-nav-secondary-fg-hover:hover { color: hsl(var(--nav-secondary-fg-hover)); }
+  .border-nav-secondary-active-border { border-color: hsl(var(--nav-secondary-active-border)); }
+
+
   /* Dashboard card header colors */
   .bg-dashboard-pink-header { background-color: hsl(var(--dashboard-pink-header-bg)); }
   .text-dashboard-pink-foreground { color: hsl(var(--dashboard-pink-header-fg)); }
@@ -360,9 +374,6 @@
   .bg-wz-yellow { background-color: hsl(var(--wz-yellow)); }
   .text-wz-yellow { color: hsl(var(--wz-yellow)); }
   .border-wz-yellow { border-color: hsl(var(--wz-yellow)); }
-  /* .bg-wz-teal { background-color: hsl(var(--wz-teal)); } Added wz-teal for completeness if needed */
-  /* .text-wz-teal { color: hsl(var(--wz-teal)); } */
-  /* .border-wz-teal { border-color: hsl(var(--wz-teal)); } */
   .bg-wz-text-dark { background-color: hsl(var(--wz-text-dark)); }
   .text-wz-text-dark { color: hsl(var(--wz-text-dark)); }
   .border-wz-text-dark { border-color: hsl(var(--wz-text-dark)); }
@@ -422,5 +433,3 @@
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
 }
-
-    

@@ -13,7 +13,7 @@ export default {
        fontFamily: {
          sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
          heading: ['var(--font-heading)', 'system-ui', 'sans-serif'],
-         pixel: ['var(--font-pixel)', 'cursive'], // Keep if used elsewhere
+         pixel: ['var(--font-pixel)', 'cursive'],
        },
   		colors: {
         // Base FinCo theme (remains for internal app pages)
@@ -58,7 +58,7 @@ export default {
   				'5': 'hsl(var(--chart-5))',
           '6': 'hsl(var(--chart-6))'
   			},
-        // Dashboard card header colors (remains for internal app pages)
+        // Dashboard specific card header colors
         'dashboard-pink-header': {
           DEFAULT: 'hsl(var(--dashboard-pink-header-bg))',
           foreground: 'hsl(var(--dashboard-pink-header-fg))',
@@ -71,7 +71,7 @@ export default {
           DEFAULT: 'hsl(var(--dashboard-blue-header-bg))',
           foreground: 'hsl(var(--dashboard-blue-header-fg))',
         },
-        // Internal App Header colors (Podportal style, remains for internal app pages)
+        // Internal App Header colors
         'header-top': {
           DEFAULT: 'hsl(var(--header-top-bg))',
           foreground: 'hsl(var(--header-top-fg))',
@@ -81,6 +81,13 @@ export default {
           DEFAULT: 'hsl(var(--header-bottom-bg))',
           foreground: 'hsl(var(--header-bottom-fg))',
           border: 'hsl(var(--header-bottom-border))',
+        },
+        // Second Navigation Bar (Dark Theme)
+        'nav-secondary': {
+          DEFAULT: 'hsl(var(--nav-secondary-bg))',
+          foreground: 'hsl(var(--nav-secondary-fg))',
+          'fg-hover': 'hsl(var(--nav-secondary-fg-hover))',
+          'active-border': 'hsl(var(--nav-secondary-active-border))',
         },
         // Wzuh-inspired Theme Colors (for landing page)
         'wz-pink': 'hsl(var(--wz-pink))',
@@ -92,14 +99,23 @@ export default {
         'wz-border-dark': 'hsl(var(--wz-border-dark))',
         'wz-light-bg': 'hsl(var(--wz-light-bg))',
         'wz-gray-text': 'hsl(var(--wz-gray-text))',
+
+        // Neo-Brutalism Colors (kept for reference or future use)
+        'nb-yellow': 'hsl(var(--nb-yellow))',
+        'nb-pink': 'hsl(var(--nb-pink))',
+        'nb-green': 'hsl(var(--nb-green))',
+        'nb-cyan': 'hsl(var(--nb-cyan))',
+        'nb-purple': 'hsl(var(--nb-purple))',
+        'nb-black': 'hsl(var(--nb-black))',
+        'nb-white': 'hsl(var(--nb-white))',
   		},
   		borderRadius: {
         none: '0',
         sm: 'calc(var(--radius) - 4px)',
-        DEFAULT: 'var(--radius)',
+        DEFAULT: 'var(--radius)', // 0.5rem by default now
         md: 'var(--radius)',
-        lg: 'calc(var(--radius) + 4px)',
-        xl: 'calc(var(--radius) + 8px)',
+        lg: 'calc(var(--radius) + 4px)', // e.g., 0.75rem
+        xl: 'calc(var(--radius) + 8px)', // e.g., 1rem
         '2xl': 'calc(var(--radius) + 16px)',
         '3xl': 'calc(var(--radius) + 24px)',
         full: '9999px',
@@ -124,12 +140,12 @@ export default {
         'scroll-partners': 'scrollPartners 60s linear infinite',
       },
       boxShadow: {
-        // Retro shadow (can be removed if not used elsewhere)
-         'retro': '3px 3px 0px 0px hsl(var(--foreground)/0.10)',
-         'retro-sm': '2px 2px 0px 0px hsl(var(--foreground)/0.10)',
+        'retro-sm': '2px 2px 0px 0px hsl(var(--foreground)/0.10)',
         // Wzuh/Neo-Brutalist hard shadow
          'wz-hard': '4px 4px 0px hsl(var(--wz-border-dark))',
          'wz-hard-sm': '2px 2px 0px hsl(var(--wz-border-dark))',
+         'nb-hard': '6px 6px 0px hsl(var(--nb-black))',
+         'nb-hard-sm': '3px 3px 0px hsl(var(--nb-black))',
       },
   	}
   },
