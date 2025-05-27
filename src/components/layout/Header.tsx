@@ -8,8 +8,8 @@ import {
     LayoutGrid, ListChecks, Target, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
     Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, TrendingUp,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
-    BarChartBig, ChevronLeft, ChevronUp, Asterisk, MailIcon, Phone, MessageCircle, Send,
-    DollarSign as DollarSignLucide // Aliased to avoid conflict if DollarSign is also a variable
+    BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
+    DollarSign as DollarSignLucide // Aliased to avoid conflict
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,23 +50,23 @@ export default function Header() {
     setIsMounted(true);
   }, []);
 
-  // Define icon components map and nav links inside the component to ensure imports are resolved
+  // Define icon components map and nav links inside the component
   const iconComponents: { [key: string]: React.ElementType } = {
     CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
     LayoutGrid, ListChecks, Target, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
     Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, TrendingUp,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
-    DollarSign: DollarSignLucide, // Using the aliased import
-    Asterisk: Sparkles, // Using Sparkles as a fallback for Asterisk
+    DollarSign: DollarSignLucide,
+    Asterisk: Sparkles, // Using Sparkles as a fallback
   };
 
   const getIcon = (iconName?: string, props?: any): React.JSX.Element | null => {
     if (!iconName) return null;
-    const IconComponent = iconComponents[iconName] || iconComponents['Asterisk']; // Fallback to Sparkles if Asterisk was intended
+    const IconComponent = iconComponents[iconName] || iconComponents['Asterisk'];
     if (!IconComponent) {
       console.warn(`Icon component not found for name: ${iconName}`);
-      return <Sparkles {...props} />; // Return a default fallback icon component instance
+      return <Sparkles {...props} />;
     }
     return <IconComponent {...props} />;
   };
@@ -108,32 +108,31 @@ export default function Header() {
   };
 
   if (!isMounted) {
-    // Skeleton for header to avoid layout shifts during initial client render
+    // Skeleton for header to avoid layout shifts
+    const skeletonTopBarHeight = isLandingPage ? "py-3" : "h-12";
+    const skeletonSecondBarHeight = !isLandingPage ? "h-10" : "";
     return (
-      <header className="w-full fixed top-0 left-0 right-0 z-50">
-        <div className={cn(isLandingPage ? 'bg-wz-green py-3' : 'bg-header-top h-12 border-b border-header-top-border')}>
-          {/* Simplified skeleton content */}
+      <header className={cn("w-full fixed top-0 left-0 right-0 z-50", isLandingPage && "bg-wz-green")}>
+        <div className={cn(skeletonTopBarHeight, isLandingPage ? "" : "bg-header-top border-b border-header-top-border")}>
           <div className="container-default h-full flex items-center justify-between">
-            <div className="h-8 w-24 bg-gray-300/50 rounded-md animate-pulse"></div>
-            <div className="hidden md:flex space-x-2">
-              <div className="h-8 w-20 bg-gray-300/50 rounded-md animate-pulse"></div>
+            <div className="h-8 w-24 bg-gray-300/50 rounded-md animate-pulse"></div> {/* Logo area */}
+            <div className="hidden md:flex items-center space-x-2">
+              <div className="h-8 w-20 bg-gray-300/50 rounded-md animate-pulse"></div> {/* Links/Buttons */}
               <div className="h-8 w-24 bg-gray-300/50 rounded-md animate-pulse"></div>
             </div>
-            <div className="md:hidden h-8 w-8 bg-gray-300/50 rounded-full animate-pulse"></div>
+            <div className="md:hidden h-8 w-8 bg-gray-300/50 rounded-full animate-pulse"></div> {/* Mobile trigger */}
           </div>
         </div>
-        {/* Second row skeleton for internal pages */}
-        {!isLandingPage && (
-          <div className="bg-nav-secondary h-10 sticky top-[48px] z-30 shadow-md">
-             <div className="container-default h-full flex items-center">
-                <div className="h-6 w-full bg-gray-700/50 rounded-md animate-pulse"></div>
-             </div>
+        {skeletonSecondBarHeight && (
+          <div className={cn("bg-nav-secondary sticky top-[48px] z-30 shadow-md", skeletonSecondBarHeight)}>
+            <div className="container-default h-full flex items-center">
+              <div className="h-6 w-full bg-gray-700/50 rounded-md animate-pulse"></div> {/* Second nav links area */}
+            </div>
           </div>
         )}
       </header>
     );
   }
-
 
   if (isLandingPage) {
     // WZUH STYLE LANDING PAGE HEADER (White pill on green backdrop from AppLayout)
@@ -148,9 +147,9 @@ export default function Header() {
             </Link>
 
             {/* Desktop Wzuh Landing Page Navigation Links */}
-            <nav className="hidden md:flex items-center space-x-1">
+            <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
               {wzLandingPageNavLinks.map((link) => {
-                const isActiveLink = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/');
+                const isActiveLink = pathname === link.href; // Simplified active check for landing page
                 return (
                   <Link
                     key={link.href}
@@ -172,7 +171,7 @@ export default function Header() {
                 <>
                   <Link
                     href="/login"
-                    className="btn-wz btn-wz-pink hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm no-underline inline-flex items-center justify-center"
+                    className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white no-underline inline-flex items-center justify-center"
                   >
                     Log In
                   </Link>
@@ -215,7 +214,7 @@ export default function Header() {
                     </SheetHeader>
                     <nav className="grid gap-1 p-3">
                       {wzLandingPageNavLinks.map((link) => {
-                         const isActiveLink = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/');
+                         const isActiveLink = pathname === link.href;
                         return (
                          <SheetClose key={`${link.label}-mobile-landing`} asChild>
                             <Link
@@ -256,7 +255,7 @@ export default function Header() {
                             <SheetClose asChild>
                                 <Button
                                 onClick={handleSignOut}
-                                variant="default" // Ensure consistent button styling context
+                                variant="default"
                                 className="w-full btn-wz btn-wz-pink/80 text-sm shadow-wz-hard-sm !py-2 flex items-center justify-center"
                                 >
                                 {getIcon("LogOut", {className: "mr-2 h-4 w-4"})} Sign Out
@@ -276,11 +275,10 @@ export default function Header() {
   } else {
     // INTERNAL PAGES HEADER (Pink top bar, Dark second nav bar)
     return (
-      <div className="w-full fixed top-0 left-0 right-0 z-50"> {/* This div's background is set by AppLayout */}
-        {/* Top Row */}
-        <div className="h-12"> {/* Transparent to pick up pink from AppLayout */}
+      <div className="w-full fixed top-0 left-0 right-0 z-50">
+        {/* Top Row - Now Pink */}
+        <div className="h-12 bg-transparent"> {/* Transparent to pick up pink from AppLayout */}
           <div className="container-default flex items-center h-full justify-between">
-            {/* Left: Logo & Wallet Info */}
             <div className="flex items-center space-x-3">
               <Link href="/" className="flex items-center space-x-2 no-underline">
                 {getIcon("Sparkles", { className: "h-7 w-7 text-wz-pink"})}
@@ -300,40 +298,39 @@ export default function Header() {
               )}
             </div>
 
-            {/* Right: Auth Buttons & Mobile Menu Trigger */}
             <div className="flex items-stretch h-full text-sm">
-                {!isAuthenticated && !isLoadingSession ? (
-                    <div className="flex items-stretch h-full">
-                        <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                           <Link
-                                href="/login"
-                                className="w-full h-full flex items-center justify-center px-4 text-wz-text-light hover:text-wz-text-light/80 text-sm font-medium whitespace-nowrap no-underline"
-                            >
-                                Log In
-                            </Link>
-                        </div>
-                        <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
-                            <Link
-                                href="/get-started"
-                                className="btn-wz bg-wz-purple text-wz-pink hover:bg-white hover:text-wz-pink border-wz-border-dark rounded-md px-3 py-1.5 text-sm font-semibold shadow-wz-hard-sm whitespace-nowrap w-full h-full !rounded-none !border-0 !shadow-none no-underline flex items-center justify-center"
-                            >
-                                Get Started
-                            </Link>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex items-stretch h-full border-l border-header-top-border">
-                         <Button
-                            onClick={handleSignOut}
-                            variant="ghost" // Use ghost for subtle button on pink
-                            className="w-full h-full text-wz-text-light hover:bg-white/20 hover:text-wz-text-dark px-4 text-sm font-medium rounded-none whitespace-nowrap flex items-center justify-center"
-                        >
-                            {getIcon("LogOut", { className: "mr-1.5 h-4 w-4" })} Sign Out
-                        </Button>
-                    </div>
-                )}
-              {/* Mobile Menu Trigger */}
-              <div className="md:hidden flex items-stretch h-full border-l border-header-top-border">
+              {!isAuthenticated && !isLoadingSession ? (
+                <div className="flex items-stretch h-full">
+                  <div className="flex-1 flex items-center justify-center border-l border-wz-pink/50">
+                    <Link
+                      href="/login"
+                      className="w-full h-full flex items-center justify-center px-4 text-wz-pink hover:bg-white hover:text-wz-pink hover:rounded-md text-sm font-medium whitespace-nowrap no-underline transition-colors"
+                    >
+                      Log In
+                    </Link>
+                  </div>
+                  <div className="flex-1 flex items-center justify-center border-l border-wz-pink/50">
+                    <Button
+                      asChild
+                      variant="default"
+                      className="btn-wz bg-wz-purple text-wz-pink hover:bg-white hover:text-wz-pink border-wz-border-dark rounded-md px-3 py-1.5 text-sm font-semibold shadow-wz-hard-sm whitespace-nowrap w-full h-full !rounded-none !border-0 !shadow-none no-underline flex items-center justify-center"
+                    >
+                      <Link href="/get-started">Get Started</Link>
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-stretch h-full border-l border-wz-pink/50">
+                  <Button
+                    onClick={handleSignOut}
+                    variant="ghost"
+                    className="w-full h-full text-wz-text-light hover:bg-white/20 hover:text-wz-text-dark px-4 text-sm font-medium rounded-none whitespace-nowrap flex items-center justify-center"
+                  >
+                    {getIcon("LogOut", { className: "mr-1.5 h-4 w-4" })} Sign Out
+                  </Button>
+                </div>
+              )}
+              <div className="md:hidden flex items-stretch h-full border-l border-wz-pink/50">
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button variant="ghost" size="icon" className="text-wz-text-dark hover:bg-white/20 h-full w-12 rounded-none">
@@ -344,7 +341,7 @@ export default function Header() {
                   <SheetContent side="left" className="w-[280px] p-0 bg-header-bottom border-r-2 border-header-bottom-border shadow-lg">
                     <SheetHeader className="p-4 border-b-2 border-header-bottom-border bg-wz-pink flex flex-row justify-between items-center">
                       <SheetTitle className="flex items-center gap-2 text-left">
-                        {getIcon("Sparkles", { className: "h-6 w-6 text-wz-text-dark"})}
+                        {getIcon("Sparkles", { className: "h-6 w-6 text-wz-pink"})}
                         <span className="text-lg font-heading font-semibold text-wz-text-dark">Fin.Co</span>
                       </SheetTitle>
                       <SheetClose asChild>
@@ -374,7 +371,7 @@ export default function Header() {
                                   : "text-wz-pink hover:bg-white/70 hover:text-pink-700"
                               )}
                             >
-                              {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-wz-pink" : "text-wz-pink/80 group-hover:text-pink-700") })}
+                              {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-wz-pink" : "text-pink-400 group-hover:text-pink-700") })}
                               {link.label}
                             </Link>
                           </SheetClose>
@@ -395,7 +392,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="w-full flex items-center justify-center text-wz-text-light bg-wz-pink/90 hover:bg-wz-pink rounded-md py-2 text-sm font-medium whitespace-nowrap no-underline"
+                                className="w-full flex items-center justify-center text-wz-pink bg-white hover:bg-gray-100 rounded-md py-2 text-sm font-medium whitespace-nowrap no-underline"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -403,7 +400,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/get-started"
-                                className="btn-wz bg-wz-purple text-wz-pink hover:bg-white hover:text-wz-pink border-wz-border-dark rounded-md w-full !py-2 text-sm font-semibold whitespace-nowrap no-underline flex items-center justify-center"
+                                className="btn-wz bg-wz-purple text-wz-pink hover:bg-white hover:text-wz-pink border-wz-border-dark w-full !py-2 text-sm font-semibold whitespace-nowrap no-underline flex items-center justify-center shadow-wz-hard-sm"
                               >
                                 Get Started
                               </Link>
@@ -436,20 +433,20 @@ export default function Header() {
               {mainAppNavLinks.map((link, index) => {
                 const isActive = pathname === link.href;
                 return (
-                  <div // This parent div is mainly for the border-r separator
+                  <div
                     key={link.href}
                     className={cn(
-                      "h-full flex flex-1 items-center justify-center", // flex-1 makes each cell equal width
+                      "h-full flex flex-1 items-center justify-center",
                       index < mainAppNavLinks.length -1 ? "border-r border-nav-secondary-active-border/10" : ""
                     )}
                   >
                     <Link
                       href={link.href}
                       className={cn(
-                        "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-1 focus-visible:ring-offset-nav-secondary px-5 py-2", // Added px-5 py-2
+                        "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wz-pink focus-visible:ring-offset-1 focus-visible:ring-offset-nav-secondary px-5 py-2",
                         isActive
-                          ? "bg-white text-wz-pink rounded-none shadow-sm font-semibold border-b-2 border-wz-pink" // Active state (no rounding on top)
-                          : "text-wz-pink hover:bg-white/10 hover:text-pink-400 hover:rounded-none" 
+                          ? "bg-white text-wz-pink rounded-t-md shadow-sm font-semibold border-b-2 border-wz-pink"
+                          : "text-wz-pink hover:bg-white/10 hover:text-pink-400"
                       )}
                     >
                       {link.label}
@@ -458,9 +455,9 @@ export default function Header() {
                 );
               })}
             </nav>
-            <div className="hidden md:flex items-center space-x-5 pl-8 pr-4 border-l border-nav-secondary-active-border/10">
+            <div className="hidden md:flex items-center space-x-4 pl-6 pr-4 border-l border-nav-secondary-active-border/10">
               {socialMediaLinks.map((sLink) => {
-                 return (
+                return (
                   <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-wz-pink hover:text-pink-400 transition-colors no-underline">
                      {getIcon(sLink.iconName, { className: "h-6 w-6" })}
                   </Link>
@@ -473,6 +470,3 @@ export default function Header() {
     );
   }
 }
-
-
-    
