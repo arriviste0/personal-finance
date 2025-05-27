@@ -1,4 +1,4 @@
-// src/components/layout/Header.tsx
+
 'use client';
 
 import Link from "next/link";
@@ -9,9 +9,8 @@ import {
     Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, TrendingUp,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
-    CircleDollarSign, // Added CircleDollarSign
-    DollarSign as DollarSignLucide, // Aliased to avoid conflict if DollarSign is used as a variable
-    Asterisk as FallbackIcon // Using Sparkles as a fallback for Asterisk
+    DollarSign as DollarSignLucide, // Aliased to avoid conflict
+    Asterisk // Using Sparkles as a fallback for Asterisk
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,14 +50,14 @@ export default function Header() {
   }, []);
 
   // Define icon components map inside the component to ensure imports are resolved
-  const iconComponents: { [key: string]: React.ElementType } = {
-    CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
-    LayoutGrid, ListChecks, Target, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
-    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, TrendingUp,
-    Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
-    BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
-    DollarSign: DollarSignLucide, // Use aliased import
-    Asterisk: FallbackIcon,
+    const iconComponents: { [key: string]: React.ElementType } = {
+        CircleDollarSign: DollarSignLucide, // Use aliased import
+        Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
+        LayoutGrid, ListChecks, Target, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
+        Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, TrendingUp,
+        Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
+        BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
+        Asterisk, // Fallback
   };
 
   const getIcon = (iconName?: string, props?: any): React.JSX.Element | null => {
@@ -66,7 +65,6 @@ export default function Header() {
     const IconComponent = iconComponents[iconName] || iconComponents['Asterisk'];
     return <IconComponent {...props} />;
   };
-
 
   const wzLandingPageNavLinks = [
     { href: "/#services", label: "Services" },
@@ -87,10 +85,11 @@ export default function Header() {
   ];
 
   const socialMediaLinks = [
-    { href: "#", label: "Twitter", iconName: "Twitter" },
-    { href: "#", label: "Facebook", iconName: "Facebook" },
-    { href: "#", label: "Instagram", iconName: "Instagram" },
+    { href: "https://twitter.com/firebase", label: "Twitter", iconName: "Twitter" },
+    { href: "https://facebook.com/firebase", label: "Facebook", iconName: "Facebook" },
+    { href: "https://instagram.com/firebase", label: "Instagram", iconName: "Instagram" },
   ];
+
 
   const formatCurrency = (amount: number) => {
     return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -104,19 +103,17 @@ export default function Header() {
     });
   };
 
-
   if (!isMounted) {
     // Consistent skeleton for two-row header
     return (
       <header className="w-full fixed top-0 left-0 right-0 z-50">
-        <div className={cn(isLandingPage ? 'bg-wz-green py-3' : "bg-header-top h-12 border-b border-header-top-border")}>
+        <div className={cn(isLandingPage ? 'bg-wz-green h-[88px]' : "bg-header-top h-12 border-b border-header-top-border")}>
           {/* Skeleton for top bar */}
         </div>
         {!isLandingPage && <div className="bg-nav-secondary h-10 sticky top-[48px] z-30 shadow-md"></div>}
       </header>
     );
   }
-
 
   if (isLandingPage) {
     // WZUH STYLE LANDING PAGE HEADER (White pill on green backdrop from AppLayout)
@@ -133,7 +130,7 @@ export default function Header() {
             {/* Desktop Wzuh Landing Page Navigation Links */}
             <nav className="hidden md:flex items-center space-x-1">
               {wzLandingPageNavLinks.map((link) => {
-                const isActiveLink = pathname === link.href || (pathname === '/' && typeof window !== 'undefined' && link.href.includes(window.location.hash || ''));
+                 const isActiveLink = pathname === link.href || (pathname === '/' && typeof window !== 'undefined' && link.href.includes(window.location.hash || ''));
                 return (
                   <Link
                     key={link.href}
@@ -153,18 +150,18 @@ export default function Header() {
             <div className="flex items-center space-x-2">
               {!isAuthenticated && !isLoadingSession ? (
                 <>
-                  <Button
-                    asChild
-                    className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white"
+                  <Link
+                    href="/login"
+                    className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white no-underline inline-flex items-center justify-center"
                   >
-                    <Link href="/login">Log In</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    className="btn-wz bg-white text-wz-text-dark hover:bg-gray-200 text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm"
+                    Log In
+                  </Link>
+                  <Link
+                    href="/get-started"
+                    className="btn-wz bg-white text-wz-text-dark hover:bg-gray-200 text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm no-underline inline-flex items-center justify-center"
                   >
-                    <Link href="/get-started">Get Started</Link>
-                  </Button>
+                    Get Started
+                  </Link>
                 </>
               ) : (
                  <Button
@@ -198,14 +195,14 @@ export default function Header() {
                     </SheetHeader>
                     <nav className="grid gap-1 p-3">
                       {wzLandingPageNavLinks.map((link) => {
-                         const isActiveAppPage = pathname === link.href || (pathname === '/' && typeof window !== 'undefined' && link.href.includes(window.location.hash || ''));
+                         const isActiveLink = pathname === link.href || (pathname === '/' && typeof window !== 'undefined' && link.href.includes(window.location.hash || ''));
                         return (
                          <SheetClose key={`${link.label}-mobile-landing`} asChild>
                             <Link
                                 href={link.href}
                                 className={cn(
                                 "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors whitespace-nowrap no-underline",
-                                isActiveAppPage
+                                isActiveLink
                                     ? "bg-wz-pink/20 text-wz-pink font-semibold"
                                     : "text-wz-text-dark hover:bg-wz-pink/20"
                                 )}
@@ -219,14 +216,20 @@ export default function Header() {
                         {!isAuthenticated && !isLoadingSession ? (
                           <>
                             <SheetClose asChild>
-                              <Button className="w-full btn-wz btn-wz-pink text-sm shadow-wz-hard-sm !py-2" asChild>
-                                <Link href="/login">Log In</Link>
-                              </Button>
+                              <Link
+                                href="/login"
+                                className="btn-wz btn-wz-pink shadow-wz-hard-sm w-full !py-2 text-sm font-medium whitespace-nowrap no-underline flex items-center justify-center"
+                              >
+                                Log In
+                              </Link>
                             </SheetClose>
                             <SheetClose asChild>
-                              <Button className="w-full btn-wz bg-white text-wz-text-dark hover:bg-gray-200 text-sm !py-2 whitespace-nowrap shadow-wz-hard-sm border-wz-border-dark" asChild>
-                                <Link href="/get-started">Get Started</Link>
-                              </Button>
+                              <Link
+                                href="/get-started"
+                                className="btn-wz bg-white text-wz-text-dark hover:bg-gray-200 text-sm !py-2 whitespace-nowrap shadow-wz-hard-sm border-wz-border-dark no-underline flex items-center justify-center"
+                              >
+                                Get Started
+                              </Link>
                             </SheetClose>
                           </>
                         ) : (
@@ -253,23 +256,23 @@ export default function Header() {
 
   // PODPORTAL STYLE HEADER FOR INTERNAL PAGES
   return (
-    <div className="w-full">
-      {/* Top Row - Background comes from AppLayout's wrapper (bg-wz-pink) */}
-      <div className="bg-transparent h-12">
+    <div className="w-full"> {/* This div's background is set by AppLayout */}
+      {/* Top Row */}
+      <div className="bg-transparent h-12"> {/* Transparent to pick up pink from AppLayout */}
         <div className="container-default flex items-center h-full justify-between">
           {/* Left: Logo & Wallet Info */}
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2 no-underline">
-              {getIcon("Sparkles", { className: "h-7 w-7 text-wz-pink"})} {/* Icon pink */}
-              <span className="font-heading text-xl font-bold text-wz-text-dark">Fin.Co</span> {/* Text dark */}
+              {getIcon("Sparkles", { className: "h-7 w-7 text-wz-pink"})}
+              <span className="font-heading text-xl font-bold text-wz-text-dark">Fin.Co</span>
             </Link>
             {isAuthenticated && (
               <div className="hidden md:flex items-center space-x-3">
-                <div className="text-xs text-wz-text-dark flex items-center"> {/* Text dark */}
+                <div className="text-xs text-wz-text-dark flex items-center">
                   {getIcon("Wallet", {className: "mr-1 h-3.5 w-3.5"})}
                   <span className="font-medium">Wallet:</span> {formatCurrency(walletBalance)}
                 </div>
-                <div className="text-xs text-wz-text-dark flex items-center"> {/* Text dark */}
+                <div className="text-xs text-wz-text-dark flex items-center">
                   {getIcon("Lock", {className: "mr-1 h-3.5 w-3.5"})}
                   <span className="font-medium">Locked:</span> {formatCurrency(totalLockedFunds)}
                 </div>
@@ -281,34 +284,36 @@ export default function Header() {
           <div className="flex items-stretch h-full text-sm">
             {!isAuthenticated && !isLoadingSession ? (
               <div className="flex items-stretch h-full">
-                <div className="flex-1 flex items-center justify-center border-l border-wz-pink/30">
-                  <Link href="/login" className="w-full h-full flex items-center justify-center px-4 text-wz-text-light hover:text-wz-text-light/80 text-sm font-medium whitespace-nowrap no-underline">
-                    Log In {/* White text on pink */}
-                  </Link>
-                </div>
-                <div className="flex-1 flex items-center justify-center border-l border-wz-pink/30">
-                  <Button
-                    asChild
-                    variant="default"
-                    className="btn-wz bg-wz-purple text-wz-pink hover:bg-white hover:text-wz-pink border-wz-border-dark rounded-md px-3 py-1.5 text-sm font-semibold shadow-wz-hard-sm whitespace-nowrap w-full h-full !rounded-none !border-0 !shadow-none"
-                  >
-                    <Link href="/get-started">Get Started</Link> {/* Purple bg, Pink text, Hover white bg, Pink text */}
-                  </Button>
-                </div>
+                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                    <Link
+                        href="/login"
+                        className="w-full h-full flex items-center justify-center px-4 text-wz-text-light hover:text-wz-text-light/80 text-sm font-medium whitespace-nowrap no-underline"
+                    >
+                        Log In
+                    </Link>
+                 </div>
+                 <div className="flex-1 flex items-center justify-center border-l border-header-top-border">
+                     <Link
+                        href="/get-started"
+                        className="btn-wz bg-wz-purple text-wz-pink hover:bg-white hover:text-wz-pink border-wz-border-dark rounded-md px-3 py-1.5 text-sm font-semibold shadow-wz-hard-sm whitespace-nowrap w-full h-full !rounded-none !border-0 !shadow-none no-underline flex items-center justify-center"
+                    >
+                        Get Started
+                    </Link>
+                 </div>
               </div>
             ) : (
-              <div className="flex items-stretch h-full border-l border-wz-pink/30">
-                <Button
-                  onClick={handleSignOut}
-                  variant="ghost"
-                  className="w-full h-full text-wz-text-light hover:bg-white/20 hover:text-wz-text-dark px-4 text-sm font-medium rounded-none whitespace-nowrap"
+              <div className="flex items-stretch h-full border-l border-header-top-border">
+                 <Button
+                    onClick={handleSignOut}
+                    variant="ghost"
+                    className="w-full h-full text-wz-text-light hover:bg-white/20 hover:text-wz-text-dark px-4 text-sm font-medium rounded-none whitespace-nowrap"
                 >
-                  {getIcon("LogOut", { className: "mr-1.5 h-4 w-4" })} Sign Out {/* White text on pink */}
+                    {getIcon("LogOut", { className: "mr-1.5 h-4 w-4" })} Sign Out
                 </Button>
               </div>
             )}
             {/* Mobile Menu Trigger */}
-            <div className="md:hidden flex items-stretch h-full border-l border-wz-pink/30">
+            <div className="md:hidden flex items-stretch h-full border-l border-header-top-border">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="text-wz-text-dark hover:bg-white/20 h-full w-12 rounded-none">
@@ -317,7 +322,7 @@ export default function Header() {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[280px] p-0 border-r-2 border-header-bottom-border shadow-lg">
-                  <SheetHeader className="p-4 border-b-2 border-header-bottom-border bg-wz-pink flex flex-row justify-between items-center"> {/* Pink header for mobile sheet */}
+                  <SheetHeader className="p-4 border-b-2 border-header-bottom-border bg-wz-pink flex flex-row justify-between items-center">
                     <SheetTitle className="flex items-center gap-2 text-left">
                       {getIcon("Sparkles", { className: "h-6 w-6 text-wz-text-dark"})}
                       <span className="text-lg font-heading font-semibold text-wz-text-dark">Fin.Co</span>
@@ -329,7 +334,7 @@ export default function Header() {
                       </Button>
                     </SheetClose>
                   </SheetHeader>
-                  <nav className="grid gap-1 p-3 bg-header-bottom"> {/* Light beige content area */}
+                  <nav className="grid gap-1 p-3 bg-header-bottom">
                     {isAuthenticated && (
                       <div className="px-3 py-2.5 space-y-1 border-b border-header-bottom-border/20 mb-2">
                         <div className="text-xs text-header-bottom-fg/80"><span className="font-medium">Wallet:</span> {formatCurrency(walletBalance)}</div>
@@ -345,8 +350,8 @@ export default function Header() {
                             className={cn(
                               "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors whitespace-nowrap no-underline",
                               isActive
-                                ? "bg-white text-wz-pink font-semibold shadow-sm" // Active: white bg, pink text
-                                : "text-wz-pink hover:bg-white/70 hover:text-pink-700" // Default: pink text
+                                ? "bg-white text-wz-pink font-semibold shadow-sm"
+                                : "text-wz-pink hover:bg-white/70 hover:text-pink-700"
                             )}
                           >
                             {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-wz-pink" : "text-wz-pink/80 group-hover:text-pink-700") })}
@@ -355,8 +360,8 @@ export default function Header() {
                         </SheetClose>
                       );
                     })}
-                    <div className="border-t-2 border-header-bottom-border/20 mt-4 pt-4">
-                      <div className="flex justify-around items-center mb-4">
+                    <div className="border-t-2 border-header-bottom-border/20 mt-4 pt-4 space-y-2">
+                       <div className="flex justify-around items-center mb-3">
                         {socialMediaLinks.map((sLink) => (
                           <SheetClose key={`${sLink.label}-mobile-social-internal`} asChild>
                             <Link href={sLink.href} aria-label={sLink.label} className="text-wz-pink hover:text-pink-400 transition-colors no-underline">
@@ -365,32 +370,36 @@ export default function Header() {
                           </SheetClose>
                         ))}
                       </div>
-                      <div className="space-y-2">
                         {!isAuthenticated && !isLoadingSession ? (
                           <>
                             <SheetClose asChild>
-                              <Button className="w-full btn-wz bg-white text-wz-text-dark border-wz-border-dark hover:bg-gray-100 !py-2 text-sm font-medium shadow-wz-hard-sm whitespace-nowrap" asChild>
-                                <Link href="/login">Log In</Link>
-                              </Button>
+                              <Link
+                                href="/login"
+                                className="btn-wz bg-white text-wz-text-dark border-wz-border-dark hover:bg-gray-100 !py-2 text-sm font-medium shadow-wz-hard-sm whitespace-nowrap w-full no-underline flex items-center justify-center"
+                              >
+                                Log In
+                              </Link>
                             </SheetClose>
                             <SheetClose asChild>
-                              <Button className="w-full btn-wz bg-wz-purple text-wz-pink hover:bg-white hover:text-wz-pink border-wz-border-dark !py-2 text-sm font-semibold shadow-wz-hard-sm whitespace-nowrap" asChild>
-                                <Link href="/get-started">Get Started</Link>
-                              </Button>
+                              <Link
+                                href="/get-started"
+                                className="btn-wz bg-wz-purple text-wz-pink hover:bg-white hover:text-wz-pink border-wz-border-dark !py-2 text-sm font-semibold shadow-wz-hard-sm whitespace-nowrap w-full no-underline flex items-center justify-center"
+                                >
+                                Get Started
+                              </Link>
                             </SheetClose>
                           </>
                         ) : (
-                          <SheetClose asChild>
-                            <Button
-                              onClick={handleSignOut}
-                              className="w-full btn-wz bg-white text-wz-text-dark hover:bg-white/80 !py-2 text-sm font-medium border-wz-border-dark shadow-wz-hard-sm whitespace-nowrap"
-                            >
-                              {getIcon("LogOut", { className: "mr-2 h-4 w-4" })} Sign Out
-                            </Button>
-                          </SheetClose>
+                            <SheetClose asChild>
+                                <Button
+                                onClick={handleSignOut}
+                                className="w-full btn-wz bg-white text-wz-text-dark hover:bg-white/80 !py-2 text-sm font-medium border-wz-border-dark shadow-wz-hard-sm whitespace-nowrap"
+                                >
+                                {getIcon("LogOut", { className: "mr-2 h-4 w-4" })} Sign Out
+                                </Button>
+                            </SheetClose>
                         )}
                       </div>
-                    </div>
                   </nav>
                 </SheetContent>
               </Sheet>
@@ -406,20 +415,20 @@ export default function Header() {
             {mainAppNavLinks.map((link, index) => {
               const isActive = pathname === link.href;
               return (
-                <div // Cell for border
+                <div // This parent div is mainly for the border-r separator
                   key={link.href}
                   className={cn(
-                    "h-full flex flex-1 items-center justify-center", // flex-1 for equal width
+                    "h-full flex flex-1 items-center justify-center", // Use items-stretch
                     index < mainAppNavLinks.length - 1 ? "border-r border-nav-secondary-active-border/10" : ""
                   )}
                 >
                   <Link
                     href={link.href}
                     className={cn(
-                      "flex items-center justify-center w-full h-full px-5 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-nav-secondary-active-border focus-visible:ring-offset-1 focus-visible:ring-offset-nav-secondary",
+                      "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-header-bottom px-5", // Base styles, padding, and focus on the Link
                       isActive
-                        ? "bg-white text-wz-pink font-semibold border-b-2 border-wz-pink" // Active: white bg, pink text, pink underline
-                        : "text-wz-pink hover:bg-white hover:text-pink-400" // Default: pink text, Hover: white bg, brighter pink text
+                        ? "bg-white text-wz-pink font-semibold border-b-2 border-wz-pink" // Active state: white bg, primary text, rounded, shadow
+                        : "text-wz-pink hover:bg-white hover:text-pink-400" // Default and Hover state
                     )}
                   >
                     {link.label}
@@ -432,7 +441,7 @@ export default function Header() {
             {socialMediaLinks.map((sLink) => {
               return (
                 <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-wz-pink hover:text-pink-400 transition-colors no-underline">
-                  {getIcon(sLink.iconName, { className: "h-6 w-6" })}
+                   {getIcon(sLink.iconName, { className: "h-6 w-6" })}
                 </Link>
               );
             })}
@@ -443,4 +452,4 @@ export default function Header() {
   );
 }
 
-  
+    
