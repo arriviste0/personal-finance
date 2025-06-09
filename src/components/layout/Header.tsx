@@ -4,12 +4,12 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import {
-    CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
+    Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
     LayoutGrid, ListChecks, Target as TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, TrendingUp,
     Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
-    DollarSign as DollarSignLucide // Aliased to avoid conflict
+    DollarSign as DollarSignLucide, CircleDollarSign
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -111,7 +111,7 @@ export default function Header() {
         {!isLandingPage && (
           <div className={cn("bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight)}>
             <div className="container-default h-full flex items-center">
-              <div className="h-6 w-full bg-gray-800/50 rounded-md animate-pulse"></div>
+              <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div>
             </div>
           </div>
         )}
@@ -253,7 +253,7 @@ export default function Header() {
     return (
       <div className="w-full fixed top-0 left-0 right-0 z-50">
         {/* Top Row - Black Background */}
-        <div className="h-12 bg-black"> {/* AppLayout's bg-black will show if transparent */}
+        <div className="h-12 bg-black">
           <div className="container-default flex items-center h-full justify-between">
             <div className="flex items-center space-x-3">
               <Link href="/" className="flex items-center space-x-2 no-underline">
@@ -276,16 +276,16 @@ export default function Header() {
 
             <div className="flex items-stretch h-full text-sm">
               {!isAuthenticated && !isLoadingSession ? (
-                <div className="flex items-center h-full space-x-3">
+                <div className="flex items-center h-full space-x-1 sm:space-x-3">
                     <Link
                       href="/login"
-                      className="h-full flex items-center px-4 text-white hover:text-gray-300 text-sm font-medium whitespace-nowrap no-underline transition-colors"
+                      className="h-full flex items-center px-3 sm:px-4 text-white hover:text-gray-300 text-sm font-medium whitespace-nowrap no-underline transition-colors"
                     >
                       Log In
                     </Link>
                     <Link
                       href="/get-started"
-                      className="h-full flex items-center justify-center bg-pink-500 text-black hover:bg-pink-400 rounded-md px-4 text-sm font-semibold shadow-sm whitespace-nowrap no-underline transition-colors"
+                      className="h-full flex items-center justify-center bg-pink-500 text-black hover:bg-pink-400 rounded-none px-3 sm:px-4 text-sm font-semibold shadow-sm whitespace-nowrap no-underline transition-colors"
                     >
                       Get Started
                     </Link>
@@ -336,13 +336,13 @@ export default function Header() {
                             <Link
                               href={link.href}
                               className={cn(
- "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors whitespace-nowrap no-underline",
+                                "flex items-center px-3 py-2.5 rounded-none text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-gray-700 text-white font-semibold"
+                                  ? "bg-neutral-800 text-blue-400 font-semibold" // Active style from image
                                   : "text-white hover:bg-gray-800"
                               )}
                             >
-                              {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-white" : "text-gray-400 group-hover:text-white") })}
+                              {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-blue-400" : "text-gray-400 group-hover:text-white") })}
                               {link.label}
                             </Link>
                           </SheetClose>
@@ -363,7 +363,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="w-full flex items-center justify-center text-white bg-gray-800 hover:bg-gray-700 rounded-md py-2 text-sm font-medium whitespace-nowrap no-underline"
+                                className="w-full flex items-center justify-center text-white bg-gray-800 hover:bg-gray-700 rounded-none py-2 text-sm font-medium whitespace-nowrap no-underline"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -371,7 +371,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/get-started"
-                                className="w-full flex items-center justify-center bg-pink-500 text-black hover:bg-pink-400 rounded-md py-2 text-sm font-semibold whitespace-nowrap no-underline shadow-sm"
+                                className="w-full flex items-center justify-center bg-pink-500 text-black hover:bg-pink-400 rounded-none py-2 text-sm font-semibold whitespace-nowrap no-underline shadow-sm"
                               >
                                 Get Started
                               </Link>
@@ -382,7 +382,7 @@ export default function Header() {
                             <Button
                               onClick={handleSignOut}
                               variant="ghost"
-                              className="w-full text-white hover:bg-gray-800 rounded-md py-2 text-sm font-medium whitespace-nowrap border border-gray-700 no-underline flex items-center justify-center"
+                              className="w-full text-white hover:bg-gray-800 rounded-none py-2 text-sm font-medium whitespace-nowrap border border-gray-700 no-underline flex items-center justify-center"
                             >
                               {getIcon("LogOut", { className: "mr-2 h-4 w-4" })} Sign Out
                             </Button>
@@ -414,10 +414,10 @@ export default function Header() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-5 py-2",
+                        "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-5 py-2 rounded-none",
                         isActive
-                          ? "text-white bg-white/10 rounded-t-md"
-                          : "text-white hover:text-gray-300" // Removed hover:underline
+                          ? "bg-neutral-800 text-blue-400" // Style from image: dark bg, blue text
+                          : "text-white hover:text-gray-300"
                       )}
                     >
                       {link.label}
@@ -439,4 +439,3 @@ export default function Header() {
     );
   }
 }
-
