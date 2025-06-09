@@ -5,11 +5,11 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import {
     CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
-    LayoutGrid, ListChecks, Target, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
+    LayoutGrid, ListChecks, Target as TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
     Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, TrendingUp,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
-    DollarSign as DollarSignLucide 
+    DollarSign as DollarSignLucide // Aliased to avoid conflict
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -43,21 +43,17 @@ export default function Header() {
 
   const iconComponents: { [key: string]: React.ElementType } = {
     CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
-    LayoutGrid, ListChecks, Target, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, TrendingUp,
+    LayoutGrid, ListChecks, Target: TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, TrendingUp,
     Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
     DollarSign: DollarSignLucide,
-    Asterisk: Sparkles,
+    Asterisk: Sparkles, // Fallback icon
   };
 
   const getIcon = (iconName?: string, props?: any): React.JSX.Element | null => {
     if (!iconName) return null;
     const IconComponent = iconComponents[iconName] || iconComponents['Asterisk'];
-    if (!IconComponent) {
-      console.warn(`Icon component not found for name: ${iconName}`);
-      return <Sparkles {...props} />;
-    }
     return <IconComponent {...props} />;
   };
 
@@ -98,8 +94,8 @@ export default function Header() {
   };
 
   if (!isMounted) {
-    const skeletonTopBarHeight = "h-12";
-    const skeletonSecondBarHeight = "h-10";
+    const skeletonTopBarHeight = "h-12"; // 48px
+    const skeletonSecondBarHeight = "h-10"; // 40px
     return (
       <div className="w-full fixed top-0 left-0 right-0 z-50 bg-black">
         <div className={cn(skeletonTopBarHeight, "bg-black")}>
@@ -129,10 +125,12 @@ export default function Header() {
       <header className="w-full py-3 fixed top-0 left-0 right-0 z-50 bg-transparent"> {/* Transparent to show AppLayout's green */}
         <div className="container-default">
           <div className="bg-white rounded-full border border-gray-300/80 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between">
+            {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 no-underline">
               {getIcon("Sparkles", { className: "h-7 w-7 text-wz-pink" })}
               <span className="font-heading text-xl font-bold text-wz-text-dark">Fin.Co</span>
             </Link>
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
               {wzLandingPageNavLinks.map((link) => (
                 <Link
@@ -147,6 +145,7 @@ export default function Header() {
                 </Link>
               ))}
             </nav>
+            {/* Auth Buttons & Mobile Menu Trigger */}
             <div className="flex items-center space-x-2">
               {!isAuthenticated && !isLoadingSession ? (
                 <>
@@ -254,11 +253,11 @@ export default function Header() {
     return (
       <div className="w-full fixed top-0 left-0 right-0 z-50">
         {/* Top Row - Black Background */}
-        <div className="h-12 bg-black"> {/* Transparent to pick up black from AppLayout */}
+        <div className="h-12 bg-black"> {/* AppLayout's bg-black will show if transparent */}
           <div className="container-default flex items-center h-full justify-between">
             <div className="flex items-center space-x-3">
               <Link href="/" className="flex items-center space-x-2 no-underline">
-                {getIcon("Sparkles", { className: "h-7 w-7 text-white"})} 
+                {getIcon("Sparkles", { className: "h-7 w-7 text-white"})}
                 <span className="font-heading text-xl font-bold text-white">Fin.Co</span>
               </Link>
               {isAuthenticated && (
@@ -339,8 +338,8 @@ export default function Header() {
                               className={cn(
                                 "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-gray-700 text-white font-semibold"
-                                  : "text-white hover:bg-gray-800"
+                                  ? "bg-gray-700 text-white font-semibold" // Text is already white
+                                  : "text-white hover:bg-gray-800" // Text is already white
                               )}
                             >
                               {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-white" : "text-gray-400 group-hover:text-white") })}
@@ -353,7 +352,7 @@ export default function Header() {
                          <div className="flex justify-around items-center mb-3 px-3">
                             {socialMediaLinks.map((sLink) => (
                               <SheetClose key={`${sLink.label}-mobile-social-internal`} asChild>
-                                <Link href={sLink.href} aria-label={sLink.label} className="text-gray-400 hover:text-white transition-colors no-underline">
+                                <Link href={sLink.href} aria-label={sLink.label} className="text-white hover:text-gray-300 transition-colors no-underline">
                                   {getIcon(sLink.iconName, { className: "h-6 w-6" })}
                                 </Link>
                               </SheetClose>
@@ -398,7 +397,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Second Nav Row - Black Background, White text, Pink for "Get Started" */}
+        {/* Second Nav Row - Black Background, White text */}
         <div className="bg-black h-10 shadow-md sticky top-[48px] z-30 border-t border-gray-700">
           <div className="container-default flex h-full items-stretch justify-between">
             <nav className="flex items-stretch h-full overflow-x-auto whitespace-nowrap flex-grow scrollbar-hide">
@@ -417,8 +416,8 @@ export default function Header() {
                       className={cn(
                         "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-5 py-2",
                         isActive
-                          ? "text-white bg-white/10 rounded-t-md" // Subtle white active background
-                          : "text-white hover:underline hover:text-gray-300"
+                          ? "text-white bg-white/10 rounded-t-md" // Ensure text is white for active state
+                          : "text-white hover:underline hover:text-gray-300" // Ensure text is white for default state
                       )}
                     >
                       {link.label}
