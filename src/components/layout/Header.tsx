@@ -5,8 +5,8 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import {
     CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
-    LayoutGrid, ListChecks, Target as TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins,
-    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit, TrendingUp,
+    LayoutGrid, ListChecks, Target as TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, TrendingUp,
+    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
     DollarSign as DollarSignLucide // Aliased to avoid conflict
@@ -292,10 +292,10 @@ export default function Header() {
                 </div>
               ) : (
                 <div className="flex items-stretch h-full">
-                  <Button
+                   <Button
                     onClick={handleSignOut}
                     variant="ghost"
-                    className="w-full h-full text-white hover:bg-gray-800 hover:text-white px-4 text-sm font-medium rounded-none whitespace-nowrap flex items-center justify-center"
+                    className="w-full h-full text-white hover:bg-gray-800 hover:text-white px-4 text-sm font-medium rounded-none whitespace-nowrap no-underline flex items-center justify-center"
                   >
                     {getIcon("LogOut", { className: "mr-1.5 h-4 w-4" })} Sign Out
                   </Button>
@@ -336,10 +336,10 @@ export default function Header() {
                             <Link
                               href={link.href}
                               className={cn(
-                                "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors whitespace-nowrap no-underline",
+ "flex items-center px-3 py-2.5 rounded-md text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-gray-700 text-white font-semibold" // Text is already white
-                                  : "text-white hover:bg-gray-800" // Text is already white
+                                  ? "bg-gray-700 text-white font-semibold"
+                                  : "text-white hover:bg-gray-800"
                               )}
                             >
                               {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-white" : "text-gray-400 group-hover:text-white") })}
@@ -382,7 +382,7 @@ export default function Header() {
                             <Button
                               onClick={handleSignOut}
                               variant="ghost"
-                              className="w-full text-white hover:bg-gray-800 rounded-md py-2 text-sm font-medium whitespace-nowrap border border-gray-700 flex items-center justify-center"
+                              className="w-full text-white hover:bg-gray-800 rounded-md py-2 text-sm font-medium whitespace-nowrap border border-gray-700 no-underline flex items-center justify-center"
                             >
                               {getIcon("LogOut", { className: "mr-2 h-4 w-4" })} Sign Out
                             </Button>
@@ -416,8 +416,8 @@ export default function Header() {
                       className={cn(
                         "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-5 py-2",
                         isActive
-                          ? "text-white bg-white/10 rounded-t-md" // Ensure text is white for active state
-                          : "text-white hover:underline hover:text-gray-300" // Ensure text is white for default state
+                          ? "text-white bg-white/10 rounded-t-md"
+                          : "text-white hover:text-gray-300" // Removed hover:underline
                       )}
                     >
                       {link.label}
@@ -439,3 +439,4 @@ export default function Header() {
     );
   }
 }
+
