@@ -156,10 +156,10 @@
 
   /* Links for internal app pages */
   body:not(.wzuh-landing-page) a {
-    @apply text-primary no-underline;
+    @apply no-underline; /* Removed text-primary, color should be component specific */
   }
   body:not(.wzuh-landing-page) a:hover {
-    @apply text-primary/80;
+    /* Removed text-primary/80, hover color should be component-specific */
   }
 
    /* Landing page specific body background (Neo-Brutalism) - Currently inactive */

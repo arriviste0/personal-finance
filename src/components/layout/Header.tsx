@@ -94,25 +94,23 @@ export default function Header() {
   };
 
   if (!isMounted) {
-    // Skeleton for initial load (black header)
-    const skeletonTopBarHeight = "h-12"; // 48px
-    const skeletonSecondBarHeight = "h-10"; // 40px
+    const skeletonTopBarHeight = "h-12";
+    const skeletonSecondBarHeight = "h-10";
     return (
       <div className="w-full fixed top-0 left-0 right-0 z-50 bg-black">
         <div className={cn(skeletonTopBarHeight, "bg-black")}>
           <div className="container-default h-full flex items-center justify-between">
-            <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div> {/* Logo area */}
+            <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div>
             <div className="hidden md:flex items-center space-x-2">
-              <div className="h-8 w-20 bg-gray-700/50 rounded-md animate-pulse"></div> {/* Wallet info */}
-              <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div> {/* Auth buttons */}
+              <div className="h-8 w-20 bg-gray-700/50 rounded-md animate-pulse"></div>
+              <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div>
             </div>
-            <div className="md:hidden h-8 w-8 bg-gray-700/50 rounded-full animate-pulse"></div> {/* Mobile menu */}
+            <div className="md:hidden h-8 w-8 bg-gray-700/50 rounded-full animate-pulse"></div>
           </div>
         </div>
-        {/* Second bar skeleton only if not landing page */}
         <div className={cn("bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight, isLandingPage ? "hidden" : "block")}>
           <div className="container-default h-full flex items-center">
-            <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div> {/* Nav links area */}
+            <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div>
           </div>
         </div>
       </div>
@@ -121,17 +119,15 @@ export default function Header() {
 
 
   if (isLandingPage) {
-    // WZUH STYLE LANDING PAGE HEADER (White pill on green backdrop from AppLayout)
+    // WZUH STYLE LANDING PAGE HEADER
     return (
-      <header className="w-full py-3 fixed top-0 left-0 right-0 z-50 bg-transparent"> {/* Transparent to show AppLayout's green */}
+      <header className="w-full py-3 fixed top-0 left-0 right-0 z-50 bg-transparent">
         <div className="container-default">
           <div className="bg-white rounded-full border border-gray-300/80 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between">
-            {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 no-underline">
               {getIcon("Sparkles", { className: "h-7 w-7 text-wz-pink" })}
               <span className="font-heading text-xl font-bold text-wz-text-dark">Fin.Co</span>
             </Link>
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
               {wzLandingPageNavLinks.map((link) => (
                 <Link
@@ -146,7 +142,6 @@ export default function Header() {
                 </Link>
               ))}
             </nav>
-            {/* Auth Buttons & Mobile Menu Trigger */}
             <div className="flex items-center space-x-2">
               {!isAuthenticated && !isLoadingSession ? (
                 <>
@@ -166,7 +161,7 @@ export default function Header() {
               ) : (
                  <Button
                     onClick={handleSignOut}
-                    className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm"
+                    className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm no-underline"
                   >
                     {getIcon("LogOut", {className: "mr-1.5 h-3.5 w-3.5"})} Sign Out
                   </Button>
@@ -233,7 +228,7 @@ export default function Header() {
                                 <Button
                                 onClick={handleSignOut}
                                 variant="default"
-                                className="w-full btn-wz btn-wz-pink/80 text-sm shadow-wz-hard-sm !py-2 flex items-center justify-center"
+                                className="w-full btn-wz btn-wz-pink/80 text-sm shadow-wz-hard-sm !py-2 flex items-center justify-center no-underline"
                                 >
                                 {getIcon("LogOut", {className: "mr-2 h-4 w-4"})} Sign Out
                                 </Button>
@@ -339,8 +334,8 @@ export default function Header() {
                               className={cn(
                                 "flex items-center px-3 py-2.5 rounded-none text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-neutral-800 text-blue-400 font-semibold"
-                                  : "text-white hover:bg-pink-500 hover:text-white"
+                                  ? "bg-neutral-800 text-blue-400 font-semibold" // Active mobile link
+                                  : "text-white hover:bg-pink-500 hover:text-white" // Inactive mobile link hover
                               )}
                             >
                               {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-blue-400" : "text-gray-400 group-hover:text-white") })}
@@ -398,7 +393,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Second Nav Row - Black Background, White text */}
+        {/* Second Nav Row - Black Background, Gumroad Style */}
         <div className="bg-black h-10 shadow-md sticky top-[48px] z-30 border-t border-gray-700">
           <div className="container-default flex h-full items-stretch justify-between">
             <nav className="flex items-stretch h-full overflow-x-auto whitespace-nowrap flex-grow scrollbar-hide">
@@ -417,8 +412,8 @@ export default function Header() {
                       className={cn(
                         "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-3 py-2 rounded-none",
                         isActive
-                          ? "bg-neutral-800 text-blue-400"
-                          : "text-white hover:bg-pink-500 hover:text-white"
+                          ? "bg-neutral-800 text-blue-400" // Active link style
+                          : "text-white hover:bg-pink-500 hover:text-white" // Inactive link hover
                       )}
                     >
                       {link.label}
@@ -440,3 +435,4 @@ export default function Header() {
     );
   }
 }
+
