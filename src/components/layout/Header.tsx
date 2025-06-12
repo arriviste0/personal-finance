@@ -94,30 +94,31 @@ export default function Header() {
   };
 
   if (!isMounted) {
+    // Skeleton for initial load (Gumroad style - black header)
     const skeletonTopBarHeight = "h-12"; // 48px
     const skeletonSecondBarHeight = "h-10"; // 40px
     return (
       <div className="w-full fixed top-0 left-0 right-0 z-50 bg-black">
         <div className={cn(skeletonTopBarHeight, "bg-black")}>
           <div className="container-default h-full flex items-center justify-between">
-            <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div>
+            <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div> {/* Logo area */}
             <div className="hidden md:flex items-center space-x-2">
-              <div className="h-8 w-20 bg-gray-700/50 rounded-md animate-pulse"></div>
-              <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div>
+              <div className="h-8 w-20 bg-gray-700/50 rounded-md animate-pulse"></div> {/* Wallet info */}
+              <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div> {/* Auth buttons */}
             </div>
-            <div className="md:hidden h-8 w-8 bg-gray-700/50 rounded-full animate-pulse"></div>
+            <div className="md:hidden h-8 w-8 bg-gray-700/50 rounded-full animate-pulse"></div> {/* Mobile menu */}
           </div>
         </div>
-        {!isLandingPage && (
-          <div className={cn("bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight)}>
-            <div className="container-default h-full flex items-center">
-              <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div>
-            </div>
+        {/* Second bar skeleton only if not landing page */}
+        <div className={cn("bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight, isLandingPage ? "hidden" : "block")}>
+          <div className="container-default h-full flex items-center">
+            <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div> {/* Nav links area */}
           </div>
-        )}
+        </div>
       </div>
     );
   }
+
 
   if (isLandingPage) {
     // WZUH STYLE LANDING PAGE HEADER (White pill on green backdrop from AppLayout)
@@ -276,16 +277,16 @@ export default function Header() {
 
             <div className="flex items-stretch h-full text-sm">
               {!isAuthenticated && !isLoadingSession ? (
-                <div className="flex items-center h-full space-x-1 sm:space-x-3">
+                <div className="flex items-center h-full space-x-0 sm:space-x-0"> {/* Adjusted spacing */}
                     <Link
                       href="/login"
-                      className="h-full flex items-center px-3 sm:px-4 text-white hover:text-gray-300 text-sm font-medium whitespace-nowrap no-underline transition-colors"
+                      className="h-full flex items-center px-3 sm:px-4 text-white hover:bg-pink-500 hover:text-white text-sm font-medium whitespace-nowrap no-underline transition-colors"
                     >
                       Log In
                     </Link>
                     <Link
                       href="/get-started"
-                      className="h-full flex items-center justify-center bg-pink-500 text-black hover:bg-pink-400 rounded-none px-3 sm:px-4 text-sm font-semibold shadow-sm whitespace-nowrap no-underline transition-colors"
+                      className="h-full flex items-center justify-center bg-pink-500 text-black hover:bg-black hover:text-white rounded-none px-3 sm:px-4 text-sm font-semibold shadow-sm whitespace-nowrap no-underline transition-colors"
                     >
                       Get Started
                     </Link>
@@ -295,7 +296,7 @@ export default function Header() {
                    <Button
                     onClick={handleSignOut}
                     variant="ghost"
-                    className="w-full h-full text-white hover:bg-gray-800 hover:text-white px-4 text-sm font-medium rounded-none whitespace-nowrap no-underline flex items-center justify-center"
+                    className="w-full h-full text-white hover:bg-gray-700 hover:text-white px-4 text-sm font-medium rounded-none whitespace-nowrap no-underline flex items-center justify-center"
                   >
                     {getIcon("LogOut", { className: "mr-1.5 h-4 w-4" })} Sign Out
                   </Button>
@@ -304,7 +305,7 @@ export default function Header() {
               <div className="md:hidden flex items-stretch h-full border-l border-gray-700">
                 <Sheet>
                   <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800 h-full w-12 rounded-none">
+                    <Button variant="ghost" size="icon" className="text-white hover:bg-gray-700 h-full w-12 rounded-none">
                       {getIcon("Menu", { className: "h-5 w-5" })}
                       <span className="sr-only">Toggle Menu</span>
                     </Button>
@@ -339,7 +340,7 @@ export default function Header() {
                                 "flex items-center px-3 py-2.5 rounded-none text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
                                   ? "bg-neutral-800 text-blue-400 font-semibold" // Active style from image
-                                  : "text-white hover:bg-gray-800"
+                                  : "text-white hover:bg-pink-500 hover:text-white"
                               )}
                             >
                               {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-blue-400" : "text-gray-400 group-hover:text-white") })}
@@ -363,7 +364,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="w-full flex items-center justify-center text-white bg-gray-800 hover:bg-gray-700 rounded-none py-2 text-sm font-medium whitespace-nowrap no-underline"
+                                className="w-full flex items-center justify-center text-white hover:bg-pink-500 hover:text-white rounded-none py-2 text-sm font-medium whitespace-nowrap no-underline"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -371,7 +372,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/get-started"
-                                className="w-full flex items-center justify-center bg-pink-500 text-black hover:bg-pink-400 rounded-none py-2 text-sm font-semibold whitespace-nowrap no-underline shadow-sm"
+                                className="w-full flex items-center justify-center bg-pink-500 text-black hover:bg-black hover:text-white rounded-none py-2 text-sm font-semibold whitespace-nowrap no-underline shadow-sm"
                               >
                                 Get Started
                               </Link>
@@ -414,10 +415,10 @@ export default function Header() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-5 py-2 rounded-none",
+                        "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-3 py-2 rounded-none",
                         isActive
-                          ? "bg-neutral-800 text-blue-400" // Style from image: dark bg, blue text
-                          : "text-white hover:text-gray-300"
+                          ? "bg-neutral-800 text-blue-400" // Active style from image
+                          : "text-white hover:bg-pink-500 hover:text-white"
                       )}
                     >
                       {link.label}
