@@ -94,7 +94,7 @@ export default function Header() {
   };
 
   if (!isMounted) {
-    // Skeleton for initial load (Gumroad style - black header)
+    // Skeleton for initial load (black header)
     const skeletonTopBarHeight = "h-12"; // 48px
     const skeletonSecondBarHeight = "h-10"; // 40px
     return (
@@ -277,10 +277,10 @@ export default function Header() {
 
             <div className="flex items-stretch h-full text-sm">
               {!isAuthenticated && !isLoadingSession ? (
-                <div className="flex items-center h-full space-x-0 sm:space-x-0"> {/* Adjusted spacing */}
+                <div className="flex items-center h-full space-x-0 sm:space-x-0">
                     <Link
                       href="/login"
-                      className="h-full flex items-center px-3 sm:px-4 text-white hover:bg-pink-500 hover:text-white text-sm font-medium whitespace-nowrap no-underline transition-colors"
+                      className="h-full flex items-center px-3 sm:px-4 text-white hover:bg-white hover:text-black text-sm font-medium whitespace-nowrap no-underline transition-colors rounded-none"
                     >
                       Log In
                     </Link>
@@ -339,7 +339,7 @@ export default function Header() {
                               className={cn(
                                 "flex items-center px-3 py-2.5 rounded-none text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-neutral-800 text-blue-400 font-semibold" // Active style from image
+                                  ? "bg-neutral-800 text-blue-400 font-semibold"
                                   : "text-white hover:bg-pink-500 hover:text-white"
                               )}
                             >
@@ -364,7 +364,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="w-full flex items-center justify-center text-white hover:bg-pink-500 hover:text-white rounded-none py-2 text-sm font-medium whitespace-nowrap no-underline"
+                                className="w-full flex items-center justify-center text-white hover:bg-white hover:text-black rounded-none py-2 text-sm font-medium whitespace-nowrap no-underline"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -417,7 +417,7 @@ export default function Header() {
                       className={cn(
                         "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-3 py-2 rounded-none",
                         isActive
-                          ? "bg-neutral-800 text-blue-400" // Active style from image
+                          ? "bg-neutral-800 text-blue-400"
                           : "text-white hover:bg-pink-500 hover:text-white"
                       )}
                     >
