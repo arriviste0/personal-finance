@@ -95,24 +95,25 @@ export default function Header() {
   if (!isMounted) {
     const skeletonTopBarHeight = "h-12";
     const skeletonSecondBarHeight = "h-10";
-    const landingPageHeaderHeight = "h-[68px]";
+    const landingPageHeaderHeight = "h-[68px]"; // Height of the green area + padding
 
     return (
+      // Skeleton loader for header
       <div className={cn("w-full", isLandingPage ? "bg-transparent" : "bg-black")}>
         <div className={cn(isLandingPage ? landingPageHeaderHeight : skeletonTopBarHeight, isLandingPage ? "bg-transparent" : "bg-black")}>
           <div className="container-default h-full flex items-center justify-between">
-            <div className="h-8 w-24 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div>
+            <div className="h-8 w-24 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div> {/* Logo placeholder */}
             <div className="hidden md:flex items-center space-x-2">
-              <div className="h-8 w-20 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div>
-              <div className="h-8 w-24 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div>
+              <div className="h-8 w-20 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div> {/* Link placeholder */}
+              <div className="h-8 w-24 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div> {/* Button placeholder */}
             </div>
-            <div className="md:hidden h-8 w-8 bg-gray-300/20 dark:bg-gray-700/50 rounded-full animate-pulse"></div>
+            <div className="md:hidden h-8 w-8 bg-gray-300/20 dark:bg-gray-700/50 rounded-full animate-pulse"></div> {/* Mobile menu placeholder */}
           </div>
         </div>
         {!isLandingPage && (
           <div className={cn("bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight)}>
             <div className="container-default h-full flex items-center">
-              <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div>
+              <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div> {/* Nav links placeholder */}
             </div>
           </div>
         )}
@@ -122,9 +123,9 @@ export default function Header() {
 
 
   if (isLandingPage) {
-    // WZUH STYLE LANDING PAGE HEADER
+    // WZUH STYLE LANDING PAGE HEADER (transparent bg, white pill, green area behind from AppLayout)
     return (
-      <header className="w-full py-3 bg-transparent">
+      <header className="w-full py-3 bg-transparent"> {/* Header itself is transparent */}
         <div className="container-default">
           <div className="bg-white rounded-full border border-gray-300/80 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between">
             {/* Logo */}
@@ -155,7 +156,7 @@ export default function Header() {
                 <>
                   <Link
                     href="/login"
-                    className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-nb-pink hover:text-nb-white"
+                    className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-wz-pink hover:text-nb-white"
                   >
                     Log In
                   </Link>
@@ -217,7 +218,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-nb-pink hover:text-nb-white w-full text-sm"
+                                className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-wz-pink hover:text-nb-white w-full text-sm"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
