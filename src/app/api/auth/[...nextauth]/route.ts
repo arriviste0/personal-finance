@@ -27,9 +27,9 @@ export const authOptions: AuthOptions = {
       },
        async authorize(credentials, req): Promise<UserAuthResponse | null> {
          try {
-           console.log("[NextAuth] Authorize attempt for email:", credentials?.email);
+           // console.log("[NextAuth] Authorize attempt for email:", credentials?.email);
            if (!credentials?.email || !credentials.password) {
-             console.error("[NextAuth] Missing email or password in credentials.");
+             // console.error("[NextAuth] Missing email or password in credentials.");
              throw new Error('Please provide email and password.');
            }
 
@@ -40,26 +40,26 @@ export const authOptions: AuthOptions = {
           const user = await usersCollection.findOne({ email: credentials.email });
 
           if (!user) {
-            console.warn("[NextAuth] User not found with email:", credentials.email);
+            // console.warn("[NextAuth] User not found with email:", credentials.email);
              throw new Error('No user found with this email.');
           }
 
-          console.log("[NextAuth] User found in DB:", { id: user._id, email: user.email });
+          // console.log("[NextAuth] User found in DB:", { id: user._id, email: user.email });
 
           // Ensure user.password exists and is a string
           if (typeof user.password !== 'string' || !user.password) {
-              console.error("[NextAuth] User password is not a string or is missing for email:", credentials.email);
+              // console.error("[NextAuth] User password is not a string or is missing for email:", credentials.email);
               throw new Error('User account is not configured correctly for password authentication.');
           }
 
           const isValidPassword = await compare(credentials.password, user.password);
 
           if (!isValidPassword) {
-             console.warn("[NextAuth] Invalid password attempt for email:", credentials.email);
+             // console.warn("[NextAuth] Invalid password attempt for email:", credentials.email);
              throw new Error('Incorrect password.');
           }
 
-           console.log("[NextAuth] Authentication successful for:", user.email);
+           // console.log("[NextAuth] Authentication successful for:", user.email);
 
            return {
              id: user._id.toString(),
@@ -68,9 +68,10 @@ export const authOptions: AuthOptions = {
              image: user.image,
            };
          } catch (error: any) {
-           console.error("[NextAuth] Error in authorize function:", error.message, error.stack);
-           // Re-throw to ensure NextAuth handles it as an authentication failure
-           throw new Error(error.message || 'Authentication process failed');
+           console.error("[NextAuth] Authorization error in 'authorize' callback:", error);
+           // Throw a new, simple error. NextAuth should catch this and return a JSON error to the client.
+           // If the client still gets HTML, the issue is likely a more fundamental misconfiguration (e.g., .env vars).
+           throw new Error(error.message || 'Authentication failed. Please check server logs.');
          }
        }
     })
@@ -106,4 +107,3 @@ export const authOptions: AuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
