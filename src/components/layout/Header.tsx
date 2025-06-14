@@ -95,7 +95,7 @@ export default function Header() {
   if (!isMounted) {
     const skeletonTopBarHeight = "h-12";
     const skeletonSecondBarHeight = "h-10";
-    const landingPageHeaderHeight = "h-[68px]"; // Adjusted actual height
+    const landingPageHeaderHeight = "h-[68px]";
 
     return (
       <div className={cn("w-full", isLandingPage ? "bg-transparent" : "bg-black")}>
@@ -124,7 +124,7 @@ export default function Header() {
   if (isLandingPage) {
     // WZUH STYLE LANDING PAGE HEADER (White pill on green backdrop from AppLayout)
     return (
-      <header className="w-full py-3 bg-transparent"> {/* Transparent to show AppLayout's green/transparent backdrop */}
+      <header className="w-full py-3 bg-transparent">
         <div className="container-default">
           <div className="bg-white rounded-full border border-gray-300/80 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between">
             {/* Logo */}
@@ -155,13 +155,13 @@ export default function Header() {
                 <>
                   <Link
                     href="/login"
-                    className="nb-button bg-nb-white border-nb-black hover:bg-gray-100 !px-4 !py-2 !text-sm" // Adjusted padding/text size
+                    className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-gray-100"
                   >
                     Log In
                   </Link>
                   <Link
                     href="/get-started"
-                    className="nb-button bg-nb-pink border-nb-black hover:bg-pink-600 !px-4 !py-2 !text-sm" // Adjusted padding/text size
+                    className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600"
                   >
                     Get Started
                   </Link>
@@ -169,9 +169,9 @@ export default function Header() {
               ) : (
                  <Button
                     onClick={handleSignOut}
-                    className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm no-underline"
+                    className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600"
                   >
-                    {getIcon("LogOut", {className: "mr-1.5 h-3.5 w-3.5"})} Sign Out
+                    {getIcon("LogOut", {className: "mr-1.5 h-4 w-4"})} Sign Out
                   </Button>
               )}
               <div className="md:hidden ml-auto">
@@ -217,7 +217,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="nb-button bg-nb-white border-nb-black hover:bg-gray-100 w-full !py-2 text-sm"
+                                className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-gray-100 w-full text-sm"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -225,7 +225,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/get-started"
-                                className="nb-button bg-nb-pink border-nb-black hover:bg-pink-600 w-full !py-2 text-sm"
+                                className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600 w-full text-sm"
                               >
                                 Get Started
                               </Link>
@@ -235,8 +235,7 @@ export default function Header() {
                             <SheetClose asChild>
                                 <Button
                                 onClick={handleSignOut}
-                                variant="default"
-                                className="w-full btn-wz btn-wz-pink/80 text-sm shadow-wz-hard-sm !py-2 flex items-center justify-center no-underline"
+                                className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600 w-full text-sm"
                                 >
                                 {getIcon("LogOut", {className: "mr-2 h-4 w-4"})} Sign Out
                                 </Button>
@@ -344,7 +343,7 @@ export default function Header() {
                               className={cn(
                                 "flex items-center px-3 py-2.5 rounded-none text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-neutral-800 text-blue-400 font-semibold" // Matching desktop active
+                                  ? "bg-neutral-800 text-blue-400 font-semibold"
                                   : "text-white hover:bg-pink-500 hover:text-white"
                               )}
                             >
@@ -423,7 +422,7 @@ export default function Header() {
                       className={cn(
                         "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-3 py-2 rounded-none",
                         isActive
-                          ? "bg-neutral-800 text-blue-400" // Active link style from Gumroad
+                          ? "bg-neutral-800 text-blue-400"
                           : "text-white hover:bg-pink-500 hover:text-white"
                       )}
                     >
@@ -447,3 +446,4 @@ export default function Header() {
     );
   }
 }
+

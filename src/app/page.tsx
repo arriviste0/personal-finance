@@ -164,7 +164,7 @@ export default function LandingPage() {
                 FinCo empowers you to track income, budget smarter, save with purpose, and grow your wealth through intuitive tools and AI-powered insights.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild className="nb-button bg-nb-pink border-nb-black hover:bg-pink-600">
+                <Button asChild className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600">
                   <Link href="/get-started">Start Now <ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
               </div>
@@ -307,7 +307,7 @@ export default function LandingPage() {
                 className="flex-1 retro-input !bg-white !border-wz-border-dark !text-wz-text-dark placeholder:text-wz-gray-text/90 focus:!ring-wz-pink focus:!border-wz-pink !py-3 !px-4 !rounded-full"
                 suppressHydrationWarning={true}
               />
-              <Button type="submit" className="nb-button bg-nb-pink border-nb-black hover:bg-pink-600" suppressHydrationWarning={true}>
+              <Button type="submit" className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600" suppressHydrationWarning={true}>
                 Subscribe <Send className="ml-2 h-4 w-4"/>
               </Button>
             </form>
@@ -345,3 +345,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
