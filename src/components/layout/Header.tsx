@@ -122,7 +122,7 @@ export default function Header() {
 
 
   if (isLandingPage) {
-    // WZUH STYLE LANDING PAGE HEADER (White pill on green backdrop from AppLayout)
+    // WZUH STYLE LANDING PAGE HEADER
     return (
       <header className="w-full py-3 bg-transparent">
         <div className="container-default">
@@ -155,13 +155,13 @@ export default function Header() {
                 <>
                   <Link
                     href="/login"
-                    className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-gray-100"
+                    className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-nb-pink hover:text-nb-white"
                   >
                     Log In
                   </Link>
                   <Link
                     href="/get-started"
-                    className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600"
+                    className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-nb-white hover:text-nb-black"
                   >
                     Get Started
                   </Link>
@@ -169,7 +169,7 @@ export default function Header() {
               ) : (
                  <Button
                     onClick={handleSignOut}
-                    className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600"
+                    className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-nb-white hover:text-nb-black"
                   >
                     {getIcon("LogOut", {className: "mr-1.5 h-4 w-4"})} Sign Out
                   </Button>
@@ -217,7 +217,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-gray-100 w-full text-sm"
+                                className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-nb-pink hover:text-nb-white w-full text-sm"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -225,7 +225,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/get-started"
-                                className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600 w-full text-sm"
+                                className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-nb-white hover:text-nb-black w-full text-sm"
                               >
                                 Get Started
                               </Link>
@@ -235,7 +235,7 @@ export default function Header() {
                             <SheetClose asChild>
                                 <Button
                                 onClick={handleSignOut}
-                                className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-pink-600 w-full text-sm"
+                                className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-nb-white hover:text-nb-black w-full text-sm"
                                 >
                                 {getIcon("LogOut", {className: "mr-2 h-4 w-4"})} Sign Out
                                 </Button>
@@ -446,4 +446,3 @@ export default function Header() {
     );
   }
 }
-
