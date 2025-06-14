@@ -88,6 +88,15 @@
     --chart-4: 0 70% 55%;   /* Red */
     --chart-5: 270 60% 60%; /* Purple */
     --chart-6: 180 60% 45%; /* Teal/Cyan */
+
+    /* Neo-Brutalism Color Variables */
+    --nb-yellow: 54 100% 50%; /* #FFFF00 */
+    --nb-pink: 300 100% 50%; /* #FF00F5 */
+    --nb-green: 150 100% 47%; /* #0FFF83 */
+    --nb-cyan: 180 100% 50%; /* #00FFFF */
+    --nb-purple: 262 100% 50%; /* #5900FF */
+    --nb-black: 0 0% 0%; /* #000000 */
+    --nb-white: 0 0% 100%; /* #FFFFFF */
   }
 
  .dark {
@@ -150,16 +159,16 @@
 
 
   /* Links on Wzuh landing page */
-  .wzuh-landing-page a:not(.btn-wz) {
+  .wzuh-landing-page a:not(.btn-wz):not(.nb-button) {
     @apply text-wz-text-dark hover:text-wz-pink font-medium no-underline transition-colors;
   }
 
   /* Links for internal app pages */
   body:not(.wzuh-landing-page) a {
-    @apply no-underline; /* Removed text-primary, color should be component specific */
+    @apply no-underline; /* Color will be inherited or set by component */
   }
   body:not(.wzuh-landing-page) a:hover {
-    /* Removed text-primary/80, hover color should be component-specific */
+    /* Hover color should be set by individual components */
   }
 
    /* Landing page specific body background (Neo-Brutalism) - Currently inactive */
@@ -290,6 +299,14 @@
   .finco-card {
     @apply border border-border bg-card text-card-foreground shadow-lg rounded-[var(--radius)];
   }
+
+  /* Neo-Brutalism Button */
+  .nb-button {
+    @apply inline-flex items-center justify-center rounded-none border-2 border-nb-black px-5 py-2.5 text-base font-bold text-nb-black shadow-nb-hard-sm transition-all duration-150 ease-in-out;
+    @apply hover:shadow-[1px_1px_0px_hsl(var(--nb-black))] hover:-translate-x-px hover:-translate-y-px;
+    @apply active:translate-x-px active:translate-y-px active:shadow-none;
+    /* Specific background and text colors will be applied alongside this class, e.g., bg-nb-pink hover:bg-pink-600 */
+  }
 }
 
 @layer utilities {
@@ -373,16 +390,6 @@
 
 /* Neo-Brutalism Theme Variables & Utilities (can be co-located if landing page style is switched by body class) */
 @layer base {
-  :root {
-    --nb-yellow: 54 100% 50%; /* #FFFF00 */
-    --nb-pink: 300 100% 50%; /* #FF00F5 */
-    --nb-green: 150 100% 47%; /* #0FFF83 */
-    --nb-cyan: 180 100% 50%; /* #00FFFF */
-    --nb-purple: 262 100% 50%; /* #5900FF */
-    --nb-black: 0 0% 0%; /* #000000 */
-    --nb-white: 0 0% 100%; /* #FFFFFF */
-  }
-
   body.nb-landing-page {
     @apply bg-nb-yellow text-nb-black;
     font-family: var(--font-sans); /* Or a more pixelated font */
@@ -404,11 +411,7 @@
     @apply border-2 border-nb-black rounded-none shadow-nb-hard p-4 md:p-6;
     /* Background will be set by specific utility like bg-nb-pink */
   }
-  .nb-button {
-    @apply inline-flex items-center justify-center rounded-none border-2 border-nb-black px-5 py-2.5 text-base font-bold text-nb-black shadow-nb-hard-sm transition-all duration-100;
-    @apply active:translate-x-px active:translate-y-px active:shadow-none;
-    /* Background and hover background will be set by specific utilities */
-  }
+  /* .nb-button is defined above with other buttons */
 }
 
 @layer utilities {
@@ -445,5 +448,3 @@
   .shadow-nb-hard { box-shadow: 6px 6px 0px 0px hsl(var(--nb-black)); }
   .shadow-nb-hard-sm { box-shadow: 3px 3px 0px 0px hsl(var(--nb-black)); }
 }
-
-    

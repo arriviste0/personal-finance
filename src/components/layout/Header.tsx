@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import {
     Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
     LayoutGrid, ListChecks, Target as TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, TrendingUp,
-    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon as UserIconLucide, Package, BrainCircuit, // Renamed UserIcon to UserIconLucide
+    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon as UserIconLucide, Package, BrainCircuit,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
     DollarSign as DollarSignLucide, CircleDollarSign
@@ -44,11 +44,11 @@ export default function Header() {
   const iconComponents: { [key: string]: React.ElementType } = {
     CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
     LayoutGrid, ListChecks, Target: TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, TrendingUp,
-    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon: UserIconLucide, Package, BrainCircuit, // Use Renamed UserIconLucide
+    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon: UserIconLucide, Package, BrainCircuit,
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
     DollarSign: DollarSignLucide,
-    Asterisk: Sparkles,
+    Asterisk: Sparkles, // Fallback icon
   };
 
   const getIcon = (iconName?: string, props?: any): React.JSX.Element | null => {
@@ -93,12 +93,12 @@ export default function Header() {
   };
 
   if (!isMounted) {
-    const skeletonTopBarHeight = "h-12"; // Corresponds to actual top bar height for internal pages
-    const skeletonSecondBarHeight = "h-10"; // Corresponds to actual second nav bar height
-    const landingPageHeaderHeight = "h-[76px]"; // Approx (py-3 + pill bar height of py-2 + content)
+    const skeletonTopBarHeight = "h-12";
+    const skeletonSecondBarHeight = "h-10";
+    const landingPageHeaderHeight = "h-[68px]"; // Adjusted actual height
 
     return (
-      <div className={cn("w-full fixed top-0 left-0 right-0 z-50", isLandingPage ? "bg-transparent" : "bg-black")}>
+      <div className={cn("w-full", isLandingPage ? "bg-transparent" : "bg-black")}>
         <div className={cn(isLandingPage ? landingPageHeaderHeight : skeletonTopBarHeight, isLandingPage ? "bg-transparent" : "bg-black")}>
           <div className="container-default h-full flex items-center justify-between">
             <div className="h-8 w-24 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div>
@@ -122,10 +122,9 @@ export default function Header() {
 
 
   if (isLandingPage) {
-    // WZUH STYLE LANDING PAGE HEADER
+    // WZUH STYLE LANDING PAGE HEADER (White pill on green backdrop from AppLayout)
     return (
-      // Removed "fixed top-0 left-0 right-0 z-50"
-      <header className="w-full py-3 bg-transparent"> {/* Transparent to show AppLayout's green */}
+      <header className="w-full py-3 bg-transparent"> {/* Transparent to show AppLayout's green/transparent backdrop */}
         <div className="container-default">
           <div className="bg-white rounded-full border border-gray-300/80 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between">
             {/* Logo */}
@@ -156,13 +155,13 @@ export default function Header() {
                 <>
                   <Link
                     href="/login"
-                    className="btn-wz btn-wz-pink text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm hover:ring-1 hover:ring-wz-border-dark hover:ring-offset-1 hover:ring-offset-white no-underline inline-flex items-center justify-center"
+                    className="nb-button bg-nb-white border-nb-black hover:bg-gray-100 !px-4 !py-2 !text-sm" // Adjusted padding/text size
                   >
                     Log In
                   </Link>
                   <Link
                     href="/get-started"
-                    className="btn-wz bg-white text-wz-text-dark hover:bg-gray-200 text-sm !py-1.5 !px-4 whitespace-nowrap shadow-wz-hard-sm no-underline inline-flex items-center justify-center"
+                    className="nb-button bg-nb-pink border-nb-black hover:bg-pink-600 !px-4 !py-2 !text-sm" // Adjusted padding/text size
                   >
                     Get Started
                   </Link>
@@ -218,7 +217,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="btn-wz btn-wz-pink shadow-wz-hard-sm w-full !py-2 text-sm font-medium whitespace-nowrap no-underline flex items-center justify-center"
+                                className="nb-button bg-nb-white border-nb-black hover:bg-gray-100 w-full !py-2 text-sm"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -226,7 +225,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/get-started"
-                                className="btn-wz bg-white text-wz-text-dark hover:bg-gray-200 text-sm !py-2 whitespace-nowrap shadow-wz-hard-sm border-wz-border-dark no-underline flex items-center justify-center"
+                                className="nb-button bg-nb-pink border-nb-black hover:bg-pink-600 w-full !py-2 text-sm"
                               >
                                 Get Started
                               </Link>
@@ -236,7 +235,7 @@ export default function Header() {
                             <SheetClose asChild>
                                 <Button
                                 onClick={handleSignOut}
-                                variant="default" // Ensure this uses wz-button styles if needed via globals.css or direct styling
+                                variant="default"
                                 className="w-full btn-wz btn-wz-pink/80 text-sm shadow-wz-hard-sm !py-2 flex items-center justify-center no-underline"
                                 >
                                 {getIcon("LogOut", {className: "mr-2 h-4 w-4"})} Sign Out
@@ -256,7 +255,7 @@ export default function Header() {
   } else {
     // GUMROAD STYLE HEADER FOR INTERNAL PAGES (Black, White, Pink accents)
     return (
-      <div className="w-full"> {/* Removed fixed from here, AppLayout handles fixed */}
+      <div className="w-full">
         {/* Top Row - Black Background */}
         <div className="h-12 bg-black">
           <div className="container-default flex items-center h-full justify-between">
@@ -345,7 +344,7 @@ export default function Header() {
                               className={cn(
                                 "flex items-center px-3 py-2.5 rounded-none text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-neutral-800 text-blue-400 font-semibold"
+                                  ? "bg-neutral-800 text-blue-400 font-semibold" // Matching desktop active
                                   : "text-white hover:bg-pink-500 hover:text-white"
                               )}
                             >
@@ -405,7 +404,7 @@ export default function Header() {
         </div>
 
         {/* Second Nav Row - Black Background, Gumroad Style */}
-        <div className="bg-black h-10 shadow-md sticky top-[48px] z-30 border-t border-gray-700"> {/* Sticking below the 48px top bar */}
+        <div className="bg-black h-10 shadow-md sticky top-[48px] z-30 border-t border-gray-700">
           <div className="container-default flex h-full items-stretch justify-between">
             {/* Main Navigation Links */}
             <nav className="flex items-stretch h-full overflow-x-auto whitespace-nowrap flex-grow scrollbar-hide">
