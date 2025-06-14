@@ -8,32 +8,62 @@ import { cn } from '@/lib/utils';
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { useWallet } from '@/contexts/WalletContext';
+import { useState, useEffect, useCallback } from 'react';
 
 interface AppLayoutProps {
   children: React.ReactNode;
 }
 
+const SCROLL_THRESHOLD = 10; // Pixels to scroll before background changes
+
 export default function AppLayout({ children }: AppLayoutProps) {
   const pathname = usePathname();
   const isLandingPage = pathname === '/';
-  const { walletBalance } = useWallet(); // Keep if used in internal footer
+  const { walletBalance } = useWallet();
 
-  // Approximate heights for padding calculation
-  const landingPageHeaderAreaHeightPx = 68; // Adjusted from 88
-  const internalTopRowHeightPx = 48; // h-12 for internal top bar
-  const internalSecondNavHeightPx = 40; // h-10 for internal second nav bar
-  const internalTotalHeaderHeightPx = internalTopRowHeightPx + internalSecondNavHeightPx; // 88px
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const landingPageHeaderAreaHeightPx = 68;
+  const internalTopRowHeightPx = 48;
+  const internalSecondNavHeightPx = 40;
+  const internalTotalHeaderHeightPx = internalTopRowHeightPx + internalSecondNavHeightPx;
 
   const mainContentPaddingTop = isLandingPage
     ? `${landingPageHeaderAreaHeightPx}px`
     : `${internalTotalHeaderHeightPx}px`;
 
+  const handleScroll = useCallback(() => {
+    if (window.scrollY > SCROLL_THRESHOLD) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLandingPage) {
+      window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Call on mount to check initial scroll position
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    } else {
+      // Ensure isScrolled is reset if navigating from landing to internal page
+      setIsScrolled(false);
+    }
+  }, [isLandingPage, handleScroll]);
+
+
   return (
     <div className={cn("flex min-h-screen flex-col", isLandingPage ? "bg-wz-light-bg" : "bg-background")}>
       {/* This div provides the backdrop for the header area */}
-      <div className={cn('fixed top-0 left-0 right-0 z-50',
-        isLandingPage ? 'bg-wz-green' : 'bg-black'
-      )}>
+      <div className={cn(
+        'fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ease-in-out',
+         isLandingPage
+            ? isScrolled ? 'bg-transparent' : 'bg-wz-green'
+            : 'bg-black' // For internal pages
+        )}
+      >
         <Header />
       </div>
       <main
