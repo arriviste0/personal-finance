@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import {
     Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
     LayoutGrid, ListChecks, Target as TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, TrendingUp,
-    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit,
+    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon as UserIconLucide, Package, BrainCircuit, // Renamed UserIcon to UserIconLucide
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
     DollarSign as DollarSignLucide, CircleDollarSign
@@ -44,11 +44,11 @@ export default function Header() {
   const iconComponents: { [key: string]: React.ElementType } = {
     CircleDollarSign, Menu, LogOut, Wallet, Lock, Twitter, Facebook, Instagram, Sparkles, X, Search, ChevronDown,
     LayoutGrid, ListChecks, Target: TargetIcon, ShieldAlert, ShieldCheck, FileText, Lightbulb, PiggyBank, Landmark, HandCoins, TrendingUp,
-    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon, Package, BrainCircuit,
+    Users, Briefcase, Zap, Star, ArrowRight, Receipt, BarChart3, UserIcon: UserIconLucide, Package, BrainCircuit, // Use Renamed UserIconLucide
     Award, Settings, Users2, BookOpen, Server, Rocket, CheckCircle, CreditCard, Activity,
     BarChartBig, ChevronLeft, ChevronUp, MailIcon, Phone, MessageCircle, Send,
     DollarSign: DollarSignLucide,
-    Asterisk: Sparkles, // Fallback icon
+    Asterisk: Sparkles,
   };
 
   const getIcon = (iconName?: string, props?: any): React.JSX.Element | null => {
@@ -58,10 +58,9 @@ export default function Header() {
   };
 
   const wzLandingPageNavLinks = [
-    { href: "/#services", label: "Services" },
-    { href: "/#how-it-works", label: "How it Works" },
-    { href: "/#pricing", label: "Pricing" },
-    { href: "/#contact", label: "Contact" },
+    { href: "/#why-finco", label: "Why FinCo" },
+    { href: "/#core-features", label: "Features" },
+    { href: "/#cta-journey", label: "Subscribe" },
   ];
 
   const mainAppNavLinks = [
@@ -94,25 +93,29 @@ export default function Header() {
   };
 
   if (!isMounted) {
-    const skeletonTopBarHeight = "h-12";
-    const skeletonSecondBarHeight = "h-10";
+    const skeletonTopBarHeight = "h-12"; // Corresponds to actual top bar height for internal pages
+    const skeletonSecondBarHeight = "h-10"; // Corresponds to actual second nav bar height
+    const landingPageHeaderHeight = "h-[76px]"; // Approx (py-3 + pill bar height of py-2 + content)
+
     return (
-      <div className="w-full fixed top-0 left-0 right-0 z-50 bg-black">
-        <div className={cn(skeletonTopBarHeight, "bg-black")}>
+      <div className={cn("w-full fixed top-0 left-0 right-0 z-50", isLandingPage ? "bg-transparent" : "bg-black")}>
+        <div className={cn(isLandingPage ? landingPageHeaderHeight : skeletonTopBarHeight, isLandingPage ? "bg-transparent" : "bg-black")}>
           <div className="container-default h-full flex items-center justify-between">
-            <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div>
+            <div className="h-8 w-24 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div>
             <div className="hidden md:flex items-center space-x-2">
-              <div className="h-8 w-20 bg-gray-700/50 rounded-md animate-pulse"></div>
-              <div className="h-8 w-24 bg-gray-700/50 rounded-md animate-pulse"></div>
+              <div className="h-8 w-20 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div>
+              <div className="h-8 w-24 bg-gray-300/20 dark:bg-gray-700/50 rounded-md animate-pulse"></div>
             </div>
-            <div className="md:hidden h-8 w-8 bg-gray-700/50 rounded-full animate-pulse"></div>
+            <div className="md:hidden h-8 w-8 bg-gray-300/20 dark:bg-gray-700/50 rounded-full animate-pulse"></div>
           </div>
         </div>
-        <div className={cn("bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight, isLandingPage ? "hidden" : "block")}>
-          <div className="container-default h-full flex items-center">
-            <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div>
+        {!isLandingPage && (
+          <div className={cn("bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight)}>
+            <div className="container-default h-full flex items-center">
+              <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -121,13 +124,17 @@ export default function Header() {
   if (isLandingPage) {
     // WZUH STYLE LANDING PAGE HEADER
     return (
-      <header className="w-full py-3 fixed top-0 left-0 right-0 z-50 bg-transparent">
+      // Removed "fixed top-0 left-0 right-0 z-50"
+      <header className="w-full py-3 bg-transparent"> {/* Transparent to show AppLayout's green */}
         <div className="container-default">
           <div className="bg-white rounded-full border border-gray-300/80 shadow-lg px-4 sm:px-6 py-2 flex items-center justify-between">
+            {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 no-underline">
               {getIcon("Sparkles", { className: "h-7 w-7 text-wz-pink" })}
               <span className="font-heading text-xl font-bold text-wz-text-dark">Fin.Co</span>
             </Link>
+
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
               {wzLandingPageNavLinks.map((link) => (
                 <Link
@@ -142,6 +149,8 @@ export default function Header() {
                 </Link>
               ))}
             </nav>
+
+            {/* Auth Buttons & Mobile Menu Trigger */}
             <div className="flex items-center space-x-2">
               {!isAuthenticated && !isLoadingSession ? (
                 <>
@@ -227,7 +236,7 @@ export default function Header() {
                             <SheetClose asChild>
                                 <Button
                                 onClick={handleSignOut}
-                                variant="default"
+                                variant="default" // Ensure this uses wz-button styles if needed via globals.css or direct styling
                                 className="w-full btn-wz btn-wz-pink/80 text-sm shadow-wz-hard-sm !py-2 flex items-center justify-center no-underline"
                                 >
                                 {getIcon("LogOut", {className: "mr-2 h-4 w-4"})} Sign Out
@@ -247,22 +256,23 @@ export default function Header() {
   } else {
     // GUMROAD STYLE HEADER FOR INTERNAL PAGES (Black, White, Pink accents)
     return (
-      <div className="w-full fixed top-0 left-0 right-0 z-50">
+      <div className="w-full"> {/* Removed fixed from here, AppLayout handles fixed */}
         {/* Top Row - Black Background */}
         <div className="h-12 bg-black">
           <div className="container-default flex items-center h-full justify-between">
+            {/* Logo and Wallet Info */}
             <div className="flex items-center space-x-3">
               <Link href="/" className="flex items-center space-x-2 no-underline">
                 {getIcon("Sparkles", { className: "h-7 w-7 text-white"})}
-                <span className="font-heading text-xl font-bold text-white">Fin.Co</span>
+                <span className="font-heading text-xl font-bold text-white no-underline">Fin.Co</span>
               </Link>
               {isAuthenticated && (
                 <div className="hidden md:flex items-center space-x-3">
-                  <div className="text-xs text-white flex items-center">
+                  <div className="text-xs text-white flex items-center no-underline">
                     {getIcon("Wallet", {className: "mr-1 h-3.5 w-3.5"})}
                     <span className="font-medium">Wallet:</span> {formatCurrency(walletBalance)}
                   </div>
-                  <div className="text-xs text-white flex items-center">
+                  <div className="text-xs text-white flex items-center no-underline">
                     {getIcon("Lock", {className: "mr-1 h-3.5 w-3.5"})}
                     <span className="font-medium">Locked:</span> {formatCurrency(totalLockedFunds)}
                   </div>
@@ -270,6 +280,7 @@ export default function Header() {
               )}
             </div>
 
+            {/* Auth Buttons & Mobile Menu Trigger */}
             <div className="flex items-stretch h-full text-sm">
               {!isAuthenticated && !isLoadingSession ? (
                 <div className="flex items-center h-full space-x-0 sm:space-x-0">
@@ -280,10 +291,10 @@ export default function Header() {
                       Log In
                     </Link>
                     <Link
-                      href="/get-started"
-                      className="h-full flex items-center justify-center bg-pink-500 text-black hover:bg-black hover:text-white rounded-none px-3 sm:px-4 text-sm font-semibold shadow-sm whitespace-nowrap no-underline transition-colors"
+                        href="/get-started"
+                        className="h-full flex items-center justify-center bg-pink-500 text-black hover:bg-black hover:text-white rounded-none px-3 sm:px-4 text-sm font-semibold shadow-sm whitespace-nowrap no-underline transition-colors"
                     >
-                      Get Started
+                        Get Started
                     </Link>
                 </div>
               ) : (
@@ -321,8 +332,8 @@ export default function Header() {
                     <nav className="grid gap-1 p-3">
                       {isAuthenticated && (
                         <div className="px-3 py-2.5 space-y-1 border-b border-gray-700 mb-2">
-                          <div className="text-xs text-gray-300"><span className="font-medium">Wallet:</span> {formatCurrency(walletBalance)}</div>
-                          <div className="text-xs text-gray-300"><span className="font-medium">Locked:</span> {formatCurrency(totalLockedFunds)}</div>
+                          <div className="text-xs text-gray-300 no-underline"><span className="font-medium">Wallet:</span> {formatCurrency(walletBalance)}</div>
+                          <div className="text-xs text-gray-300 no-underline"><span className="font-medium">Locked:</span> {formatCurrency(totalLockedFunds)}</div>
                         </div>
                       )}
                       {mainAppNavLinks.map((link) => {
@@ -334,8 +345,8 @@ export default function Header() {
                               className={cn(
                                 "flex items-center px-3 py-2.5 rounded-none text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-neutral-800 text-blue-400 font-semibold" // Active mobile link
-                                  : "text-white hover:bg-pink-500 hover:text-white" // Inactive mobile link hover
+                                  ? "bg-neutral-800 text-blue-400 font-semibold"
+                                  : "text-white hover:bg-pink-500 hover:text-white"
                               )}
                             >
                               {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-blue-400" : "text-gray-400 group-hover:text-white") })}
@@ -359,7 +370,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="w-full flex items-center justify-center text-white hover:bg-white hover:text-black rounded-none py-2 text-sm font-medium whitespace-nowrap no-underline"
+                                className="w-full flex items-center justify-center text-white hover:bg-white hover:text-black rounded-none py-2.5 text-sm font-medium whitespace-nowrap no-underline"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -367,7 +378,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/get-started"
-                                className="w-full flex items-center justify-center bg-pink-500 text-black hover:bg-black hover:text-white rounded-none py-2 text-sm font-semibold whitespace-nowrap no-underline shadow-sm"
+                                className="w-full flex items-center justify-center bg-pink-500 text-black hover:bg-black hover:text-white rounded-none py-2.5 text-sm font-semibold whitespace-nowrap no-underline shadow-sm"
                               >
                                 Get Started
                               </Link>
@@ -378,7 +389,7 @@ export default function Header() {
                             <Button
                               onClick={handleSignOut}
                               variant="ghost"
-                              className="w-full text-white hover:bg-gray-800 rounded-none py-2 text-sm font-medium whitespace-nowrap border border-gray-700 no-underline flex items-center justify-center"
+                              className="w-full text-white hover:bg-gray-800 rounded-none py-2.5 text-sm font-medium whitespace-nowrap border border-gray-700 no-underline flex items-center justify-center"
                             >
                               {getIcon("LogOut", { className: "mr-2 h-4 w-4" })} Sign Out
                             </Button>
@@ -394,8 +405,9 @@ export default function Header() {
         </div>
 
         {/* Second Nav Row - Black Background, Gumroad Style */}
-        <div className="bg-black h-10 shadow-md sticky top-[48px] z-30 border-t border-gray-700">
+        <div className="bg-black h-10 shadow-md sticky top-[48px] z-30 border-t border-gray-700"> {/* Sticking below the 48px top bar */}
           <div className="container-default flex h-full items-stretch justify-between">
+            {/* Main Navigation Links */}
             <nav className="flex items-stretch h-full overflow-x-auto whitespace-nowrap flex-grow scrollbar-hide">
               {mainAppNavLinks.map((link, index) => {
                 const isActive = pathname === link.href;
@@ -412,8 +424,8 @@ export default function Header() {
                       className={cn(
                         "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-3 py-2 rounded-none",
                         isActive
-                          ? "bg-neutral-800 text-blue-400" // Active link style
-                          : "text-white hover:bg-pink-500 hover:text-white" // Inactive link hover
+                          ? "bg-neutral-800 text-blue-400" // Active link style from Gumroad
+                          : "text-white hover:bg-pink-500 hover:text-white"
                       )}
                     >
                       {link.label}
@@ -422,6 +434,7 @@ export default function Header() {
                 );
               })}
             </nav>
+            {/* Social Media Links */}
             <div className="hidden md:flex items-center space-x-4 pl-6 pr-4 border-l border-gray-700/50">
               {socialMediaLinks.map((sLink) => (
                   <Link key={sLink.label} href={sLink.href} aria-label={sLink.label} className="text-white hover:text-gray-300 transition-colors no-underline">
@@ -435,4 +448,3 @@ export default function Header() {
     );
   }
 }
-
