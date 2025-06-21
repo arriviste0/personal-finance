@@ -154,7 +154,7 @@ export default function Header() {
             <div className="flex items-center space-x-2">
               {!isAuthenticated && !isLoadingSession ? (
                 <>
-                  <Link
+                   <Link
                     href="/login"
                     className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-wz-pink hover:text-nb-white"
                   >
@@ -344,11 +344,11 @@ export default function Header() {
                               className={cn(
                                 "flex items-center px-3 py-2.5 rounded-none text-base font-medium transition-colors whitespace-nowrap no-underline",
                                 isActive
-                                  ? "bg-neutral-800 text-blue-400 font-semibold"
+                                  ? "bg-neutral-800 text-pink-500 font-semibold"
                                   : "text-white hover:bg-pink-500 hover:text-white"
                               )}
                             >
-                              {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-blue-400" : "text-gray-400 group-hover:text-white") })}
+                              {getIcon(link.iconName, { className: cn("mr-2 h-5 w-5", isActive ? "text-pink-500" : "text-gray-400 group-hover:text-white") })}
                               {link.label}
                             </Link>
                           </SheetClose>
@@ -423,7 +423,7 @@ export default function Header() {
                       className={cn(
                         "flex items-center justify-center w-full h-full text-sm font-medium no-underline transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black px-3 py-2 rounded-none",
                         isActive
-                          ? "bg-neutral-800 text-blue-400"
+                          ? "bg-neutral-800 text-pink-500"
                           : "text-white hover:bg-pink-500 hover:text-white"
                       )}
                     >
