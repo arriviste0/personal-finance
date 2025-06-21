@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +23,19 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from '@/hooks/use-toast';
+
 
 interface Transaction {
   id: string;
@@ -46,6 +59,8 @@ const initialTransactions: Transaction[] = [
 
 const categories = ["Food", "Transport", "Fun Money", "Shopping", "Utilities", "Rent/Mortgage", "Other"];
 
+const defaultNewExpenseState = { description: '', category: categories[0], amount: '', date: format(new Date(), 'yyyy-MM-dd') };
+
 export default function ExpensesPage() {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [filteredCategory, setFilteredCategory] = useState<string>("all");
@@ -54,8 +69,24 @@ export default function ExpensesPage() {
     from: new Date(2025, 3, 19), // Month is 0-indexed, so April is 3
     to: new Date(2025, 4, 19),   // May is 4
   });
-   const [isAddExpenseOpen, setIsAddExpenseOpen] = useState(false);
-   const [newExpense, setNewExpense] = useState({ description: '', category: categories[0], amount: '', date: format(new Date(), 'yyyy-MM-dd') });
+   const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
+   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+   const [newExpense, setNewExpense] = useState(defaultNewExpenseState);
+   const { toast } = useToast();
+
+    // Effect to pre-fill form when editing
+    useEffect(() => {
+        if (editingTransaction) {
+            setNewExpense({
+                description: editingTransaction.description,
+                category: editingTransaction.category,
+                amount: String(Math.abs(editingTransaction.amount)), // Amount is stored as negative, so use abs
+                date: editingTransaction.date,
+            });
+        } else {
+            setNewExpense(defaultNewExpenseState);
+        }
+    }, [editingTransaction, isFormDialogOpen]);
 
 
   const filteredTransactions = useMemo(() => {
@@ -86,9 +117,28 @@ export default function ExpensesPage() {
         setNewExpense(prev => ({ ...prev, date: e.target.value }));
     };
 
-   const submitAddExpense = () => {
+   const handleFormSubmit = () => {
        const amount = parseFloat(newExpense.amount);
-       if (newExpense.description && newExpense.category && !isNaN(amount) && amount > 0 && newExpense.date) {
+       if (!newExpense.description || !newExpense.category || isNaN(amount) || amount <= 0 || !newExpense.date) {
+           toast({
+               title: "Invalid Input",
+               description: "Please fill out all fields with valid data.",
+               variant: "destructive"
+           });
+           return;
+       }
+
+       if (editingTransaction) {
+           // Update existing transaction
+           const updatedTx: Transaction = {
+               ...editingTransaction,
+               ...newExpense,
+               amount: -amount,
+           };
+           setTransactions(transactions.map(t => t.id === editingTransaction.id ? updatedTx : t));
+           toast({ title: "Transaction Updated", description: "Your expense has been successfully updated." });
+       } else {
+           // Add new transaction
            const newTx: Transaction = {
                id: Date.now().toString(),
                date: newExpense.date,
@@ -97,20 +147,36 @@ export default function ExpensesPage() {
                amount: -amount, // Store expenses as negative
            };
            setTransactions(prev => [newTx, ...prev]);
-           setIsAddExpenseOpen(false);
-           setNewExpense({ description: '', category: categories[0], amount: '', date: format(new Date(), 'yyyy-MM-dd') });
-           // TODO: Add success toast
-       } else {
-           // TODO: Add error feedback (e.g., toast or inline errors)
-           console.error("Invalid expense input");
+           toast({ title: "Transaction Added", description: "Your new expense has been logged." });
        }
+
+       setIsFormDialogOpen(false);
    };
 
     const handleDeleteTransaction = (id: string) => {
         setTransactions(prev => prev.filter(tx => tx.id !== id));
-        // TODO: Add confirmation dialog and success toast
+        toast({
+            title: "Transaction Deleted",
+            description: "The expense has been removed.",
+            variant: "default", // or another subtle variant
+        });
     }
 
+    const openEditDialog = (tx: Transaction) => {
+        setEditingTransaction(tx);
+        setIsFormDialogOpen(true);
+    }
+    const openAddDialog = () => {
+        setEditingTransaction(null);
+        setIsFormDialogOpen(true);
+    }
+
+    const onDialogClose = (open: boolean) => {
+        if (!open) {
+            setEditingTransaction(null); // Reset editing state on close
+        }
+        setIsFormDialogOpen(open);
+    }
 
   const formatCurrency = (amount: number) => {
     const value = Math.abs(amount);
@@ -133,16 +199,18 @@ export default function ExpensesPage() {
          <h1 className="text-3xl font-semibold flex items-center gap-2">
             <ListChecks className="h-7 w-7 text-primary" /> Expense Tracker
          </h1>
-          <Dialog open={isAddExpenseOpen} onOpenChange={setIsAddExpenseOpen}>
+          <Dialog open={isFormDialogOpen} onOpenChange={onDialogClose}>
              <DialogTrigger asChild>
-                 <Button variant="primary" className="retro-button">
+                 <Button variant="primary" className="retro-button" onClick={openAddDialog}>
                     <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
                  </Button>
              </DialogTrigger>
               <DialogContent className="retro-window sm:max-w-[450px]">
                   <DialogHeader className="retro-window-header !bg-primary !text-primary-foreground">
-                   <DialogTitle>Add New Expense</DialogTitle>
-                    <DialogDescription className="!text-primary-foreground/80">Log a new spending transaction.</DialogDescription>
+                   <DialogTitle>{editingTransaction ? 'Edit Expense' : 'Add New Expense'}</DialogTitle>
+                    <DialogDescription className="!text-primary-foreground/80">
+                        {editingTransaction ? 'Update the details of your spending transaction.' : 'Log a new spending transaction.'}
+                    </DialogDescription>
                     <div className="retro-window-controls">
                        <span className="!bg-primary !border-primary-foreground"></span>
                        <span className="!bg-primary !border-primary-foreground"></span>
@@ -174,7 +242,7 @@ export default function ExpensesPage() {
                     </div>
                    <div className="grid grid-cols-4 items-center gap-3">
                      <Label htmlFor="amount" className="text-right text-sm">Amount ($)</Label>
-                     <Input id="amount" type="number" value={newExpense.amount} onChange={handleAddExpenseInputChange} placeholder="e.g., 15.75" className="col-span-3 retro-input" />
+                     <Input id="amount" type="number" min="0" step="0.01" value={newExpense.amount} onChange={handleAddExpenseInputChange} placeholder="e.g., 15.75" className="col-span-3 retro-input" />
                    </div>
                    <div className="grid grid-cols-4 items-center gap-3">
                      <Label htmlFor="date" className="text-right text-sm">Date</Label>
@@ -185,8 +253,8 @@ export default function ExpensesPage() {
                      <DialogClose asChild>
                         <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
                      </DialogClose>
-                    <Button type="submit" variant="primary" className="retro-button" onClick={submitAddExpense}>
-                      Add Expense
+                    <Button type="submit" variant="primary" className="retro-button" onClick={handleFormSubmit}>
+                      {editingTransaction ? 'Save Changes' : 'Add Expense'}
                     </Button>
                  </DialogFooter>
                </DialogContent>
@@ -255,25 +323,37 @@ export default function ExpensesPage() {
                             {formatCurrency(tx.amount)}
                          </TableCell>
                          <TableCell className="text-center">
-                            <div className="flex justify-center gap-1">
+                            <div className="flex justify-center items-center gap-1">
                                <Button
                                    variant="ghost"
                                    size="icon"
-                                   className="h-7 w-7 retro-button-ghost text-muted-foreground hover:text-primary"
-                                   onClick={() => { /* Placeholder for edit action */ }}
+                                   className="h-8 w-8 group"
+                                   onClick={() => openEditDialog(tx)}
                                >
-                                   <Edit className="h-4 w-4" />
+                                   <Edit className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                                    <span className="sr-only">Edit</span>
                                </Button>
-                               <Button
-                                   variant="ghost"
-                                   size="icon"
-                                   className="h-7 w-7 retro-button-ghost text-muted-foreground hover:text-destructive"
-                                   onClick={() => handleDeleteTransaction(tx.id)}
-                               >
-                                   <Trash2 className="h-4 w-4"/>
-                                   <span className="sr-only">Delete</span>
-                               </Button>
+                               <AlertDialog>
+                                   <AlertDialogTrigger asChild>
+                                      <Button variant="ghost" size="icon" className="h-8 w-8 group">
+                                          <Trash2 className="h-4 w-4 text-muted-foreground group-hover:text-destructive transition-colors"/>
+                                          <span className="sr-only">Delete</span>
+                                      </Button>
+                                   </AlertDialogTrigger>
+                                   <AlertDialogContent className="retro-window">
+                                     <AlertDialogHeader className="retro-window-header !bg-destructive !text-destructive-foreground">
+                                       <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                       <div className="retro-window-controls"><span></span><span></span></div>
+                                     </AlertDialogHeader>
+                                     <AlertDialogDescription className="retro-window-content !border-t-0 !pt-2">
+                                       This action cannot be undone. This will permanently delete the transaction for "{tx.description}".
+                                     </AlertDialogDescription>
+                                     <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
+                                       <AlertDialogCancel asChild><Button variant="secondary" className="retro-button">Cancel</Button></AlertDialogCancel>
+                                       <AlertDialogAction asChild><Button variant="destructive" className="retro-button" onClick={() => handleDeleteTransaction(tx.id)}>Delete</Button></AlertDialogAction>
+                                     </AlertDialogFooter>
+                                   </AlertDialogContent>
+                                </AlertDialog>
                             </div>
                          </TableCell>
                       </TableRow>
