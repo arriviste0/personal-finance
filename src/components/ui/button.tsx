@@ -4,26 +4,31 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// Define variants using the retro base class and variant-specific classes from globals.css
 const buttonVariants = cva(
-  "inline-flex items-center justify-center px-4 py-2 border-2 border-foreground bg-transparent text-foreground shadow-retro-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:active:translate-y-0 disabled:active:translate-x-0 text-base font-medium font-sans", // Ensure sans font is applied and merge classes correctly
+  "inline-flex items-center justify-center whitespace-nowrap rounded-none text-base font-medium font-sans ring-offset-background transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "retro-button-default", // Default uses outline styling
-        primary: "retro-button-primary",
-        secondary: "retro-button-secondary",
-        accent: "retro-button-accent",
-        destructive: "retro-button-destructive",
-        ghost: "retro-button-ghost",
-        link: "retro-button-link",
-        outline: "retro-button-outline", // Explicit outline variant
+        default:
+          "border-2 border-foreground bg-card text-foreground shadow-[2px_2px_0px_hsl(var(--foreground))] hover:shadow-[3px_3px_0px_hsl(var(--foreground))] active:translate-y-px active:shadow-[1px_1px_0px_hsl(var(--foreground))] disabled:shadow-none",
+        primary:
+          "border-2 border-foreground bg-primary text-primary-foreground shadow-[2px_2px_0px_hsl(var(--foreground))] hover:bg-primary/90 hover:shadow-[3px_3px_0px_hsl(var(--foreground))] active:translate-y-px active:shadow-[1px_1px_0px_hsl(var(--foreground))] disabled:shadow-none",
+        secondary:
+          "border-2 border-foreground bg-secondary text-secondary-foreground shadow-[2px_2px_0px_hsl(var(--foreground))] hover:bg-secondary/90 hover:shadow-[3px_3px_0px_hsl(var(--foreground))] active:translate-y-px active:shadow-[1px_1px_0px_hsl(var(--foreground))] disabled:shadow-none",
+        destructive:
+          "border-2 border-foreground bg-destructive text-destructive-foreground shadow-[2px_2px_0px_hsl(var(--foreground))] hover:bg-destructive/90 hover:shadow-[3px_3px_0px_hsl(var(--foreground))] active:translate-y-px active:shadow-[1px_1px_0px_hsl(var(--foreground))] disabled:shadow-none",
+        accent:
+          "border-2 border-foreground bg-accent text-accent-foreground shadow-[2px_2px_0px_hsl(var(--foreground))] hover:bg-accent/90 hover:shadow-[3px_3px_0px_hsl(var(--foreground))] active:translate-y-px active:shadow-[1px_1px_0px_hsl(var(--foreground))] disabled:shadow-none",
+        outline:
+          "border-2 border-foreground bg-transparent hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "", // Base style handles default size
-        sm: "retro-button-sm",
-        lg: "retro-button-lg",
-        icon: "retro-button-icon",
+        default: "h-10 px-4 py-2",
+        sm: "h-9 px-3",
+        lg: "h-11 px-8",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {
@@ -44,7 +49,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size }), className, "font-sans")} // Ensure sans font is applied and merge classes correctly
+        className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />

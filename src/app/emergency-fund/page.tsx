@@ -181,7 +181,7 @@ export default function EmergencyFundPage() {
          </h1>
            <Dialog open={isModifyFundOpen} onOpenChange={setIsModifyFundOpen}>
              <DialogTrigger asChild>
-                 <Button variant="primary" className="retro-button">
+                 <Button variant="primary">
                     <DollarSign className="mr-2 h-4 w-4" /> Modify Funds
                  </Button>
              </DialogTrigger>
@@ -229,11 +229,11 @@ export default function EmergencyFundPage() {
                  </div>
                  <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                      <DialogClose asChild>
-                        <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
+                        <Button type="button" variant="secondary">Cancel</Button>
                      </DialogClose>
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                         <Button variant="outline" className="retro-button">
+                         <Button variant="outline">
                            <MinusCircle className="mr-2 h-4 w-4"/> Withdraw
                          </Button>
                       </AlertDialogTrigger>
@@ -246,14 +246,14 @@ export default function EmergencyFundPage() {
                            Are you sure you want to withdraw {formatCurrency(parseFloat(transactionAmountInput) || 0)} from your emergency fund?
                         </AlertDialogDescription>
                         <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
-                          <AlertDialogCancel asChild><Button variant="secondary" className="retro-button">Cancel</Button></AlertDialogCancel>
+                          <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
                           <AlertDialogAction asChild>
-                            <Button variant="destructive" className="retro-button" onClick={() => handleTransaction('withdrawal')}>Yes, Withdraw</Button>
+                            <Button variant="destructive" onClick={() => handleTransaction('withdrawal')}>Yes, Withdraw</Button>
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
-                     <Button variant="primary" className="retro-button" onClick={() => handleTransaction('deposit')}>
+                     <Button variant="primary" onClick={() => handleTransaction('deposit')}>
                       <PlusCircle className="mr-2 h-4 w-4"/> Deposit
                     </Button>
                  </DialogFooter>
@@ -292,17 +292,17 @@ export default function EmergencyFundPage() {
                                  onBlur={saveTargetAmount}
                                  onKeyDown={(e) => e.key === 'Enter' && saveTargetAmount()}
                              />
-                              <Button variant="ghost" size="icon" className="h-6 w-6 retro-button-ghost text-green-500 hover:bg-green-500/10" onClick={saveTargetAmount}>
+                              <Button variant="ghost" size="icon" className="h-6 w-6 text-green-500 hover:bg-green-500/10" onClick={saveTargetAmount}>
                                  <Check className="h-4 w-4"/>
                               </Button>
-                               <Button variant="ghost" size="icon" className="h-6 w-6 retro-button-ghost text-muted-foreground hover:bg-muted/50" onClick={() => {setIsEditingTarget(false); setEditingTargetInput(definedTargetAmount.toString());}}>
+                               <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:bg-muted/50" onClick={() => {setIsEditingTarget(false); setEditingTargetInput(definedTargetAmount.toString());}}>
                                  <X className="h-4 w-4"/>
                               </Button>
                          </>
                       ) : (
                          <>
                             <span className="font-semibold text-foreground">{formatCurrency(definedTargetAmount)}</span>
-                            <Button variant="ghost" size="icon" className="h-6 w-6 retro-button-ghost text-muted-foreground hover:text-primary" onClick={() => setIsEditingTarget(true)}>
+                            <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-primary" onClick={() => setIsEditingTarget(true)}>
                                <Edit className="h-4 w-4"/>
                                 <span className="sr-only">Edit Target</span>
                             </Button>
@@ -355,7 +355,7 @@ export default function EmergencyFundPage() {
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-7 w-7 retro-button-ghost text-muted-foreground hover:text-destructive"
+                                className="h-7 w-7 text-muted-foreground hover:text-destructive"
                                 onClick={() => handleDeleteTransaction(tx.id)}
                             >
                                 <Trash2 className="h-4 w-4"/>

@@ -170,7 +170,7 @@ export default function TaxPlannerPage() {
                 />
               </CardContent>
                <CardFooter>
-                  <Button type="submit" disabled={isLoading || !form.formState.isValid} variant="solidAccent" className="w-full"> {/* Solid accent */}
+                  <Button type="submit" disabled={isLoading || !form.formState.isValid} variant="accent" className="w-full">
                    {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Calculating Estimate...

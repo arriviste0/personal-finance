@@ -185,7 +185,7 @@ export default function SavingsGoalsPage() {
          <h1 className="text-3xl font-semibold font-heading">Your Savings Goals</h1>
          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
-                <Button variant="primary" className="retro-button">
+                <Button variant="primary">
                    <PlusCircle className="mr-2 h-4 w-4" /> Create New Goal
                 </Button>
             </DialogTrigger>
@@ -214,7 +214,7 @@ export default function SavingsGoalsPage() {
                  <div className="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
                       <Dialog open={isEditDialogOpen && editingGoalDef?.id === goalDef.id} onOpenChange={(open) => {if (!open) setEditingGoalDef(null); setIsEditDialogOpen(open);}}>
                         <DialogTrigger asChild>
-                            <Button variant="outline" size="icon" className="retro-button retro-button-icon h-7 w-7 bg-background/80 hover:bg-muted">
+                            <Button variant="outline" size="icon" className="h-7 w-7 bg-background/80 hover:bg-muted">
                                <Edit className="h-4 w-4 text-muted-foreground"/>
                                <span className="sr-only">Edit Goal</span>
                             </Button>
@@ -230,7 +230,7 @@ export default function SavingsGoalsPage() {
                      </Dialog>
                      <AlertDialog>
                        <AlertDialogTrigger asChild>
-                         <Button variant="outline" size="icon" className="retro-button retro-button-icon h-7 w-7 bg-background/80 hover:bg-destructive/10 hover:border-destructive/50">
+                         <Button variant="outline" size="icon" className="h-7 w-7 bg-background/80 hover:bg-destructive/10 hover:border-destructive/50">
                             <Trash2 className="h-4 w-4 text-muted-foreground group-hover:text-destructive"/>
                             <span className="sr-only">Delete Goal</span>
                          </Button>
@@ -244,8 +244,8 @@ export default function SavingsGoalsPage() {
                               This action cannot be undone. This will permanently delete the "{goalDef.name}" savings goal. Any funds allocated will be returned to your main wallet.
                          </AlertDialogDescription>
                          <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
-                           <AlertDialogCancel asChild><Button variant="secondary" className="retro-button">Cancel</Button></AlertDialogCancel>
-                           <AlertDialogAction asChild><Button variant="destructive" className="retro-button" onClick={() => handleDeleteGoal(goalDef.id)}>Yes, Delete Goal</Button></AlertDialogAction>
+                           <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
+                           <AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteGoal(goalDef.id)}>Yes, Delete Goal</Button></AlertDialogAction>
                          </AlertDialogFooter>
                        </AlertDialogContent>
                      </AlertDialog>
@@ -272,7 +272,7 @@ export default function SavingsGoalsPage() {
                 <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                    <Button
                      variant="primary"
-                     className="retro-button w-full"
+                     className="w-full"
                      onClick={() => openAddFundsDialog(goalDef.id)}
                     >
                      <DollarSign className="mr-2 h-4 w-4"/> Manage Funds
@@ -347,9 +347,9 @@ export default function SavingsGoalsPage() {
              </div>
              <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                <DialogClose asChild>
-                    <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
+                    <Button type="button" variant="secondary">Cancel</Button>
                </DialogClose>
-               <Button type="submit" variant="accent" className="retro-button" onClick={handleModifyFundsSubmit}>
+               <Button type="submit" variant="accent" onClick={handleModifyFundsSubmit}>
                  Update Funds
                </Button>
              </DialogFooter>
@@ -459,8 +459,8 @@ function GoalFormDialog({ title, description, goal, onSave, onClose }: GoalFormD
          </div>
       </div>
       <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
-        <Button type="button" variant="secondary" className="retro-button" onClick={onClose}>Cancel</Button>
-        <Button type="submit" variant="primary" className="retro-button" onClick={handleSave}>{goal ? 'Save Changes' : 'Create Goal'}</Button>
+        <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
+        <Button type="submit" variant="primary" onClick={handleSave}>{goal ? 'Save Changes' : 'Create Goal'}</Button>
       </DialogFooter>
     </DialogContent>
   );

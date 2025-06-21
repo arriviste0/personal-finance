@@ -124,7 +124,7 @@ export default function InvestmentsPage() {
               }
            }}>
              <DialogTrigger asChild>
-                 <Button variant="primary" className="retro-button">
+                 <Button variant="primary">
                     <PlusCircle className="mr-2 h-4 w-4" /> Add Investment
                  </Button>
              </DialogTrigger>
@@ -261,7 +261,7 @@ export default function InvestmentsPage() {
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-7 w-7 retro-button-ghost text-muted-foreground hover:text-primary"
+                                    className="h-7 w-7 text-muted-foreground hover:text-primary"
                                     onClick={() => openEditDialog(inv)}
                                 >
                                     <Edit className="h-4 w-4"/>
@@ -269,7 +269,7 @@ export default function InvestmentsPage() {
                                 </Button>
                                  <AlertDialog>
                                    <AlertDialogTrigger asChild>
-                                     <Button variant="ghost" size="icon" className="h-7 w-7 retro-button-ghost text-muted-foreground hover:text-destructive">
+                                     <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive">
                                         <Trash2 className="h-4 w-4"/>
                                         <span className="sr-only">Delete</span>
                                      </Button>
@@ -283,8 +283,8 @@ export default function InvestmentsPage() {
                                            Are you sure you want to delete the "{inv.name}" investment? This action cannot be undone.
                                         </AlertDialogDescription>
                                      <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
-                                       <AlertDialogCancel asChild><Button variant="secondary" className="retro-button">Cancel</Button></AlertDialogCancel>
-                                       <AlertDialogAction asChild><Button variant="destructive" className="retro-button" onClick={() => handleDeleteInvestment(inv.id)}>Delete</Button></AlertDialogAction>
+                                       <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
+                                       <AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteInvestment(inv.id)}>Delete</Button></AlertDialogAction>
                                      </AlertDialogFooter>
                                    </AlertDialogContent>
                                  </AlertDialog>
@@ -453,8 +453,8 @@ function InvestmentFormDialog({ investment, onSave, onClose }: InvestmentFormDia
          </div>
       </div>
       <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-3 !p-4">
-        <Button type="button" variant="secondary" className="retro-button" onClick={onClose}>Cancel</Button>
-        <Button type="submit" variant="primary" className="retro-button" onClick={handleSave}>
+        <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
+        <Button type="submit" variant="primary" onClick={handleSave}>
           {isEditing ? 'Save Changes' : 'Add Investment'}
         </Button>
       </DialogFooter>

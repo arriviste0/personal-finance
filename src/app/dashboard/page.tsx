@@ -170,14 +170,14 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1">
-            <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/expenses')}><Receipt className="mr-2 h-4 w-4" />Log Expense</Button>
-            <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/budget')}><CreditCard className="mr-2 h-4 w-4" />View/Edit Budget</Button>
-            <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/savings-goals')}><TargetIcon className="mr-2 h-4 w-4" />Set New Goal</Button>
-            <Button variant="outline" className="w-full retro-button justify-start" onClick={() => router.push('/investments')}><Briefcase className="mr-2 h-4 w-4" />Manage Investments</Button>
-            <Button variant="outline" className="w-full retro-button justify-start" onClick={() => setIsLinkBankModalOpen(true)}>
+            <Button variant="outline" className="w-full justify-start" onClick={() => router.push('/expenses')}><Receipt className="mr-2 h-4 w-4" />Log Expense</Button>
+            <Button variant="outline" className="w-full justify-start" onClick={() => router.push('/budget')}><CreditCard className="mr-2 h-4 w-4" />View/Edit Budget</Button>
+            <Button variant="outline" className="w-full justify-start" onClick={() => router.push('/savings-goals')}><TargetIcon className="mr-2 h-4 w-4" />Set New Goal</Button>
+            <Button variant="outline" className="w-full justify-start" onClick={() => router.push('/investments')}><Briefcase className="mr-2 h-4 w-4" />Manage Investments</Button>
+            <Button variant="outline" className="w-full justify-start" onClick={() => setIsLinkBankModalOpen(true)}>
               <Landmark className="mr-2 h-4 w-4" /> Link Bank Account
             </Button>
-             <Button variant="primary" className="w-full retro-button justify-start !bg-wz-yellow !text-wz-text-dark hover:!bg-wz-yellow/90">
+             <Button variant="primary" className="w-full justify-start !bg-wz-yellow !text-wz-text-dark hover:!bg-wz-yellow/90">
               <Star className="mr-2 h-4 w-4" /> Upgrade to Premium
             </Button>
           </CardContent>
@@ -212,7 +212,7 @@ export default function DashboardPage() {
              </div>
           </CardContent>
           <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-            <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/savings-goals')}>
+            <Button variant="outline" className="w-full" onClick={() => router.push('/savings-goals')}>
               <ListChecks className="mr-2 h-4 w-4" /> View All Savings Goals
             </Button>
           </CardFooter>
@@ -244,7 +244,7 @@ export default function DashboardPage() {
               )}
           </CardContent>
           <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-            <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/emergency-fund')}>
+            <Button variant="outline" className="w-full" onClick={() => router.push('/emergency-fund')}>
               <DollarSign className="mr-2 h-4 w-4" /> Manage Fund
             </Button>
           </CardFooter>
@@ -283,7 +283,7 @@ export default function DashboardPage() {
                 </div>
             </CardContent>
             <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/budget')}>
+                <Button variant="outline" className="w-full" onClick={() => router.push('/budget')}>
                    <Settings className="mr-2 h-4 w-4" /> Manage Full Budget
                 </Button>
             </CardFooter>
@@ -321,7 +321,7 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </CardContent>
            <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/investments')}>
+                <Button variant="outline" className="w-full" onClick={() => router.push('/investments')}>
                     <TrendingUp className="mr-2 h-4 w-4" /> Manage Investments
                 </Button>
             </CardFooter>
@@ -352,7 +352,7 @@ export default function DashboardPage() {
                 </div>
             </CardContent>
             <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/ai-assistant')}>
+                <Button variant="outline" className="w-full" onClick={() => router.push('/ai-assistant')}>
                     <Lightbulb className="mr-2 h-4 w-4" /> Get AI Recommendations
                 </Button>
             </CardFooter>
@@ -386,7 +386,7 @@ export default function DashboardPage() {
               </div>
           </CardContent>
            <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full retro-button" onClick={() => router.push('/expenses')}>
+                <Button variant="outline" className="w-full" onClick={() => router.push('/expenses')}>
                     <ArrowRight className="mr-2 h-4 w-4" /> View All Transactions
                 </Button>
             </CardFooter>
@@ -430,11 +430,11 @@ export default function DashboardPage() {
             </p>
           </div>
           <DialogFooter className="retro-window-content !border-t-2 !pt-3 !pb-3 flex-col sm:flex-row sm:justify-between gap-2">
-            <Button className="w-full sm:w-auto retro-button" variant="primary" onClick={handleLinkBankAccount}>
+            <Button className="w-full sm:w-auto" variant="primary" onClick={handleLinkBankAccount}>
               <PlusCircle className="mr-2 h-4 w-4" /> Connect & Sync (Demo)
             </Button>
             <DialogClose asChild>
-              <Button variant="secondary" className="w-full sm:w-auto retro-button">Cancel</Button>
+              <Button variant="secondary" className="w-full sm:w-auto">Cancel</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

@@ -256,7 +256,7 @@ export default function AiAssistantPage() {
                 </div>
               </CardContent>
                <CardFooter>
-                 <Button type="submit" disabled={isLoading || !form.formState.isValid} variant="solidAccent" className="w-full">
+                 <Button type="submit" disabled={isLoading || !form.formState.isValid} variant="accent" className="w-full">
                    {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Insights...

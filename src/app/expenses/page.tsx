@@ -201,7 +201,7 @@ export default function ExpensesPage() {
          </h1>
           <Dialog open={isFormDialogOpen} onOpenChange={onDialogClose}>
              <DialogTrigger asChild>
-                 <Button variant="primary" className="retro-button" onClick={openAddDialog}>
+                 <Button variant="primary" onClick={openAddDialog}>
                     <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
                  </Button>
              </DialogTrigger>
@@ -251,9 +251,9 @@ export default function ExpensesPage() {
                  </div>
                  <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                      <DialogClose asChild>
-                        <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
+                        <Button type="button" variant="secondary">Cancel</Button>
                      </DialogClose>
-                    <Button type="submit" variant="primary" className="retro-button" onClick={handleFormSubmit}>
+                    <Button type="submit" variant="primary" onClick={handleFormSubmit}>
                       {editingTransaction ? 'Save Changes' : 'Add Expense'}
                     </Button>
                  </DialogFooter>
@@ -349,8 +349,8 @@ export default function ExpensesPage() {
                                        This action cannot be undone. This will permanently delete the transaction for "{tx.description}".
                                      </AlertDialogDescription>
                                      <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
-                                       <AlertDialogCancel asChild><Button variant="secondary" className="retro-button">Cancel</Button></AlertDialogCancel>
-                                       <AlertDialogAction asChild><Button variant="destructive" className="retro-button" onClick={() => handleDeleteTransaction(tx.id)}>Delete</Button></AlertDialogAction>
+                                       <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
+                                       <AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteTransaction(tx.id)}>Delete</Button></AlertDialogAction>
                                      </AlertDialogFooter>
                                    </AlertDialogContent>
                                 </AlertDialog>

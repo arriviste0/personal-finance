@@ -173,7 +173,7 @@ export default function GetStartedPage() {
                         {error && <p id="signup-error" className="text-sm text-destructive text-center pt-2">{error}</p>}
                     </CardContent>
                     <CardFooter className="retro-card-content !border-t-2 !pt-4 !pb-4 flex flex-col gap-4">
-                        <Button type="submit" variant="accent" className="w-full retro-button" disabled={isLoading}>
+                        <Button type="submit" variant="accent" className="w-full" disabled={isLoading}>
                             {isLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -195,4 +195,3 @@ export default function GetStartedPage() {
         </div>
     );
 }
-

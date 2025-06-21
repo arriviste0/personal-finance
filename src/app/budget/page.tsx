@@ -209,7 +209,7 @@ export default function BudgetPage() {
           <div className="flex gap-2">
              <Dialog open={isAddTransactionOpen} onOpenChange={setIsAddTransactionOpen}>
                  <DialogTrigger asChild>
-                    <Button variant="primary" className="retro-button">
+                    <Button variant="primary">
                      <PlusCircle className="mr-2 h-4 w-4" /> Add Transaction
                    </Button>
                  </DialogTrigger>
@@ -269,9 +269,9 @@ export default function BudgetPage() {
                      </div>
                      <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                          <DialogClose asChild>
-                            <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
+                            <Button type="button" variant="secondary">Cancel</Button>
                          </DialogClose>
-                        <Button type="submit" variant="primary" className="retro-button" onClick={submitAddTransaction}>
+                        <Button type="submit" variant="primary" onClick={submitAddTransaction}>
                           Add Transaction
                         </Button>
                      </DialogFooter>
@@ -281,7 +281,7 @@ export default function BudgetPage() {
                 {/* Add New Category Dialog */}
                 <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
                   <DialogTrigger asChild>
-                      <Button variant="outline" className="retro-button">
+                      <Button variant="outline">
                        <PlusCircle className="mr-2 h-4 w-4" /> Add Category
                      </Button>
                   </DialogTrigger>
@@ -312,9 +312,9 @@ export default function BudgetPage() {
                        </div>
                        <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
                            <DialogClose asChild>
-                              <Button type="button" variant="secondary" className="retro-button">Cancel</Button>
+                              <Button type="button" variant="secondary">Cancel</Button>
                            </DialogClose>
-                          <Button type="submit" variant="primary" className="retro-button" onClick={submitAddCategory}>
+                          <Button type="submit" variant="primary" onClick={submitAddCategory}>
                             Add Category
                           </Button>
                        </DialogFooter>
@@ -358,12 +358,12 @@ export default function BudgetPage() {
                  <span className="text-lg font-semibold">{formatCurrency(dailySpendingAverage)}</span>
               </div>
              <div className="flex gap-3 pt-3">
-                 <Button variant={isEditMode ? "secondary" : "default"} className="flex-1 retro-button" onClick={toggleEditMode}>
+                 <Button variant={isEditMode ? "secondary" : "default"} className="flex-1" onClick={toggleEditMode}>
                     {isEditMode ? <Save className="mr-2 h-4 w-4" /> : <Edit className="mr-2 h-4 w-4" />}
                     {isEditMode ? 'Save Budgets' : 'Edit Budgets'}
                  </Button>
                  {isEditMode && (
-                     <Button variant="ghost" size="icon" onClick={cancelEditMode} className="retro-button-ghost text-muted-foreground hover:text-destructive">
+                     <Button variant="ghost" size="icon" onClick={cancelEditMode} className="text-muted-foreground hover:text-destructive">
                         <X className="h-5 w-5"/>
                         <span className="sr-only">Cancel</span>
                      </Button>
