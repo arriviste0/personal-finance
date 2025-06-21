@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { PlusCircle, Filter, ListChecks, Trash2, X } from "lucide-react";
+import { PlusCircle, Filter, ListChecks, Trash2, X, Edit } from "lucide-react";
 import { type DateRange } from "react-day-picker";
 import { addDays, format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
@@ -242,7 +242,7 @@ export default function ExpensesPage() {
                      <TableHead>Description</TableHead>
                      <TableHead className="w-[150px]">Category</TableHead>
                      <TableHead className="text-right w-[100px]">Amount</TableHead>
-                     <TableHead className="text-center w-[50px]">Actions</TableHead>
+                     <TableHead className="text-center w-[100px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -255,15 +255,26 @@ export default function ExpensesPage() {
                             {formatCurrency(tx.amount)}
                          </TableCell>
                          <TableCell className="text-center">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-7 w-7 retro-button-ghost text-muted-foreground hover:text-destructive"
-                                onClick={() => handleDeleteTransaction(tx.id)}
-                            >
-                                <Trash2 className="h-4 w-4"/>
-                                <span className="sr-only">Delete</span>
-                            </Button>
+                            <div className="flex justify-center gap-1">
+                               <Button
+                                   variant="ghost"
+                                   size="icon"
+                                   className="h-7 w-7 retro-button-ghost text-muted-foreground hover:text-primary"
+                                   onClick={() => { /* Placeholder for edit action */ }}
+                               >
+                                   <Edit className="h-4 w-4" />
+                                   <span className="sr-only">Edit</span>
+                               </Button>
+                               <Button
+                                   variant="ghost"
+                                   size="icon"
+                                   className="h-7 w-7 retro-button-ghost text-muted-foreground hover:text-destructive"
+                                   onClick={() => handleDeleteTransaction(tx.id)}
+                               >
+                                   <Trash2 className="h-4 w-4"/>
+                                   <span className="sr-only">Delete</span>
+                               </Button>
+                            </div>
                          </TableCell>
                       </TableRow>
                     )) : (
