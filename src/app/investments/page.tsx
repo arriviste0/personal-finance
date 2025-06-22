@@ -257,7 +257,7 @@ export default function InvestmentsPage() {
                              {gainLoss === null ? 'N/A' : `${gainLoss >= 0 ? '+' : ''}$${gainLoss.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                          </TableCell>
                          <TableCell className="text-center">
-                            <div className="flex justify-center items-center gap-1 border-2 border-foreground p-0.5">
+                            <div className="flex justify-center items-center gap-1 p-0.5">
                                <Button
                                    variant="ghost"
                                    size="icon"
@@ -461,5 +461,3 @@ function InvestmentFormDialog({ investment, onSave, onClose }: InvestmentFormDia
     </DialogContent>
   );
 }
-
-    
