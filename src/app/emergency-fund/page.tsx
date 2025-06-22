@@ -298,7 +298,7 @@ export default function EmergencyFundPage() {
                            Are you sure you want to withdraw {formatCurrency(parseFloat(transactionAmountInput) || 0)} from your emergency fund?
                         </AlertDialogDescription>
                         <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
-                          <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
+                          <AlertDialogCancel asChild><Button variant="outline">Cancel</Button></AlertDialogCancel>
                           <AlertDialogAction asChild>
                             <Button variant="destructive" onClick={() => handleTransaction('withdrawal')}>Yes, Withdraw</Button>
                           </AlertDialogAction>

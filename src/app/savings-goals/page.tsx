@@ -247,7 +247,7 @@ export default function SavingsGoalsPage() {
                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
                       <Dialog open={isEditDialogOpen && editingGoalDef?.id === goalDef.id} onOpenChange={(open) => {if (!open) setEditingGoalDef(null); setIsEditDialogOpen(open);}}>
                         <DialogTrigger asChild>
-                            <Button variant="outline" size="icon" className="h-7 w-7 bg-background/80 hover:bg-muted">
+                           <Button variant="outline" size="icon" className="h-7 w-7 bg-background/80 hover:bg-muted">
                                <Edit className="h-4 w-4 text-primary"/>
                                <span className="sr-only">Edit Goal</span>
                             </Button>
@@ -277,7 +277,7 @@ export default function SavingsGoalsPage() {
                               This action cannot be undone. This will permanently delete the "{goalDef.name}" savings goal. Any funds allocated will be returned to your main wallet.
                          </AlertDialogDescription>
                          <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
-                           <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
+                           <AlertDialogCancel asChild><Button variant="outline">Cancel</Button></AlertDialogCancel>
                            <AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteGoal(goalDef.id)}>Yes, Delete Goal</Button></AlertDialogAction>
                          </AlertDialogFooter>
                        </AlertDialogContent>

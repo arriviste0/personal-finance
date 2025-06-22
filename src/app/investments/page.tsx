@@ -291,20 +291,20 @@ export default function InvestmentsPage() {
                              {gainLoss === null ? 'N/A' : `${gainLoss >= 0 ? '+' : ''}$${gainLoss.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                          </TableCell>
                          <TableCell className="text-center">
-                           <div className="flex justify-center items-center gap-1 p-0.5 border-2 border-foreground">
+                           <div className="flex justify-center items-center gap-1 p-0.5">
                                <Button
                                    variant="ghost"
                                    size="icon"
-                                   className="h-7 w-7 !border-0"
+                                   className="h-7 w-7 !border-0 text-primary hover:bg-primary/10"
                                    onClick={() => openEditDialog(inv)}
                                >
-                                   <Edit className="h-4 w-4 text-primary"/>
+                                   <Edit className="h-4 w-4"/>
                                    <span className="sr-only">Edit</span>
                                </Button>
                                 <AlertDialog>
                                   <AlertDialogTrigger asChild>
-                                    <Button variant="ghost" size="icon" className="h-7 w-7 !border-0">
-                                       <Trash2 className="h-4 w-4 text-destructive"/>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7 !border-0 text-destructive hover:bg-destructive/10">
+                                       <Trash2 className="h-4 w-4"/>
                                        <span className="sr-only">Delete</span>
                                     </Button>
                                   </AlertDialogTrigger>
@@ -317,7 +317,7 @@ export default function InvestmentsPage() {
                                           Are you sure you want to delete the "{inv.name}" investment? This action cannot be undone.
                                        </AlertDialogDescription>
                                     <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
-                                      <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
+                                      <AlertDialogCancel asChild><Button variant="outline">Cancel</Button></AlertDialogCancel>
                                       <AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteInvestment(inv.id)}>Delete</Button></AlertDialogAction>
                                     </AlertDialogFooter>
                                   </AlertDialogContent>
