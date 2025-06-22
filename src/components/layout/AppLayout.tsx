@@ -61,7 +61,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
           "flex-1 w-full",
           isLandingPage 
             ? "pt-[68px]" 
-            : "pt-[48px] md:pt-[88px] container-default pb-6 md:pb-8 lg:pb-10"
+            : "pt-[72px] md:pt-[112px] container-default pb-6 md:pb-8 lg:pb-10"
         )}
       >
         {children}

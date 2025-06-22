@@ -155,11 +155,11 @@ export default function AiAssistantPage() {
                          type="button"
                          variant="ghost"
                          size="icon"
-                         className="h-10 w-10 shrink-0 mt-0"
+                         className="h-10 w-10 shrink-0 mt-0 border-destructive/50 text-destructive hover:bg-destructive/10"
                          onClick={() => removeExpense(index)}
                          disabled={expenseFields.length <= 1}
                        >
-                         <Trash2 className="h-4 w-4 text-destructive" />
+                         <Trash2 className="h-4 w-4" />
                          <span className="sr-only">Remove Expense</span>
                        </Button>
                      </div>
@@ -230,11 +230,11 @@ export default function AiAssistantPage() {
                             type="button"
                             variant="ghost"
                             size="icon"
-                             className="h-10 w-10 shrink-0"
+                            className="h-10 w-10 shrink-0 border-destructive/50 text-destructive hover:bg-destructive/10"
                             onClick={() => removeGoal(index)}
                             disabled={goalFields.length <= 1}
                           >
-                            <Trash2 className="h-4 w-4 text-destructive" />
+                            <Trash2 className="h-4 w-4" />
                             <span className="sr-only">Remove Goal</span>
                           </Button>
                        </div>
