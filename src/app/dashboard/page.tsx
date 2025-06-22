@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -105,13 +104,13 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-8">
         <div>
           <h1 className="text-3xl font-semibold font-heading">Dashboard</h1>
           <p className="text-muted-foreground">Welcome back! Here’s your financial overview.</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => router.push('/expenses')}>
+          <Button variant="outline" onClick={() => router.push('/expenses')} className="hover:bg-primary/10 hover:text-primary">
             <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
           </Button>
           <Button variant="primary" onClick={() => router.push('/savings-goals')}>
@@ -349,4 +348,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-

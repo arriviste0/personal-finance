@@ -287,7 +287,7 @@ export default function BudgetPage() {
                 {/* Add New Category Dialog */}
                 <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
                   <DialogTrigger asChild>
-                      <Button variant="outline">
+                      <Button variant="outline" className="hover:bg-primary/10 hover:text-primary">
                        <PlusCircle className="mr-2 h-4 w-4" /> Add Category
                      </Button>
                   </DialogTrigger>
