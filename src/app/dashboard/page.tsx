@@ -177,7 +177,7 @@ export default function DashboardPage() {
             <Button variant="outline" className="w-full justify-start" onClick={() => setIsLinkBankModalOpen(true)}>
               <Landmark className="mr-2 h-4 w-4" /> Link Bank Account
             </Button>
-             <Button variant="primary" className="w-full justify-start !bg-wz-yellow !text-wz-text-dark hover:!bg-wz-yellow/90">
+             <Button variant="primary" className="w-full justify-start">
               <Star className="mr-2 h-4 w-4" /> Upgrade to Premium
             </Button>
           </CardContent>
