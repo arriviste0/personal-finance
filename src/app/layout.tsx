@@ -7,6 +7,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import SessionProvider from '@/providers/SessionProvider';
 import { Toaster } from "@/components/ui/toaster";
 import { WalletProvider } from '@/contexts/WalletContext'; // Import WalletProvider
+import QueryProvider from '@/providers/QueryProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -41,10 +42,12 @@ export default function RootLayout({
         )}
       >
          <SessionProvider>
-           <WalletProvider> {/* Wrap AppLayout with WalletProvider */}
-            <AppLayout>{children}</AppLayout>
-            <Toaster />
-           </WalletProvider>
+           <QueryProvider>
+             <WalletProvider>
+              <AppLayout>{children}</AppLayout>
+              <Toaster />
+             </WalletProvider>
+           </QueryProvider>
          </SessionProvider>
       </body>
     </html>
