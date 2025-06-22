@@ -1,4 +1,3 @@
-
 'use client';
 
 import type React from "react";
@@ -22,15 +21,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const { walletBalance } = useWallet();
 
   const [isScrolled, setIsScrolled] = useState(false);
-
-  const landingPageHeaderAreaHeightPx = 68;
-  const internalTopRowHeightPx = 48;
-  const internalSecondNavHeightPx = 40;
-  const internalTotalHeaderHeightPx = internalTopRowHeightPx + internalSecondNavHeightPx;
-
-  const mainContentPaddingTop = isLandingPage
-    ? `${landingPageHeaderAreaHeightPx}px`
-    : `${internalTotalHeaderHeightPx}px`;
 
   const handleScroll = useCallback(() => {
     if (window.scrollY > SCROLL_THRESHOLD) {
@@ -69,9 +59,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <main
         className={cn(
           "flex-1 w-full",
-          isLandingPage ? "" : "container-default pb-6 md:pb-8 lg:pb-10"
+          isLandingPage 
+            ? "pt-[68px]" 
+            : "pt-[48px] md:pt-[88px] container-default pb-6 md:pb-8 lg:pb-10"
         )}
-        style={{ paddingTop: mainContentPaddingTop }}
       >
         {children}
       </main>

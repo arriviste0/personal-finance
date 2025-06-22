@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from "next/link";
@@ -111,7 +110,7 @@ export default function Header() {
           </div>
         </div>
         {!isLandingPage && (
-          <div className={cn("bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight)}>
+          <div className={cn("hidden md:block bg-black sticky top-[48px] z-30 shadow-md border-t border-gray-700", skeletonSecondBarHeight)}>
             <div className="container-default h-full flex items-center">
               <div className="h-6 w-full bg-gray-800/50 rounded-none animate-pulse"></div> {/* Nav links placeholder */}
             </div>
@@ -404,7 +403,7 @@ export default function Header() {
         </div>
 
         {/* Second Nav Row - Black Background, Gumroad Style */}
-        <div className="bg-black h-10 shadow-md sticky top-[48px] z-30 border-t border-gray-700">
+        <div className="hidden md:block bg-black h-10 shadow-md sticky top-[48px] z-30 border-t border-gray-700">
           <div className="container-default flex h-full items-stretch justify-between">
             {/* Main Navigation Links */}
             <nav className="flex items-stretch h-full overflow-x-auto whitespace-nowrap flex-grow scrollbar-hide">
