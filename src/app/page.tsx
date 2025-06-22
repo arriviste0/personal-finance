@@ -275,14 +275,6 @@ export default function LandingPage() {
                         <div className="mb-5 p-4 bg-white/40 rounded-full group-hover:scale-110 transition-transform duration-300">
                             {ServiceIcon && <ServiceIcon className="h-10 w-10" />}
                         </div>
-                        <Image
-                            src={`https://placehold.co/320x220.png`}
-                            alt={service.title}
-                            width={320}
-                            height={220}
-                            className="rounded-lg object-cover border-2 border-wz-border-dark/30 group-hover:scale-105 transition-transform duration-300 mb-4"
-                            data-ai-hint={`${service.title.toLowerCase().replace(/\s+/g, '-')}-illustration finance`}
-                        />
                         <h3 className="text-xl font-bold font-heading mt-2">{service.title}</h3>
                          <p className={cn("text-sm mt-2 px-2", service.textColor === "text-wz-text-dark" ? "text-wz-text-dark/80" : "text-wz-text-light/80")}>{service.description}</p>
                     </div>
