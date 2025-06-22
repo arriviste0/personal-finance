@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,24 +13,17 @@ import {
     CreditCard,
     Landmark,
     ShieldAlert,
-    Activity,
-    PlusCircle,
-    TrendingUp,
-    PiggyBank,
-    Lightbulb,
-    Settings,
-    Target as TargetIcon,
-    ListChecks,
+    ShieldCheck,
     Lock,
-    AlertTriangle,
     ArrowRight,
     Briefcase,
-    Zap,
-    Star,
+    Lightbulb,
+    PlusCircle,
+    Target as TargetIcon,
+    TrendingUp,
+    Wallet,
+    ListChecks,
     X,
-    BarChart3,
-    Receipt,
-    Users
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
@@ -55,19 +48,11 @@ const investmentPieData = [
     { name: 'Bonds', value: 1000, fill: 'hsl(var(--chart-5))' },
 ];
 
-const budgetSnapshotData = [
-    { category: 'Food & Groceries', spent: 450, budget: 600, color: 'bg-green-500' },
-    { category: 'Transportation', spent: 150, budget: 200, color: 'bg-blue-500' },
-    { category: 'Entertainment', spent: 280, budget: 300, color: 'bg-yellow-500' },
-    { category: 'Utilities', spent: 180, budget: 200, color: 'bg-purple-500' },
-];
-
-
 const recentTransactions = [
-    { id: "t1", date: "2024-07-28", description: "Grocery Shopping", amount: -75.50, category: "Food" },
-    { id: "t2", date: "2024-07-27", description: "Salary Deposit", amount: 2500.00, category: "Income" },
-    { id: "t3", date: "2024-07-26", description: "Restaurant - Dinner Out", amount: -42.10, category: "Food" },
-    { id: "t4", date: "2024-07-25", description: "Online Course Subscription", amount: -29.99, category: "Education" },
+    { id: "t1", date: "2024-07-28", description: "Grocery Shopping", amount: -75.50, category: "Food", icon: CreditCard },
+    { id: "t2", date: "2024-07-27", description: "Salary Deposit", amount: 2500.00, category: "Income", icon: DollarSign },
+    { id: "t3", date: "2024-07-26", description: "Restaurant - Dinner Out", amount: -42.10, category: "Food", icon: CreditCard },
+    { id: "t4", date: "2024-07-25", description: "Online Course Subscription", amount: -29.99, category: "Education", icon: Briefcase },
 ];
 
 export default function DashboardPage() {
@@ -77,8 +62,7 @@ export default function DashboardPage() {
   const { walletBalance, totalLockedFunds, allocations, setInitialWalletBalance } = useWallet();
   const [mockBankBalance, setMockBankBalance] = useState('');
 
-
-  const investmentTotal = 12000; // This would ideally come from context or API
+  const investmentTotal = 12000;
   const netWorth = walletBalance + totalLockedFunds + investmentTotal;
   const emergencyFundAllocation = allocations['emergencyFund'];
   const emergencyFundCurrent = emergencyFundAllocation?.amount || 0;
@@ -109,341 +93,213 @@ export default function DashboardPage() {
     });
   };
 
+  const SummaryCard = ({ title, value, icon: Icon, trend, footerText }: { title: string, value: string, icon: React.ElementType, trend?: string, footerText?: string }) => (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <Icon className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+        {trend && <p className="text-xs text-muted-foreground">{trend}</p>}
+      </CardContent>
+      {footerText && (
+        <CardFooter className="text-xs text-muted-foreground pt-4 pb-4">
+            {footerText}
+        </CardFooter>
+      )}
+    </Card>
+  );
+
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-brand-dark">Dashboard</h1>
-
-       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="retro-card flex flex-col">
-            <CardHeader className="retro-card-header">
-                <CardTitle className="text-sm text-muted-foreground">Current Wallet</CardTitle>
-                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
-            </CardHeader>
-            <CardContent className="retro-card-content pt-2 flex-1">
-                <p className="text-2xl font-bold text-foreground">{formatCurrency(walletBalance)}</p>
-            </CardContent>
-        </Card>
-         <Card className="retro-card flex flex-col">
-            <CardHeader className="retro-card-header">
-                <CardTitle className="text-sm text-muted-foreground">Funds Locked</CardTitle>
-                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
-            </CardHeader>
-            <CardContent className="retro-card-content pt-2 flex-1">
-                <p className="text-2xl font-bold text-foreground">{formatCurrency(totalLockedFunds)}</p>
-            </CardContent>
-        </Card>
-        <Card className="retro-card flex flex-col">
-            <CardHeader className="retro-card-header">
-                <CardTitle className="text-sm text-muted-foreground">Net Worth (Est.)</CardTitle>
-                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
-            </CardHeader>
-            <CardContent className="retro-card-content pt-2 flex-1">
-                <p className="text-2xl font-bold text-foreground">{formatCurrency(netWorth)}</p>
-            </CardContent>
-        </Card>
-         <Card className="retro-card flex flex-col">
-            <CardHeader className="retro-card-header">
-                <CardTitle className="text-sm text-muted-foreground">Financial Health</CardTitle>
-                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
-            </CardHeader>
-            <CardContent className="retro-card-content pt-2 flex-1">
-                <p className="text-2xl font-bold text-green-500">Good</p>
-                 <Progress value={75} className="h-1.5 mt-1 retro-progress" indicatorClassName="!bg-green-500" />
-            </CardContent>
-        </Card>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Welcome Back!</h1>
+          <p className="text-sm text-muted-foreground">Here’s your financial overview for today.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => router.push('/expenses')}>
+            <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
+          </Button>
+          <Button variant="primary" onClick={() => router.push('/savings-goals')}>
+            Create Goal
+          </Button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {/* Row 1 on XL */}
-        <Card className="retro-card flex flex-col h-full xl:col-span-1 md:col-span-1">
-          <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
-                <CardTitle>Quick Actions</CardTitle>
-              </div>
-              <div className="retro-window-controls">
-                <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-                <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-                <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1">
-            <Button variant="outline" className="w-full justify-start" onClick={() => router.push('/expenses')}><Receipt className="mr-2 h-4 w-4" />Log Expense</Button>
-            <Button variant="outline" className="w-full justify-start" onClick={() => router.push('/budget')}><CreditCard className="mr-2 h-4 w-4" />View/Edit Budget</Button>
-            <Button variant="outline" className="w-full justify-start" onClick={() => router.push('/savings-goals')}><TargetIcon className="mr-2 h-4 w-4" />Set New Goal</Button>
-            <Button variant="outline" className="w-full justify-start" onClick={() => router.push('/investments')}><Briefcase className="mr-2 h-4 w-4" />Manage Investments</Button>
-            <Button variant="outline" className="w-full justify-start" onClick={() => setIsLinkBankModalOpen(true)}>
-              <Landmark className="mr-2 h-4 w-4" /> Link Bank Account
-            </Button>
-             <Button variant="primary" className="w-full justify-start">
-              <Star className="mr-2 h-4 w-4" /> Upgrade to Premium
-            </Button>
-          </CardContent>
-        </Card>
+      {/* Top summary cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <SummaryCard title="Net Worth (Est.)" value={formatCurrency(netWorth)} icon={TrendingUp} trend="+2.1% from last month" />
+        <SummaryCard title="Wallet Balance" value={formatCurrency(walletBalance)} icon={Wallet} footerText="Available to spend" />
+        <SummaryCard title="Funds Locked" value={formatCurrency(totalLockedFunds)} icon={Lock} footerText="In goals & emergency fund" />
+        <SummaryCard title="Financial Health" value="Good" icon={ShieldCheck} footerText="Based on your activity" />
+      </div>
 
-        <Card className="retro-card flex flex-col h-full xl:col-span-1 md:col-span-1">
-          <CardHeader className="retro-card-header !bg-dashboard-purple-header !text-dashboard-purple-foreground">
-             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <TargetIcon className="h-5 w-5" />
-                    <CardTitle>Savings Goals</CardTitle>
-                </div>
-                <div className="retro-window-controls">
-                    <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
-                    <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
-                    <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
-                </div>
-            </div>
-          </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1">
-             <div className="overflow-y-auto"> {/* Add scroll if content overflows */}
-                {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0,3).map((goal) => (
-                  <div key={goal.id} className="space-y-1 mb-3"> {/* Add margin bottom */}
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="font-medium text-foreground/90">{goal.name}</span>
-                      <span className="text-xs text-muted-foreground">{formatCurrency(goal.amount)} / {formatCurrency(goal.target || 0)}</span>
-                    </div>
-                    <Progress value={goal.target ? (goal.amount / goal.target) * 100 : 0} className="h-2.5 retro-progress" indicatorClassName="!bg-purple-500" />
-                  </div>
-                ))}
-                {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No active savings goals.</p>}
-             </div>
-          </CardContent>
-          <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-            <Button variant="outline" className="w-full" onClick={() => router.push('/savings-goals')}>
-              <ListChecks className="mr-2 h-4 w-4" /> View All Savings Goals
-            </Button>
-          </CardFooter>
-        </Card>
-
-        <Card className="retro-card flex flex-col h-full xl:col-span-1 md:col-span-1">
-          <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <ShieldAlert className="h-5 w-5" />
-                    <CardTitle>Emergency Fund</CardTitle>
-                </div>
-                <div className="retro-window-controls">
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                </div>
-            </div>
-          </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 text-center pt-4 flex-1">
-            <p className="text-3xl font-bold text-foreground">{formatCurrency(emergencyFundCurrent)}</p>
-            <p className="text-xs text-muted-foreground mb-2">Target: {formatCurrency(emergencyFundTarget)}</p>
-            <Progress value={emergencyFundTarget > 0 ? (emergencyFundCurrent / emergencyFundTarget) * 100 : 0} className="h-3.5 retro-progress" indicatorClassName="!bg-blue-500" />
-             {emergencyFundTarget > 0 && emergencyFundCurrent < emergencyFundTarget && (
-                <div className="text-xs text-center mt-2 text-destructive flex items-center justify-center gap-1">
-                    <AlertTriangle className="h-3 w-3"/>
-                    <span>Needs attention!</span>
-                </div>
-              )}
-          </CardContent>
-          <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-            <Button variant="outline" className="w-full" onClick={() => router.push('/emergency-fund')}>
-              <DollarSign className="mr-2 h-4 w-4" /> Manage Fund
-            </Button>
-          </CardFooter>
-        </Card>
-        
-        <Card className="retro-card flex flex-col h-full xl:col-span-1 md:col-span-1">
-            <CardHeader className="retro-card-header !bg-dashboard-purple-header !text-dashboard-purple-foreground">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <CreditCard className="h-5 w-5" />
-                        <CardTitle>Budget Snapshot</CardTitle>
-                    </div>
-                    <div className="retro-window-controls">
-                        <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
-                        <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
-                        <span className="!border-dashboard-purple-foreground !bg-dashboard-purple-header"></span>
-                    </div>
-                </div>
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Left Column */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Recent Transactions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Transactions</CardTitle>
+              <CardDescription>Your latest income and expenses.</CardDescription>
             </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 space-y-3 pt-4 flex-1">
-               <div className="overflow-y-auto"> {/* Add scroll if content overflows */}
-                {budgetSnapshotData.slice(0, 4).map(item => (
-                    <div key={item.category} className="mb-3"> {/* Add margin bottom */}
-                        <div className="flex justify-between text-xs mb-0.5">
-                            <span className="text-foreground/80">{item.category}</span>
-                            <span className="text-muted-foreground">{formatCurrency(item.spent)} / {formatCurrency(item.budget)}</span>
-                        </div>
-                        <div className="h-3 bg-muted rounded-sm overflow-hidden border border-foreground/20">
-                            <div
-                                className={cn("h-full", item.color)}
-                                style={{ width: `${Math.min((item.spent / item.budget) * 100, 100)}%` }}
-                            />
-                        </div>
-                    </div>
-                ))}
-                </div>
-            </CardContent>
-            <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full" onClick={() => router.push('/budget')}>
-                   <Settings className="mr-2 h-4 w-4" /> Manage Full Budget
-                </Button>
-            </CardFooter>
-        </Card>
-
-        {/* Row 2 on XL */}
-        <Card className="retro-card flex flex-col h-full xl:col-span-3 md:col-span-2">
-          <CardHeader className="retro-card-header !bg-dashboard-blue-header !text-dashboard-blue-foreground">
-             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <Briefcase className="h-5 w-5" />
-                    <CardTitle>Investment Portfolio</CardTitle>
-                </div>
-                <div className="retro-window-controls">
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                    <span className="!border-dashboard-blue-foreground !bg-dashboard-blue-header"></span>
-                </div>
-            </div>
-          </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 pt-4 h-[520px] flex-1">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie dataKey="value" nameKey="name" data={investmentPieData} cx="50%" cy="50%" outerRadius={170} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                  {investmentPieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Pie>
-                <RechartsTooltip formatter={(value: number, name: string) => [formatCurrency(value), name]} 
-                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--foreground))', fontFamily: 'var(--font-sans)', fontSize: '12px', boxShadow: 'none' }}
-                    itemStyle={{ color: 'hsl(var(--foreground))' }}
-                />
-                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '15px', fontFamily: 'var(--font-sans)' }}/>
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-           <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full" onClick={() => router.push('/investments')}>
-                    <TrendingUp className="mr-2 h-4 w-4" /> Manage Investments
-                </Button>
-            </CardFooter>
-        </Card>
-
-        <Card className="retro-card flex flex-col h-full xl:col-span-1 md:col-span-2">
-            <CardHeader className="retro-card-header !bg-dashboard-pink-header !text-dashboard-pink-foreground">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Zap className="h-5 w-5" />
-                        <CardTitle>AI Savings Helper</CardTitle>
-                    </div>
-                    <div className="retro-window-controls">
-                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-                        <span className="!border-dashboard-pink-foreground !bg-dashboard-pink-header"></span>
-                    </div>
-                </div>
-            </CardHeader>
-            <CardContent className="retro-card-content !border-t-0 pt-4 flex-1 h-[520px]">
-                <p className="text-sm text-foreground/90">
-                    Unlock personalized insights to boost your savings. Our AI analyzes your spending patterns and goals to provide actionable recommendations.
-                </p>
-                 {/* Placeholder for AI content - e.g. a list of tips or a summary */}
-                <div className="mt-4 space-y-2 text-xs text-muted-foreground">
-                    <p>Tip 1: You could save $X by reducing Y.</p>
-                    <p>Tip 2: Consider allocating Z to your emergency fund.</p>
-                </div>
-            </CardContent>
-            <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full" onClick={() => router.push('/ai-assistant')}>
-                    <Lightbulb className="mr-2 h-4 w-4" /> Get AI Recommendations
-                </Button>
-            </CardFooter>
-        </Card>
-
-        {/* Row 3 on XL */}
-        <Card className="retro-card flex flex-col h-full xl:col-span-4 md:col-span-2">
-          <CardHeader className="retro-card-header">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <Receipt className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-foreground">Recent Transactions</CardTitle>
-                </div>
-                 <div className="retro-window-controls"><span></span><span></span><span></span></div>
-            </div>
-          </CardHeader>
-          <CardContent className="retro-card-content !border-t-0 p-0 flex-1">
-             <div className="space-y-0 max-h-[300px] overflow-y-auto">
-                {recentTransactions.map((tx) => (
-                  <div key={tx.id} className="flex items-center justify-between p-3 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
-                    <div>
-                        <p className="font-medium text-sm">{tx.description}</p>
-                        <p className="text-xs text-muted-foreground">{tx.category} &bull; {tx.date}</p>
-                    </div>
-                    <span className={cn("text-sm font-semibold", tx.amount >= 0 ? 'text-green-500' : 'text-destructive')}>
+            <CardContent>
+              <div className="space-y-4">
+                {recentTransactions.map((tx) => {
+                  const Icon = tx.icon;
+                  return (
+                    <div key={tx.id} className="flex items-center">
+                      <div className="p-2 bg-muted rounded-full">
+                        <Icon className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                      <div className="ml-4 flex-1">
+                        <p className="text-sm font-medium leading-none">{tx.description}</p>
+                        <p className="text-sm text-muted-foreground">{tx.category}</p>
+                      </div>
+                      <div className={cn("ml-auto font-medium", tx.amount > 0 ? 'text-green-500' : 'text-foreground')}>
                         {formatCurrency(tx.amount, true)}
-                    </span>
-                  </div>
-                ))}
-                {recentTransactions.length === 0 && <p className="p-4 text-sm text-muted-foreground text-center">No transactions yet.</p>}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
-          </CardContent>
-           <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
-                <Button variant="outline" className="w-full" onClick={() => router.push('/expenses')}>
-                    <ArrowRight className="mr-2 h-4 w-4" /> View All Transactions
-                </Button>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full" onClick={() => router.push('/expenses')}>
+                <ArrowRight className="mr-2 h-4 w-4" /> View All Transactions
+              </Button>
             </CardFooter>
-        </Card>
+          </Card>
 
+           {/* Investment Portfolio */}
+          <Card>
+              <CardHeader>
+                <CardTitle>Investment Portfolio</CardTitle>
+                <CardDescription>Your asset allocation at a glance.</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[350px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie dataKey="value" nameKey="name" data={investmentPieData} cx="50%" cy="50%" innerRadius={80} outerRadius={120} paddingAngle={2}>
+                      {investmentPieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.fill}/>
+                      ))}
+                    </Pie>
+                    <RechartsTooltip formatter={(value: number, name: string) => [formatCurrency(value), name]} 
+                        contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)', fontFamily: 'var(--font-sans)', fontSize: '12px' }}
+                        itemStyle={{ color: 'hsl(var(--foreground))' }}
+                    />
+                    <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '15px', fontFamily: 'var(--font-sans)' }}/>
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" className="w-full" onClick={() => router.push('/investments')}>
+                  <Briefcase className="mr-2 h-4 w-4" /> Manage Investments
+                </Button>
+              </CardFooter>
+          </Card>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* Quick Actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-2 text-sm">
+                <Button variant="ghost" className="justify-start" onClick={() => router.push('/budget')}><CreditCard className="mr-2 h-4 w-4" />Budget</Button>
+                <Button variant="ghost" className="justify-start" onClick={() => router.push('/savings-goals')}><TargetIcon className="mr-2 h-4 w-4" />Goals</Button>
+                <Button variant="ghost" className="justify-start" onClick={() => setIsLinkBankModalOpen(true)}><Landmark className="mr-2 h-4 w-4" />Link Bank</Button>
+                <Button variant="ghost" className="justify-start" onClick={() => router.push('/ai-assistant')}><Lightbulb className="mr-2 h-4 w-4" />AI Helper</Button>
+            </CardContent>
+          </Card>
+          
+          {/* Savings Goals */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Savings Goals</CardTitle>
+              <CardDescription>Your progress towards your goals.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0, 3).map((goal) => (
+                <div key={goal.id} className="space-y-1">
+                  <div className="flex justify-between items-baseline text-sm">
+                    <span className="font-medium text-foreground/90">{goal.name}</span>
+                    <span className="text-xs text-muted-foreground">{formatCurrency(goal.amount)} / {formatCurrency(goal.target || 0)}</span>
+                  </div>
+                  <Progress value={goal.target ? (goal.amount / goal.target) * 100 : 0} className="h-2" />
+                </div>
+              ))}
+              {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No active savings goals.</p>}
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full" onClick={() => router.push('/savings-goals')}>
+                <ListChecks className="mr-2 h-4 w-4" /> View All Goals
+              </Button>
+            </CardFooter>
+          </Card>
+          
+          {/* Emergency Fund */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><ShieldAlert className="h-5 w-5 text-blue-500" />Emergency Fund</CardTitle>
+              <CardDescription>Your financial safety net.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="text-center space-y-1">
+                  <p className="text-2xl font-bold text-foreground">{formatCurrency(emergencyFundCurrent)}</p>
+                  <p className="text-xs text-muted-foreground mb-2">Target: {formatCurrency(emergencyFundTarget)}</p>
+                </div>
+                <Progress value={emergencyFundTarget > 0 ? (emergencyFundCurrent / emergencyFundTarget) * 100 : 0} className="h-2 mt-2" indicatorClassName="!bg-blue-500" />
+                {emergencyFundTarget > 0 && emergencyFundCurrent < emergencyFundTarget && (
+                  <div className="text-xs text-center mt-2 text-destructive flex items-center justify-center gap-1">
+                      <AlertTriangle className="h-3 w-3"/>
+                      <span>Needs attention!</span>
+                  </div>
+                )}
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full" onClick={() => router.push('/emergency-fund')}>
+                Manage Fund
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
 
+       {/* Link Bank Modal */}
       <Dialog open={isLinkBankModalOpen} onOpenChange={setIsLinkBankModalOpen}>
-        <DialogContent className="retro-window sm:max-w-md">
-          <DialogHeader className="retro-window-header !bg-primary !text-primary-foreground">
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
             <DialogTitle className="flex items-center gap-2"><Landmark className="h-5 w-5" />Link Bank Account</DialogTitle>
-             <div className="retro-window-controls">
-                <span className="!bg-primary !border-primary-foreground"></span>
-                <span className="!bg-primary !border-primary-foreground"></span>
-                <DialogClose asChild>
-                    <Button variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
-                        <X className="h-3 w-3" />
-                        <span className="sr-only">Close</span>
-                    </Button>
-                </DialogClose>
-            </div>
+             <DialogDescription>
+              This is a demo. No real bank connection will be made. Enter a mock balance to update your wallet.
+            </DialogDescription>
           </DialogHeader>
-          <div className="p-4 retro-window-content !border-t-0 space-y-3">
-              <p className="text-muted-foreground text-sm">
-              Securely connect your bank to automatically import transactions and balances.
-              FinTrack Pro uses industry-standard encryption and partners with trusted aggregators.
-            </p>
-            <div className="space-y-2">
-                <Label htmlFor="mock-balance" className="text-sm">Enter Mock Bank Balance ($)</Label>
+          <div className="py-4 space-y-2">
+                <Label htmlFor="mock-balance">Mock Bank Balance ($)</Label>
                 <Input
                     id="mock-balance"
                     type="number"
                     placeholder="e.g., 50000"
-                    className="retro-input"
                     value={mockBankBalance}
                     onChange={(e) => setMockBankBalance(e.target.value)}
                 />
             </div>
-            <p className="text-xs text-muted-foreground/80">
-              (This is a demo. No real bank connection will be made.)
-            </p>
-          </div>
-          <DialogFooter className="retro-window-content !border-t-2 !pt-3 !pb-3 flex-col sm:flex-row sm:justify-between gap-2">
+          <DialogFooter className="flex-col sm:flex-row sm:justify-between gap-2">
+             <DialogClose asChild>
+              <Button variant="secondary" className="w-full sm:w-auto">Cancel</Button>
+             </DialogClose>
             <Button className="w-full sm:w-auto" variant="primary" onClick={handleLinkBankAccount}>
               <PlusCircle className="mr-2 h-4 w-4" /> Connect & Sync (Demo)
             </Button>
-            <DialogClose asChild>
-              <Button variant="secondary" className="w-full sm:w-auto">Cancel</Button>
-            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
   );
 }
-    
-
-      
-
-    
