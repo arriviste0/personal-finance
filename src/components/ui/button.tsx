@@ -20,8 +20,8 @@ const buttonVariants = cva(
         accent:
           "border-2 border-foreground bg-accent text-accent-foreground shadow-[2px_2px_0px_hsl(var(--foreground))] hover:bg-accent/90 hover:shadow-[3px_3px_0px_hsl(var(--foreground))] active:translate-y-px active:shadow-[1px_1px_0px_hsl(var(--foreground))] disabled:shadow-none",
         outline:
-          "border-2 border-foreground bg-transparent hover:bg-accent hover:text-accent-foreground",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+          "border-2 border-foreground bg-transparent hover:bg-primary hover:text-primary-foreground",
+        ghost: "hover:bg-primary hover:text-primary-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
