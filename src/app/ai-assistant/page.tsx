@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { analyzeSpendingPatterns, type AnalyzeSpendingPatternsInput, type AnalyzeSpendingPatternsOutput } from "@/ai/flows/analyze-spending-patterns";
-import { Lightbulb, Loader2, PlusCircle, Trash2, Info, Sparkles } from "lucide-react";
+import { Lightbulb, Loader2, PlusCircle, Trash2, Info, Sparkles, Undo, Redo } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from '@/components/ui/separator';
 
@@ -52,8 +52,61 @@ export default function AiAssistantPage() {
       monthlyExpenses: [{ category: "Rent", amount: 1200 }, { category: "Food", amount: 500 }, { category: "Entertainment", amount: 200 }],
       savingsGoals: [{ goalName: "Vacation Fund", targetAmount: 2000, currentAmount: 500 }],
     },
-    mode: "onChange", // Validate on change for better UX
+    mode: "onChange",
   });
+
+  // History state management for Undo/Redo
+  const [history, setHistory] = React.useState<AiFormValues[]>([]);
+  const [currentStep, setCurrentStep] = React.useState(-1);
+  const isRestoringState = React.useRef(false);
+
+  // Initialize history on mount
+  React.useEffect(() => {
+    const initialValues = form.getValues();
+    setHistory([initialValues]);
+    setCurrentStep(0);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Subscribe to form changes to update history
+  React.useEffect(() => {
+      const subscription = form.watch((value) => {
+          if (isRestoringState.current) return;
+          // A simple approach to avoid flooding history is to compare stringified values
+          // This is not perfect for complex objects but works for this form
+          if (JSON.stringify(value) === JSON.stringify(history[currentStep])) {
+              return;
+          }
+          const newHistory = history.slice(0, currentStep + 1);
+          setHistory([...newHistory, value as AiFormValues]);
+          setCurrentStep(newHistory.length);
+      });
+      return () => subscription.unsubscribe();
+  }, [form, history, currentStep]);
+
+
+  const canUndo = currentStep > 0;
+  const canRedo = currentStep < history.length - 1;
+
+  const handleUndo = () => {
+    if (canUndo) {
+        isRestoringState.current = true;
+        const previousStep = currentStep - 1;
+        form.reset(history[previousStep]);
+        setCurrentStep(previousStep);
+        setTimeout(() => { isRestoringState.current = false; }, 50);
+    }
+  };
+
+  const handleRedo = () => {
+      if (canRedo) {
+          isRestoringState.current = true;
+          const nextStep = currentStep + 1;
+          form.reset(history[nextStep]);
+          setCurrentStep(nextStep);
+          setTimeout(() => { isRestoringState.current = false; }, 50);
+      }
+  };
+
 
   const { fields: expenseFields, append: appendExpense, remove: removeExpense } = useFieldArray({
      control: form.control,
@@ -72,8 +125,6 @@ export default function AiAssistantPage() {
     setAnalysisResult(null);
 
     try {
-       // Simulate API call delay
-       await new Promise(resolve => setTimeout(resolve, 1500));
       const input: AnalyzeSpendingPatternsInput = values;
       const result = await analyzeSpendingPatterns(input);
       setAnalysisResult(result);
@@ -87,14 +138,22 @@ export default function AiAssistantPage() {
   }
 
   return (
-    <div className="space-y-8"> {/* Increased spacing */}
+    <div className="space-y-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
             <div className="flex-1">
               <h1 className="text-2xl font-semibold flex items-center gap-2">
-                 <Lightbulb className="h-6 w-6 text-accent" /> {/* Use accent color */}
+                 <Lightbulb className="h-6 w-6 text-accent" />
                  AI Savings Assistant
               </h1>
                <p className="text-sm text-muted-foreground">Get personalized financial insights.</p>
+            </div>
+             <div className="flex items-center gap-2">
+                <Button variant="outline" size="icon" aria-label="Undo" onClick={handleUndo} disabled={!canUndo}>
+                    <Undo className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" aria-label="Redo" onClick={handleRedo} disabled={!canRedo}>
+                    <Redo className="h-4 w-4" />
+                </Button>
             </div>
           </div>
 
@@ -107,7 +166,7 @@ export default function AiAssistantPage() {
           </CardHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <CardContent className="space-y-6"> {/* Consistent spacing */}
+              <CardContent className="space-y-6">
                  <FormField
                   control={form.control}
                   name="monthlyIncome"
@@ -144,7 +203,7 @@ export default function AiAssistantPage() {
                         control={form.control}
                         name={`monthlyExpenses.${index}.amount`}
                         render={({ field }) => (
-                          <FormItem className="w-32"> {/* Wider amount input */}
+                          <FormItem className="w-32">
                             {index === 0 && <FormLabel className="sr-only">Amount ($)</FormLabel>}
                             <FormControl>
                               <Input type="number" placeholder="Amount" {...field} />
@@ -175,7 +234,6 @@ export default function AiAssistantPage() {
                   >
                     <PlusCircle className="mr-2 h-4 w-4" /> Add Expense Item
                   </Button>
-                   {/* Display root array error if present */}
                     {form.formState.errors.monthlyExpenses?.root && (
                       <p className="text-sm font-medium text-destructive">{form.formState.errors.monthlyExpenses.root.message}</p>
                     )}
@@ -187,7 +245,7 @@ export default function AiAssistantPage() {
                 <div className="space-y-3">
                    <Label className="text-base font-medium">Savings Goals</Label>
                    {goalFields.map((field, index) => (
-                     <div key={field.id} className="grid grid-cols-[1fr_auto_auto] items-start gap-2"> {/* Adjusted grid */}
+                     <div key={field.id} className="grid grid-cols-[1fr_auto_auto] items-start gap-2">
                        <FormField
                          control={form.control}
                          name={`savingsGoals.${index}.goalName`}
@@ -205,7 +263,7 @@ export default function AiAssistantPage() {
                          control={form.control}
                          name={`savingsGoals.${index}.targetAmount`}
                          render={({ field }) => (
-                           <FormItem className="w-32"> {/* Width for target */}
+                           <FormItem className="w-32">
                              {index === 0 && <FormLabel className="sr-only">Target ($)</FormLabel>}
                              <FormControl>
                                <Input type="number" placeholder="Target $" {...field} />
@@ -214,7 +272,7 @@ export default function AiAssistantPage() {
                            </FormItem>
                          )}
                        />
-                        <div className="flex items-start gap-1 w-40"> {/* Container for current + remove */}
+                        <div className="flex items-start gap-1 w-40">
                            <FormField
                              control={form.control}
                              name={`savingsGoals.${index}.currentAmount`}
@@ -251,7 +309,6 @@ export default function AiAssistantPage() {
                   >
                     <PlusCircle className="mr-2 h-4 w-4" /> Add Savings Goal
                   </Button>
-                  {/* Display root array error if present */}
                    {form.formState.errors.savingsGoals?.root && (
                     <p className="text-sm font-medium text-destructive">{form.formState.errors.savingsGoals.root.message}</p>
                    )}
@@ -275,12 +332,12 @@ export default function AiAssistantPage() {
         </Card>
 
         {/* AI Analysis Results */}
-        <Card className="flex flex-col"> {/* Flex col */}
+        <Card className="flex flex-col">
            <CardHeader>
              <CardTitle className="text-lg">AI Analysis & Tips</CardTitle>
              <CardDescription>Your personalized financial insights.</CardDescription>
            </CardHeader>
-           <CardContent className="space-y-5 flex-1 flex flex-col min-h-[400px]"> {/* Ensure min height */}
+           <CardContent className="space-y-5 flex-1 flex flex-col min-h-[400px]">
             {isLoading && (
                 <div className="flex flex-1 flex-col items-center justify-center text-muted-foreground space-y-2">
                    <Loader2 className="h-10 w-10 animate-spin text-primary" />
@@ -289,7 +346,7 @@ export default function AiAssistantPage() {
                 </div>
             )}
              {error && (
-                 <Alert variant="destructive" className="flex-1"> {/* Standard destructive alert */}
+                 <Alert variant="destructive" className="flex-1">
                     <Info className="h-4 w-4" />
                     <AlertTitle>Analysis Error</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
@@ -303,7 +360,7 @@ export default function AiAssistantPage() {
                  </div>
              )}
              {analysisResult && !isLoading && !error && (
-                <div className="space-y-6 flex-1 overflow-auto pr-2"> {/* Added overflow */}
+                <div className="space-y-6 flex-1 overflow-auto pr-2">
                   {/* Analysis Section */}
                   <div>
                     <h4 className="font-semibold mb-2 text-base text-primary">Spending Analysis</h4>
@@ -319,7 +376,7 @@ export default function AiAssistantPage() {
                       <h4 className="font-semibold mb-2 text-base text-secondary">Personalized Savings Tips</h4>
                       <div className="bg-muted/50 p-4 rounded-none border min-h-[100px]">
                          {analysisResult.savingsTips.length > 0 ? (
-                            <ul className="space-y-2 list-disc list-outside pl-5 text-sm"> {/* List outside */}
+                            <ul className="space-y-2 list-disc list-outside pl-5 text-sm">
                               {analysisResult.savingsTips.map((tip, index) => (
                                <li key={index}>{tip}</li>
                              ))}
