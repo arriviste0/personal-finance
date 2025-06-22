@@ -1,7 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +18,6 @@ import {
     DollarSign,
     CreditCard,
     Landmark,
-    ShieldAlert,
     ShieldCheck,
     Lock,
     ArrowRight,
@@ -38,6 +44,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { useWallet } from '@/contexts/WalletContext';
 
@@ -54,6 +61,7 @@ const recentTransactions = [
     { id: "t3", date: "2024-07-26", description: "Restaurant - Dinner Out", amount: -42.10, category: "Food", icon: CreditCard },
     { id: "t4", date: "2024-07-25", description: "Online Course Subscription", amount: -29.99, category: "Education", icon: Briefcase },
 ];
+
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -93,37 +101,52 @@ export default function DashboardPage() {
     });
   };
 
-  const SummaryCard = ({ title, value, icon: Icon, trend, footerText }: { title: string, value: string, icon: React.ElementType, trend?: string, footerText?: string }) => (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
-        {trend && <p className="text-xs text-muted-foreground">{trend}</p>}
-      </CardContent>
-      {footerText && (
-        <CardFooter className="text-xs text-muted-foreground pt-4 pb-4">
-            {footerText}
-        </CardFooter>
-      )}
-    </Card>
+  // Card component with hover effect
+  const SummaryCard = ({ title, value, icon: Icon, trend, footerText, href }: { title: string, value: string, icon: React.ElementType, trend?: string, footerText?: string, href?: string }) => {
+    const CardContentWrapper = ({children}: {children: React.ReactNode}) => href ? <Link href={href} className="block">{children}</Link> : <>{children}</>;
+    
+    return (
+        <Card className="group transition-all duration-300 hover:border-primary/50 hover:shadow-lg">
+            <CardContentWrapper>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">{title}</CardTitle>
+                    <Icon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{value}</div>
+                    {trend && <p className="text-xs text-muted-foreground">{trend}</p>}
+                </CardContent>
+                {footerText && (
+                    <CardFooter className="text-xs text-muted-foreground pt-0 pb-4">
+                        {footerText}
+                    </CardFooter>
+                )}
+            </CardContentWrapper>
+        </Card>
+    );
+  };
+
+
+  const QuickActionButton = ({ icon: Icon, label, href, onClick }: { icon: React.ElementType, label: string, href?: string, onClick?: () => void }) => (
+    <Button variant="ghost" className="w-full justify-start text-base p-4 h-auto group" onClick={() => href ? router.push(href) : onClick?.()}>
+        <Icon className="mr-3 h-5 w-5 text-muted-foreground transition-colors group-hover:text-primary" />
+        <span className="transition-colors group-hover:text-primary">{label}</span>
+    </Button>
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Welcome Back!</h1>
-          <p className="text-sm text-muted-foreground">Here’s your financial overview for today.</p>
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground">Welcome back! Here’s your financial overview.</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={() => router.push('/expenses')}>
             <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
           </Button>
           <Button variant="primary" onClick={() => router.push('/savings-goals')}>
-            Create Goal
+            New Goal
           </Button>
         </div>
       </div>
@@ -132,43 +155,47 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <SummaryCard title="Net Worth (Est.)" value={formatCurrency(netWorth)} icon={TrendingUp} trend="+2.1% from last month" />
         <SummaryCard title="Wallet Balance" value={formatCurrency(walletBalance)} icon={Wallet} footerText="Available to spend" />
-        <SummaryCard title="Funds Locked" value={formatCurrency(totalLockedFunds)} icon={Lock} footerText="In goals & emergency fund" />
+        <SummaryCard title="Funds in Goals" value={formatCurrency(totalLockedFunds)} icon={Lock} footerText="Allocated to goals" />
         <SummaryCard title="Financial Health" value="Good" icon={ShieldCheck} footerText="Based on your activity" />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-8 lg:grid-cols-3">
         {/* Left Column */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-8">
+          
           {/* Recent Transactions */}
           <Card>
             <CardHeader>
               <CardTitle>Recent Transactions</CardTitle>
-              <CardDescription>Your latest income and expenses.</CardDescription>
+              <CardDescription>Your latest financial activities.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentTransactions.map((tx) => {
+              <div className="space-y-1">
+                {recentTransactions.map((tx, index) => {
                   const Icon = tx.icon;
                   return (
-                    <div key={tx.id} className="flex items-center">
-                      <div className="p-2 bg-muted rounded-full">
-                        <Icon className="h-5 w-5 text-muted-foreground" />
-                      </div>
-                      <div className="ml-4 flex-1">
-                        <p className="text-sm font-medium leading-none">{tx.description}</p>
-                        <p className="text-sm text-muted-foreground">{tx.category}</p>
-                      </div>
-                      <div className={cn("ml-auto font-medium", tx.amount > 0 ? 'text-green-500' : 'text-foreground')}>
-                        {formatCurrency(tx.amount, true)}
-                      </div>
-                    </div>
+                    <React.Fragment key={tx.id}>
+                        <div className="flex items-center p-3 -mx-3 rounded-lg transition-colors hover:bg-muted/50 cursor-pointer">
+                            <div className="p-2.5 bg-muted rounded-full">
+                                <Icon className="h-5 w-5 text-muted-foreground" />
+                            </div>
+                            <div className="ml-4 flex-1">
+                                <p className="text-sm font-medium leading-none">{tx.description}</p>
+                                <p className="text-sm text-muted-foreground">{tx.category}</p>
+                            </div>
+                            <div className={cn("ml-auto font-medium", tx.amount > 0 ? 'text-green-500' : 'text-foreground')}>
+                                {formatCurrency(tx.amount, true)}
+                            </div>
+                        </div>
+                        {index < recentTransactions.length - 1 && <Separator />}
+                    </React.Fragment>
                   )
                 })}
               </div>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="w-full" onClick={() => router.push('/expenses')}>
-                <ArrowRight className="mr-2 h-4 w-4" /> View All Transactions
+              <Button variant="outline" className="w-full group" onClick={() => router.push('/expenses')}>
+                View All Transactions <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </CardFooter>
           </Card>
@@ -177,7 +204,7 @@ export default function DashboardPage() {
           <Card>
               <CardHeader>
                 <CardTitle>Investment Portfolio</CardTitle>
-                <CardDescription>Your asset allocation at a glance.</CardDescription>
+                <CardDescription>A glance at your asset allocation.</CardDescription>
               </CardHeader>
               <CardContent className="h-[350px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -196,65 +223,69 @@ export default function DashboardPage() {
                 </ResponsiveContainer>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="w-full" onClick={() => router.push('/investments')}>
-                  <Briefcase className="mr-2 h-4 w-4" /> Manage Investments
+                <Button variant="outline" className="w-full group" onClick={() => router.push('/investments')}>
+                  <Briefcase className="mr-2 h-4 w-4" /> Manage Investments <ArrowRight className="ml-auto h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </CardFooter>
           </Card>
         </div>
 
         {/* Right Column */}
-        <div className="space-y-6">
+        <div className="space-y-8">
+          
           {/* Quick Actions */}
           <Card>
             <CardHeader>
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-2 text-sm">
-                <Button variant="ghost" className="justify-start" onClick={() => router.push('/budget')}><CreditCard className="mr-2 h-4 w-4" />Budget</Button>
-                <Button variant="ghost" className="justify-start" onClick={() => router.push('/savings-goals')}><TargetIcon className="mr-2 h-4 w-4" />Goals</Button>
-                <Button variant="ghost" className="justify-start" onClick={() => setIsLinkBankModalOpen(true)}><Landmark className="mr-2 h-4 w-4" />Link Bank</Button>
-                <Button variant="ghost" className="justify-start" onClick={() => router.push('/ai-assistant')}><Lightbulb className="mr-2 h-4 w-4" />AI Helper</Button>
+            <CardContent className="p-0">
+                <QuickActionButton icon={CreditCard} label="Manage Budget" href="/budget" />
+                <Separator/>
+                <QuickActionButton icon={TargetIcon} label="View Savings Goals" href="/savings-goals" />
+                <Separator/>
+                <QuickActionButton icon={Lightbulb} label="AI Savings Assistant" href="/ai-assistant" />
+                <Separator/>
+                <QuickActionButton icon={Landmark} label="Link Bank Account" onClick={() => setIsLinkBankModalOpen(true)} />
             </CardContent>
           </Card>
           
           {/* Savings Goals */}
           <Card>
             <CardHeader>
-              <CardTitle>Savings Goals</CardTitle>
+              <CardTitle>Top Savings Goals</CardTitle>
               <CardDescription>Your progress towards your goals.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0, 3).map((goal) => (
-                <div key={goal.id} className="space-y-1">
+            <CardContent className="space-y-6">
+              {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0, 2).map((goal) => (
+                <div key={goal.id} className="space-y-2">
                   <div className="flex justify-between items-baseline text-sm">
                     <span className="font-medium text-foreground/90">{goal.name}</span>
                     <span className="text-xs text-muted-foreground">{formatCurrency(goal.amount)} / {formatCurrency(goal.target || 0)}</span>
                   </div>
-                  <Progress value={goal.target ? (goal.amount / goal.target) * 100 : 0} className="h-2" />
+                  <Progress value={goal.target ? (goal.amount / goal.target) * 100 : 0} className="h-2.5" />
                 </div>
               ))}
               {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No active savings goals.</p>}
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="w-full" onClick={() => router.push('/savings-goals')}>
-                <ListChecks className="mr-2 h-4 w-4" /> View All Goals
+              <Button variant="outline" className="w-full group" onClick={() => router.push('/savings-goals')}>
+                View All Goals <ArrowRight className="ml-auto h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </CardFooter>
           </Card>
           
           {/* Emergency Fund */}
-          <Card>
+          <Card className="bg-blue-500/10 border-blue-500/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><ShieldAlert className="h-5 w-5 text-blue-500" />Emergency Fund</CardTitle>
-              <CardDescription>Your financial safety net.</CardDescription>
+              <CardDescription className="text-blue-900/80 dark:text-blue-200/80">Your financial safety net.</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="text-center space-y-1">
                   <p className="text-2xl font-bold text-foreground">{formatCurrency(emergencyFundCurrent)}</p>
                   <p className="text-xs text-muted-foreground mb-2">Target: {formatCurrency(emergencyFundTarget)}</p>
                 </div>
-                <Progress value={emergencyFundTarget > 0 ? (emergencyFundCurrent / emergencyFundTarget) * 100 : 0} className="h-2 mt-2" indicatorClassName="!bg-blue-500" />
+                <Progress value={emergencyFundTarget > 0 ? (emergencyFundCurrent / emergencyFundTarget) * 100 : 0} className="h-2.5 mt-2" indicatorClassName="!bg-blue-500" />
                 {emergencyFundTarget > 0 && emergencyFundCurrent < emergencyFundTarget && (
                   <div className="text-xs text-center mt-2 text-destructive flex items-center justify-center gap-1">
                       <AlertTriangle className="h-3 w-3"/>
@@ -263,8 +294,8 @@ export default function DashboardPage() {
                 )}
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="w-full" onClick={() => router.push('/emergency-fund')}>
-                Manage Fund
+              <Button variant="outline" className="w-full bg-background/50 group" onClick={() => router.push('/emergency-fund')}>
+                Manage Fund <ArrowRight className="ml-auto h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </CardFooter>
           </Card>
