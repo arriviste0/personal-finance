@@ -128,7 +128,7 @@ export default function BudgetPage() {
   return (
     <div className="space-y-6">
        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
-         <h1 className="text-3xl font-semibold">BUDGET TRACKER</h1>
+         <h1 className="text-3xl font-semibold font-heading">BUDGET TRACKER</h1>
           <div className="flex gap-2">
             {/* Note: Undo/Redo is complex with server state, removed for now */}
             <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
@@ -180,7 +180,7 @@ export default function BudgetPage() {
         {/* Overall Budget Summary */}
         <Card className="retro-card">
            <CardHeader className="retro-card-header !bg-accent !text-accent-foreground">
-             <CardTitle className="flex items-center gap-2 text-xl">
+             <CardTitle className="flex items-center gap-2 text-xl font-heading">
                 <HandCoins className="h-5 w-5" />
                 Monthly Overview
              </CardTitle>
@@ -218,7 +218,7 @@ export default function BudgetPage() {
          {/* Spending Categories Chart */}
         <Card className="retro-card">
             <CardHeader className="retro-card-header !bg-primary !text-primary-foreground">
-             <CardTitle className="flex items-center gap-2 text-xl">
+             <CardTitle className="flex items-center gap-2 text-xl font-heading">
                 <TrendingUp className="h-5 w-5" />
                 Spending by Category
              </CardTitle>
@@ -250,7 +250,7 @@ export default function BudgetPage() {
       {/* Detailed Budget Table */}
        <Card className="retro-card overflow-hidden">
           <CardHeader className="retro-card-header">
-           <CardTitle className="text-xl">Budget Details</CardTitle>
+           <CardTitle className="text-xl font-heading">Budget Details</CardTitle>
             <div className="retro-window-controls">
                 <span></span><span></span><span></span>
             </div>

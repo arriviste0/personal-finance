@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
-import { useWallet } from '@/contexts/WalletContext';
 import { useState, useEffect, useCallback } from 'react';
 
 interface AppLayoutProps {
@@ -18,7 +17,6 @@ const SCROLL_THRESHOLD = 10; // Pixels to scroll before background changes
 export default function AppLayout({ children }: AppLayoutProps) {
   const pathname = usePathname();
   const isLandingPage = pathname === '/';
-  const { walletBalance } = useWallet();
 
   const [isScrolled, setIsScrolled] = useState(false);
 

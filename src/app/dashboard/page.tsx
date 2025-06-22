@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import {
     Card,
     CardContent,
@@ -31,6 +31,7 @@ import {
     X,
     AlertTriangle,
     ShieldAlert,
+    Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
@@ -47,67 +48,67 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { useWallet } from '@/contexts/WalletContext';
+import { useUser } from '@/hooks/use-user';
+import { useExpenses } from '@/hooks/use-expenses';
+import { useInvestments } from '@/hooks/use-investments';
+import { useGoals } from '@/hooks/use-goals';
+import { useEmergencyFund } from '@/hooks/use-emergency-fund';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const investmentPieData = [
-    { name: 'Stocks', value: 4000, fill: 'hsl(var(--chart-1))' },
-    { name: 'ETFs', value: 3000, fill: 'hsl(var(--chart-2))' },
-    { name: 'Crypto', value: 2000, fill: 'hsl(var(--chart-3))' },
-    { name: 'Bonds', value: 1000, fill: 'hsl(var(--chart-5))' },
+const chartColors = [
+    "hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))",
+    "hsl(var(--chart-4))", "hsl(var(--chart-5))", "hsl(var(--muted))",
 ];
-
-const recentTransactions = [
-    { id: "t1", date: "2024-07-28", description: "Grocery Shopping", amount: -75.50, category: "Food", icon: CreditCard },
-    { id: "t2", date: "2024-07-27", description: "Salary Deposit", amount: 2500.00, category: "Income", icon: DollarSign },
-    { id: "t3", date: "2024-07-26", description: "Restaurant - Dinner Out", amount: -42.10, category: "Food", icon: CreditCard },
-    { id: "t4", date: "2024-07-25", description: "Online Course Subscription", amount: -29.99, category: "Education", icon: Briefcase },
-];
-
 
 export default function DashboardPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [isLinkBankModalOpen, setIsLinkBankModalOpen] = useState(false);
-  const { walletBalance, totalLockedFunds, allocations, setInitialWalletBalance } = useWallet();
-  const [mockBankBalance, setMockBankBalance] = useState('');
+  const [isLinkBankModalOpen, setIsLinkBankModalOpen] = React.useState(false);
 
-  const investmentTotal = 12000;
+  // Fetch real data
+  const { data: userData, isLoading: isLoadingUser } = useUser();
+  const { data: expenses = [], isLoading: isLoadingExpenses } = useExpenses();
+  const { data: investments = [], isLoading: isLoadingInvestments } = useInvestments();
+  const { data: goals = [], isLoading: isLoadingGoals } = useGoals();
+  const { data: emergencyFund, isLoading: isLoadingEmergencyFund } = useEmergencyFund();
+
+  const isLoading = isLoadingUser || isLoadingExpenses || isLoadingInvestments || isLoadingGoals || isLoadingEmergencyFund;
+
+  // Memoize calculations
+  const investmentTotal = useMemo(() => investments.reduce((sum, inv) => sum + inv.value, 0), [investments]);
+  const goalsTotal = useMemo(() => goals.reduce((sum, goal) => sum + goal.currentAmount, 0), [goals]);
+  const emergencyFundCurrent = emergencyFund?.currentAmount || 0;
+  const emergencyFundTarget = emergencyFund?.targetAmount || 15000;
+  const totalLockedFunds = goalsTotal + emergencyFundCurrent;
+  const walletBalance = userData?.walletBalance || 0;
   const netWorth = walletBalance + totalLockedFunds + investmentTotal;
-  const emergencyFundAllocation = allocations['emergencyFund'];
-  const emergencyFundCurrent = emergencyFundAllocation?.amount || 0;
-  const emergencyFundTarget = emergencyFundAllocation?.target || 5000;
+
+  const recentTransactions = useMemo(() => 
+      [...expenses]
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 4), 
+    [expenses]);
+    
+  const investmentPieData = useMemo(() => investments.filter(item => item.value > 0).map((item, index) => ({
+    name: item.ticker || item.name,
+    value: item.value,
+    fill: chartColors[index % chartColors.length],
+  })), [investments]);
+
+  const activeGoals = useMemo(() => goals.filter(g => !g.isComplete).slice(0, 2), [goals]);
 
   const formatCurrency = (amount: number, showSign = false) => {
     const sign = amount < 0 ? "-" : (showSign && amount > 0 ? "+" : "");
     return `${sign}$${Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
-  const handleLinkBankAccount = () => {
-    const balance = parseFloat(mockBankBalance);
-    if (isNaN(balance) || balance < 0) {
-        toast({
-            title: "Invalid Balance",
-            description: "Please enter a valid, non-negative bank balance.",
-            variant: "destructive",
-        });
-        return;
-    }
-    setInitialWalletBalance(balance);
-    setIsLinkBankModalOpen(false);
-    setMockBankBalance('');
-    toast({
-      title: "Bank Balance Synced (Demo)",
-      description: `Your wallet balance has been updated to ${formatCurrency(balance)}.`,
-      variant: "default",
-    });
-  };
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-8">
         <div>
           <h1 className="text-3xl font-semibold font-heading">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back! Here’s your financial overview.</p>
+          <p className="text-muted-foreground">Welcome back, {userData?.name || 'User'}! Here’s your financial overview.</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={() => router.push('/expenses')} className="hover:bg-primary/10 hover:text-primary">
@@ -127,7 +128,7 @@ export default function DashboardPage() {
                 <div className="retro-window-controls"><span></span><span></span></div>
             </CardHeader>
             <CardContent className="retro-card-content !border-t-0 pt-4">
-                <div className="text-3xl font-bold">{formatCurrency(netWorth)}</div>
+                {isLoading ? <Skeleton className="h-8 w-40" /> : <div className="text-3xl font-bold">{formatCurrency(netWorth)}</div>}
                 <p className="text-xs text-muted-foreground mt-1">+2.1% from last month</p>
             </CardContent>
         </Card>
@@ -137,7 +138,7 @@ export default function DashboardPage() {
                 <div className="retro-window-controls"><span></span><span></span></div>
             </CardHeader>
             <CardContent className="retro-card-content !border-t-0 pt-4">
-                <div className="text-3xl font-bold">{formatCurrency(walletBalance)}</div>
+                {isLoading ? <Skeleton className="h-8 w-32" /> : <div className="text-3xl font-bold">{formatCurrency(walletBalance)}</div> }
                 <p className="text-xs text-muted-foreground mt-1">Available to spend</p>
             </CardContent>
         </Card>
@@ -147,7 +148,7 @@ export default function DashboardPage() {
                 <div className="retro-window-controls"><span></span><span></span></div>
             </CardHeader>
             <CardContent className="retro-card-content !border-t-0 pt-4">
-                <div className="text-3xl font-bold">{formatCurrency(totalLockedFunds)}</div>
+                {isLoading ? <Skeleton className="h-8 w-28" /> : <div className="text-3xl font-bold">{formatCurrency(totalLockedFunds)}</div> }
                 <p className="text-xs text-muted-foreground mt-1">Allocated to goals</p>
             </CardContent>
         </Card>
@@ -175,28 +176,33 @@ export default function DashboardPage() {
                <div className="retro-window-controls"><span></span><span></span></div>
             </CardHeader>
             <CardContent className="retro-card-content !border-t-0 p-0">
-              <div className="space-y-1">
-                {recentTransactions.map((tx, index) => {
-                  const Icon = tx.icon;
-                  return (
-                    <React.Fragment key={tx.id}>
-                        <div className="flex items-center p-3">
-                            <div className="p-2 bg-muted rounded-none border-2 border-foreground">
-                                <Icon className="h-5 w-5 text-muted-foreground" />
+               {isLoadingExpenses ? (
+                   <div className="p-4 space-y-3">
+                       {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-10 w-full" />)}
+                   </div>
+               ) : recentTransactions.length > 0 ? (
+                    <div className="space-y-1">
+                        {recentTransactions.map((tx, index) => (
+                        <React.Fragment key={tx._id.toString()}>
+                            <div className="flex items-center p-3">
+                                <div className="p-2 bg-muted rounded-none border-2 border-foreground">
+                                    <CreditCard className="h-5 w-5 text-muted-foreground" />
+                                </div>
+                                <div className="ml-4 flex-1">
+                                    <p className="text-sm font-medium leading-none">{tx.description}</p>
+                                    <p className="text-sm text-muted-foreground">{tx.category}</p>
+                                </div>
+                                <div className={cn("ml-auto font-medium", tx.amount > 0 ? 'text-green-500' : 'text-foreground')}>
+                                    {formatCurrency(tx.amount, true)}
+                                </div>
                             </div>
-                            <div className="ml-4 flex-1">
-                                <p className="text-sm font-medium leading-none">{tx.description}</p>
-                                <p className="text-sm text-muted-foreground">{tx.category}</p>
-                            </div>
-                            <div className={cn("ml-auto font-medium", tx.amount > 0 ? 'text-green-500' : 'text-foreground')}>
-                                {formatCurrency(tx.amount, true)}
-                            </div>
-                        </div>
-                        {index < recentTransactions.length - 1 && <Separator className="bg-foreground/20" />}
-                    </React.Fragment>
-                  )
-                })}
-              </div>
+                            {index < recentTransactions.length - 1 && <Separator className="bg-foreground/20" />}
+                        </React.Fragment>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-sm text-muted-foreground text-center p-8">No recent transactions.</p>
+                )}
             </CardContent>
             <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
               <Button variant="outline" className="w-full group" onClick={() => router.push('/expenses')}>
@@ -213,20 +219,27 @@ export default function DashboardPage() {
                 <div className="retro-window-controls"><span></span><span></span></div>
               </CardHeader>
               <CardContent className="retro-card-content !border-t-0 h-[350px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie dataKey="value" nameKey="name" data={investmentPieData} cx="50%" cy="50%" innerRadius={80} outerRadius={120} paddingAngle={2}>
-                      {investmentPieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.fill}/>
-                      ))}
-                    </Pie>
-                    <RechartsTooltip formatter={(value: number, name: string) => [formatCurrency(value), name]} 
-                        contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--foreground))', fontFamily: 'var(--font-sans)', fontSize: '12px', boxShadow: 'none' }}
-                        itemStyle={{ color: 'hsl(var(--foreground))' }}
-                    />
-                    <Legend iconType="square" wrapperStyle={{ fontSize: '12px', paddingTop: '15px', fontFamily: 'var(--font-sans)' }}/>
-                  </PieChart>
-                </ResponsiveContainer>
+                {isLoadingInvestments ? <Skeleton className="h-full w-full" /> : investmentPieData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                        <Pie dataKey="value" nameKey="name" data={investmentPieData} cx="50%" cy="50%" innerRadius={80} outerRadius={120} paddingAngle={2}>
+                        {investmentPieData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.fill}/>
+                        ))}
+                        </Pie>
+                        <RechartsTooltip formatter={(value: number, name: string) => [formatCurrency(value), name]} 
+                            contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '2px solid hsl(var(--foreground))', fontFamily: 'var(--font-sans)', fontSize: '12px', boxShadow: 'none' }}
+                            itemStyle={{ color: 'hsl(var(--foreground))' }}
+                        />
+                        <Legend iconType="square" wrapperStyle={{ fontSize: '12px', paddingTop: '15px', fontFamily: 'var(--font-sans)' }}/>
+                    </PieChart>
+                    </ResponsiveContainer>
+                ) : (
+                    <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
+                        <Briefcase className="h-10 w-10 mb-2"/>
+                        <p>No investments tracked yet.</p>
+                    </div>
+                )}
               </CardContent>
               <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
                 <Button variant="outline" className="w-full group" onClick={() => router.push('/investments')}>
@@ -268,16 +281,21 @@ export default function DashboardPage() {
               <div className="retro-window-controls"><span></span><span></span></div>
             </CardHeader>
             <CardContent className="retro-card-content !border-t-0 pt-4 space-y-4">
-              {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).slice(0, 2).map((goal) => (
-                <div key={goal.id} className="space-y-2">
-                  <div className="flex justify-between items-baseline text-sm">
-                    <span className="font-medium text-foreground/90">{goal.name}</span>
-                    <span className="text-xs text-muted-foreground">{formatCurrency(goal.amount)} / {formatCurrency(goal.target || 0)}</span>
-                  </div>
-                  <Progress value={goal.target ? (goal.amount / goal.target) * 100 : 0} className="retro-progress h-3" />
-                </div>
-              ))}
-              {Object.values(allocations).filter(a => a.id !== 'emergencyFund' && a.target && a.target > 0).length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No active savings goals.</p>}
+               {isLoadingGoals ? (
+                  <div className="space-y-4"> <Skeleton className="h-10 w-full" /> <Skeleton className="h-10 w-full" /> </div>
+               ) : activeGoals.length > 0 ? (
+                  activeGoals.map((goal) => (
+                    <div key={goal._id.toString()} className="space-y-2">
+                      <div className="flex justify-between items-baseline text-sm">
+                        <span className="font-medium text-foreground/90">{goal.name}</span>
+                        <span className="text-xs text-muted-foreground">{formatCurrency(goal.currentAmount)} / {formatCurrency(goal.targetAmount)}</span>
+                      </div>
+                      <Progress value={(goal.currentAmount / goal.targetAmount) * 100} className="retro-progress h-3" />
+                    </div>
+                  ))
+                ) : (
+                    <p className="text-sm text-muted-foreground text-center py-4">No active savings goals.</p>
+                )}
             </CardContent>
             <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
               <Button variant="outline" className="w-full group" onClick={() => router.push('/savings-goals')}>
@@ -293,16 +311,20 @@ export default function DashboardPage() {
                <div className="retro-window-controls"><span className="!bg-accent !border-accent-foreground"></span><span className="!bg-accent !border-accent-foreground"></span></div>
             </CardHeader>
             <CardContent className="retro-card-content !border-t-0 pt-4 space-y-2">
-                <div className="text-center space-y-1">
-                  <p className="text-2xl font-bold text-foreground">{formatCurrency(emergencyFundCurrent)}</p>
-                  <p className="text-xs text-muted-foreground mb-2">Target: {formatCurrency(emergencyFundTarget)}</p>
-                </div>
-                <Progress value={emergencyFundTarget > 0 ? (emergencyFundCurrent / emergencyFundTarget) * 100 : 0} className="retro-progress h-3" indicatorClassName="!bg-accent" />
-                {emergencyFundTarget > 0 && emergencyFundCurrent < emergencyFundTarget && (
-                  <div className="text-xs text-center mt-2 text-destructive flex items-center justify-center gap-1">
-                      <AlertTriangle className="h-3 w-3"/>
-                      <span>Needs attention!</span>
-                  </div>
+                {isLoadingEmergencyFund ? <div className="space-y-2"><Skeleton className="h-7 w-3/4 mx-auto" /><Skeleton className="h-3 w-1/2 mx-auto"/><Skeleton className="h-3 w-full"/></div> : (
+                    <>
+                        <div className="text-center space-y-1">
+                        <p className="text-2xl font-bold text-foreground">{formatCurrency(emergencyFundCurrent)}</p>
+                        <p className="text-xs text-muted-foreground mb-2">Target: {formatCurrency(emergencyFundTarget)}</p>
+                        </div>
+                        <Progress value={emergencyFundTarget > 0 ? (emergencyFundCurrent / emergencyFundTarget) * 100 : 0} className="retro-progress h-3" indicatorClassName="!bg-accent" />
+                        {emergencyFundTarget > 0 && emergencyFundCurrent < emergencyFundTarget && (
+                        <div className="text-xs text-center mt-2 text-destructive flex items-center justify-center gap-1">
+                            <AlertTriangle className="h-3 w-3"/>
+                            <span>Needs attention!</span>
+                        </div>
+                        )}
+                    </>
                 )}
             </CardContent>
             <CardFooter className="retro-card-content !border-t-2 !pt-3 !pb-3">
@@ -322,24 +344,17 @@ export default function DashboardPage() {
             <div className="retro-window-controls"><span></span><span></span></div>
           </DialogHeader>
            <DialogDescription className="retro-window-content !border-t-0 !pt-2">
-              This is a demo. No real bank connection will be made. Enter a mock balance to update your wallet.
+              This is a demo. No real bank connection will be made. This functionality is not yet implemented.
             </DialogDescription>
           <div className="py-4 px-4 space-y-2 retro-window-content !border-t-0">
                 <Label htmlFor="mock-balance">Mock Bank Balance ($)</Label>
-                <Input
-                    id="mock-balance"
-                    type="number"
-                    placeholder="e.g., 50000"
-                    value={mockBankBalance}
-                    onChange={(e) => setMockBankBalance(e.target.value)}
-                    className="retro-input"
-                />
+                <Input id="mock-balance" type="number" placeholder="e.g., 50000" className="retro-input" disabled/>
             </div>
           <DialogFooter className="retro-window-content !border-t-2 !flex-col sm:!flex-row sm:!justify-between gap-2">
              <DialogClose asChild>
               <Button variant="secondary" className="w-full sm:w-auto">Cancel</Button>
              </DialogClose>
-            <Button className="w-full sm:w-auto" variant="primary" onClick={handleLinkBankAccount}>
+            <Button className="w-full sm:w-auto" variant="primary" disabled>
               <PlusCircle className="mr-2 h-4 w-4" /> Connect & Sync (Demo)
             </Button>
           </DialogFooter>

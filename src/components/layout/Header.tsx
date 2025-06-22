@@ -23,17 +23,20 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { useWallet } from '@/contexts/WalletContext';
+import { useUser } from "@/hooks/use-user";
+
 
 export default function Header() {
   const { toast } = useToast();
   const { data: session, status } = useSession();
   const pathname = usePathname();
-  const { walletBalance, totalLockedFunds } = useWallet();
+  const { data: userData } = useUser();
 
   const isAuthenticated = status === "authenticated";
   const isLoadingSession = status === "loading";
   const isLandingPage = pathname === '/';
+  
+  const walletBalance = userData?.walletBalance ?? 0;
 
   const [isMounted, setIsMounted] = React.useState(false);
   useEffect(() => {
@@ -155,7 +158,7 @@ export default function Header() {
                 <>
                    <Link
                     href="/login"
-                    className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-wz-pink hover:text-nb-white"
+                    className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-gray-200"
                   >
                     Log In
                   </Link>
@@ -217,7 +220,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/login"
-                                className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-wz-pink hover:text-nb-white w-full text-sm"
+                                className="nb-button rounded-full bg-nb-white border-nb-black hover:bg-gray-200 w-full text-sm"
                               >
                                 {getIcon("LogIn", {className: "mr-2 h-4 w-4"})}Log In
                               </Link>
@@ -269,10 +272,6 @@ export default function Header() {
                   <div className="text-xs text-white flex items-center no-underline">
                     {getIcon("Wallet", {className: "mr-1 h-3.5 w-3.5"})}
                     <span className="font-medium">Wallet:</span> {formatCurrency(walletBalance)}
-                  </div>
-                  <div className="text-xs text-white flex items-center no-underline">
-                    {getIcon("Lock", {className: "mr-1 h-3.5 w-3.5"})}
-                    <span className="font-medium">Locked:</span> {formatCurrency(totalLockedFunds)}
                   </div>
                 </div>
               )}
@@ -331,7 +330,6 @@ export default function Header() {
                       {isAuthenticated && (
                         <div className="px-3 py-2.5 space-y-1 border-b border-gray-700 mb-2">
                           <div className="text-xs text-gray-300 no-underline"><span className="font-medium">Wallet:</span> {formatCurrency(walletBalance)}</div>
-                          <div className="text-xs text-gray-300 no-underline"><span className="font-medium">Locked:</span> {formatCurrency(totalLockedFunds)}</div>
                         </div>
                       )}
                       {mainAppNavLinks.map((link) => {

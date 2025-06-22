@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       password: hashedPassword,
       emailVerified: null, // NextAuth adapter expects this field
       image: null,         // NextAuth adapter expects this field (URL to profile image)
+      walletBalance: 1000, // Give new users a starting balance of $1000
       createdAt: new Date(),
       updatedAt: new Date(),
     });

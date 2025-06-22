@@ -114,7 +114,7 @@ export default function InvestmentsPage() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[1fr_300px]">
         <Card className="retro-card">
-            <CardHeader className="retro-card-header !bg-secondary !text-secondary-foreground"><CardTitle className="flex items-center gap-2 text-xl"><TrendingUp className="h-5 w-5" />Portfolio Allocation</CardTitle><div className="retro-window-controls"><span className="!bg-secondary !border-secondary-foreground"></span><span className="!bg-secondary !border-secondary-foreground"></span><span className="!bg-secondary !border-secondary-foreground"></span></div></CardHeader>
+            <CardHeader className="retro-card-header !bg-secondary !text-secondary-foreground"><CardTitle className="flex items-center gap-2 text-xl font-heading"><TrendingUp className="h-5 w-5" />Portfolio Allocation</CardTitle><div className="retro-window-controls"><span className="!bg-secondary !border-secondary-foreground"></span><span className="!bg-secondary !border-secondary-foreground"></span><span className="!bg-secondary !border-secondary-foreground"></span></div></CardHeader>
            <CardContent className="retro-card-content !border-t-0 pt-4">
              <div className="h-[300px] w-full mb-4">
                 {isLoading ? <Skeleton className="h-full w-full rounded-full" /> : (
@@ -127,7 +127,7 @@ export default function InvestmentsPage() {
           </CardContent>
         </Card>
         <Card className="retro-card">
-           <CardHeader className="retro-card-header !bg-accent !text-accent-foreground"><CardTitle className="flex items-center gap-2 text-xl"><DollarSign className="h-5 w-5" />Key Metrics</CardTitle><div className="retro-window-controls"><span className="!bg-accent !border-accent-foreground"></span><span className="!bg-accent !border-accent-foreground"></span><span className="!bg-accent !border-accent-foreground"></span></div></CardHeader>
+           <CardHeader className="retro-card-header !bg-accent !text-accent-foreground"><CardTitle className="flex items-center gap-2 text-xl font-heading"><DollarSign className="h-5 w-5" />Key Metrics</CardTitle><div className="retro-window-controls"><span className="!bg-accent !border-accent-foreground"></span><span className="!bg-accent !border-accent-foreground"></span><span className="!bg-accent !border-accent-foreground"></span></div></CardHeader>
            <CardContent className="retro-card-content !border-t-0 space-y-4 pt-4">
                 <div className="flex justify-between items-center border-b border-dashed pb-2">
                   <span className="text-muted-foreground text-sm">Total Value</span>
@@ -142,7 +142,7 @@ export default function InvestmentsPage() {
       </div>
 
        <Card className="retro-card overflow-hidden">
-          <CardHeader className="retro-card-header"><CardTitle className="text-xl">Investment Details</CardTitle><div className="retro-window-controls"><span></span><span></span><span></span></div></CardHeader>
+          <CardHeader className="retro-card-header"><CardTitle className="text-xl font-heading">Investment Details</CardTitle><div className="retro-window-controls"><span></span><span></span><span></span></div></CardHeader>
         <CardContent className="retro-card-content !border-t-0 p-0">
           <div className="overflow-x-auto">
               <Table className="retro-table min-w-[800px]">
@@ -163,11 +163,29 @@ export default function InvestmentsPage() {
                          <TableCell className="text-right">{inv.purchasePrice ? formatCurrency(inv.purchasePrice) : 'N/A'}</TableCell>
                          <TableCell className={cn("text-right font-medium", gainLoss === null ? 'text-muted-foreground' : gainLoss >= 0 ? 'text-green-500' : 'text-destructive' )}>{gainLoss === null ? 'N/A' : `${gainLoss >= 0 ? '+' : ''}${formatCurrency(gainLoss)}`}</TableCell>
                          <TableCell className="text-center">
-                           <div className="flex justify-center items-center gap-1 p-0.5">
-                               <Button variant="ghost" size="icon" className="h-7 w-7 !border-0 text-primary hover:bg-primary/10" onClick={() => openEditDialog(inv)}><Edit className="h-4 w-4"/><span className="sr-only">Edit</span></Button>
-                                <AlertDialog><AlertDialogTrigger asChild><Button variant="ghost" size="icon" className="h-7 w-7 !border-0 text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4"/><span className="sr-only">Delete</span></Button></AlertDialogTrigger>
-                                  <AlertDialogContent className="retro-window"><AlertDialogHeader className="retro-window-header !bg-destructive !text-destructive-foreground"><AlertDialogTitle>Delete Investment?</AlertDialogTitle><div className="retro-window-controls"><span></span><span></span></div></AlertDialogHeader><AlertDialogDescription className="retro-window-content !border-t-0 !pt-2">Are you sure you want to delete the "{inv.name}" investment?</AlertDialogDescription><AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2"><AlertDialogCancel asChild><Button variant="outline">Cancel</Button></AlertDialogCancel><AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteInvestment(inv._id.toString())}>Delete</Button></AlertDialogAction></AlertDialogFooter></AlertDialogContent>
-                                </AlertDialog>
+                           <div className="flex justify-center items-center p-0.5">
+                                <div className="flex items-center justify-center gap-0 border-2 border-foreground p-0.5">
+                                    <Button variant="ghost" size="icon" className="h-7 w-7 !border-0" onClick={() => openEditDialog(inv)}>
+                                        <Edit className="h-4 w-4 text-primary"/>
+                                        <span className="sr-only">Edit</span>
+                                    </Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button variant="ghost" size="icon" className="h-7 w-7 !border-0">
+                                                <Trash2 className="h-4 w-4 text-destructive"/>
+                                                <span className="sr-only">Delete</span>
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent className="retro-window">
+                                            <AlertDialogHeader className="retro-window-header !bg-destructive !text-destructive-foreground"><AlertDialogTitle>Delete Investment?</AlertDialogTitle><div className="retro-window-controls"><span></span><span></span></div></AlertDialogHeader>
+                                            <AlertDialogDescription className="retro-window-content !border-t-0 !pt-2">Are you sure you want to delete the "{inv.name}" investment?</AlertDialogDescription>
+                                            <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
+                                                <AlertDialogCancel asChild><Button variant="outline">Cancel</Button></AlertDialogCancel>
+                                                <AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteInvestment(inv._id.toString())}>Delete</Button></AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </div>
                             </div>
                          </TableCell>
                       </TableRow>

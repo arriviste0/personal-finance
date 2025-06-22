@@ -185,7 +185,7 @@ export default function AiAssistantPage() {
                 <div className="space-y-3">
                   <Label className="text-base font-medium">Monthly Expenses</Label>
                    {expenseFields.map((field, index) => (
-                     <div key={field.id} className="flex items-start gap-2">
+                     <div key={field.id} className="flex items-center gap-2">
                       <FormField
                         control={form.control}
                         name={`monthlyExpenses.${index}.category`}
@@ -245,7 +245,7 @@ export default function AiAssistantPage() {
                 <div className="space-y-3">
                    <Label className="text-base font-medium">Savings Goals</Label>
                    {goalFields.map((field, index) => (
-                     <div key={field.id} className="grid grid-cols-[1fr_auto_auto] items-start gap-2">
+                     <div key={field.id} className="grid grid-cols-[1fr_auto_auto] items-center gap-2">
                        <FormField
                          control={form.control}
                          name={`savingsGoals.${index}.goalName`}
@@ -272,7 +272,7 @@ export default function AiAssistantPage() {
                            </FormItem>
                          )}
                        />
-                        <div className="flex items-start gap-1 w-40">
+                        <div className="flex items-center gap-1 w-40">
                            <FormField
                              control={form.control}
                              name={`savingsGoals.${index}.currentAmount`}

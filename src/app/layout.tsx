@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 import AppLayout from '@/components/layout/AppLayout';
 import SessionProvider from '@/providers/SessionProvider';
 import { Toaster } from "@/components/ui/toaster";
-import { WalletProvider } from '@/contexts/WalletContext'; // Import WalletProvider
 import QueryProvider from '@/providers/QueryProvider';
 
 const inter = Inter({
@@ -43,10 +42,8 @@ export default function RootLayout({
       >
          <SessionProvider>
            <QueryProvider>
-             <WalletProvider>
               <AppLayout>{children}</AppLayout>
               <Toaster />
-             </WalletProvider>
            </QueryProvider>
          </SessionProvider>
       </body>
