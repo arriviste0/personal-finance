@@ -257,38 +257,38 @@ export default function InvestmentsPage() {
                              {gainLoss === null ? 'N/A' : `${gainLoss >= 0 ? '+' : ''}$${gainLoss.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                          </TableCell>
                          <TableCell className="text-center">
-                             <div className="flex justify-center gap-1">
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-7 w-7 text-muted-foreground hover:text-primary"
-                                    onClick={() => openEditDialog(inv)}
-                                >
-                                    <Edit className="h-4 w-4"/>
-                                    <span className="sr-only">Edit</span>
-                                </Button>
-                                 <AlertDialog>
-                                   <AlertDialogTrigger asChild>
-                                     <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive">
-                                        <Trash2 className="h-4 w-4"/>
-                                        <span className="sr-only">Delete</span>
-                                     </Button>
-                                   </AlertDialogTrigger>
-                                   <AlertDialogContent className="retro-window">
-                                       <AlertDialogHeader className="retro-window-header !bg-destructive !text-destructive-foreground">
-                                         <AlertDialogTitle>Delete Investment?</AlertDialogTitle>
-                                          <div className="retro-window-controls"><span></span><span></span></div>
-                                     </AlertDialogHeader>
-                                        <AlertDialogDescription className="retro-window-content !border-t-0 !pt-2">
-                                           Are you sure you want to delete the "{inv.name}" investment? This action cannot be undone.
-                                        </AlertDialogDescription>
-                                     <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
-                                       <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
-                                       <AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteInvestment(inv.id)}>Delete</Button></AlertDialogAction>
-                                     </AlertDialogFooter>
-                                   </AlertDialogContent>
-                                 </AlertDialog>
-                             </div>
+                            <div className="flex justify-center items-center gap-1 border-2 border-foreground p-0.5">
+                               <Button
+                                   variant="ghost"
+                                   size="icon"
+                                   className="h-7 w-7"
+                                   onClick={() => openEditDialog(inv)}
+                               >
+                                   <Edit className="h-4 w-4 text-primary"/>
+                                   <span className="sr-only">Edit</span>
+                               </Button>
+                                <AlertDialog>
+                                  <AlertDialogTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7">
+                                       <Trash2 className="h-4 w-4 text-destructive"/>
+                                       <span className="sr-only">Delete</span>
+                                    </Button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent className="retro-window">
+                                      <AlertDialogHeader className="retro-window-header !bg-destructive !text-destructive-foreground">
+                                        <AlertDialogTitle>Delete Investment?</AlertDialogTitle>
+                                         <div className="retro-window-controls"><span></span><span></span></div>
+                                    </AlertDialogHeader>
+                                       <AlertDialogDescription className="retro-window-content !border-t-0 !pt-2">
+                                          Are you sure you want to delete the "{inv.name}" investment? This action cannot be undone.
+                                       </AlertDialogDescription>
+                                    <AlertDialogFooter className="retro-window-content !pt-4 !border-t-0 !flex sm:justify-end gap-2">
+                                      <AlertDialogCancel asChild><Button variant="secondary">Cancel</Button></AlertDialogCancel>
+                                      <AlertDialogAction asChild><Button variant="destructive" onClick={() => handleDeleteInvestment(inv.id)}>Delete</Button></AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                            </div>
                          </TableCell>
                       </TableRow>
                      );

@@ -211,11 +211,11 @@ export default function SavingsGoalsPage() {
 
             return (
               <Card key={goalDef.id} className="retro-card flex flex-col group relative overflow-visible">
-                 <div className="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                 <div className="absolute top-2 right-2 flex space-x-1 z-10">
                       <Dialog open={isEditDialogOpen && editingGoalDef?.id === goalDef.id} onOpenChange={(open) => {if (!open) setEditingGoalDef(null); setIsEditDialogOpen(open);}}>
                         <DialogTrigger asChild>
                             <Button variant="outline" size="icon" className="h-7 w-7 bg-background/80 hover:bg-muted">
-                               <Edit className="h-4 w-4 text-muted-foreground"/>
+                               <Edit className="h-4 w-4 text-primary"/>
                                <span className="sr-only">Edit Goal</span>
                             </Button>
                         </DialogTrigger>
@@ -231,7 +231,7 @@ export default function SavingsGoalsPage() {
                      <AlertDialog>
                        <AlertDialogTrigger asChild>
                          <Button variant="outline" size="icon" className="h-7 w-7 bg-background/80 hover:bg-destructive/10 hover:border-destructive/50">
-                            <Trash2 className="h-4 w-4 text-muted-foreground group-hover:text-destructive"/>
+                            <Trash2 className="h-4 w-4 text-destructive"/>
                             <span className="sr-only">Delete Goal</span>
                          </Button>
                        </AlertDialogTrigger>

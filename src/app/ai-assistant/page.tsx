@@ -155,11 +155,11 @@ export default function AiAssistantPage() {
                          type="button"
                          variant="ghost"
                          size="icon"
-                         className="h-10 w-10 shrink-0 text-muted-foreground hover:text-destructive mt-0" // Adjusted alignment
+                         className="h-10 w-10 shrink-0 mt-0"
                          onClick={() => removeExpense(index)}
                          disabled={expenseFields.length <= 1}
                        >
-                         <Trash2 className="h-4 w-4" />
+                         <Trash2 className="h-4 w-4 text-destructive" />
                          <span className="sr-only">Remove Expense</span>
                        </Button>
                      </div>
@@ -230,11 +230,11 @@ export default function AiAssistantPage() {
                             type="button"
                             variant="ghost"
                             size="icon"
-                             className="h-10 w-10 shrink-0 text-muted-foreground hover:text-destructive"
+                             className="h-10 w-10 shrink-0"
                             onClick={() => removeGoal(index)}
                             disabled={goalFields.length <= 1}
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className="h-4 w-4 text-destructive" />
                             <span className="sr-only">Remove Goal</span>
                           </Button>
                        </div>
@@ -294,7 +294,7 @@ export default function AiAssistantPage() {
                  </Alert>
              )}
              {!isLoading && !error && !analysisResult && (
-                 <div className="flex flex-1 flex-col items-center justify-center text-center text-muted-foreground p-6 border border-dashed rounded-lg">
+                 <div className="flex flex-1 flex-col items-center justify-center text-center text-muted-foreground p-6 border border-dashed rounded-none">
                     <Lightbulb className="h-12 w-12 mb-4" />
                     <p className="text-sm font-medium">Insights will appear here.</p>
                     <p className="text-xs">Submit your financial details to get started.</p>
@@ -305,7 +305,7 @@ export default function AiAssistantPage() {
                   {/* Analysis Section */}
                   <div>
                     <h4 className="font-semibold mb-2 text-base text-primary">Spending Analysis</h4>
-                    <div className="text-sm whitespace-pre-wrap bg-muted/50 p-4 rounded-md border min-h-[100px]">
+                    <div className="text-sm whitespace-pre-wrap bg-muted/50 p-4 rounded-none border min-h-[100px]">
                         {analysisResult.spendingAnalysis || "No analysis generated."}
                     </div>
                   </div>
@@ -315,7 +315,7 @@ export default function AiAssistantPage() {
                   {/* Savings Tips Section */}
                   <div>
                       <h4 className="font-semibold mb-2 text-base text-secondary">Personalized Savings Tips</h4>
-                      <div className="bg-muted/50 p-4 rounded-md border min-h-[100px]">
+                      <div className="bg-muted/50 p-4 rounded-none border min-h-[100px]">
                          {analysisResult.savingsTips.length > 0 ? (
                             <ul className="space-y-2 list-disc list-outside pl-5 text-sm"> {/* List outside */}
                               {analysisResult.savingsTips.map((tip, index) => (
