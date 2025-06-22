@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { analyzeSpendingPatterns, type AnalyzeSpendingPatternsInput, type AnalyzeSpendingPatternsOutput } from "@/ai/flows/analyze-spending-patterns";
-import { Lightbulb, Loader2, PlusCircle, Trash2, Info, Sparkles } from "lucide-react"; // Added Info, Sparkles
+import { Lightbulb, Loader2, PlusCircle, Trash2, Info, Sparkles, Undo, Redo } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from '@/components/ui/separator';
 
@@ -88,12 +88,22 @@ export default function AiAssistantPage() {
 
   return (
     <div className="space-y-8"> {/* Increased spacing */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-            <h1 className="text-2xl font-semibold flex items-center gap-2">
-               <Lightbulb className="h-6 w-6 text-accent" /> {/* Use accent color */}
-               AI Savings Assistant
-            </h1>
-             <p className="text-sm text-muted-foreground">Get personalized financial insights.</p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
+            <div className="flex-1">
+              <h1 className="text-2xl font-semibold flex items-center gap-2">
+                 <Lightbulb className="h-6 w-6 text-accent" /> {/* Use accent color */}
+                 AI Savings Assistant
+              </h1>
+               <p className="text-sm text-muted-foreground">Get personalized financial insights.</p>
+            </div>
+             <div className="flex items-center gap-2">
+                <Button variant="outline" size="icon" aria-label="Undo">
+                    <Undo className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" aria-label="Redo">
+                    <Redo className="h-4 w-4" />
+                </Button>
+            </div>
           </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -155,7 +165,7 @@ export default function AiAssistantPage() {
                          type="button"
                          variant="ghost"
                          size="icon"
-                         className="h-10 w-10 shrink-0 mt-0 border-destructive/50 text-destructive hover:bg-destructive/10"
+                         className="h-10 w-10 shrink-0 border-destructive/50 text-destructive hover:bg-destructive/10"
                          onClick={() => removeExpense(index)}
                          disabled={expenseFields.length <= 1}
                        >

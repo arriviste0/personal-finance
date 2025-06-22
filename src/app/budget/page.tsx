@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { HandCoins, TrendingUp, PlusCircle, Edit, Save, X, DollarSign, AlertTriangle } from "lucide-react";
+import { HandCoins, TrendingUp, PlusCircle, Edit, Save, X, DollarSign, AlertTriangle, Undo, Redo } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from '@/components/ui/input';
 import {
@@ -204,9 +204,15 @@ export default function BudgetPage() {
 
   return (
     <div className="space-y-6">
-       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold">BUDGET TRACKER</h1>
           <div className="flex gap-2">
+              <Button variant="outline" size="icon" aria-label="Undo">
+                  <Undo className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="icon" aria-label="Redo">
+                  <Redo className="h-4 w-4" />
+              </Button>
              <Dialog open={isAddTransactionOpen} onOpenChange={setIsAddTransactionOpen}>
                  <DialogTrigger asChild>
                     <Button variant="primary">

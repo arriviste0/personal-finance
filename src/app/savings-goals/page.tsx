@@ -1,11 +1,10 @@
-
 'use client';
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { PlusCircle, PiggyBank, HandCoins, Target, Edit, Trash2, DollarSign, CheckCircle, X } from "lucide-react";
+import { PlusCircle, PiggyBank, HandCoins, Target, Edit, Trash2, DollarSign, CheckCircle, X, Undo, Redo } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -181,22 +180,30 @@ export default function SavingsGoalsPage() {
 
   return (
     <div className="space-y-6">
-       <div className="flex items-center justify-between mb-6">
+       <div className="flex items-center justify-between mb-6 pt-8">
          <h1 className="text-3xl font-semibold font-heading">Your Savings Goals</h1>
-         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-            <DialogTrigger asChild>
-                <Button variant="primary">
-                   <PlusCircle className="mr-2 h-4 w-4" /> Create New Goal
-                </Button>
-            </DialogTrigger>
-            <GoalFormDialog
-              key="create-goal-dialog"
-              title="Create New Savings Goal"
-              description="Define your new financial target."
-              onSave={handleCreateGoal}
-              onClose={() => setIsCreateDialogOpen(false)}
-             />
-         </Dialog>
+         <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" aria-label="Undo">
+                <Undo className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" aria-label="Redo">
+                <Redo className="h-4 w-4" />
+            </Button>
+            <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                <DialogTrigger asChild>
+                    <Button variant="primary">
+                       <PlusCircle className="mr-2 h-4 w-4" /> Create New Goal
+                    </Button>
+                </DialogTrigger>
+                <GoalFormDialog
+                  key="create-goal-dialog"
+                  title="Create New Savings Goal"
+                  description="Define your new financial target."
+                  onSave={handleCreateGoal}
+                  onClose={() => setIsCreateDialogOpen(false)}
+                 />
+             </Dialog>
+         </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

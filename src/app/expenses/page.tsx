@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -9,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
-import { PlusCircle, Filter, ListChecks, Trash2, X, Edit } from "lucide-react";
+import { PlusCircle, Filter, ListChecks, Trash2, X, Edit, Undo, Redo } from "lucide-react";
 import { type DateRange } from "react-day-picker";
 import { addDays, format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
@@ -195,70 +194,78 @@ export default function ExpensesPage() {
 
   return (
     <div className="space-y-6">
-       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold flex items-center gap-2">
             <ListChecks className="h-7 w-7 text-primary" /> Expense Tracker
          </h1>
-          <Dialog open={isFormDialogOpen} onOpenChange={onDialogClose}>
-             <DialogTrigger asChild>
-                 <Button variant="primary" onClick={openAddDialog}>
-                    <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
-                 </Button>
-             </DialogTrigger>
-              <DialogContent className="retro-window sm:max-w-[450px]">
-                  <DialogHeader className="retro-window-header !bg-primary !text-primary-foreground">
-                   <DialogTitle>{editingTransaction ? 'Edit Expense' : 'Add New Expense'}</DialogTitle>
-                    <DialogDescription className="!text-primary-foreground/80">
-                        {editingTransaction ? 'Update the details of your spending transaction.' : 'Log a new spending transaction.'}
-                    </DialogDescription>
-                    <div className="retro-window-controls">
-                       <span className="!bg-primary !border-primary-foreground"></span>
-                       <span className="!bg-primary !border-primary-foreground"></span>
-                        <DialogClose asChild>
-                            <Button type="button" variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
-                                <X className="h-3 w-3"/>
-                                <span className="sr-only">Close</span>
-                            </Button>
-                        </DialogClose>
+         <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" aria-label="Undo">
+                <Undo className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" aria-label="Redo">
+                <Redo className="h-4 w-4" />
+            </Button>
+            <Dialog open={isFormDialogOpen} onOpenChange={onDialogClose}>
+               <DialogTrigger asChild>
+                   <Button variant="primary" onClick={openAddDialog}>
+                      <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
+                   </Button>
+               </DialogTrigger>
+                <DialogContent className="retro-window sm:max-w-[450px]">
+                    <DialogHeader className="retro-window-header !bg-primary !text-primary-foreground">
+                     <DialogTitle>{editingTransaction ? 'Edit Expense' : 'Add New Expense'}</DialogTitle>
+                      <DialogDescription className="!text-primary-foreground/80">
+                          {editingTransaction ? 'Update the details of your spending transaction.' : 'Log a new spending transaction.'}
+                      </DialogDescription>
+                      <div className="retro-window-controls">
+                         <span className="!bg-primary !border-primary-foreground"></span>
+                         <span className="!bg-primary !border-primary-foreground"></span>
+                          <DialogClose asChild>
+                              <Button type="button" variant="ghost" size="icon" className="h-4 w-4 p-0 !shadow-none !border-none !bg-destructive !text-destructive-foreground hover:!bg-destructive/80">
+                                  <X className="h-3 w-3"/>
+                                  <span className="sr-only">Close</span>
+                              </Button>
+                          </DialogClose>
+                     </div>
+                   </DialogHeader>
+                   <div className="space-y-4 p-4 retro-window-content !border-t-0">
+                      <div className="grid grid-cols-4 items-center gap-3">
+                         <Label htmlFor="description" className="text-right text-sm">Description</Label>
+                         <Input id="description" value={newExpense.description} onChange={handleAddExpenseInputChange} placeholder="e.g., Lunch meeting" className="col-span-3 retro-input" />
+                      </div>
+                      <div className="grid grid-cols-4 items-center gap-3">
+                         <Label htmlFor="category" className="text-right text-sm">Category</Label>
+                          <Select value={newExpense.category} onValueChange={handleAddExpenseCategoryChange}>
+                            <SelectTrigger id="category" className="col-span-3 retro-select-trigger">
+                              <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                            <SelectContent className="retro-select-content">
+                              {categories.map(cat => (
+                                <SelectItem key={cat} value={cat} className="retro-select-item">{cat}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                      </div>
+                     <div className="grid grid-cols-4 items-center gap-3">
+                       <Label htmlFor="amount" className="text-right text-sm">Amount ($)</Label>
+                       <Input id="amount" type="number" min="0" step="0.01" value={newExpense.amount} onChange={handleAddExpenseInputChange} placeholder="e.g., 15.75" className="col-span-3 retro-input" />
+                     </div>
+                     <div className="grid grid-cols-4 items-center gap-3">
+                       <Label htmlFor="date" className="text-right text-sm">Date</Label>
+                       <Input id="date" type="date" value={newExpense.date} onChange={handleAddExpenseDateChange} className="col-span-3 retro-input" />
+                     </div>
                    </div>
-                 </DialogHeader>
-                 <div className="space-y-4 p-4 retro-window-content !border-t-0">
-                    <div className="grid grid-cols-4 items-center gap-3">
-                       <Label htmlFor="description" className="text-right text-sm">Description</Label>
-                       <Input id="description" value={newExpense.description} onChange={handleAddExpenseInputChange} placeholder="e.g., Lunch meeting" className="col-span-3 retro-input" />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-3">
-                       <Label htmlFor="category" className="text-right text-sm">Category</Label>
-                        <Select value={newExpense.category} onValueChange={handleAddExpenseCategoryChange}>
-                          <SelectTrigger id="category" className="col-span-3 retro-select-trigger">
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                          <SelectContent className="retro-select-content">
-                            {categories.map(cat => (
-                              <SelectItem key={cat} value={cat} className="retro-select-item">{cat}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                    </div>
-                   <div className="grid grid-cols-4 items-center gap-3">
-                     <Label htmlFor="amount" className="text-right text-sm">Amount ($)</Label>
-                     <Input id="amount" type="number" min="0" step="0.01" value={newExpense.amount} onChange={handleAddExpenseInputChange} placeholder="e.g., 15.75" className="col-span-3 retro-input" />
-                   </div>
-                   <div className="grid grid-cols-4 items-center gap-3">
-                     <Label htmlFor="date" className="text-right text-sm">Date</Label>
-                     <Input id="date" type="date" value={newExpense.date} onChange={handleAddExpenseDateChange} className="col-span-3 retro-input" />
-                   </div>
-                 </div>
-                 <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
-                     <DialogClose asChild>
-                        <Button type="button" variant="secondary">Cancel</Button>
-                     </DialogClose>
-                    <Button type="submit" variant="primary" onClick={handleFormSubmit}>
-                      {editingTransaction ? 'Save Changes' : 'Add Expense'}
-                    </Button>
-                 </DialogFooter>
-               </DialogContent>
-            </Dialog>
+                   <DialogFooter className="retro-window-content !border-t-0 !flex sm:justify-end gap-2 !p-4">
+                       <DialogClose asChild>
+                          <Button type="button" variant="secondary">Cancel</Button>
+                       </DialogClose>
+                      <Button type="submit" variant="primary" onClick={handleFormSubmit}>
+                        {editingTransaction ? 'Save Changes' : 'Add Expense'}
+                      </Button>
+                   </DialogFooter>
+                 </DialogContent>
+              </Dialog>
+            </div>
       </div>
 
       {/* Filters */}

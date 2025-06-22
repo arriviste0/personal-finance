@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -8,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ShieldAlert, DollarSign, ListChecks, Trash2, Edit, Check, X, PlusCircle, MinusCircle } from "lucide-react";
+import { ShieldAlert, DollarSign, ListChecks, Trash2, Edit, Check, X, PlusCircle, MinusCircle, Undo, Redo } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -175,10 +174,17 @@ export default function EmergencyFundPage() {
 
   return (
     <div className="space-y-6">
-       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold flex items-center gap-2 font-heading">
             <ShieldAlert className="h-7 w-7 text-primary" /> Emergency Fund Tracker
          </h1>
+         <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" aria-label="Undo">
+                <Undo className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" aria-label="Redo">
+                <Redo className="h-4 w-4" />
+            </Button>
            <Dialog open={isModifyFundOpen} onOpenChange={setIsModifyFundOpen}>
              <DialogTrigger asChild>
                  <Button variant="primary">
@@ -259,6 +265,7 @@ export default function EmergencyFundPage() {
                  </DialogFooter>
                </DialogContent>
             </Dialog>
+          </div>
       </div>
 
         <Card className="retro-card">

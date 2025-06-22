@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { estimateTaxes, type TaxEstimate, type TaxInformation } from "@/services/tax-estimator";
-import { FileText, Lightbulb, Loader2, Percent, Info } from "lucide-react"; // Added Info
+import { FileText, Lightbulb, Loader2, Percent, Info, Undo, Redo } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Define filing status enum
@@ -84,12 +84,19 @@ export default function TaxPlannerPage() {
 
   return (
     <div className="space-y-8"> {/* Increased spacing */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
             <h1 className="text-2xl font-semibold flex items-center gap-2">
                <FileText className="h-6 w-6 text-primary" /> {/* Use primary color */}
                Tax Estimator
             </h1>
-            {/* Maybe add a link to IRS or official resources here later */}
+             <div className="flex items-center gap-2">
+                <Button variant="outline" size="icon" aria-label="Undo">
+                    <Undo className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" aria-label="Redo">
+                    <Redo className="h-4 w-4" />
+                </Button>
+            </div>
           </div>
 
 

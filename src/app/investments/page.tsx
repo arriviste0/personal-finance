@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts'; // Changed import
-import { Landmark, TrendingUp, PlusCircle, Trash2, Edit, DollarSign, Check, X } from "lucide-react";
+import { Landmark, TrendingUp, PlusCircle, Trash2, Edit, DollarSign, Check, X, Undo, Redo } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -111,30 +111,38 @@ export default function InvestmentsPage() {
 
   return (
     <div className="space-y-6">
-       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold flex items-center gap-2">
             <Landmark className="h-7 w-7 text-primary" /> Investment Portfolio
          </h1>
-          <Dialog open={isAddDialogOpen || !!editingInvestment} onOpenChange={(open) => {
-              if (!open) {
-                  setIsAddDialogOpen(false);
-                  setEditingInvestment(null);
-              } else {
-                  setIsAddDialogOpen(true); // Ensure add dialog opens if trigger clicked
-              }
-           }}>
-             <DialogTrigger asChild>
-                 <Button variant="primary">
-                    <PlusCircle className="mr-2 h-4 w-4" /> Add Investment
-                 </Button>
-             </DialogTrigger>
-             <InvestmentFormDialog
-                 key={editingInvestment?.id || 'add'} // Ensure dialog resets when switching between add/edit
-                 investment={editingInvestment}
-                 onSave={handleAddOrEditInvestment}
-                 onClose={() => { setIsAddDialogOpen(false); setEditingInvestment(null); }}
-             />
-            </Dialog>
+         <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" aria-label="Undo">
+                <Undo className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" aria-label="Redo">
+                <Redo className="h-4 w-4" />
+            </Button>
+            <Dialog open={isAddDialogOpen || !!editingInvestment} onOpenChange={(open) => {
+                if (!open) {
+                    setIsAddDialogOpen(false);
+                    setEditingInvestment(null);
+                } else {
+                    setIsAddDialogOpen(true); // Ensure add dialog opens if trigger clicked
+                }
+             }}>
+               <DialogTrigger asChild>
+                   <Button variant="primary">
+                      <PlusCircle className="mr-2 h-4 w-4" /> Add Investment
+                   </Button>
+               </DialogTrigger>
+               <InvestmentFormDialog
+                   key={editingInvestment?.id || 'add'} // Ensure dialog resets when switching between add/edit
+                   investment={editingInvestment}
+                   onSave={handleAddOrEditInvestment}
+                   onClose={() => { setIsAddDialogOpen(false); setEditingInvestment(null); }}
+               />
+              </Dialog>
+         </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[1fr_300px]">
