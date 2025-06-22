@@ -162,7 +162,7 @@ export default function Header() {
                   </Link>
                   <Link
                     href="/get-started"
-                    className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-nb-white hover:text-nb-black"
+                    className="nb-button rounded-full bg-wz-pink border-nb-black hover:bg-nb-white hover:text-nb-black"
                   >
                     Get Started
                   </Link>
@@ -170,7 +170,7 @@ export default function Header() {
               ) : (
                  <Button
                     onClick={handleSignOut}
-                    className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-nb-white hover:text-nb-black"
+                    className="nb-button rounded-full bg-wz-pink border-nb-black hover:bg-nb-white hover:text-nb-black"
                   >
                     {getIcon("LogOut", {className: "mr-1.5 h-4 w-4"})} Sign Out
                   </Button>
@@ -226,7 +226,7 @@ export default function Header() {
                             <SheetClose asChild>
                               <Link
                                 href="/get-started"
-                                className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-nb-white hover:text-nb-black w-full text-sm"
+                                className="nb-button rounded-full bg-wz-pink border-nb-black hover:bg-nb-white hover:text-nb-black w-full text-sm"
                               >
                                 Get Started
                               </Link>
@@ -236,7 +236,7 @@ export default function Header() {
                             <SheetClose asChild>
                                 <Button
                                 onClick={handleSignOut}
-                                className="nb-button rounded-full bg-nb-pink border-nb-black hover:bg-nb-white hover:text-nb-black w-full text-sm"
+                                className="nb-button rounded-full bg-wz-pink border-nb-black hover:bg-nb-white hover:text-nb-black w-full text-sm"
                                 >
                                 {getIcon("LogOut", {className: "mr-2 h-4 w-4"})} Sign Out
                                 </Button>
