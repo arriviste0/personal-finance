@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { analyzeSpendingPatterns, type AnalyzeSpendingPatternsInput, type AnalyzeSpendingPatternsOutput } from "@/ai/flows/analyze-spending-patterns";
-import { Lightbulb, Loader2, PlusCircle, Trash2, Info, Sparkles, Undo, Redo } from "lucide-react";
+import { Lightbulb, Loader2, PlusCircle, Trash2, Info, Sparkles } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from '@/components/ui/separator';
 
@@ -95,14 +95,6 @@ export default function AiAssistantPage() {
                  AI Savings Assistant
               </h1>
                <p className="text-sm text-muted-foreground">Get personalized financial insights.</p>
-            </div>
-             <div className="flex items-center gap-2">
-                <Button variant="outline" size="icon" aria-label="Undo">
-                    <Undo className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon" aria-label="Redo">
-                    <Redo className="h-4 w-4" />
-                </Button>
             </div>
           </div>
 

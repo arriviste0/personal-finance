@@ -68,7 +68,11 @@ const getIcon = (iconName: string, className?: string) => {
 };
 
 export default function SavingsGoalsPage() {
-  const [goalDefinitions, setGoalDefinitions] = useState<SavingsGoalData[]>(initialGoalDefinitions);
+  const [history, setHistory] = useState<{goalDefinitions: SavingsGoalData[]}[]>([{ goalDefinitions: initialGoalDefinitions }]);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const { goalDefinitions } = history[currentStep];
+
   const { allocations, depositToAllocation, withdrawFromAllocation, walletBalance } = useWallet();
   const { toast } = useToast();
 
@@ -80,13 +84,35 @@ export default function SavingsGoalsPage() {
   const [fundsGoalId, setFundsGoalId] = useState<string | null>(null);
   const [transactionAmount, setTransactionAmount] = useState('');
 
+  const canUndo = currentStep > 0;
+  const canRedo = currentStep < history.length - 1;
+
+  const setGoalDefinitions = (updater: (prevGoals: SavingsGoalData[]) => SavingsGoalData[]) => {
+    const newState = { goalDefinitions: updater(history[currentStep].goalDefinitions) };
+    const newHistory = history.slice(0, currentStep + 1);
+    setHistory([...newHistory, newState]);
+    setCurrentStep(newHistory.length);
+  };
+  
+  const handleUndo = () => {
+    if (canUndo) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleRedo = () => {
+    if (canRedo) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
 
   const handleCreateGoal = (newGoalData: Omit<SavingsGoalData, 'id'>) => {
     const newGoalDef: SavingsGoalData = {
       ...newGoalData,
       id: Date.now().toString(),
     };
-    setGoalDefinitions([...goalDefinitions, newGoalDef]);
+    setGoalDefinitions(goals => [...goals, newGoalDef]);
     depositToAllocation(newGoalDef.id, newGoalDef.name, 0, newGoalDef.target);
     setIsCreateDialogOpen(false);
     toast({ title: "Goal Created!", description: `"${newGoalDef.name}" has been added.`});
@@ -94,7 +120,7 @@ export default function SavingsGoalsPage() {
 
   const handleEditGoal = (updatedGoalData: SavingsGoalData) => {
      if (!editingGoalDef) return;
-    setGoalDefinitions(goalDefinitions.map(g => g.id === updatedGoalData.id ? updatedGoalData : g));
+    setGoalDefinitions(goals => goals.map(g => g.id === updatedGoalData.id ? updatedGoalData : g));
     const currentAllocation = allocations[updatedGoalData.id];
     depositToAllocation(updatedGoalData.id, updatedGoalData.name, 0, updatedGoalData.target);
 
@@ -110,7 +136,7 @@ export default function SavingsGoalsPage() {
         withdrawFromAllocation(goalId, goalToReturnFundsFrom.amount);
         toast({ title: "Funds Returned", description: `Funds from "${goalToReturnFundsFrom.name}" returned to main wallet.`});
     }
-    setGoalDefinitions(goalDefinitions.filter(g => g.id !== goalId));
+    setGoalDefinitions(goals => goals.filter(g => g.id !== goalId));
     toast({ title: "Goal Deleted", description: `"${goalDefToDelete?.name || 'The goal'}" has been removed.`, variant: "default" });
   };
 
@@ -183,10 +209,10 @@ export default function SavingsGoalsPage() {
        <div className="flex items-center justify-between mb-6 pt-8">
          <h1 className="text-3xl font-semibold font-heading">Your Savings Goals</h1>
          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" aria-label="Undo">
+            <Button variant="outline" size="icon" aria-label="Undo" onClick={handleUndo} disabled={!canUndo}>
                 <Undo className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" aria-label="Redo">
+            <Button variant="outline" size="icon" aria-label="Redo" onClick={handleRedo} disabled={!canRedo}>
                 <Redo className="h-4 w-4" />
             </Button>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>

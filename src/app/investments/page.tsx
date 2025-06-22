@@ -63,9 +63,35 @@ const chartColors = [
 ];
 
 export default function InvestmentsPage() {
-  const [investments, setInvestments] = useState<Investment[]>(initialInvestments);
+  const [history, setHistory] = useState<{investments: Investment[]}[]>([{ investments: initialInvestments }]);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const { investments } = history[currentStep];
+
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingInvestment, setEditingInvestment] = useState<Investment | null>(null);
+
+  const canUndo = currentStep > 0;
+  const canRedo = currentStep < history.length - 1;
+
+  const setInvestments = (updater: (prevInvestments: Investment[]) => Investment[]) => {
+    const newState = { investments: updater(history[currentStep].investments) };
+    const newHistory = history.slice(0, currentStep + 1);
+    setHistory([...newHistory, newState]);
+    setCurrentStep(newHistory.length);
+  };
+  
+  const handleUndo = () => {
+    if (canUndo) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleRedo = () => {
+    if (canRedo) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
 
   const totalPortfolioValue = useMemo(() => investments.reduce((sum, item) => sum + item.value, 0), [investments]);
 
@@ -78,7 +104,7 @@ export default function InvestmentsPage() {
   const handleAddOrEditInvestment = (investmentData: Omit<Investment, 'id'> | Investment) => {
     if ('id' in investmentData) {
       // Editing existing investment
-      setInvestments(investments.map(inv => inv.id === investmentData.id ? { ...inv, ...investmentData } : inv));
+      setInvestments(investments => investments.map(inv => inv.id === investmentData.id ? { ...inv, ...investmentData } : inv));
       setEditingInvestment(null);
     } else {
       // Adding new investment
@@ -86,13 +112,13 @@ export default function InvestmentsPage() {
         id: Date.now().toString(),
         ...investmentData,
       };
-      setInvestments([...investments, newInvestment]);
+      setInvestments(investments => [...investments, newInvestment]);
       setIsAddDialogOpen(false);
     }
   };
 
   const handleDeleteInvestment = (id: string) => {
-    setInvestments(investments.filter(inv => inv.id !== id));
+    setInvestments(investments => investments.filter(inv => inv.id !== id));
   };
 
   const openEditDialog = (investment: Investment) => {
@@ -116,10 +142,10 @@ export default function InvestmentsPage() {
             <Landmark className="h-7 w-7 text-primary" /> Investment Portfolio
          </h1>
          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" aria-label="Undo">
+            <Button variant="outline" size="icon" aria-label="Undo" onClick={handleUndo} disabled={!canUndo}>
                 <Undo className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" aria-label="Redo">
+            <Button variant="outline" size="icon" aria-label="Redo" onClick={handleRedo} disabled={!canRedo}>
                 <Redo className="h-4 w-4" />
             </Button>
             <Dialog open={isAddDialogOpen || !!editingInvestment} onOpenChange={(open) => {
@@ -265,11 +291,11 @@ export default function InvestmentsPage() {
                              {gainLoss === null ? 'N/A' : `${gainLoss >= 0 ? '+' : ''}$${gainLoss.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                          </TableCell>
                          <TableCell className="text-center">
-                            <div className="flex justify-center items-center gap-1 p-0.5">
+                           <div className="flex justify-center items-center gap-1 p-0.5 border-2 border-foreground">
                                <Button
                                    variant="ghost"
                                    size="icon"
-                                   className="h-7 w-7"
+                                   className="h-7 w-7 !border-0"
                                    onClick={() => openEditDialog(inv)}
                                >
                                    <Edit className="h-4 w-4 text-primary"/>
@@ -277,7 +303,7 @@ export default function InvestmentsPage() {
                                </Button>
                                 <AlertDialog>
                                   <AlertDialogTrigger asChild>
-                                    <Button variant="ghost" size="icon" className="h-7 w-7">
+                                    <Button variant="ghost" size="icon" className="h-7 w-7 !border-0">
                                        <Trash2 className="h-4 w-4 text-destructive"/>
                                        <span className="sr-only">Delete</span>
                                     </Button>

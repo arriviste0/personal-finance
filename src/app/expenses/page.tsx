@@ -61,7 +61,11 @@ const categories = ["Food", "Transport", "Fun Money", "Shopping", "Utilities", "
 const defaultNewExpenseState = { description: '', category: categories[0], amount: '', date: format(new Date(), 'yyyy-MM-dd') };
 
 export default function ExpensesPage() {
-  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
+  const [history, setHistory] = useState<{transactions: Transaction[]}[]>([{ transactions: initialTransactions }]);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const { transactions } = history[currentStep];
+
   const [filteredCategory, setFilteredCategory] = useState<string>("all");
   // Set default date range to Apr 19, 2025 - May 19, 2025
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -72,6 +76,28 @@ export default function ExpensesPage() {
    const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
    const [newExpense, setNewExpense] = useState(defaultNewExpenseState);
    const { toast } = useToast();
+
+   const canUndo = currentStep > 0;
+   const canRedo = currentStep < history.length - 1;
+ 
+   const setTransactions = (updater: (prevTxs: Transaction[]) => Transaction[]) => {
+     const newState = { transactions: updater(history[currentStep].transactions) };
+     const newHistory = history.slice(0, currentStep + 1);
+     setHistory([...newHistory, newState]);
+     setCurrentStep(newHistory.length);
+   };
+ 
+   const handleUndo = () => {
+     if (canUndo) {
+       setCurrentStep(currentStep - 1);
+     }
+   };
+ 
+   const handleRedo = () => {
+     if (canRedo) {
+       setCurrentStep(currentStep + 1);
+     }
+   };
 
     // Effect to pre-fill form when editing
     useEffect(() => {
@@ -134,7 +160,7 @@ export default function ExpensesPage() {
                ...newExpense,
                amount: -amount,
            };
-           setTransactions(transactions.map(t => t.id === editingTransaction.id ? updatedTx : t));
+           setTransactions(prevTxs => prevTxs.map(t => t.id === editingTransaction.id ? updatedTx : t));
            toast({ title: "Transaction Updated", description: "Your expense has been successfully updated." });
        } else {
            // Add new transaction
@@ -199,10 +225,10 @@ export default function ExpensesPage() {
             <ListChecks className="h-7 w-7 text-primary" /> Expense Tracker
          </h1>
          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" aria-label="Undo">
+            <Button variant="outline" size="icon" aria-label="Undo" onClick={handleUndo} disabled={!canUndo}>
                 <Undo className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" aria-label="Redo">
+            <Button variant="outline" size="icon" aria-label="Redo" onClick={handleRedo} disabled={!canRedo}>
                 <Redo className="h-4 w-4" />
             </Button>
             <Dialog open={isFormDialogOpen} onOpenChange={onDialogClose}>

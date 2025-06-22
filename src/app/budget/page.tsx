@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { format, parseISO, add, sub } from 'date-fns';
+import { format, sub } from 'date-fns';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
@@ -52,6 +52,11 @@ interface TransactionItem {
     isRecurring: boolean;
 }
 
+interface PageState {
+    budgetData: BudgetItem[];
+    transactions: TransactionItem[];
+}
+
 // Initial Mock data with neon chart colors
 const initialBudgetData: BudgetItem[] = [
   { id: "1", category: "Food & Groceries", spent: 450, budget: 600, color: "hsl(var(--chart-1))", subcategories: [{ id: 's1', name: 'Groceries', spent: 300, budget: 400 }, { id: 's2', name: 'Dining Out', spent: 150, budget: 200 }] },
@@ -68,17 +73,48 @@ const initialTransactions: TransactionItem[] = [
     { id: 'tx3', date: format(sub(new Date(), { days: 10 }), 'yyyy-MM-dd'), amount: 75, note: 'Train ticket', budgetItemId: '2', isRecurring: false },
 ];
 
+const initialState: PageState = {
+    budgetData: initialBudgetData,
+    transactions: initialTransactions,
+};
+
 export default function BudgetPage() {
-  const [budgetData, setBudgetData] = useState<BudgetItem[]>(initialBudgetData);
+  const [history, setHistory] = useState<PageState[]>([initialState]);
+  const [currentStep, setCurrentStep] = useState(0);
+  
+  const currentState = history[currentStep];
+  const { budgetData, transactions } = currentState;
+
   const [editingBudgets, setEditingBudgets] = useState<Record<string, number>>({});
   const [isEditMode, setIsEditMode] = useState(false);
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [newTransaction, setNewTransaction] = useState({ category: initialBudgetData[0]?.category || '', amount: '', note: '', isRecurring: false });
-  const [transactions, setTransactions] = useState<TransactionItem[]>(initialTransactions);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const [newCategoryName, setNewCategoryName] = useState('');
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
+
+  const canUndo = currentStep > 0;
+  const canRedo = currentStep < history.length - 1;
+
+  const setState = (updater: (prevState: PageState) => PageState) => {
+    const newState = updater(history[currentStep]);
+    const newHistory = history.slice(0, currentStep + 1);
+    setHistory([...newHistory, newState]);
+    setCurrentStep(newHistory.length);
+  };
+  
+  const handleUndo = () => {
+    if (canUndo) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleRedo = () => {
+    if (canRedo) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
 
   const totalSpent = useMemo(() => budgetData.reduce((sum, item) => sum + item.spent, 0), [budgetData]);
   const totalBudget = useMemo(() => budgetData.reduce((sum, item) => sum + item.budget, 0), [budgetData]);
@@ -110,12 +146,13 @@ export default function BudgetPage() {
 
   const toggleEditMode = () => {
     if (isEditMode) {
-      setBudgetData(prevData =>
-        prevData.map(item => ({
-          ...item,
-          budget: editingBudgets[item.id] ?? item.budget,
-        }))
-      );
+      setState(prevState => ({
+          ...prevState,
+          budgetData: prevState.budgetData.map(item => ({
+              ...item,
+              budget: editingBudgets[item.id] ?? item.budget,
+          }))
+      }));
       setEditingBudgets({});
     } else {
       const currentBudgets = budgetData.reduce((acc, item) => {
@@ -159,14 +196,16 @@ export default function BudgetPage() {
                    isRecurring: newTransaction.isRecurring || false,
                };
 
-               setTransactions(prev => [newTx, ...prev]);
-               setBudgetData(prevData =>
-                   prevData.map(item =>
+                setState(prevState => {
+                    const newTransactions = [newTx, ...prevState.transactions];
+                    const newBudgetData = prevState.budgetData.map(item =>
                        item.category === newTransaction.category
                            ? { ...item, spent: item.spent + amount }
                            : item
-                   )
-               );
+                    );
+                    return { budgetData: newBudgetData, transactions: newTransactions };
+                });
+
                setIsAddTransactionOpen(false);
                setNewTransaction({ category: initialBudgetData[0]?.category || '', amount: '', note: '', isRecurring: false });
                setSelectedDate(new Date()); // Reset selected date to today
@@ -196,7 +235,10 @@ export default function BudgetPage() {
                budget: 0,
                color: "hsl(var(--chart-6))",
            };
-           setBudgetData(prev => [...prev, newCategory]);
+            setState(prevState => ({
+                ...prevState,
+                budgetData: [...prevState.budgetData, newCategory]
+            }));
            setIsAddCategoryOpen(false);
            setNewCategoryName('');
        }
@@ -207,10 +249,10 @@ export default function BudgetPage() {
        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold">BUDGET TRACKER</h1>
           <div className="flex gap-2">
-              <Button variant="outline" size="icon" aria-label="Undo">
+              <Button variant="outline" size="icon" aria-label="Undo" onClick={handleUndo} disabled={!canUndo}>
                   <Undo className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" aria-label="Redo">
+              <Button variant="outline" size="icon" aria-label="Redo" onClick={handleRedo} disabled={!canRedo}>
                   <Redo className="h-4 w-4" />
               </Button>
              <Dialog open={isAddTransactionOpen} onOpenChange={setIsAddTransactionOpen}>

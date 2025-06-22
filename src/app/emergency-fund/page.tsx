@@ -46,6 +46,11 @@ interface EmergencyFundTransaction {
     notes?: string;
 }
 
+interface PageState {
+    transactions: EmergencyFundTransaction[];
+    definedTargetAmount: number;
+}
+
 const initialEmergencyFundTarget = 15000;
 const initialTransactions: EmergencyFundTransaction[] = [
     { id: "eft1", date: "2024-04-15", type: "deposit", amount: 500, notes: "Monthly savings transfer" },
@@ -53,21 +58,56 @@ const initialTransactions: EmergencyFundTransaction[] = [
     { id: "eft3", date: "2024-06-15", type: "deposit", amount: 500, notes: "Monthly savings transfer" },
 ];
 
+const initialState: PageState = {
+    transactions: initialTransactions,
+    definedTargetAmount: initialEmergencyFundTarget,
+};
+
 export default function EmergencyFundPage() {
   const { allocations, depositToAllocation, withdrawFromAllocation, walletBalance } = useWallet();
   const { toast } = useToast();
 
+  const [history, setHistory] = useState<PageState[]>([initialState]);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const currentState = history[currentStep];
+  const { transactions, definedTargetAmount } = currentState;
+  
   const emergencyFundAllocation = allocations[EMERGENCY_FUND_ALLOCATION_ID];
   const currentFundAmount = emergencyFundAllocation?.amount || 0;
-  const [definedTargetAmount, setDefinedTargetAmount] = useState<number>(emergencyFundAllocation?.target || initialEmergencyFundTarget);
 
-  const [transactions, setTransactions] = useState<EmergencyFundTransaction[]>(initialTransactions);
   const [isModifyFundOpen, setIsModifyFundOpen] = useState(false);
   const [transactionAmountInput, setTransactionAmountInput] = useState<string>('');
   const [transactionNotes, setTransactionNotes] = useState<string>('');
 
   const [editingTargetInput, setEditingTargetInput] = useState<string>(definedTargetAmount.toString());
   const [isEditingTarget, setIsEditingTarget] = useState(false);
+
+  const canUndo = currentStep > 0;
+  const canRedo = currentStep < history.length - 1;
+
+  const setState = (updater: (prevState: PageState) => PageState) => {
+    const newState = updater(history[currentStep]);
+    const newHistory = history.slice(0, currentStep + 1);
+    setHistory([...newHistory, newState]);
+    setCurrentStep(newHistory.length);
+  };
+  
+  const handleUndo = () => {
+    if (canUndo) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleRedo = () => {
+    if (canRedo) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  React.useEffect(() => {
+    setEditingTargetInput(definedTargetAmount.toString());
+  }, [definedTargetAmount]);
 
   const sortedTransactions = useMemo(() => {
     return [...transactions].sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime());
@@ -89,7 +129,7 @@ export default function EmergencyFundPage() {
    const saveTargetAmount = () => {
        const newTarget = parseFloat(editingTargetInput);
        if (!isNaN(newTarget) && newTarget >= 0) {
-           setDefinedTargetAmount(newTarget);
+            setState(prevState => ({ ...prevState, definedTargetAmount: newTarget }));
            // Update target in context if it exists, otherwise create new allocation context entry
            depositToAllocation(EMERGENCY_FUND_ALLOCATION_ID, "Emergency Fund", 0, newTarget); // Using 0 amount to just update target
            setIsEditingTarget(false);
@@ -138,7 +178,10 @@ export default function EmergencyFundPage() {
               amount: amount,
               notes: transactionNotes.trim() || undefined,
           };
-          setTransactions(prev => [newTransaction, ...prev]);
+          setState(prevState => ({
+              ...prevState,
+              transactions: [newTransaction, ...prevState.transactions]
+          }));
           setIsModifyFundOpen(false);
           setTransactionAmountInput('');
           setTransactionNotes('');
@@ -151,7 +194,10 @@ export default function EmergencyFundPage() {
 
     const handleDeleteTransaction = (id: string) => {
         // Note: This only deletes from local log. For full functionality, this would also adjust balances.
-        setTransactions(prev => prev.filter(tx => tx.id !== id));
+        setState(prevState => ({
+            ...prevState,
+            transactions: prevState.transactions.filter(tx => tx.id !== id)
+        }));
         toast({
             title: "Transaction Removed",
             description: "The transaction has been removed from local history.",
@@ -179,10 +225,10 @@ export default function EmergencyFundPage() {
             <ShieldAlert className="h-7 w-7 text-primary" /> Emergency Fund Tracker
          </h1>
          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" aria-label="Undo">
+            <Button variant="outline" size="icon" aria-label="Undo" onClick={handleUndo} disabled={!canUndo}>
                 <Undo className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" aria-label="Redo">
+            <Button variant="outline" size="icon" aria-label="Redo" onClick={handleRedo} disabled={!canRedo}>
                 <Redo className="h-4 w-4" />
             </Button>
            <Dialog open={isModifyFundOpen} onOpenChange={setIsModifyFundOpen}>
@@ -362,10 +408,10 @@ export default function EmergencyFundPage() {
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-7 w-7"
+                                className="h-7 w-7 text-destructive hover:bg-destructive/10"
                                 onClick={() => handleDeleteTransaction(tx.id)}
                             >
-                                <Trash2 className="h-4 w-4 text-destructive"/>
+                                <Trash2 className="h-4 w-4"/>
                                 <span className="sr-only">Delete</span>
                             </Button>
                          </TableCell>
