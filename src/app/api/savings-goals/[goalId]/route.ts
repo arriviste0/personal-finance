@@ -1,4 +1,3 @@
-
 import { NextResponse, type NextRequest } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import type { SavingsGoalSchema } from '@/lib/db-schemas';
@@ -17,7 +16,7 @@ interface RouteParams {
  * Fetches a specific savings goal by its ID for the authenticated user.
  */
 export async function GET(request: NextRequest, { params }: RouteParams) {
-  const { goalId } = params;
+  const { goalId } = await params;
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -51,7 +50,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
  * Updates a specific savings goal by its ID for the authenticated user.
  */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
-  const { goalId } = params;
+  const { goalId } = await params;
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -97,7 +96,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
  * Deletes a specific savings goal by its ID for the authenticated user.
  */
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
-  const { goalId } = params;
+  const { goalId } = await params;
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });

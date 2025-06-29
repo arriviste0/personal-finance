@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { BudgetSchema } from '@/lib/db-schemas';
 
@@ -11,8 +10,23 @@ const fetchBudget = async (month: string): Promise<BudgetSchema> => {
     return response.json();
 };
 
+// Simple interface for budget updates
+interface BudgetUpdate {
+    monthYear: string;
+    budgetItems: Array<{
+        _id?: string;
+        category: string;
+        budget: number;
+        spent: number;
+        color: string;
+    }>;
+    totalBudget: number;
+    totalSpent: number;
+    updatedAt: Date;
+}
+
 // Update function for a budget
-const updateBudget = async (budget: BudgetSchema): Promise<BudgetSchema> => {
+const updateBudget = async (budget: BudgetUpdate): Promise<BudgetSchema> => {
     const response = await fetch('/api/budget', {
         method: 'POST',
         headers: {
@@ -39,11 +53,11 @@ export function useBudget(month: string) {
 // Custom hook to update a budget
 export function useUpdateBudget() {
     const queryClient = useQueryClient();
-    return useMutation<BudgetSchema, Error, BudgetSchema>({
+    return useMutation<BudgetSchema, Error, BudgetUpdate>({
         mutationFn: updateBudget,
         onSuccess: (data) => {
             // Invalidate and refetch the budget query for the specific month
             queryClient.invalidateQueries({ queryKey: ['budget', data.monthYear] });
         },
     });
-}
+} 

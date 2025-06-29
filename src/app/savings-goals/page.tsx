@@ -1,7 +1,6 @@
-
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -17,12 +16,28 @@ import { useToast } from '@/hooks/use-toast';
 import { useGoals, useAddGoal, useUpdateGoal, useDeleteGoal, useModifyGoalFunds } from '@/hooks/use-goals';
 import type { SavingsGoalSchema } from '@/lib/db-schemas';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useUndoRedo } from '@/hooks/use-undo-redo';
+import { UndoRedoButtons } from '@/components/ui/undo-redo-buttons';
+import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
 
 const iconMap: { [key: string]: React.ElementType } = { PiggyBank, HandCoins, Target, DollarSign, CheckCircle };
 const getIcon = (iconName: string, className?: string) => {
   const IconComponent = iconMap[iconName] || DollarSign;
   return <IconComponent className={cn("h-6 w-6", className)} />;
 };
+
+// Interface for goal state in undo/redo
+interface GoalState {
+  goals: Array<{
+    _id: string;
+    name: string;
+    targetAmount: number;
+    currentAmount: number;
+    iconName: string;
+    description?: string;
+    isComplete: boolean;
+  }>;
+}
 
 export default function SavingsGoalsPage() {
   const { data: goals = [], isLoading, error } = useGoals();
@@ -39,6 +54,30 @@ export default function SavingsGoalsPage() {
   const [isFundsDialogOpen, setIsFundsDialogOpen] = useState(false);
   const [fundsGoal, setFundsGoal] = useState<SavingsGoalSchema | null>(null);
   const [transactionAmount, setTransactionAmount] = useState('');
+
+  // Initialize undo/redo with current goals
+  const [goalState, undoRedoActions] = useUndoRedo<GoalState>(
+    {
+      goals: goals.map((goal: SavingsGoalSchema) => ({
+        _id: goal._id.toString(),
+        name: goal.name,
+        targetAmount: goal.targetAmount,
+        currentAmount: goal.currentAmount,
+        iconName: goal.iconName,
+        description: goal.description || '',
+        isComplete: goal.isComplete
+      }))
+    },
+    20 // Max 20 history entries
+  );
+
+  // Set up keyboard shortcuts
+  useKeyboardShortcuts({
+    onUndo: undoRedoActions.undo,
+    onRedo: undoRedoActions.redo,
+    canUndo: undoRedoActions.canUndo,
+    canRedo: undoRedoActions.canRedo
+  });
 
   const handleSaveGoal = (goalData: Omit<SavingsGoalSchema, '_id'> | SavingsGoalSchema) => {
     if ('_id' in goalData) { // Editing
@@ -67,7 +106,7 @@ export default function SavingsGoalsPage() {
          toast({ title: "Invalid Input", variant: "destructive"});
          return;
      }
-     const type = amountFloat > 0 ? 'deposit' : 'withdraw';
+     const type = amountFloat > 0 ? 'deposit' as const : 'withdraw' as const;
      const payload = { goalId: fundsGoal._id.toString(), amount: Math.abs(amountFloat), type };
      
      modifyFundsMutation.mutate(payload, {
@@ -87,6 +126,15 @@ export default function SavingsGoalsPage() {
        <div className="flex items-center justify-between mb-6 pt-8">
          <h1 className="text-3xl font-semibold font-heading">Your Savings Goals</h1>
          <div className="flex items-center gap-2">
+            {/* Undo/Redo buttons */}
+            <UndoRedoButtons
+              canUndo={undoRedoActions.canUndo}
+              canRedo={undoRedoActions.canRedo}
+              onUndo={undoRedoActions.undo}
+              onRedo={undoRedoActions.redo}
+              variant="outline"
+              size="sm"
+            />
             <Dialog open={isFormOpen} onOpenChange={(open) => { if (!open) setEditingGoal(null); setIsFormOpen(open); }}>
                 <DialogTrigger asChild><Button variant="primary"><PlusCircle className="mr-2 h-4 w-4" /> Create New Goal</Button></DialogTrigger>
                 <GoalFormDialog key={editingGoal?._id.toString() || 'create'} title={editingGoal ? "Edit Goal" : "Create New Goal"} description={editingGoal ? "Update your target." : "Define your new target."} goal={editingGoal} onSave={handleSaveGoal} onClose={() => setIsFormOpen(false)} isPending={addGoalMutation.isPending || updateGoalMutation.isPending}/>

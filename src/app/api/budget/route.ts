@@ -1,4 +1,3 @@
-
 import { NextResponse, type NextRequest } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import type { BudgetSchema, BudgetItemSchema } from '@/lib/db-schemas';
@@ -72,7 +71,19 @@ export async function POST(request: NextRequest) {
     const userId = new ObjectId(session.user.id);
 
     try {
-        const body = (await request.json()) as Omit<BudgetSchema, '_id' | 'userId' | 'createdAt'>;
+        const body = (await request.json()) as {
+            monthYear: string;
+            budgetItems: Array<{
+                _id?: string;
+                category: string;
+                budget: number;
+                spent: number;
+                color: string;
+            }>;
+            totalBudget: number;
+            totalSpent: number;
+            updatedAt: Date;
+        };
         const { monthYear, budgetItems } = body;
 
         if (!monthYear || !budgetItems) {
@@ -90,7 +101,10 @@ export async function POST(request: NextRequest) {
             { userId, monthYear },
             {
                 $set: {
-                    budgetItems: budgetItems.map(item => ({...item, _id: item._id ? new ObjectId(item._id) : new ObjectId()})),
+                    budgetItems: budgetItems.map(item => ({
+                        ...item, 
+                        _id: item._id ? new ObjectId(item._id) : new ObjectId()
+                    })),
                     totalBudget,
                     totalSpent,
                     updatedAt: new Date()

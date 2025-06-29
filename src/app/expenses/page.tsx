@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -19,10 +18,24 @@ import { useToast } from '@/hooks/use-toast';
 import { useExpenses, useAddExpense, useUpdateExpense, useDeleteExpense } from '@/hooks/use-expenses';
 import type { TransactionSchema } from '@/lib/db-schemas';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useUndoRedo } from '@/hooks/use-undo-redo';
+import { UndoRedoButtons } from '@/components/ui/undo-redo-buttons';
+import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
 
 const categories = ["Food", "Transport", "Fun Money", "Shopping", "Utilities", "Rent/Mortgage", "Other"];
 
 const defaultNewExpenseState = { description: '', category: categories[0], amount: '', date: format(new Date(), 'yyyy-MM-dd') };
+
+// Interface for expense state in undo/redo
+interface ExpenseState {
+  transactions: Array<{
+    _id: string;
+    description: string;
+    category: string;
+    amount: number;
+    date: string;
+  }>;
+}
 
 export default function ExpensesPage() {
   const { data: transactions = [], isLoading, error } = useExpenses();
@@ -40,6 +53,28 @@ export default function ExpensesPage() {
    const [newExpense, setNewExpense] = useState(defaultNewExpenseState);
    const { toast } = useToast();
 
+   // Initialize undo/redo with current transactions
+   const [expenseState, undoRedoActions] = useUndoRedo<ExpenseState>(
+     {
+       transactions: transactions.map((tx: TransactionSchema) => ({
+         _id: tx._id.toString(),
+         description: tx.description,
+         category: tx.category,
+         amount: tx.amount,
+         date: format(new Date(tx.date), 'yyyy-MM-dd')
+       }))
+     },
+     20 // Max 20 history entries
+   );
+
+   // Set up keyboard shortcuts
+   useKeyboardShortcuts({
+     onUndo: undoRedoActions.undo,
+     onRedo: undoRedoActions.redo,
+     canUndo: undoRedoActions.canUndo,
+     canRedo: undoRedoActions.canRedo
+   });
+
     useEffect(() => {
         if (editingTransaction) {
             setNewExpense({
@@ -52,7 +87,6 @@ export default function ExpensesPage() {
             setNewExpense(defaultNewExpenseState);
         }
     }, [editingTransaction, isFormDialogOpen]);
-
 
   const filteredTransactions = useMemo(() => {
     return transactions
@@ -141,7 +175,15 @@ export default function ExpensesPage() {
        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold flex items-center gap-2"><ListChecks className="h-7 w-7 text-primary" /> Expense Tracker</h1>
          <div className="flex items-center gap-2">
-            {/* Undo/Redo removed for DB state */}
+            {/* Undo/Redo buttons */}
+            <UndoRedoButtons
+              canUndo={undoRedoActions.canUndo}
+              canRedo={undoRedoActions.canRedo}
+              onUndo={undoRedoActions.undo}
+              onRedo={undoRedoActions.redo}
+              variant="outline"
+              size="sm"
+            />
             <Dialog open={isFormDialogOpen} onOpenChange={onDialogClose}>
                <DialogTrigger asChild>
                    <Button variant="primary" onClick={openAddDialog}><PlusCircle className="mr-2 h-4 w-4" /> Add Expense</Button>

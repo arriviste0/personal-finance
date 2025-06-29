@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -18,7 +17,24 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from "@/hooks/use-toast";
 import { useEmergencyFund, useEmergencyFundTransactions, useUpdateEmergencyFund, useAddEmergencyFundTransaction } from '@/hooks/use-emergency-fund';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useUndoRedo } from '@/hooks/use-undo-redo';
+import { UndoRedoButtons } from '@/components/ui/undo-redo-buttons';
+import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
 
+// Interface for emergency fund state in undo/redo
+interface EmergencyFundState {
+  fund: {
+    currentAmount: number;
+    targetAmount: number;
+  };
+  transactions: Array<{
+    _id: string;
+    type: 'deposit' | 'withdrawal';
+    amount: number;
+    notes?: string;
+    date: string;
+  }>;
+}
 
 export default function EmergencyFundPage() {
   const { data: fund, isLoading: isLoadingFund, error: fundError } = useEmergencyFund();
@@ -33,6 +49,32 @@ export default function EmergencyFundPage() {
   const [isEditingTarget, setIsEditingTarget] = useState(false);
   const [editingTargetInput, setEditingTargetInput] = useState<string>('');
   
+  // Initialize undo/redo with current emergency fund data
+  const [emergencyFundState, undoRedoActions] = useUndoRedo<EmergencyFundState>(
+    {
+      fund: {
+        currentAmount: fund?.currentAmount || 0,
+        targetAmount: fund?.targetAmount || 0
+      },
+      transactions: transactions.map((tx) => ({
+        _id: tx._id.toString(),
+        type: tx.type,
+        amount: tx.amount,
+        notes: tx.notes || '',
+        date: format(new Date(tx.date), 'yyyy-MM-dd')
+      }))
+    },
+    20 // Max 20 history entries
+  );
+
+  // Set up keyboard shortcuts
+  useKeyboardShortcuts({
+    onUndo: undoRedoActions.undo,
+    onRedo: undoRedoActions.redo,
+    canUndo: undoRedoActions.canUndo,
+    canRedo: undoRedoActions.canRedo
+  });
+
   React.useEffect(() => {
       if(fund?.targetAmount) {
           setEditingTargetInput(fund.targetAmount.toString());
@@ -56,6 +98,15 @@ export default function EmergencyFundPage() {
                onSuccess: () => {
                    toast({ title: "Target Updated" });
                    setIsEditingTarget(false);
+                   // Update undo/redo state
+                   const newState = {
+                     ...emergencyFundState,
+                     fund: {
+                       ...emergencyFundState.fund,
+                       targetAmount: newTarget
+                     }
+                   };
+                   undoRedoActions.pushState(newState);
                },
                onError: (err) => toast({ title: "Update Failed", description: err.message, variant: "destructive" })
            })
@@ -78,6 +129,25 @@ export default function EmergencyFundPage() {
               setIsModifyFundOpen(false);
               setTransactionAmountInput('');
               setTransactionNotes('');
+              // Update undo/redo state
+              const newTransaction = {
+                _id: Date.now().toString(), // Temporary ID for undo/redo
+                type,
+                amount,
+                notes: transactionNotes.trim(),
+                date: format(new Date(), 'yyyy-MM-dd')
+              };
+              const newState = {
+                ...emergencyFundState,
+                fund: {
+                  ...emergencyFundState.fund,
+                  currentAmount: type === 'deposit' 
+                    ? emergencyFundState.fund.currentAmount + amount
+                    : emergencyFundState.fund.currentAmount - amount
+                },
+                transactions: [newTransaction, ...emergencyFundState.transactions]
+              };
+              undoRedoActions.pushState(newState);
           },
           onError: (err) => toast({ title: `${type} failed`, description: err.message, variant: "destructive" })
       })
@@ -91,6 +161,15 @@ export default function EmergencyFundPage() {
        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold flex items-center gap-2 font-heading"><ShieldAlert className="h-7 w-7 text-primary" /> Emergency Fund Tracker</h1>
          <div className="flex items-center gap-2">
+            {/* Undo/Redo buttons */}
+            <UndoRedoButtons
+              canUndo={undoRedoActions.canUndo}
+              canRedo={undoRedoActions.canRedo}
+              onUndo={undoRedoActions.undo}
+              onRedo={undoRedoActions.redo}
+              variant="outline"
+              size="sm"
+            />
            <Dialog open={isModifyFundOpen} onOpenChange={setIsModifyFundOpen}>
              <DialogTrigger asChild><Button variant="primary" disabled={isLoadingFund}><DollarSign className="mr-2 h-4 w-4" /> Modify Funds</Button></DialogTrigger>
               <DialogContent className="retro-window sm:max-w-[480px]">

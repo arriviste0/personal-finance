@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -26,6 +25,22 @@ import { useToast } from '@/hooks/use-toast';
 import { useBudget, useUpdateBudget } from '@/hooks/use-budget';
 import type { BudgetSchema, BudgetItemSchema } from '@/lib/db-schemas';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useUndoRedo } from '@/hooks/use-undo-redo';
+import { UndoRedoButtons } from '@/components/ui/undo-redo-buttons';
+import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
+
+// Interface for budget state in undo/redo (simplified version)
+interface BudgetState {
+  budgetItems: Array<{
+    _id: string;
+    category: string;
+    budget: number;
+    spent: number;
+    color: string;
+  }>;
+  totalBudget: number;
+  totalSpent: number;
+}
 
 export default function BudgetPage() {
   const [selectedMonth, setSelectedMonth] = useState(format(new Date(), 'yyyy-MM'));
@@ -38,13 +53,34 @@ export default function BudgetPage() {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
 
+  // Initialize undo/redo with current budget data
+  const [budgetState, undoRedoActions] = useUndoRedo<BudgetState>(
+    budgetData ? {
+      budgetItems: budgetData.budgetItems.map((item: BudgetItemSchema) => ({
+        ...item,
+        _id: item._id.toString()
+      })),
+      totalBudget: budgetData.totalBudget,
+      totalSpent: budgetData.totalSpent
+    } : { budgetItems: [], totalBudget: 0, totalSpent: 0 },
+    20 // Max 20 history entries
+  );
+
+  // Set up keyboard shortcuts
+  useKeyboardShortcuts({
+    onUndo: undoRedoActions.undo,
+    onRedo: undoRedoActions.redo,
+    canUndo: undoRedoActions.canUndo,
+    canRedo: undoRedoActions.canRedo
+  });
+
   const budgetItems = budgetData?.budgetItems || [];
 
-  const totalSpent = useMemo(() => budgetItems.reduce((sum, item) => sum + item.spent, 0), [budgetItems]);
-  const totalBudget = useMemo(() => budgetItems.reduce((sum, item) => sum + item.budget, 0), [budgetItems]);
+  const totalSpent = useMemo(() => budgetItems.reduce((sum: number, item: BudgetItemSchema) => sum + item.spent, 0), [budgetItems]);
+  const totalBudget = useMemo(() => budgetItems.reduce((sum: number, item: BudgetItemSchema) => sum + item.budget, 0), [budgetItems]);
   const netSavings = useMemo(() => totalBudget - totalSpent, [totalBudget, totalSpent]);
 
-  const barChartData = budgetItems.map(item => ({
+  const barChartData = budgetItems.map((item: BudgetItemSchema) => ({
         category: item.category,
         budget: item.budget,
         spent: item.spent,
@@ -54,32 +90,55 @@ export default function BudgetPage() {
   const handleEditBudgetChange = (id: string, value: string) => {
     const numericValue = parseFloat(value) || 0;
     setEditingBudgets(prev => ({ ...prev, [id]: numericValue }));
+    
+    // Update the undo/redo state with the new budget values
+    const updatedItems = budgetItems.map((item: BudgetItemSchema) => ({
+      ...item,
+      budget: item._id.toString() === id ? numericValue : (editingBudgets[item._id.toString()] ?? item.budget),
+      _id: item._id.toString()
+    }));
+    
+    const updatedBudget = {
+      budgetItems: updatedItems,
+      totalBudget: updatedItems.reduce((sum: number, item: { budget: number }) => sum + item.budget, 0),
+      totalSpent: totalSpent,
+    };
+    
+    undoRedoActions.pushState(updatedBudget);
   };
 
   const toggleEditMode = () => {
     if (isEditMode) {
       // Save logic
-      const updatedItems = budgetItems.map(item => ({
+      const updatedItems = budgetItems.map((item: BudgetItemSchema) => ({
           ...item,
-          budget: editingBudgets[item.id.toString()] ?? item.budget,
+          budget: editingBudgets[item._id.toString()] ?? item.budget,
+          _id: item._id.toString()
       }));
       
+      if (!budgetData) return;
+      
       const updatedBudget = {
-          ...budgetData,
-          budgetItems: updatedItems,
           monthYear: selectedMonth,
+          budgetItems: updatedItems,
+          totalBudget: budgetData.totalBudget,
+          totalSpent: budgetData.totalSpent,
+          updatedAt: new Date(),
       };
 
-      updateBudgetMutation.mutate(updatedBudget as BudgetSchema, {
-          onSuccess: () => toast({ title: "Budget Saved!" }),
+      updateBudgetMutation.mutate(updatedBudget, {
+          onSuccess: () => {
+            toast({ title: "Budget Saved!" });
+            undoRedoActions.clearHistory();
+          },
           onError: () => toast({ title: "Save Failed", description: "Could not save budget.", variant: "destructive" })
       });
       
       setEditingBudgets({});
     } else {
       // Enter edit mode
-      const currentBudgets = budgetItems.reduce((acc, item) => {
-        acc[item.id.toString()] = item.budget;
+      const currentBudgets = budgetItems.reduce((acc: Record<string, number>, item: BudgetItemSchema) => {
+        acc[item._id.toString()] = item.budget;
         return acc;
       }, {} as Record<string, number>);
       setEditingBudgets(currentBudgets);
@@ -90,6 +149,7 @@ export default function BudgetPage() {
   const cancelEditMode = () => {
      setEditingBudgets({});
      setIsEditMode(false);
+     undoRedoActions.clearHistory();
   }
 
   const formatCurrency = (amount: number) => {
@@ -98,17 +158,18 @@ export default function BudgetPage() {
 
    const submitAddCategory = () => {
        if (newCategoryName.trim() && budgetData) {
-           const newCategory: BudgetItemSchema = {
-               _id: new (require('mongodb').ObjectId)(),
+           const newCategory = {
                category: newCategoryName,
                spent: 0,
                budget: 0,
                color: "hsl(var(--chart-6))",
            };
            const updatedBudget = {
-               ...budgetData,
-               budgetItems: [...budgetData.budgetItems, newCategory],
                monthYear: selectedMonth,
+               budgetItems: [...budgetItems, newCategory],
+               totalBudget: budgetData.totalBudget,
+               totalSpent: budgetData.totalSpent,
+               updatedAt: new Date(),
            }
            updateBudgetMutation.mutate(updatedBudget, {
                 onSuccess: () => {
@@ -130,7 +191,17 @@ export default function BudgetPage() {
        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold font-heading">BUDGET TRACKER</h1>
           <div className="flex gap-2">
-            {/* Note: Undo/Redo is complex with server state, removed for now */}
+            {/* Undo/Redo buttons */}
+            {isEditMode && (
+              <UndoRedoButtons
+                canUndo={undoRedoActions.canUndo}
+                canRedo={undoRedoActions.canRedo}
+                onUndo={undoRedoActions.undo}
+                onRedo={undoRedoActions.redo}
+                variant="outline"
+                size="sm"
+              />
+            )}
             <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
               <DialogTrigger asChild>
                   <Button variant="outline" className="hover:bg-primary/10 hover:text-primary">
@@ -268,13 +339,13 @@ export default function BudgetPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {budgetItems.map((item) => {
+                  {budgetItems.map((item: BudgetItemSchema) => {
                      const percentage = item.budget > 0 ? Math.min((item.spent / item.budget) * 100, 100) : 0;
                      const remaining = item.budget - item.spent;
                      const progressColor = remaining < 0 ? "!bg-destructive" : percentage > 85 ? "!bg-accent" : "!bg-primary";
 
                     return (
-                      <TableRow key={item.id.toString()}>
+                      <TableRow key={item._id.toString()}>
                          <TableCell className="font-medium">{item.category}
                          {remaining < 0 && (
                            <AlertTriangle className="inline-block h-4 w-4 ml-1 text-destructive" />
@@ -285,20 +356,21 @@ export default function BudgetPage() {
                            {isEditMode ? (
                              <Input
                                type="number"
-                               value={editingBudgets[item.id.toString()] ?? ''}
-                               onChange={(e) => handleEditBudgetChange(item.id.toString(), e.target.value)}
+                               value={editingBudgets[item._id.toString()] ?? ''}
+                               onChange={(e) => handleEditBudgetChange(item._id.toString(), e.target.value)}
                                 className="retro-input h-8 !text-base w-24 sm:w-28"
                                />
                            ) : (
                              formatCurrency(item.budget)
                            )}
                         </TableCell>
-                         <TableCell className={cn("text-right", remaining < 0 ? 'text-destructive font-medium' : 'text-muted-foreground')}>
-                          {formatCurrency(remaining)}
-                        </TableCell>
-                        <TableCell>
-                           <Progress value={percentage} className={cn("retro-progress h-3", progressColor)} indicatorClassName={cn("retro-progress-indicator", progressColor)} />
-                        </TableCell>
+                         <TableCell className="text-right">{formatCurrency(remaining)}</TableCell>
+                         <TableCell>
+                           <div className="flex items-center gap-2">
+                             <Progress value={percentage} className="retro-progress h-2 flex-1" indicatorClassName={cn("retro-progress-indicator", progressColor)} />
+                             <span className="text-xs text-muted-foreground w-12 text-right">{percentage.toFixed(0)}%</span>
+                           </div>
+                         </TableCell>
                       </TableRow>
                     );
                   })}
@@ -312,52 +384,15 @@ export default function BudgetPage() {
 }
 
 const BudgetSkeleton = () => (
-    <div className="space-y-6 pt-8">
-        <div className="flex justify-between items-center">
-            <Skeleton className="h-8 w-64" />
-            <Skeleton className="h-10 w-36" />
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[1fr_1fr]">
-            <Card className="retro-card">
-                <CardHeader className="retro-card-header"><Skeleton className="h-6 w-40" /></CardHeader>
-                <CardContent className="retro-card-content !border-t-0 space-y-4">
-                    <Skeleton className="h-8 w-1/2 mx-auto" />
-                    <Skeleton className="h-4 w-full" />
-                    <div className="flex justify-between"><Skeleton className="h-4 w-1/4" /><Skeleton className="h-4 w-1/4" /></div>
-                    <Skeleton className="h-10 w-full" />
-                </CardContent>
-            </Card>
-            <Card className="retro-card">
-                <CardHeader className="retro-card-header"><Skeleton className="h-6 w-48" /></CardHeader>
-                <CardContent className="retro-card-content !border-t-0 h-[300px]"><Skeleton className="h-full w-full" /></CardContent>
-            </Card>
-        </div>
-        <Card className="retro-card">
-            <CardHeader className="retro-card-header"><Skeleton className="h-6 w-32" /></CardHeader>
-            <CardContent className="retro-card-content !border-t-0 p-0">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead><Skeleton className="h-5 w-24" /></TableHead>
-                            <TableHead><Skeleton className="h-5 w-20" /></TableHead>
-                            <TableHead><Skeleton className="h-5 w-20" /></TableHead>
-                            <TableHead><Skeleton className="h-5 w-20" /></TableHead>
-                            <TableHead><Skeleton className="h-5 w-24" /></TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {[...Array(5)].map((_, i) => (
-                            <TableRow key={i}>
-                                <TableCell><Skeleton className="h-5 w-32" /></TableCell>
-                                <TableCell><Skeleton className="h-5 w-16" /></TableCell>
-                                <TableCell><Skeleton className="h-5 w-16" /></TableCell>
-                                <TableCell><Skeleton className="h-5 w-16" /></TableCell>
-                                <TableCell><Skeleton className="h-5 w-28" /></TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </CardContent>
-        </Card>
+  <div className="space-y-6">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
+      <div className="h-8 w-48 bg-muted animate-pulse rounded" />
+      <div className="h-10 w-32 bg-muted animate-pulse rounded" />
     </div>
-)
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[1fr_1fr]">
+      <div className="h-64 bg-muted animate-pulse rounded-lg" />
+      <div className="h-64 bg-muted animate-pulse rounded-lg" />
+    </div>
+    <div className="h-96 bg-muted animate-pulse rounded-lg" />
+  </div>
+);

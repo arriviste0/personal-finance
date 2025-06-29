@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect } from 'react';
@@ -164,7 +163,7 @@ export default function LandingPage() {
                 FinCo empowers you to track income, budget smarter, save with purpose, and grow your wealth through intuitive tools and AI-powered insights.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild className="nb-button rounded-full bg-wz-pink border-nb-black hover:bg-nb-white hover:text-nb-black">
+                <Button asChild className="nb-button rounded-full bg-wz-pink border-nb-black hover:bg-nb-white hover:text-nb-black" suppressHydrationWarning={true}>
                   <Link href="/get-started">Start Now <ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
               </div>
@@ -278,7 +277,7 @@ export default function LandingPage() {
                         <h3 className="text-xl font-bold font-heading mt-2">{service.title}</h3>
                          <p className={cn("text-sm mt-2 px-2", service.textColor === "text-wz-text-dark" ? "text-wz-text-dark/80" : "text-wz-text-light/80")}>{service.description}</p>
                     </div>
-                    <Button className="btn-wz btn-wz-outline-dark mt-auto text-sm !py-2 !px-4 !shadow-wz-hard-sm">
+                    <Button className="btn-wz btn-wz-outline-dark mt-auto text-sm !py-2 !px-4 !shadow-wz-hard-sm" suppressHydrationWarning={true}>
                       Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </div>

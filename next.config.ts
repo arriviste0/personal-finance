@@ -1,4 +1,3 @@
-
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -31,6 +30,18 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    config.externals.push({
+      'mongodb-client-encryption': 'mongodb-client-encryption',
+      'kerberos': 'kerberos',
+      'aws4': 'aws4',
+      'tls': 'tls',
+      'net': 'net',
+      'dns': 'dns',
+    });
+
+    return config;
+  }
 };
 
 export default nextConfig;

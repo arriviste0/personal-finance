@@ -1,4 +1,3 @@
-
 import { NextResponse, type NextRequest } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId, type MongoClient } from 'mongodb';
@@ -17,7 +16,7 @@ interface RouteParams {
  * Deposits or withdraws funds from a savings goal.
  */
 export async function POST(request: NextRequest, { params }: RouteParams) {
-  const { goalId } = params;
+  const { goalId } = await params;
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });

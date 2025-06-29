@@ -1,7 +1,6 @@
-
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from '@/components/ui/input';
@@ -9,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
-import { Landmark, TrendingUp, PlusCircle, Trash2, Edit, DollarSign, X, Loader2 } from "lucide-react";
+import { Landmark, TrendingUp, PlusCircle, Trash2, Edit, DollarSign, X, Loader2, BarChart3 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { cn } from '@/lib/utils';
@@ -18,14 +17,30 @@ import { useToast } from '@/hooks/use-toast';
 import { useInvestments, useAddInvestment, useUpdateInvestment, useDeleteInvestment } from '@/hooks/use-investments';
 import type { InvestmentSchema } from '@/lib/db-schemas';
 import { Skeleton } from '@/components/ui/skeleton';
-
+import { useUndoRedo } from '@/hooks/use-undo-redo';
+import { UndoRedoButtons } from '@/components/ui/undo-redo-buttons';
+import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
+import { format } from 'date-fns';
 
 const investmentTypes: InvestmentSchema['type'][] = ['Stock', 'ETF', 'Mutual Fund', 'Crypto', 'Bond', 'Other'];
 
 const chartColors = [
     "hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))",
-    "hsl(var(--chart-4))", "hsl(var(--chart-5))", "hsl(var(--muted))",
+    "hsl(var(--chart-4))", "hsl(var(--chart-5))", "hsl(var(--chart-6))",
 ];
+
+// Interface for investment state in undo/redo
+interface InvestmentState {
+  investments: Array<{
+    _id: string;
+    name: string;
+    ticker?: string;
+    type: string;
+    value: number;
+    quantity?: number;
+    purchasePrice?: number;
+  }>;
+}
 
 export default function InvestmentsPage() {
   const { data: investments = [], isLoading, error } = useInvestments();
@@ -36,6 +51,30 @@ export default function InvestmentsPage() {
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingInvestment, setEditingInvestment] = useState<InvestmentSchema | null>(null);
+
+  // Initialize undo/redo with current investments
+  const [investmentState, undoRedoActions] = useUndoRedo<InvestmentState>(
+    {
+      investments: investments.map((inv: InvestmentSchema) => ({
+        _id: inv._id.toString(),
+        name: inv.name,
+        ticker: inv.ticker || undefined,
+        type: inv.type,
+        value: inv.value,
+        quantity: inv.quantity || undefined,
+        purchasePrice: inv.purchasePrice || undefined
+      }))
+    },
+    20 // Max 20 history entries
+  );
+
+  // Set up keyboard shortcuts
+  useKeyboardShortcuts({
+    onUndo: undoRedoActions.undo,
+    onRedo: undoRedoActions.redo,
+    canUndo: undoRedoActions.canUndo,
+    canRedo: undoRedoActions.canRedo
+  });
 
   const totalPortfolioValue = useMemo(() => investments.reduce((sum, item) => sum + item.value, 0), [investments]);
 
@@ -98,7 +137,15 @@ export default function InvestmentsPage() {
        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4 pt-8">
          <h1 className="text-3xl font-semibold flex items-center gap-2"><Landmark className="h-7 w-7 text-primary" /> Investment Portfolio</h1>
          <div className="flex items-center gap-2">
-            {/* Undo/Redo removed for DB state */}
+            {/* Undo/Redo buttons */}
+            <UndoRedoButtons
+              canUndo={undoRedoActions.canUndo}
+              canRedo={undoRedoActions.canRedo}
+              onUndo={undoRedoActions.undo}
+              onRedo={undoRedoActions.redo}
+              variant="outline"
+              size="sm"
+            />
             <Dialog open={isAddDialogOpen} onOpenChange={onDialogClose}>
                <DialogTrigger asChild><Button variant="primary"><PlusCircle className="mr-2 h-4 w-4" /> Add Investment</Button></DialogTrigger>
                <InvestmentFormDialog
@@ -264,7 +311,7 @@ function InvestmentFormDialog({ investment, onSave, onClose, isPending }: Invest
       <div className="grid gap-4 p-4 retro-window-content !border-t-0">
          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1"><Label htmlFor="name">Name</Label><Input id="name" name="name" value={formData.name} onChange={handleChange} className={cn("retro-input", errors.name && 'border-destructive')} placeholder="e.g., Apple Inc." />{errors.name && <p className="text-xs text-destructive">{errors.name}</p>}</div>
-            <div className="space-y-1"><Label htmlFor="ticker">Ticker <span className="text-muted-foreground text-xs">(Opt.)</span></Label><Input id="ticker" name="ticker" value={formData.ticker} onChange={handleChange} className="retro-input" placeholder="e.g., AAPL" /></div>
+            <div className="space-y-1"><Label htmlFor="ticker">Ticker <span className="text-muted-foreground text-xs">(Opt.)</span></Label><Input id="ticker" name="ticker" value={formData.ticker || ''} onChange={handleChange} className="retro-input" placeholder="e.g., AAPL" /></div>
          </div>
          <div className="grid grid-cols-2 gap-4">
              <div className="space-y-1"><Label htmlFor="type">Type</Label><Select name="type" value={formData.type} onValueChange={handleTypeChange}><SelectTrigger id="type" className={cn("retro-select-trigger", errors.type && 'border-destructive')}><SelectValue placeholder="Select type" /></SelectTrigger><SelectContent className="retro-select-content">{investmentTypes.map(type => (<SelectItem key={type} value={type} className="retro-select-item">{type}</SelectItem>))}</SelectContent></Select>{errors.type && <p className="text-xs text-destructive">{errors.type}</p>}</div>
